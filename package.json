@@ -1,25 +1,26 @@
 {
-  "name": "@adobe/helix-project-boilerplate",
+  "name": "prisma-cloud-docs-website",
   "private": true,
   "version": "1.0.0",
-  "description": "Starter project for Adobe Helix",
+  "description": "Prisma Cloud Docs Website",
   "scripts": {
     "test": "wtr \"./test/**/*.test.js\" --node-resolve --port=2000 --coverage",
     "test:watch": "npm test -- --watch",
     "lint:js": "eslint .",
     "lint:css": "stylelint blocks/**/*.css styles/*.css",
-    "lint": "npm run lint:js && npm run lint:css"
+    "lint": "npm run lint:js && npm run lint:css",
+    "dev": "npx @adobe/helix-cli up --no-open --port 3002"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/adobe/helix-project-boilerplate.git"
+    "url": "git+https://github.com/hlxsites/prisma-cloud-docs-website.git"
   },
   "author": "Adobe",
   "license": "Apache License 2.0",
   "bugs": {
-    "url": "https://github.com/adobe/helix-project-boilerplate/issues"
+    "url": "https://github.com/hlxsites/prisma-cloud-docs-website/issues"
   },
-  "homepage": "https://github.com/adobe/helix-project-boilerplate#readme",
+  "homepage": "https://github.com/hlxsites/prisma-cloud-docs-website#readme",
   "devDependencies": {
     "@babel/core": "7.21.0",
     "@babel/eslint-parser": "7.19.1",
