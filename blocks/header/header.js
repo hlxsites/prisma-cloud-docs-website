@@ -113,7 +113,6 @@ export default async function decorate(block) {
     if(navBrand) {
       // TODO: handle dropdown on brand icon
       const brandLinks = navBrand.querySelector(':scope > ul');
-      console.log('brandLKinks: ', brandLinks)
       if(brandLinks) {
         brandLinks.style.display = 'none';
       }

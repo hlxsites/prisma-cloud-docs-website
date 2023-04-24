@@ -1,3 +1,4 @@
+import { getMetadata } from './lib-franklin.js';
 import {
   sampleRUM,
   buildBlock,
@@ -13,8 +14,23 @@ import {
   loadCSS,
 } from './lib-franklin.js';
 
-const LCP_BLOCKS = []; // add your LCP blocks to the list
+const LCP_BLOCKS = ['article']; // add your LCP blocks to the list
 window.hlx.RUM_GENERATION = 'prisma-cloud-docs-website'; // add your RUM generation information here
+
+const DOCS_ORIGIN = {
+  dev: 'http://127.0.0.1:3001',
+  preview: 'https://main--prisma-cloud-docs--hlxsites.hlx.page',
+  publish: 'https://main--prisma-cloud-docs--hlxsites.hlx.live',
+  cdn: ''
+}
+
+function getEnv() {
+  const { hostname } = window.location;
+  if(['localhost', '127.0.0.1'].includes(hostname)) return 'dev';
+  if(hostname.endsWith('hlx.page')) return 'preview';
+  if(hostname.endsWith('hlx.live')) return 'publish';
+  return 'cdn';
+}
 
 /**
  * Builds hero block and prepends to main in a new section.
@@ -31,6 +47,26 @@ function buildHeroBlock(main) {
   }
 }
 
+function buildArticleBlock(main) {
+  const template = getMetadata('template');
+  if(template !== 'book') return;
+
+  const docMain = document.documentElement.querySelector('main');
+  if(main !== docMain) return;
+
+  const docsFolder = getMetadata('docs-folder');
+  const rootPath = getMetadata('root-path') || '';
+  const itemPath = window.location.pathname.substring(rootPath.length);
+  const origin = DOCS_ORIGIN[getEnv()];
+  const docHref = `${origin}${docsFolder}${itemPath}`;
+
+  const section = document.createElement('div');
+  const link = document.createElement('a');
+  link.href = docHref;
+  section.append(buildBlock('article', { elems: [link] }));
+  main.prepend(section);
+}
+
 /**
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
@@ -38,6 +74,7 @@ function buildHeroBlock(main) {
 function buildAutoBlocks(main) {
   try {
     buildHeroBlock(main);
+    buildArticleBlock(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
