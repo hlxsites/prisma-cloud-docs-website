@@ -1,2 +1,6 @@
 mountpoints:
   /: https://drive.google.com/drive/folders/147VhNyUTZTSvvhkHK28KxMM5mGLIK4jW
+
+folders:
+  /prisma/prisma-cloud/prisma-cloud-admin-code-security/: /en/book
+  /prisma/prisma-cloud/prisma-cloud-admin-compute/: /en/book
