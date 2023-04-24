@@ -18,8 +18,14 @@ export default async function decorate(block) {
     // decorate footer DOM
     const footer = document.createElement('div');
     footer.innerHTML = html;
-
     decorateIcons(footer);
+
+    const classes = ['links', 'socials', 'legal'];
+    classes.forEach((c, i) => {
+      const section = footer.children[i];
+      if (section) section.classList.add(`footer-${c}`);
+    });
+
     block.append(footer);
   }
 }

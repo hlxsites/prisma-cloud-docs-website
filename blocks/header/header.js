@@ -109,6 +109,16 @@ export default async function decorate(block) {
       if (section) section.classList.add(`nav-${c}`);
     });
 
+    const navBrand = nav.querySelector('.nav-brand');
+    if(navBrand) {
+      // TODO: handle dropdown on brand icon
+      const brandLinks = navBrand.querySelector(':scope > ul');
+      console.log('brandLKinks: ', brandLinks)
+      if(brandLinks) {
+        brandLinks.style.display = 'none';
+      }
+    }
+
     const navSections = nav.querySelector('.nav-sections');
     if (navSections) {
       navSections.querySelectorAll(':scope > ul > li').forEach((navSection) => {

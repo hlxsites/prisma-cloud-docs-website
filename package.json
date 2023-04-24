@@ -9,7 +9,7 @@
     "lint:js": "eslint .",
     "lint:css": "stylelint blocks/**/*.css styles/*.css",
     "lint": "npm run lint:js && npm run lint:css",
-    "dev": "npx @adobe/helix-cli up --no-open --port 3001"
+    "dev": "npx @adobe/helix-cli up"
   },
   "repository": {
     "type": "git",
