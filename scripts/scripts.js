@@ -33,6 +33,46 @@ function getEnv() {
 }
 
 /**
+ * Make element from template string
+ * @param {string} str
+ * @returns {HTMLElement}
+ */
+export function el(str) {
+  const content = typeof str !== 'string' ? '' : str;
+  const tmp = document.createElement('div');
+  tmp.innerHTML = content;
+  return tmp.firstElementChild;
+}
+
+/**
+ * HTML string template tag
+ * @param {string[]} strs
+ * @param  {...(string|Element)} params
+ */
+export function htmlstr(strs, ...params) {
+  let res = '';
+  strs.forEach((s, i) => {
+    const p = params[i];
+    res += s;
+    if (!p) return;
+    if (p instanceof HTMLElement) {
+      res += p.outerHTML;
+    } else {
+      res += p;
+    }
+  });
+  return res;
+}
+
+/**
+ * HTML element template tag
+ * @returns {HTMLElement}
+ */
+export function html(strs, ...params) {
+  return el(htmlstr(strs, ...params));
+}
+
+/**
  * Builds hero block and prepends to main in a new section.
  * @param {Element} main The container element
  */
@@ -47,7 +87,23 @@ function buildHeroBlock(main) {
   }
 }
 
-function buildArticleBlock(main) {
+function buildArticleBlock(main, docHref) {
+  const section = document.createElement('div');
+  const link = document.createElement('a');
+  link.href = docHref;
+  section.append(buildBlock('article', { elems: [link] }));
+  main.prepend(section);
+}
+
+function buildSideNavBlock(main, navHref) {
+  const section = document.createElement('div');
+  const link = document.createElement('a');
+  link.href = navHref;
+  section.append(buildBlock('side-nav', { elems: [link] }));
+  main.append(section);
+}
+
+function buildBookBlocks(main) {
   const template = getMetadata('template');
   if(template !== 'book') return;
 
@@ -55,16 +111,15 @@ function buildArticleBlock(main) {
   if(main !== docMain) return;
 
   const docsFolder = getMetadata('docs-folder');
+  const bookName = getMetadata('book-name') || 'book';
   const rootPath = getMetadata('root-path') || '';
   const itemPath = window.location.pathname.substring(rootPath.length);
   const origin = DOCS_ORIGIN[getEnv()];
   const docHref = `${origin}${docsFolder}${itemPath}`;
+  const navHref = `${origin}${docsFolder}/${bookName}`;
 
-  const section = document.createElement('div');
-  const link = document.createElement('a');
-  link.href = docHref;
-  section.append(buildBlock('article', { elems: [link] }));
-  main.prepend(section);
+  buildArticleBlock(main, docHref);
+  buildSideNavBlock(main, navHref);
 }
 
 /**
@@ -74,7 +129,7 @@ function buildArticleBlock(main) {
 function buildAutoBlocks(main) {
   try {
     buildHeroBlock(main);
-    buildArticleBlock(main);
+    buildBookBlocks(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);

@@ -243,3 +243,30 @@ main .section {
 main .section.highlight {
   background-color: var(--highlight-background-color);
 }
+
+
+/* book template */
+
+body.book main {
+  display: grid;
+    grid-template:
+        'side-nav article-header article-header'
+        'side-nav article article';
+    grid-template-rows: 1% max-content;
+    max-width: 1400px;
+    margin: auto;
+}
+
+body.book main .section.side-nav-container {
+  grid-area: side-nav;
+}
+
+body.book main .section.article-container {
+  grid-area: article;
+  display: flex;
+  align-self: flex-start;
+}
+
+body.book main .section.article-header-container {
+  grid-area: article-header;
+}
