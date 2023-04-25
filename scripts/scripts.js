@@ -112,8 +112,8 @@ function buildBookBlocks(main) {
 
   const docsFolder = getMetadata('docs-folder');
   const bookName = getMetadata('book-name') || 'book';
-  const rootPath = getMetadata('root-path') || '';
-  const itemPath = window.location.pathname.substring(rootPath.length);
+  // const rootPath = getMetadata('root-path') || '';
+  const itemPath = window.location.pathname.substring(docsFolder.length);
   const origin = DOCS_ORIGIN[getEnv()];
   const docHref = `${origin}${docsFolder}${itemPath}`;
   const navHref = `${origin}${docsFolder}/${bookName}`;
