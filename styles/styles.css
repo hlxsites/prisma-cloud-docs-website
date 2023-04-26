@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  */
 
- :root {
+:root {
   /* colors */
   --link-color: #035fe6;
   --link-hover-color: #136ff6;
@@ -249,24 +249,26 @@ main .section.highlight {
 
 body.book main {
   display: grid;
-    grid-template:
-        'side-nav article-header article-header'
-        'side-nav article article';
-    grid-template-rows: 1% max-content;
-    max-width: 1400px;
-    margin: auto;
-}
-
-body.book main .section.side-nav-container {
-  grid-area: side-nav;
+  grid-template:
+    'breadcrumbs breadcrumbs breadcrumbs'
+    'article article article';
+  grid-template-rows: 0 max-content;
+  max-width: 1400px;
+  margin: auto;
 }
 
 body.book main .section.article-container {
   grid-area: article;
   display: flex;
-  align-self: flex-start;
+  flex-direction: column;
 }
 
-body.book main .section.article-header-container {
-  grid-area: article-header;
+@media (min-width: 1000px) {
+  body.book main .section.article-container {
+    flex-direction: row;
+  }
+
+  body.book main .section.article-container > div {
+    margin: 0;
+  }
 }

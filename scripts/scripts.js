@@ -102,14 +102,17 @@ function buildArticleBlock(main, docHref) {
   link.href = docHref;
   section.append(buildBlock('article', { elems: [link] }));
   main.prepend(section);
+  return section;
 }
 
-function buildSideNavBlock(main, navHref) {
-  const section = document.createElement('div');
-  const link = document.createElement('a');
-  link.href = navHref;
-  section.append(buildBlock('side-nav', { elems: [link] }));
-  main.append(section);
+function buildSideNavBlock(section, navHrefs) {
+  const links = navHrefs.map((href) => {
+    const link = document.createElement('a');
+    link.href = href;
+    return link;
+  });
+
+  section.prepend(buildBlock('side-nav', { elems: links }));
 }
 
 function buildBookBlocks(main) {
@@ -119,16 +122,15 @@ function buildBookBlocks(main) {
   const docMain = document.documentElement.querySelector('main');
   if (main !== docMain) return;
 
-  const docsFolder = getMetadata('docs-folder');
   const bookName = getMetadata('book-name') || 'book';
-  // const rootPath = getMetadata('root-path') || '';
-  const itemPath = window.location.pathname.substring(docsFolder.length);
+  const bookPaths = getMetadata('books').split(',').map((s) => s.trim());
   const origin = DOCS_ORIGINS[getEnv()];
-  const docHref = `${origin}${docsFolder}${itemPath}`;
-  const navHref = `${origin}${docsFolder}/${bookName}`;
+  const docHref = `${origin}${window.location.pathname}`; // matches article path
+  const navHref = (path) => `${origin}${path}/${bookName}`; // points to book in docs repo, no extension
+  const navHrefs = bookPaths.map(navHref);
 
-  buildArticleBlock(main, docHref);
-  buildSideNavBlock(main, navHref);
+  const articleSection = buildArticleBlock(main, docHref);
+  buildSideNavBlock(articleSection, navHrefs);
 }
 
 /**
