@@ -110,10 +110,10 @@ export default async function decorate(block) {
     });
 
     const navBrand = nav.querySelector('.nav-brand');
-    if(navBrand) {
+    if (navBrand) {
       // TODO: handle dropdown on brand icon
       const brandLinks = navBrand.querySelector(':scope > ul');
-      if(brandLinks) {
+      if (brandLinks) {
         brandLinks.style.display = 'none';
       }
     }

@@ -1,4 +1,5 @@
 import {
+  assertValidDocsURL,
   decorateMain,
 } from '../../scripts/scripts.js';
 
@@ -7,23 +8,21 @@ import {
 } from '../../scripts/lib-franklin.js';
 
 /**
- * Loads a fragment.
- * @param {string} path The path to the fragment
- * @returns {Promise<HTMLElement>} The root element of the fragment
+ * Loads an article.
+ * @param {string} path The path or url to the article
+ * @returns {Promise<HTMLElement>} The root element of the article
  */
 async function loadArticle(path) {
-  // TODO: make sure we only load from specific origins
-  // if (path && path.startsWith('/')) {
-    const resp = await fetch(`${path}.plain.html`);
-    if (resp.ok) {
-      const main = document.createElement('main');
-      main.innerHTML = await resp.text();
-      decorateMain(main);
-      await loadBlocks(main);
-      return main;
-    }
-  // }
-  return null;
+  assertValidDocsURL(path);
+
+  const resp = await fetch(`${path}.plain.html`);
+  if (!resp.ok) return null;
+
+  const main = document.createElement('main');
+  main.innerHTML = await resp.text();
+  decorateMain(main);
+  await loadBlocks(main);
+  return main;
 }
 
 export default async function decorate(block) {

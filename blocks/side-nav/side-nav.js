@@ -1,25 +1,23 @@
-import { html } from "../../scripts/scripts.js";
+import { assertValidDocsURL, html } from '../../scripts/scripts.js';
 
 /**
  * @param {string} path
  * @returns {Promise<Record<string, unknown>>}
  */
 async function loadNavJSON(path) {
-  // TODO: make sure we only load from specific origins
-  // if (path && path.startsWith('/')) {
-    const resp = await fetch(`${path}.json`);
-    if (!resp.ok) return null;
-    try {
-      return await resp.json();
-    } catch (e){
-      console.error('failed to parse nav: ', e);
-      return null;
-    }
-  // }
+  assertValidDocsURL(path);
+
+  const resp = await fetch(`${path}.json`);
+  if (!resp.ok) return null;
+  try {
+    return await resp.json();
+  } catch (e) {
+    console.error('failed to parse nav: ', e);
+    return null;
+  }
 }
 
-const template = () => {
-  return html`
+const template = () => html`
     <div class="toc-wrapper">
       <div class="toggle-aside">
         <i class="icon-arrow-up"></i>
@@ -28,10 +26,9 @@ const template = () => {
       <hr>
       <div class="toc"></div>
     </div>`;
-}
 
 /**
- * @param {HTMLDivElement} block 
+ * @param {HTMLDivElement} block
  */
 export default async function decorate(block) {
   const link = block.querySelector('a');
@@ -45,7 +42,7 @@ export default async function decorate(block) {
   console.log('[sidenav] json: ', json);
 
   const { chapters } = json;
-  chapters.forEach(chapter => {
+  chapters.forEach((chapter) => {
     const { topics } = chapter;
     toc.appendChild(html`
       <ul>
@@ -59,6 +56,6 @@ export default async function decorate(block) {
             </ul>`).join('')}
           </ul>
         </li>
-      </ul>`)
+      </ul>`);
   });
 }

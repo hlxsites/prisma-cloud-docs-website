@@ -1,5 +1,5 @@
-import { getMetadata } from './lib-franklin.js';
 import {
+  getMetadata,
   sampleRUM,
   buildBlock,
   loadHeader,
@@ -17,19 +17,28 @@ import {
 const LCP_BLOCKS = ['article']; // add your LCP blocks to the list
 window.hlx.RUM_GENERATION = 'prisma-cloud-docs-website'; // add your RUM generation information here
 
-const DOCS_ORIGIN = {
+export const DOCS_ORIGINS = {
   dev: 'http://127.0.0.1:3001',
-  preview: 'https://main--prisma-cloud-docs--hlxsites.hlx.page',
+  preview: 'https://prisma-cloud-docs-production.adobeaem.workers.dev',
+  // TODO: use hlx.page when headers are able to be configured for markup projects
+  // preview: 'https://main--prisma-cloud-docs--hlxsites.hlx.page',
   publish: 'https://main--prisma-cloud-docs--hlxsites.hlx.live',
-  cdn: ''
-}
+  cdn: '',
+};
 
 function getEnv() {
   const { hostname } = window.location;
-  if(['localhost', '127.0.0.1'].includes(hostname)) return 'dev';
-  if(hostname.endsWith('hlx.page')) return 'preview';
-  if(hostname.endsWith('hlx.live')) return 'publish';
+  if (['localhost', '127.0.0.1'].includes(hostname)) return 'dev';
+  if (hostname.endsWith('hlx.page')) return 'preview';
+  if (hostname.endsWith('hlx.live')) return 'publish';
   return 'cdn';
+}
+
+export function assertValidDocsURL(url) {
+  if (url.startsWith('/')) return true;
+  const { origin } = new URL(url);
+  if (Object.values(DOCS_ORIGINS).includes(origin)) return true;
+  throw Error('invalid origin');
 }
 
 /**
@@ -105,16 +114,16 @@ function buildSideNavBlock(main, navHref) {
 
 function buildBookBlocks(main) {
   const template = getMetadata('template');
-  if(template !== 'book') return;
+  if (template !== 'book') return;
 
   const docMain = document.documentElement.querySelector('main');
-  if(main !== docMain) return;
+  if (main !== docMain) return;
 
   const docsFolder = getMetadata('docs-folder');
   const bookName = getMetadata('book-name') || 'book';
   // const rootPath = getMetadata('root-path') || '';
   const itemPath = window.location.pathname.substring(docsFolder.length);
-  const origin = DOCS_ORIGIN[getEnv()];
+  const origin = DOCS_ORIGINS[getEnv()];
   const docHref = `${origin}${docsFolder}${itemPath}`;
   const navHref = `${origin}${docsFolder}/${bookName}`;
 
