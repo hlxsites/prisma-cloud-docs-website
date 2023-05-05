@@ -22,9 +22,9 @@
   --footer-background-color: #1f2b35;
 
   /* fonts */
-  --body-font-family: 'helvetica neue', helvetica, ubuntu, roboto, noto, sans-serif;
+  --body-font-family: 'HCo Decimal', lato, 'Helvetica Neue', helvetica, arial, sans-serif;
   --heading-font-family: var(--body-font-family);
-  --fixed-font-family: 'Roboto Mono', menlo, consolas, 'Liberation Mono', monospace;
+  --fixed-font-family: 'Lucida Console', monaco, monospace;
 
   /* body sizes */
   --body-font-size-m: 22px;
