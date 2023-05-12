@@ -17,7 +17,6 @@ module.exports = {
     'import/extensions': ['error', {
       js: 'always',
     }],
-    'no-restricted-syntax': 0,
     // Temp disable for development
     'no-console': 0,
   },
