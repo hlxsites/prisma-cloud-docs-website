@@ -86,7 +86,8 @@ html:has(meta[name="template"][content="book"]) header {
   background: rgb(244 244 242 / 50%);
 }
 
-header:has([data-block-status="loaded"]) {
+header:has([data-block-status="loaded"]),
+html:has(meta[name="template"][content="book"]) header:has([data-block-status="loaded"]) {
   background: transparent;
 }
 
