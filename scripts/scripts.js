@@ -14,6 +14,8 @@ import {
   loadCSS,
 } from './lib-franklin.js';
 
+const range = document.createRange();
+
 const LCP_BLOCKS = ['article']; // add your LCP blocks to the list
 window.hlx.RUM_GENERATION = 'prisma-cloud-docs-website'; // add your RUM generation information here
 
@@ -79,6 +81,36 @@ export function htmlstr(strs, ...params) {
  */
 export function html(strs, ...params) {
   return el(htmlstr(strs, ...params));
+}
+
+/**
+ * Parse HTML fragment
+ * @returns {DocumentFragment}
+ */
+export function parseFragment(fragmentString) {
+  return range.createContextualFragment(fragmentString);
+}
+
+/**
+ * Update template with slotted elements from fragment
+ *
+ * @param {DocumentFragment} template
+ * @param {DocumentFragment} fragment
+ * @param {function} callback
+ */
+export function render(template, fragment, callback) {
+  const slottedElements = fragment.querySelectorAll('[slot]');
+  for (const slottedElement of slottedElements) {
+    const slotName = slottedElement.getAttribute('slot');
+    const slots = template.querySelectorAll(`slot[name="${slotName}"]`);
+    for (const slot of slots) {
+      slot.replaceWith(slottedElement.cloneNode(true));
+    }
+  }
+
+  if (callback) {
+    callback();
+  }
 }
 
 /**
