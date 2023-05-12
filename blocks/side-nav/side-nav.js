@@ -7,7 +7,7 @@ import { assertValidDocsURL, html } from '../../scripts/scripts.js';
 async function loadNavJSON(path) {
   assertValidDocsURL(path);
 
-  const resp = await fetch(`${path}.json`);
+  const resp = await fetch(`${path}.json?sheet=default&sheet=chapters&sheet=topics`);
   if (!resp.ok) return null;
   try {
     return await resp.json();
