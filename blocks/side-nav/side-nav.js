@@ -31,6 +31,9 @@ const template = () => html`
  * @param {HTMLDivElement} block
  */
 export default async function decorate(block) {
+  // N rows
+  // 1st row is link to book currently being viewed
+  // 2..N row are links to additional books, can be loaded lazily
   const link = block.querySelector('a');
   const path = link ? link.getAttribute('href') : block.textContent.trim();
 
