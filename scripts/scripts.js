@@ -19,9 +19,7 @@ window.hlx.RUM_GENERATION = 'prisma-cloud-docs-website'; // add your RUM generat
 
 export const DOCS_ORIGINS = {
   dev: 'http://127.0.0.1:3001',
-  preview: 'https://prisma-cloud-docs-production.adobeaem.workers.dev',
-  // TODO: use hlx.page when headers are able to be configured for markup projects
-  // preview: 'https://main--prisma-cloud-docs--hlxsites.hlx.page',
+  preview: 'https://main--prisma-cloud-docs--hlxsites.hlx.page',
   publish: 'https://main--prisma-cloud-docs--hlxsites.hlx.live',
   cdn: '',
 };
