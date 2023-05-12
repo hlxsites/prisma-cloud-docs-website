@@ -7,7 +7,7 @@ import { assertValidDocsURL, html } from '../../scripts/scripts.js';
 async function loadNavJSON(path) {
   assertValidDocsURL(path);
 
-  const resp = await fetch(`${path}.json`);
+  const resp = await fetch(`${path}.json?sheet=default&sheet=chapters&sheet=topics`);
   if (!resp.ok) return null;
   try {
     return await resp.json();
@@ -31,6 +31,9 @@ const template = () => html`
  * @param {HTMLDivElement} block
  */
 export default async function decorate(block) {
+  // N rows
+  // 1st row is link to book currently being viewed
+  // 2..N row are links to additional books, can be loaded lazily
   const link = block.querySelector('a');
   const path = link ? link.getAttribute('href') : block.textContent.trim();
 

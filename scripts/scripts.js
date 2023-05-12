@@ -123,11 +123,12 @@ function buildBookBlocks(main) {
   if (main !== docMain) return;
 
   const bookName = getMetadata('book-name') || 'book';
-  const bookPaths = getMetadata('books').split(',').map((s) => s.trim());
+  const bookPath = getMetadata('book');
+  const additionalBookPaths = (getMetadata('additional-books') || '').split(',').map((s) => s.trim()).filter((s) => !!s);
   const origin = DOCS_ORIGINS[getEnv()];
   const docHref = `${origin}${window.location.pathname}`; // matches article path
   const navHref = (path) => `${origin}${path}/${bookName}`; // points to book in docs repo, no extension
-  const navHrefs = bookPaths.map(navHref);
+  const navHrefs = [navHref(bookPath), ...additionalBookPaths.map(navHref)];
 
   const articleSection = buildArticleBlock(main, docHref);
   buildSideNavBlock(articleSection, navHrefs);
