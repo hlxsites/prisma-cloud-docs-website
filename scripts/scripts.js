@@ -91,12 +91,21 @@ export function parseFragment(fragmentString) {
 
 /**
  * Update template with slotted elements from fragment
- *
- * @param {DocumentFragment} template
- * @param {DocumentFragment} fragment
- * @param {function} callback
  */
-export function render(template, fragment, callback) {
+export function render({
+  template, fragment, locale, callback,
+}) {
+  const currentLocale = document.documentElement.lang || 'en';
+  if (locale?.[currentLocale]) {
+    for (const selector of Object.keys(locale[currentLocale])) {
+      for (const element of template.querySelectorAll(selector)) {
+        for (const prop of Object.keys(locale[currentLocale][selector])) {
+          element[prop] = locale[currentLocale][selector][prop];
+        }
+      }
+    }
+  }
+
   const slottedElements = fragment.querySelectorAll('[slot]');
   for (const slottedElement of slottedElements) {
     const slotName = slottedElement.getAttribute('slot');

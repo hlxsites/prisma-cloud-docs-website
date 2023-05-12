@@ -13,15 +13,20 @@ async function load() {
   const navMeta = getMetadata('nav');
   const navPath = `${navMeta ? new URL(navMeta).pathname : '/nav'}.plain.html`;
   const templatePath = '/blocks/header/header.html';
+  const localePath = '/blocks/header/header.json';
 
   const reqNav = fetch(navPath);
   const reqTemplate = fetch(templatePath);
+  const reqLocale = fetch(localePath);
 
   try {
-    const [resNav, resTemplate] = await Promise.all([reqNav, reqTemplate]);
-    const [nav, template] = await Promise.all([resNav.text(), resTemplate.text()]);
+    const [resNav, resTemplate, resLocale] = await Promise.all([reqNav, reqTemplate, reqLocale]);
+    const [nav, template, locale] = await Promise.all([
+      resNav.text(), resTemplate.text(), resLocale.json()]);
 
-    return { ok: true, nav: parseFragment(nav), template: parseFragment(template) };
+    return {
+      ok: true, nav: parseFragment(nav), template: parseFragment(template), locale,
+    };
   } catch (error) {
     console.error(error);
     return { ok: false, error };
@@ -276,7 +281,7 @@ function addEventListeners(block) {
 export default async function decorate(block) {
   const res = await load();
   if (res.ok) {
-    const { nav, template } = res;
+    const { nav, template, locale } = res;
 
     // "Slotify"
     nav.querySelector('a').setAttribute('slot', 'logo');
@@ -300,28 +305,33 @@ export default async function decorate(block) {
       menuDropdown.append(links);
     }
 
-    render(template, nav, () => {
-      const navList = template.querySelector('.nav-list');
-      const navListItems = navList.querySelectorAll('span');
-      const backgroundImage = navList.querySelector('img');
-      navListItems.forEach((item) => item.append(backgroundImage.cloneNode(true)));
+    render({
+      template,
+      fragment: nav,
+      locale,
+      callback: () => {
+        const navList = template.querySelector('.nav-list');
+        const navListItems = navList.querySelectorAll('span');
+        const backgroundImage = navList.querySelector('img');
+        navListItems.forEach((item) => item.append(backgroundImage.cloneNode(true)));
 
-      const dropdown = template.querySelector('.nav-menu-dropdown');
-      for (const menuWithIcon of dropdown.querySelectorAll('li:has(.icon + ul)')) {
-        const div = document.createElement('div');
-        div.append(menuWithIcon.querySelector('.icon'));
-        // text child
-        div.append(menuWithIcon.firstChild);
-        menuWithIcon.prepend(div);
-      }
-      for (const menuWithoutLink of dropdown.querySelectorAll('div > ul > li')) {
-        if (!menuWithoutLink.querySelector(':scope > a')) {
+        const dropdown = template.querySelector('.nav-menu-dropdown');
+        for (const menuWithIcon of dropdown.querySelectorAll('li:has(.icon + ul)')) {
           const div = document.createElement('div');
+          div.append(menuWithIcon.querySelector('.icon'));
           // text child
-          div.append(menuWithoutLink.firstChild);
-          menuWithoutLink.prepend(div);
+          div.append(menuWithIcon.firstChild);
+          menuWithIcon.prepend(div);
         }
-      }
+        for (const menuWithoutLink of dropdown.querySelectorAll('div > ul > li')) {
+          if (!menuWithoutLink.querySelector(':scope > a')) {
+            const div = document.createElement('div');
+            // text child
+            div.append(menuWithoutLink.firstChild);
+            menuWithoutLink.prepend(div);
+          }
+        }
+      },
     });
 
     const navMobileRootMenu = template.querySelector('.pan-mobile-nav .root-menu');

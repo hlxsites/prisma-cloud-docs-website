@@ -471,6 +471,7 @@
 }
 
 .pan-desktop-nav .nav-menu-section .nav-open-sidemenu {
+    text-transform: uppercase;
     overflow: hidden;
     width: 80px;
     display: flex;

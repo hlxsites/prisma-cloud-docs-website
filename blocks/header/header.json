@@ -1,0 +1,19 @@
+{
+  "en": {
+    ".locale-home": {
+      "textContent": "Home"
+    },
+    ".locale-location": {
+      "textContent": "Location"
+    },
+    ".local-search-panel-close": {
+      "ariaLabel": "Close Search Panel"
+    },
+    ".locale-nav-search-button": {
+      "ariaLabel": "Open Search Panel"
+    },
+    ".locale-menu": {
+      "textContent": "Menu"
+    }
+  }
+}
