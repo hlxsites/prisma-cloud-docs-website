@@ -60,13 +60,14 @@
 }
 
 body {
-  font-family: "HCo Decimal", Lato, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: var(--body-font-family);
   font-size: 14px;
   line-height: 1.4;
   color: #36424b;
   background-color: #fff;
   display: none;
   margin: 0;
+  overflow-x: hidden;
 }
 
 body.appear {
@@ -88,6 +89,7 @@ header {
 
 header.loaded {
   background: transparent;
+  height: auto;
 }
 
 h1, h2, h3,
@@ -313,7 +315,6 @@ body.book main {
     'breadcrumbs breadcrumbs breadcrumbs'
     'article article article';
   grid-template-rows: 0 max-content;
-  max-width: 1400px;
   margin: auto;
 }
 

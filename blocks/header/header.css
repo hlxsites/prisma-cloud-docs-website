@@ -428,6 +428,7 @@
 
 .pan-desktop-nav .nav-menu-section {
     position: relative;
+    z-index: 1;
     flex-grow: 1;
     display: flex;
     flex-wrap: wrap;
@@ -471,6 +472,7 @@
 }
 
 .pan-desktop-nav .nav-menu-section .nav-open-sidemenu {
+    font-family: var(--body-font-family);
     text-transform: uppercase;
     overflow: hidden;
     width: 80px;
@@ -502,6 +504,8 @@
 }
 
 .pan-desktop-nav .nav-logo-section {
+    position: relative;
+    z-index: 1;
     margin-right: 40px;
     margin-top: -10px;
     display: flex;
