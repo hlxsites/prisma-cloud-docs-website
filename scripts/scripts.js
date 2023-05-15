@@ -12,6 +12,7 @@ import {
   waitForLCP,
   loadBlocks,
   loadCSS,
+  fetchPlaceholders,
 } from './lib-franklin.js';
 
 const range = document.createRange();
@@ -92,20 +93,7 @@ export function parseFragment(fragmentString) {
 /**
  * Update template with slotted elements from fragment
  */
-export function render({
-  template, fragment, locale, callback,
-}) {
-  const currentLocale = document.documentElement.lang || 'en';
-  if (locale?.[currentLocale]) {
-    for (const selector of Object.keys(locale[currentLocale])) {
-      for (const element of template.querySelectorAll(selector)) {
-        for (const prop of Object.keys(locale[currentLocale][selector])) {
-          element[prop] = locale[currentLocale][selector][prop];
-        }
-      }
-    }
-  }
-
+export function render(template, fragment) {
   const slottedElements = fragment.querySelectorAll('[slot]');
   for (const slottedElement of slottedElements) {
     const slotName = slottedElement.getAttribute('slot');
@@ -113,10 +101,6 @@ export function render({
     for (const slot of slots) {
       slot.replaceWith(slottedElement.cloneNode(true));
     }
-  }
-
-  if (callback) {
-    callback();
   }
 }
 
@@ -206,7 +190,11 @@ export function decorateMain(main) {
  * @param {Element} doc The container element
  */
 async function loadEager(doc) {
-  document.documentElement.lang = 'en';
+  // Default to en
+  const lang = window.location.pathname.split('/').indexOf('jp') !== -1 ? 'jp' : 'en';
+  document.documentElement.lang = lang;
+  await fetchPlaceholders(`/prisma/prisma-cloud/${lang}`);
+
   decorateTemplateAndTheme();
   const main = doc.querySelector('main');
   if (main) {

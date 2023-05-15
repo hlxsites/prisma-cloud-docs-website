@@ -11,21 +11,19 @@ import { render, parseFragment } from '../../scripts/scripts.js';
 async function load() {
   // fetch nav content & template
   const navMeta = getMetadata('nav');
-  const navPath = `${navMeta ? new URL(navMeta).pathname : '/nav'}.plain.html`;
+  const { lang } = document.documentElement;
+  const navPath = `${navMeta ? new URL(navMeta).pathname : `/prisma/prisma-cloud/${lang}/nav`}.plain.html`;
   const templatePath = '/blocks/header/header.html';
-  const localePath = '/blocks/header/header.json';
 
   const reqNav = fetch(navPath);
   const reqTemplate = fetch(templatePath);
-  const reqLocale = fetch(localePath);
 
   try {
-    const [resNav, resTemplate, resLocale] = await Promise.all([reqNav, reqTemplate, reqLocale]);
-    const [nav, template, locale] = await Promise.all([
-      resNav.text(), resTemplate.text(), resLocale.json()]);
+    const [resNav, resTemplate] = await Promise.all([reqNav, reqTemplate]);
+    const [nav, template] = await Promise.all([resNav.text(), resTemplate.text()]);
 
     return {
-      ok: true, nav: parseFragment(nav), template: parseFragment(template), locale,
+      ok: true, nav: parseFragment(nav), template: parseFragment(template),
     };
   } catch (error) {
     console.error(error);
@@ -281,7 +279,7 @@ function addEventListeners(block) {
 export default async function decorate(block) {
   const res = await load();
   if (res.ok) {
-    const { nav, template, locale } = res;
+    const { nav, template } = res;
 
     // "Slotify"
     nav.querySelector('a').setAttribute('slot', 'logo');
@@ -305,40 +303,44 @@ export default async function decorate(block) {
       menuDropdown.append(links);
     }
 
-    render({
-      template,
-      fragment: nav,
-      locale,
-      callback: () => {
-        const navList = template.querySelector('.nav-list');
-        const navListItems = navList.querySelectorAll('span');
-        const backgroundImage = navList.querySelector('img');
-        navListItems.forEach((item) => item.append(backgroundImage.cloneNode(true)));
+    // Render with slots
+    render(template, nav);
 
-        const dropdown = template.querySelector('.nav-menu-dropdown');
-        for (const menuWithIcon of dropdown.querySelectorAll('li:has(.icon + ul)')) {
-          const div = document.createElement('div');
-          div.append(menuWithIcon.querySelector('.icon'));
-          // text child
-          div.append(menuWithIcon.firstChild);
-          menuWithIcon.prepend(div);
-        }
-        for (const menuWithoutLink of dropdown.querySelectorAll('div > ul > li')) {
-          if (!menuWithoutLink.querySelector(':scope > a')) {
-            const div = document.createElement('div');
-            // text child
-            div.append(menuWithoutLink.firstChild);
-            menuWithoutLink.prepend(div);
-          }
-        }
-      },
-    });
+    // Post render
+    const desktopNav = template.querySelector('.pan-desktop-nav');
+    const navList = desktopNav.querySelector('.nav-list');
+    const navListItems = navList.querySelectorAll('span');
+    const backgroundImage = navList.querySelector('img');
+    navListItems.forEach((item) => item.append(backgroundImage.cloneNode(true)));
 
-    const navMobileRootMenu = template.querySelector('.pan-mobile-nav .root-menu');
+    const navMenuDropdown = desktopNav.querySelector('.nav-menu-dropdown');
+    for (const menuWithIcon of [...navMenuDropdown.querySelectorAll('li')].filter((el) => el.querySelector(':scope > .icon + ul'))) {
+      const div = document.createElement('div');
+      div.classList.add('has-icon');
+      div.append(menuWithIcon.querySelector('.icon'));
+      // text child
+      div.append(menuWithIcon.firstChild);
+      menuWithIcon.prepend(div);
+    }
+    for (const menuWithoutLink of navMenuDropdown.querySelectorAll('div > ul > li')) {
+      if (!menuWithoutLink.querySelector(':scope > a')) {
+        const div = document.createElement('div');
+        // text child
+        div.append(menuWithoutLink.firstChild);
+        menuWithoutLink.prepend(div);
+      }
+    }
+
+    for (const ul of [...navMenuDropdown.querySelectorAll(':scope > div > ul')].filter((el) => el.querySelectorAll(':scope > ul').length === 0)) {
+      ul.classList.add('has-not-ul');
+    }
+
+    const mobileNav = template.querySelector('.pan-mobile-nav');
+    const navMobileRootMenu = mobileNav.querySelector('.root-menu');
     const navMobileRootMenuItems = navMobileRootMenu.querySelectorAll('span:not(:empty)');
-    const navMobileMenuDetails = template.querySelector('.pan-mobile-nav .nav-menu-details');
+    const navMobileMenuDetails = mobileNav.querySelector('.nav-menu-details');
     const navMobileMenuDetailsItems = navMobileMenuDetails.querySelectorAll('li');
-    const navMobileMenuExpand = template.querySelector('.pan-mobile-nav .nav-expand');
+    const navMobileMenuExpand = mobileNav.querySelector('.nav-expand');
 
     for (const navMobileRootMenuItem of navMobileRootMenuItems) {
       navMobileRootMenuItem.append(navMobileMenuExpand.cloneNode(true));
@@ -376,9 +378,19 @@ export default async function decorate(block) {
     navMobileRootMenu.querySelector('[slot]').remove();
     navMobileMenuExpand.remove();
 
+    // locale
+    const locale = window.placeholders[`/prisma/prisma-cloud/${document.documentElement.lang}`];
+    template.querySelector('.locale-home').textContent = locale.home;
+    template.querySelector('.locale-location').textContent = locale.location;
+    template.querySelector('.locale-menu').textContent = locale.menu;
+    template.querySelector('.locale-search-panel-close').ariaLabel = locale.searchPanelClose;
+    template.querySelector('.locale-search-panel-open').ariaLabel = locale.searchPanelOpen;
+
     block.firstElementChild.replaceWith(...template.children);
 
     addEventListeners(block);
     decorateIcons(block);
+
+    document.body.querySelector('header').classList.add('loaded');
   }
 }

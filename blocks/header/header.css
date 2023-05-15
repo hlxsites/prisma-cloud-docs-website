@@ -764,7 +764,7 @@
     box-shadow: 0 14px 40px rgb(54 66 75 / 30%);
 }
 
-.pan-desktop-nav .nav-menu-dropdown > div > ul:has(:not(ul)) {
+.pan-desktop-nav .nav-menu-dropdown > div > ul.has-not-ul {
     gap: 20px;
 }
 
@@ -783,7 +783,7 @@
     transition: opacity 0.3s;
 }
 
-.pan-desktop-nav .nav-menu-dropdown > div > ul div:has(.icon) {
+.pan-desktop-nav .nav-menu-dropdown > div > ul div.has-icon {
     display: flex;
     align-items: center;
     gap: 10px;
@@ -946,11 +946,11 @@
 }
 
 /* Banner docs */
-html:has(meta[name="template"][content="book"]) .pan-banner {
+.book .pan-banner {
     background: rgb(244 244 242 / 50%);
 }
 
-html:has(meta[name="template"][content="book"]) .pan-banner::before,
-html:has(meta[name="template"][content="book"]) .pan-banner::after {
+.book .pan-banner::before,
+.book .pan-banner::after {
     display: none;
 }

@@ -82,12 +82,11 @@ header {
   height: 135px;
 }
 
-html:has(meta[name="template"][content="book"]) header {
+.book header {
   background: rgb(244 244 242 / 50%);
 }
 
-header:has([data-block-status="loaded"]),
-html:has(meta[name="template"][content="book"]) header:has([data-block-status="loaded"]) {
+header.loaded {
   background: transparent;
 }
 
