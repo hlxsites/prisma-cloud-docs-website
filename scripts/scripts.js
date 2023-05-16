@@ -190,11 +190,6 @@ export function decorateMain(main) {
  * @param {Element} doc The container element
  */
 async function loadEager(doc) {
-  // Default to en
-  const lang = window.location.pathname.split('/').indexOf('jp') !== -1 ? 'jp' : 'en';
-  document.documentElement.lang = lang;
-  await fetchPlaceholders(`/prisma/prisma-cloud/${lang}`);
-
   decorateTemplateAndTheme();
   const main = doc.querySelector('main');
   if (main) {
@@ -226,6 +221,11 @@ export function addFavIcon(href) {
  * @param {Element} doc The container element
  */
 async function loadLazy(doc) {
+  // Default to en
+  const lang = window.location.pathname.split('/').indexOf('jp') !== -1 ? 'jp' : 'en';
+  doc.documentElement.lang = lang;
+  await fetchPlaceholders(`/prisma/prisma-cloud/${lang}`);
+
   const main = doc.querySelector('main');
   await loadBlocks(main);
 
