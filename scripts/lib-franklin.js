@@ -76,6 +76,7 @@ export function sampleRUM(checkpoint, data = {}) {
 /**
  * Loads a CSS file.
  * @param {string} href The path to the CSS file
+ * @param {function} callback
  */
 export function loadCSS(href, callback) {
   if (!document.querySelector(`head > link[href="${href}"]`)) {
@@ -176,9 +177,9 @@ export async function decorateIcons(element) {
 
   icons.forEach((span) => {
     const iconName = Array.from(span.classList).find((c) => c.startsWith('icon-')).split('-')[1];
-    const parent = span.firstElementChild?.tagName === 'A' ? span.firstElementChild : span;
+    const parent = span.firstElementChild && span.firstElementChild.tagName === 'A' ? span.firstElementChild : span;
     // Styled icons need to be inlined as-is, while unstyled ones can leverage the sprite
-    if (ICONS_CACHE[iconName].styled) {
+    if (ICONS_CACHE[iconName] && ICONS_CACHE[iconName].styled) {
       parent.innerHTML = ICONS_CACHE[iconName].html;
     } else {
       parent.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg"><use href="#icons-sprite-${iconName}"/></svg>`;
@@ -248,7 +249,7 @@ export function readBlockConfig(block) {
       if (cols[1]) {
         const col = cols[1];
         const name = toClassName(cols[0].textContent);
-        let value = '';
+        let value;
         if (col.querySelector('a')) {
           const as = [...col.querySelectorAll('a')];
           if (as.length === 1) {
