@@ -1,9 +1,9 @@
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <sitemap>
-    <loc>https://docs.paloaltonetworks.com/prisma/prisma-cloud/docs/en/sitemap.xml</loc>
+    <loc>https://docs.paloaltonetworks.com/prisma/prisma-cloud/docs/sitemaps/sitemap-en.xml</loc>
   </sitemap>
   <sitemap>
-    <loc>https://docs.paloaltonetworks.com/prisma/prisma-cloud/docs/jp/sitemap.xml</loc>
+    <loc>https://docs.paloaltonetworks.com/prisma/prisma-cloud/docs/sitemaps/sitemap-jp.xml</loc>
   </sitemap>
   <sitemap>
     <loc>https://docs.paloaltonetworks.com/prisma/prisma-cloud/en/sitemap.xml</loc>
