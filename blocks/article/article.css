@@ -3,12 +3,7 @@
 }
 
 .pan-article .hero {
-    visibility: hidden;
     padding: 0;
-}
-
-.pan-article .hero[data-block-status="loaded"] {
-    visibility: visible;
 }
 
 .pan-article .hero h1 {
