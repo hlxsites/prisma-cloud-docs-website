@@ -4,14 +4,11 @@
 
 .pan-article .hero {
     display: none;
+    padding: 0;
 }
 
 .pan-article .hero[data-block-status="loaded"] {
     display: block;
-}
-
-.pan-article .hero {
-    padding: 0;
 }
 
 .pan-article .hero h1 {
