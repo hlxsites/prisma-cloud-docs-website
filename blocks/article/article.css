@@ -10,6 +10,20 @@
     display: block;
 }
 
+.pan-article .pan-hero {
+    padding: 0;
+}
+
+.pan-article .pan-hero h1 {
+    color: black;
+    font-size: 40px;
+    padding: 0;
+}
+
+.pan-article .pan-hero h1 + hr {
+    display: none;
+}
+
 .pan-article .banner-inner {
     position: relative;
     z-index: 0;

@@ -24,17 +24,3 @@ main .hero-container {
   margin: 10px 0;
   width: 74px;
 }
-
-.book .pan-hero {
-  padding: 0;
-}
-
-.book .pan-hero h1 {
-  color: black;
-  font-size: 40px;
-  padding: 0;
-}
-
-.book .pan-hero h1 + hr {
-  display: none;
-}
