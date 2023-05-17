@@ -2,6 +2,14 @@
     margin-top: 50px;
 }
 
+.pan-article .hero {
+    display: none;
+}
+
+.pan-article .hero[data-block-status="loaded"] {
+    display: block;
+}
+
 .pan-article .banner-inner {
     position: relative;
     z-index: 0;
