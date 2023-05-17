@@ -9,9 +9,11 @@
 }
 
 .pan-article .banner-inner::before {
-    pointer-events: none;
+    /* disable for perf
     background-image: url("/assets/sase-cns-pattern.webp");
+    */
     content: '';
+    pointer-events: none;
     display: block;
     position: absolute;
     width: 367.5px;

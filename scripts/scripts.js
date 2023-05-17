@@ -36,7 +36,7 @@ export function getEnv() {
   return 'cdn';
 }
 
-export function assertValidDocsURL(url) {
+function assertValidDocsURL(url) {
   if (url.startsWith('/')) return true;
   const { origin } = new URL(url);
   if (Object.values(DOCS_ORIGINS).includes(origin)) return true;
@@ -106,6 +106,24 @@ export function render(template, fragment) {
 }
 
 /**
+ * Load article as HTML
+ * @param {string} path
+ * @returns {Promise<Record<string, unknown>>}
+ */
+async function loadArticle(path) {
+  assertValidDocsURL(path);
+
+  const resp = await fetch(`${path}.plain.html`);
+  if (!resp.ok) return null;
+  try {
+    return await resp.text();
+  } catch (e) {
+    console.error('failed to parse book: ', e);
+    return null;
+  }
+}
+
+/**
  * Load book as JSON
  * @param {string} path
  * @returns {Promise<Record<string, unknown>>}
@@ -154,14 +172,9 @@ function buildBookBlock(main) {
   const template = getMetadata('template');
   if (template !== 'book') return;
 
-  const origin = DOCS_ORIGINS[getEnv()];
-  const docHref = `${origin}${PATH_PREFIX}/docs${window.location.pathname.substring(PATH_PREFIX.length)}`;
-  const link = document.createElement('a');
-  link.href = docHref;
-
   const section = document.createElement('div');
   section.append(buildBlock('sidenav', ''));
-  section.append(buildBlock('article', { elems: [link] }));
+  section.append(buildBlock('article', ''));
   main.prepend(section);
 }
 
@@ -230,23 +243,26 @@ export function addFavIcon(href) {
  * @param {Element} doc The container element
  */
 async function loadLazy(doc) {
-  // Default to en
-  const lang = window.location.pathname.split('/').indexOf('jp') !== -1 ? 'jp' : 'en';
-  doc.documentElement.lang = lang;
-  await fetchPlaceholders(`${PATH_PREFIX}/${lang}`);
-
-  // Fetch book data
+  // Load article
   const template = getMetadata('template');
+  // Fetch book data
   if (template === 'book') {
     const bookName = getMetadata('book-name') || 'book';
     const bookPath = getMetadata('book');
     const origin = DOCS_ORIGINS[getEnv()];
 
-    const navHref = (path) => `${origin}${path}/${bookName}`;
+    const docURL = `${origin}${PATH_PREFIX}/docs${window.location.pathname.substring(PATH_PREFIX.length)}`;
+    window.article = await loadArticle(docURL);
 
+    const bookURL = `${origin}${bookPath}/${bookName}`;
     // Used in breadcrumbs and sidenav block
-    window.book = await loadBook(navHref(bookPath));
+    window.book = await loadBook(bookURL);
   }
+
+  // Default to en
+  const lang = window.location.pathname.split('/').indexOf('jp') !== -1 ? 'jp' : 'en';
+  doc.documentElement.lang = lang;
+  await fetchPlaceholders(`${PATH_PREFIX}/${lang}`);
 
   const main = doc.querySelector('main');
   await loadBlocks(main);

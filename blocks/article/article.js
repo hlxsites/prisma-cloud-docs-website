@@ -1,5 +1,5 @@
 import {
-  assertValidDocsURL, DOCS_ORIGINS, getEnv,
+  DOCS_ORIGINS, getEnv,
   parseFragment, PATH_PREFIX, render,
 } from '../../scripts/scripts.js';
 
@@ -8,24 +8,15 @@ import {
 } from '../../scripts/lib-franklin.js';
 
 /**
- * Loads the article source and template.
- * @param {string} path The path or url to the article
+ * Loads the article template.
  */
-async function load(path) {
+async function load() {
   try {
-    assertValidDocsURL(path);
-
-    const articlePath = `${path}.plain.html`;
     const templatePath = '/blocks/article/article.html';
-
-    const reqArticle = fetch(articlePath);
-    const reqTemplate = fetch(templatePath);
-
-    const [resArticle, resTemplate] = await Promise.all([reqArticle, reqTemplate]);
-    const [article, template] = await Promise.all([resArticle.text(), resTemplate.text()]);
+    const reqTemplate = await fetch(templatePath);
 
     return {
-      ok: true, article: parseFragment(article), template: parseFragment(template),
+      ok: true, template: parseFragment(await reqTemplate.text()),
     };
   } catch (error) {
     console.error(error);
@@ -35,11 +26,10 @@ async function load(path) {
 
 /** @param {HTMLDivElement} block */
 export default async function decorate(block) {
-  const link = block.querySelector('a');
-  const path = link ? link.getAttribute('href') : block.textContent.trim();
-  const res = await load(path);
+  const res = await load();
   if (res.ok) {
-    const { article, template } = res;
+    const { template } = res;
+    const article = parseFragment(window.article);
 
     // Fixup images src
     for (const image of article.querySelectorAll('img')) {
