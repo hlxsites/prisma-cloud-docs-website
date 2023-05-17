@@ -36,6 +36,14 @@ export default async function decorate(block) {
       const origin = DOCS_ORIGINS[getEnv()];
       const { pathname } = new URL(image.src);
       image.src = `${origin}${pathname.replace(PATH_PREFIX, `${PATH_PREFIX}/docs`)}`;
+
+      const picture = image.parentElement;
+      if (picture.tagName === 'PICTURE') {
+        for (const source of picture.querySelectorAll('source')) {
+          const search = source.srcset.split('?')[1];
+          source.srcset = `${image.src}?${search}`;
+        }
+      }
     }
 
     // "Slotify"
