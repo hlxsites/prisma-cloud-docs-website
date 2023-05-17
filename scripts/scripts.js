@@ -243,6 +243,13 @@ export function addFavIcon(href) {
  * @param {Element} doc The container element
  */
 async function loadLazy(doc) {
+  const loadArr = [];
+
+  // Default to en
+  const lang = window.location.pathname.split('/').indexOf('jp') !== -1 ? 'jp' : 'en';
+  doc.documentElement.lang = lang;
+  loadArr.push(fetchPlaceholders(`${PATH_PREFIX}/${lang}`));
+
   // Load article
   const template = getMetadata('template');
   // Fetch book data
@@ -252,17 +259,22 @@ async function loadLazy(doc) {
     const origin = DOCS_ORIGINS[getEnv()];
 
     const docURL = `${origin}${PATH_PREFIX}/docs${window.location.pathname.substring(PATH_PREFIX.length)}`;
-    window.article = await loadArticle(docURL);
+    loadArr.push(loadArticle(docURL));
 
     const bookURL = `${origin}${bookPath}/${bookName}`;
     // Used in breadcrumbs and sidenav block
-    window.book = await loadBook(bookURL);
+    loadArr.push(loadBook(bookURL));
   }
 
-  // Default to en
-  const lang = window.location.pathname.split('/').indexOf('jp') !== -1 ? 'jp' : 'en';
-  doc.documentElement.lang = lang;
-  await fetchPlaceholders(`${PATH_PREFIX}/${lang}`);
+  (await Promise.all(loadArr)).forEach((res, index) => {
+    if (index === 1) {
+      window.article = res;
+    }
+
+    if (index === 2) {
+      window.book = res;
+    }
+  });
 
   const main = doc.querySelector('main');
   await loadBlocks(main);
