@@ -24,7 +24,7 @@
   /* fonts */
   --body-font-family: 'HCo Decimal', lato, 'Helvetica Neue', helvetica, arial, sans-serif;
   --heading-font-family: var(--body-font-family);
-  --fixed-font-family: 'Lucida Console', monaco, monospace;
+  --fixed-font-family: menlo, monaco, consolas, "Courier New", monospace;
 
   /* body sizes */
   --body-font-size-m: 22px;
@@ -308,28 +308,32 @@ main .section.highlight {
 }
 
 /* book template */
-
-body.book main {
-  display: grid;
-  grid-template:
-    'breadcrumbs breadcrumbs breadcrumbs'
-    'article article article';
-  grid-template-rows: 0 max-content;
-  margin: auto;
+.book {
+  background: rgb(244 244 242 / 50%);
 }
 
-body.book main .section.article-container {
-  grid-area: article;
+.book .sidenav-container.article-container {
+  display: flex;
+  padding: 0;
+}
+
+.book .sidenav-wrapper {
+  min-width: 330px;
+  position: sticky;
+  overflow: hidden;
+  top: 0;
   display: flex;
   flex-direction: column;
+  z-index: 1;
+  margin-top: 0;
+  padding-left: 30px;
 }
 
-@media (min-width: 1000px) {
-  body.book main .section.article-container {
-    flex-direction: row;
-  }
-
-  body.book main .section.article-container > div {
-    margin: 0;
-  }
+.book .article-wrapper {
+  max-width: calc(100vw - 330px);
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+  flex-grow: 1;
+  margin: 0;
 }

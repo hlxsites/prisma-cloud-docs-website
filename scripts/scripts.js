@@ -17,6 +17,7 @@ import {
 
 const range = document.createRange();
 
+export const PATH_PREFIX = '/prisma/prisma-cloud';
 const LCP_BLOCKS = ['article']; // add your LCP blocks to the list
 window.hlx.RUM_GENERATION = 'prisma-cloud-docs-website'; // add your RUM generation information here
 
@@ -27,7 +28,7 @@ export const DOCS_ORIGINS = {
   cdn: '',
 };
 
-function getEnv() {
+export function getEnv() {
   const { hostname } = window.location;
   if (['localhost', '127.0.0.1'].includes(hostname)) return 'dev';
   if (hostname.endsWith('hlx.page')) return 'preview';
@@ -105,56 +106,63 @@ export function render(template, fragment) {
 }
 
 /**
+ * Load book as JSON
+ * @param {string} path
+ * @returns {Promise<Record<string, unknown>>}
+ */
+async function loadBook(path) {
+  assertValidDocsURL(path);
+
+  const resp = await fetch(`${path}.json?sheet=default&sheet=chapters&sheet=topics`);
+  if (!resp.ok) return null;
+  try {
+    return await resp.json();
+  } catch (e) {
+    console.error('failed to parse book: ', e);
+    return null;
+  }
+}
+
+/**
  * Builds hero block and prepends to main in a new section.
  * @param {Element} main The container element
  */
 function buildHeroBlock(main) {
   const h1 = main.querySelector('h1');
-  const picture = main.querySelector('picture');
-  // eslint-disable-next-line no-bitwise
-  if (h1 && picture && (h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING)) {
+  if (h1) {
     const section = document.createElement('div');
-    section.append(buildBlock('hero', { elems: [picture, h1] }));
+    section.append(buildBlock('hero', { elems: [h1] }));
     main.prepend(section);
   }
 }
 
-function buildArticleBlock(main, docHref) {
+/**
+ * Builds breadcrumbs block and prepends to main in a new section.
+ * @param {Element} main The container element
+ */
+function buildBreadcrumbsBlock(main) {
   const section = document.createElement('div');
-  const link = document.createElement('a');
-  link.href = docHref;
-  section.append(buildBlock('article', { elems: [link] }));
+  section.append(buildBlock('breadcrumbs', ''));
   main.prepend(section);
-  return section;
 }
 
-function buildSideNavBlock(section, navHrefs) {
-  const links = navHrefs.map((href) => {
-    const link = document.createElement('a');
-    link.href = href;
-    return link;
-  });
-
-  section.prepend(buildBlock('side-nav', { elems: links }));
-}
-
-function buildBookBlocks(main) {
+/**
+ * Builds sidenav and article blocks and prepends to main in a new section.
+ * @param {Element} main The container element
+ */
+function buildBookBlock(main) {
   const template = getMetadata('template');
   if (template !== 'book') return;
 
-  const docMain = document.documentElement.querySelector('main');
-  if (main !== docMain) return;
-
-  const bookName = getMetadata('book-name') || 'book';
-  const bookPath = getMetadata('book');
-  const additionalBookPaths = (getMetadata('additional-books') || '').split(',').map((s) => s.trim()).filter((s) => !!s);
   const origin = DOCS_ORIGINS[getEnv()];
-  const docHref = `${origin}${window.location.pathname}`; // matches article path
-  const navHref = (path) => `${origin}${path}/${bookName}`; // points to book in docs repo, no extension
-  const navHrefs = [navHref(bookPath), ...additionalBookPaths.map(navHref)];
+  const docHref = `${origin}${PATH_PREFIX}/docs${window.location.pathname.substring(PATH_PREFIX.length)}`;
+  const link = document.createElement('a');
+  link.href = docHref;
 
-  const articleSection = buildArticleBlock(main, docHref);
-  buildSideNavBlock(articleSection, navHrefs);
+  const section = document.createElement('div');
+  section.append(buildBlock('sidenav', ''));
+  section.append(buildBlock('article', { elems: [link] }));
+  main.prepend(section);
 }
 
 /**
@@ -164,7 +172,8 @@ function buildBookBlocks(main) {
 function buildAutoBlocks(main) {
   try {
     buildHeroBlock(main);
-    buildBookBlocks(main);
+    buildBookBlock(main);
+    buildBreadcrumbsBlock(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
@@ -224,7 +233,20 @@ async function loadLazy(doc) {
   // Default to en
   const lang = window.location.pathname.split('/').indexOf('jp') !== -1 ? 'jp' : 'en';
   doc.documentElement.lang = lang;
-  await fetchPlaceholders(`/prisma/prisma-cloud/${lang}`);
+  await fetchPlaceholders(`${PATH_PREFIX}/${lang}`);
+
+  // Fetch book data
+  const template = getMetadata('template');
+  if (template === 'book') {
+    const bookName = getMetadata('book-name') || 'book';
+    const bookPath = getMetadata('book');
+    const origin = DOCS_ORIGINS[getEnv()];
+
+    const navHref = (path) => `${origin}${path}/${bookName}`;
+
+    // Used in breadcrumbs and sidenav block
+    window.book = await loadBook(navHref(bookPath));
+  }
 
   const main = doc.querySelector('main');
   await loadBlocks(main);

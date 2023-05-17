@@ -3,7 +3,7 @@
 // TODO i18n
 
 import { getMetadata, decorateIcons } from '../../scripts/lib-franklin.js';
-import { render, parseFragment } from '../../scripts/scripts.js';
+import { render, parseFragment, PATH_PREFIX } from '../../scripts/scripts.js';
 
 /**
  * Loads header template
@@ -12,7 +12,7 @@ async function load() {
   // fetch nav content & template
   const navMeta = getMetadata('nav');
   const { lang } = document.documentElement;
-  const navPath = `${navMeta ? new URL(navMeta).pathname : `/prisma/prisma-cloud/${lang}/nav`}.plain.html`;
+  const navPath = `${navMeta ? new URL(navMeta).pathname : `${PATH_PREFIX}/${lang}/nav`}.plain.html`;
   const templatePath = '/blocks/header/header.html';
 
   const reqNav = fetch(navPath);
@@ -31,6 +31,10 @@ async function load() {
   }
 }
 
+/**
+ * Add menu dropdowns, mobile columns and search interactions
+ * @param {Element} block The header block element
+ */
 function addEventListeners(block) {
   const mobileNav = block.querySelector('.pan-mobile-nav');
   const desktopNav = block.querySelector('.pan-desktop-nav');
@@ -273,7 +277,6 @@ function addEventListeners(block) {
 }
 
 /**
- * decorates the header, mainly the nav
  * @param {Element} block The header block element
  */
 export default async function decorate(block) {
@@ -379,7 +382,7 @@ export default async function decorate(block) {
     navMobileMenuExpand.remove();
 
     // locale
-    const locale = window.placeholders[`/prisma/prisma-cloud/${document.documentElement.lang}`];
+    const locale = window.placeholders[`${PATH_PREFIX}/${document.documentElement.lang}`];
     template.querySelector('.locale-home').textContent = locale.home;
     template.querySelector('.locale-location').textContent = locale.location;
     template.querySelector('.locale-menu').textContent = locale.menu;
