@@ -10,17 +10,17 @@
     display: block;
 }
 
-.pan-article .pan-hero {
+.pan-article .hero {
     padding: 0;
 }
 
-.pan-article .pan-hero h1 {
+.pan-article .hero h1 {
     color: black;
     font-size: 40px;
     padding: 0;
 }
 
-.pan-article .pan-hero h1 + hr {
+.pan-article .hero h1 + hr {
     display: none;
 }
 
