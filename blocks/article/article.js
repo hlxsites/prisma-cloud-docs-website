@@ -33,10 +33,10 @@ const TEMPLATE = /* html */`
               <div class="book-detail-pagination">
                   <a class="prev" href="#">
                       <i class="icon-arrow-left-circle"></i>
-                      <div class="locale-article-previous"></div>
+                      <div class="locale-article-previous">Previous</div>
                   </a>
                   <a class="next" href="#">
-                      <div class="locale-article-next"></div>
+                      <div class="locale-article-next">Next</div>
                       <i class="icon-arrow-right-circle"></i>
                   </a>
               </div>

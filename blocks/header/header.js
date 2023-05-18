@@ -6,7 +6,7 @@ import {
   getMetadata, decorateIcons,
 } from '../../scripts/lib-franklin.js';
 import {
-  render, parseFragment, PATH_PREFIX, renderBreadCrumbs,
+  render, parseFragment, PATH_PREFIX, renderBreadCrumbs, getPlaceholders,
 } from '../../scripts/scripts.js';
 
 /**
@@ -33,6 +33,17 @@ async function load() {
     console.error(error);
     return { ok: false, error };
   }
+}
+
+function localize(block) {
+  queueMicrotask(async () => {
+    const ph = await getPlaceholders();
+    block.querySelector('.locale-home').textContent = ph.home;
+    block.querySelector('.locale-location').textContent = ph.location;
+    block.querySelector('.locale-menu').textContent = ph.menu;
+    block.querySelector('.locale-search-panel-close').ariaLabel = ph.searchPanelClose;
+    block.querySelector('.locale-search-panel-open').ariaLabel = ph.searchPanelOpen;
+  });
 }
 
 /**
@@ -392,16 +403,8 @@ export default async function decorate(block) {
   navMobileRootMenu.querySelector('[slot]').remove();
   navMobileMenuExpand.remove();
 
-  // locale
-  const locale = window.placeholders[`${PATH_PREFIX}/${document.documentElement.lang}`];
-  template.querySelector('.locale-home').textContent = locale.home;
-  template.querySelector('.locale-location').textContent = locale.location;
-  template.querySelector('.locale-menu').textContent = locale.menu;
-  template.querySelector('.locale-search-panel-close').ariaLabel = locale.searchPanelClose;
-  template.querySelector('.locale-search-panel-open').ariaLabel = locale.searchPanelOpen;
-
   block.firstElementChild.replaceWith(...template.children);
-
+  localize(block);
   addEventListeners(block);
   decorateIcons(block);
 

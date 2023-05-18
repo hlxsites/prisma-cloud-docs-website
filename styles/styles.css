@@ -60,7 +60,7 @@ body {
 }
 
 body.appear {
-  display: unset;
+  display: block;
 }
 
 body.no-body-scroll {
