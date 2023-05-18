@@ -26,9 +26,12 @@
     /* disable for perf
     background-image: url("/assets/sase-cns-pattern.webp");
     */
+    
+    /* display: block; */
+
+    display: none;
     content: '';
     pointer-events: none;
-    display: block;
     position: absolute;
     width: 367.5px;
     height: 502px;
