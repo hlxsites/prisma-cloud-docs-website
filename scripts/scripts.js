@@ -15,6 +15,7 @@ import {
   fetchPlaceholders,
   decorateBlock,
   loadBlock,
+  updateSectionsStatus,
 } from './lib-franklin.js';
 
 // eslint-disable-next-line no-use-before-define
@@ -265,7 +266,9 @@ export function renderBreadCrumbs() {
   main.prepend(section);
 
   decorateBlock(breadcrumbs);
-  loadBlock(breadcrumbs);
+  loadBlock(breadcrumbs).then(() => {
+    updateSectionsStatus(document.querySelector('main'));
+  });
 }
 
 function buildSideNavBlock() {
@@ -287,7 +290,9 @@ export function renderSidenav(contentBlock) {
   section.prepend(wrapper);
 
   decorateBlock(sidenav);
-  loadBlock(sidenav);
+  loadBlock(sidenav).then(() => {
+    updateSectionsStatus(document.querySelector('main'));
+  });
 }
 
 function buildArticleBlock(articleHref) {
