@@ -40,8 +40,7 @@
   --heading-font-size-xs: 18px;
 
   /* nav height */
-  --nav-height: 64px;
-
+  --nav-height: 119px;
 }
 
 * {
@@ -69,7 +68,7 @@ body.no-body-scroll {
 
 header {
   background: #00C0E8;
-  height: 135px;
+  height: var(--nav-height);
 }
 
 .book header {
@@ -284,6 +283,10 @@ main .section.highlight {
 }
 
 @media (min-width: 992px) {
+  :root {
+    --nav-height: 135px;
+  }
+
   .container {
     width: 970px;
   }

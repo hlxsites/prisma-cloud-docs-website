@@ -257,6 +257,7 @@ function buildBreadcrumbsBlock() {
 
 export function renderBreadCrumbs() {
   const section = document.createElement('div');
+  section.classList.add('section', 'breadcrumbs-container');
   const wrapper = document.createElement('div');
   const breadcrumbs = buildBreadcrumbsBlock();
   wrapper.append(breadcrumbs);
