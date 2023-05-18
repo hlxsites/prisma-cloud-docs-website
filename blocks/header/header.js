@@ -2,8 +2,12 @@
 // TODO a11y
 // TODO i18n
 
-import { getMetadata, decorateIcons } from '../../scripts/lib-franklin.js';
-import { render, parseFragment, PATH_PREFIX } from '../../scripts/scripts.js';
+import {
+  getMetadata, decorateIcons,
+} from '../../scripts/lib-franklin.js';
+import {
+  render, parseFragment, PATH_PREFIX, renderBreadCrumbs,
+} from '../../scripts/scripts.js';
 
 /**
  * Loads header template
@@ -280,120 +284,126 @@ function addEventListeners(block) {
  * @param {Element} block The header block element
  */
 export default async function decorate(block) {
-  const res = await load();
-  if (res.ok) {
-    const { nav, template } = res;
-
-    // "Slotify"
-    nav.querySelector('a').setAttribute('slot', 'logo');
-    nav.querySelector('ul').setAttribute('slot', 'logo-menu');
-
-    const menu = document.createElement('div');
-    menu.setAttribute('slot', 'menu');
-    nav.append(menu);
-
-    const menuDropdown = document.createElement('div');
-    menuDropdown.setAttribute('slot', 'menu-dropdown');
-    nav.append(menuDropdown);
-
-    for (const menuItem of nav.querySelectorAll('div:nth-child(2) > ul > li')) {
-      // Move the text node inside a span
-      const span = document.createElement('span');
-      span.append(menuItem.firstChild);
-      menu.append(span);
-
-      const links = menuItem.querySelector('ul');
-      menuDropdown.append(links);
-    }
-
-    // Render with slots
-    render(template, nav);
-
-    // Post render
-    const desktopNav = template.querySelector('.pan-desktop-nav');
-    const navList = desktopNav.querySelector('.nav-list');
-    const navListItems = navList.querySelectorAll('span');
-    const backgroundImage = navList.querySelector('img');
-    navListItems.forEach((item) => item.append(backgroundImage.cloneNode(true)));
-
-    const navMenuDropdown = desktopNav.querySelector('.nav-menu-dropdown');
-    for (const menuWithIcon of [...navMenuDropdown.querySelectorAll('li')].filter((el) => el.querySelector(':scope > .icon + ul'))) {
-      const div = document.createElement('div');
-      div.classList.add('has-icon');
-      div.append(menuWithIcon.querySelector('.icon'));
-      // text child
-      div.append(menuWithIcon.firstChild);
-      menuWithIcon.prepend(div);
-    }
-    for (const menuWithoutLink of navMenuDropdown.querySelectorAll('div > ul > li')) {
-      if (!menuWithoutLink.querySelector(':scope > a')) {
-        const div = document.createElement('div');
-        // text child
-        div.append(menuWithoutLink.firstChild);
-        menuWithoutLink.prepend(div);
-      }
-    }
-
-    for (const ul of [...navMenuDropdown.querySelectorAll(':scope > div > ul')].filter((el) => el.querySelectorAll(':scope > ul').length === 0)) {
-      ul.classList.add('has-not-ul');
-    }
-
-    const mobileNav = template.querySelector('.pan-mobile-nav');
-    const navMobileRootMenu = mobileNav.querySelector('.root-menu');
-    const navMobileRootMenuItems = navMobileRootMenu.querySelectorAll('span:not(:empty)');
-    const navMobileMenuDetails = mobileNav.querySelector('.nav-menu-details');
-    const navMobileMenuDetailsItems = navMobileMenuDetails.querySelectorAll('li');
-    const navMobileMenuExpand = mobileNav.querySelector('.nav-expand');
-
-    for (const navMobileRootMenuItem of navMobileRootMenuItems) {
-      navMobileRootMenuItem.append(navMobileMenuExpand.cloneNode(true));
-      const li = document.createElement('li');
-      li.append(navMobileRootMenuItem);
-      navMobileRootMenu.append(li);
-    }
-
-    for (const navMobileMenuDetailsItem of navMobileMenuDetailsItems) {
-      // Has icon
-      const icon = navMobileMenuDetailsItem.querySelector('.icon');
-      if (icon) {
-        const a = document.createElement('a');
-        a.href = '#';
-        a.append(icon);
-        a.append([...navMobileMenuDetailsItem.childNodes].find((child) => !child.tagName));
-
-        navMobileMenuDetailsItem.prepend(a);
-      }
-
-      // Text node only
-      if (!navMobileMenuDetailsItem.querySelector(':scope > *:not(ul)')) {
-        const a = document.createElement('a');
-        a.href = '#';
-        a.append(navMobileMenuDetailsItem.firstChild);
-
-        navMobileMenuDetailsItem.prepend(a);
-      }
-
-      // Has sub nav items
-      if (navMobileMenuDetailsItem.querySelector('ul')) {
-        navMobileMenuDetailsItem.querySelector('a, div').append(navMobileMenuExpand.cloneNode(true));
-      }
-    }
-    navMobileRootMenu.querySelector('[slot]').remove();
-    navMobileMenuExpand.remove();
-
-    // locale
-    const locale = window.placeholders[`${PATH_PREFIX}/${document.documentElement.lang}`];
-    template.querySelector('.locale-home').textContent = locale.home;
-    template.querySelector('.locale-location').textContent = locale.location;
-    template.querySelector('.locale-menu').textContent = locale.menu;
-    template.querySelector('.locale-search-panel-close').ariaLabel = locale.searchPanelClose;
-    template.querySelector('.locale-search-panel-open').ariaLabel = locale.searchPanelOpen;
-
-    block.firstElementChild.replaceWith(...template.children);
-
-    addEventListeners(block);
-    decorateIcons(block);
-
-    document.body.querySelector('header').classList.add('loaded');
+  if (store.pageTemplate === 'book') {
+    renderBreadCrumbs();
   }
+
+  const res = await load();
+  if (!res.ok) {
+    return;
+  }
+
+  const { nav, template } = res;
+
+  // "Slotify"
+  nav.querySelector('a').setAttribute('slot', 'logo');
+  nav.querySelector('ul').setAttribute('slot', 'logo-menu');
+
+  const menu = document.createElement('div');
+  menu.setAttribute('slot', 'menu');
+  nav.append(menu);
+
+  const menuDropdown = document.createElement('div');
+  menuDropdown.setAttribute('slot', 'menu-dropdown');
+  nav.append(menuDropdown);
+
+  for (const menuItem of nav.querySelectorAll('div:nth-child(2) > ul > li')) {
+    // Move the text node inside a span
+    const span = document.createElement('span');
+    span.append(menuItem.firstChild);
+    menu.append(span);
+
+    const links = menuItem.querySelector('ul');
+    menuDropdown.append(links);
+  }
+
+  // Render with slots
+  render(template, nav);
+
+  // Post render
+  const desktopNav = template.querySelector('.pan-desktop-nav');
+  const navList = desktopNav.querySelector('.nav-list');
+  const navListItems = navList.querySelectorAll('span');
+  const backgroundImage = navList.querySelector('img');
+  navListItems.forEach((item) => item.append(backgroundImage.cloneNode(true)));
+
+  const navMenuDropdown = desktopNav.querySelector('.nav-menu-dropdown');
+  for (const menuWithIcon of [...navMenuDropdown.querySelectorAll('li')].filter((el) => el.querySelector(':scope > .icon + ul'))) {
+    const div = document.createElement('div');
+    div.classList.add('has-icon');
+    div.append(menuWithIcon.querySelector('.icon'));
+    // text child
+    div.append(menuWithIcon.firstChild);
+    menuWithIcon.prepend(div);
+  }
+  for (const menuWithoutLink of navMenuDropdown.querySelectorAll('div > ul > li')) {
+    if (!menuWithoutLink.querySelector(':scope > a')) {
+      const div = document.createElement('div');
+      // text child
+      div.append(menuWithoutLink.firstChild);
+      menuWithoutLink.prepend(div);
+    }
+  }
+
+  for (const ul of [...navMenuDropdown.querySelectorAll(':scope > div > ul')].filter((el) => el.querySelectorAll(':scope > ul').length === 0)) {
+    ul.classList.add('has-not-ul');
+  }
+
+  const mobileNav = template.querySelector('.pan-mobile-nav');
+  const navMobileRootMenu = mobileNav.querySelector('.root-menu');
+  const navMobileRootMenuItems = navMobileRootMenu.querySelectorAll('span:not(:empty)');
+  const navMobileMenuDetails = mobileNav.querySelector('.nav-menu-details');
+  const navMobileMenuDetailsItems = navMobileMenuDetails.querySelectorAll('li');
+  const navMobileMenuExpand = mobileNav.querySelector('.nav-expand');
+
+  for (const navMobileRootMenuItem of navMobileRootMenuItems) {
+    navMobileRootMenuItem.append(navMobileMenuExpand.cloneNode(true));
+    const li = document.createElement('li');
+    li.append(navMobileRootMenuItem);
+    navMobileRootMenu.append(li);
+  }
+
+  for (const navMobileMenuDetailsItem of navMobileMenuDetailsItems) {
+    // Has icon
+    const icon = navMobileMenuDetailsItem.querySelector('.icon');
+    if (icon) {
+      const a = document.createElement('a');
+      a.href = '#';
+      a.append(icon);
+      a.append([...navMobileMenuDetailsItem.childNodes].find((child) => !child.tagName));
+
+      navMobileMenuDetailsItem.prepend(a);
+    }
+
+    // Text node only
+    if (!navMobileMenuDetailsItem.querySelector(':scope > *:not(ul)')) {
+      const a = document.createElement('a');
+      a.href = '#';
+      a.append(navMobileMenuDetailsItem.firstChild);
+
+      navMobileMenuDetailsItem.prepend(a);
+    }
+
+    // Has sub nav items
+    if (navMobileMenuDetailsItem.querySelector('ul')) {
+      navMobileMenuDetailsItem.querySelector('a, div').append(navMobileMenuExpand.cloneNode(true));
+    }
+  }
+  navMobileRootMenu.querySelector('[slot]').remove();
+  navMobileMenuExpand.remove();
+
+  // locale
+  const locale = window.placeholders[`${PATH_PREFIX}/${document.documentElement.lang}`];
+  template.querySelector('.locale-home').textContent = locale.home;
+  template.querySelector('.locale-location').textContent = locale.location;
+  template.querySelector('.locale-menu').textContent = locale.menu;
+  template.querySelector('.locale-search-panel-close').ariaLabel = locale.searchPanelClose;
+  template.querySelector('.locale-search-panel-open').ariaLabel = locale.searchPanelOpen;
+
+  block.firstElementChild.replaceWith(...template.children);
+
+  addEventListeners(block);
+  decorateIcons(block);
+
+  document.body.querySelector('header').classList.add('loaded');
 }

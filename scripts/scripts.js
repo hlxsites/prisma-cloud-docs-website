@@ -13,7 +13,12 @@ import {
   loadBlocks,
   loadCSS,
   fetchPlaceholders,
+  decorateBlock,
+  loadBlock,
 } from './lib-franklin.js';
+
+// eslint-disable-next-line no-use-before-define
+polyfill();
 
 const range = document.createRange();
 
@@ -21,22 +26,130 @@ export const PATH_PREFIX = '/prisma/prisma-cloud';
 const LCP_BLOCKS = ['article']; // add your LCP blocks to the list
 window.hlx.RUM_GENERATION = 'prisma-cloud-docs-website'; // add your RUM generation information here
 
+const [lang] = window.location.pathname.substring(PATH_PREFIX.length).split('/').slice(1);
+document.documentElement.lang = lang;
+
 export const DOCS_ORIGINS = {
   dev: 'http://127.0.0.1:3001',
   preview: 'https://main--prisma-cloud-docs--hlxsites.hlx.page',
   publish: 'https://main--prisma-cloud-docs--hlxsites.hlx.live',
-  cdn: '',
+  prod: '',
 };
 
-export function getEnv() {
+export function getPlaceholders() {
+  return fetchPlaceholders(`${PATH_PREFIX}/${lang}`);
+}
+
+function getEnv() {
   const { hostname } = window.location;
   if (['localhost', '127.0.0.1'].includes(hostname)) return 'dev';
   if (hostname.endsWith('hlx.page')) return 'preview';
   if (hostname.endsWith('hlx.live')) return 'publish';
-  return 'cdn';
+  return 'prod';
 }
 
-function assertValidDocsURL(url) {
+/** @type {Store} */
+const store = new (class {
+  constructor() {
+    this._json = {
+      _l: {},
+    };
+    this.env = getEnv();
+    this.pageTemplate = getMetadata('template');
+    if (this.pageTemplate === 'book') {
+      this.initBook();
+    }
+  }
+
+  initBook() {
+    this.docsOrigin = DOCS_ORIGINS[this.env];
+    this.bookPath = getMetadata('book');
+    this.docPath = `${PATH_PREFIX}/docs${window.location.pathname.substring(PATH_PREFIX.length)}`;
+    this.articleHref = `${this.docsOrigin}${this.docPath}`;
+
+    const makeBookHref = (path) => `${this.docsOrigin}${path}/book`;
+
+    let mainBookTitle;
+    const addlBooks = (getMetadata('additional-books') || '').split(';;').map((s) => s.trim()).filter((s) => !!s);
+    this.additionalBooks = addlBooks.map((addlBook) => {
+      const [path, title] = addlBook.split(';');
+
+      // exclude main book from additionalBooks
+      if (path === this.bookPath) {
+        mainBookTitle = title;
+        return undefined;
+      }
+
+      return {
+        title,
+        href: makeBookHref(path),
+      };
+    }).filter((b) => !!b);
+
+    this.mainBook = {
+      title: mainBookTitle,
+      href: makeBookHref(this.bookPath),
+    };
+  }
+
+  getAllBookLinks() {
+    const makeLink = ({ title, href }) => {
+      const a = document.createElement('a');
+      a.href = href;
+      a.textContent = title;
+      return a;
+    };
+    return [
+      makeLink(this.boo),
+    ];
+  }
+
+  /**
+   * @param {string} path
+   * @param {string|string[]} [sheets]
+   */
+  async fetchJSON(path, sheets) {
+    const qps = new URLSearchParams();
+    if (sheets) {
+      // eslint-disable-next-line no-param-reassign
+      sheets = Array.isArray(sheets) ? [...sheets] : [sheets];
+      sheets.sort().forEach((sheet) => {
+        qps.append('sheet', sheet);
+      });
+    }
+
+    const j = this._json;
+    const p = `${path}.json${sheets ? `?${qps.toString()}` : ''}`;
+
+    const loaded = j[p];
+    if (loaded) {
+      return loaded;
+    }
+
+    const pending = j._l[p];
+    if (pending) {
+      return pending;
+    }
+
+    j._l[p] = fetch(p)
+      .then((resp) => {
+        if (!resp.ok) throw Error(`JSON sheet not found: ${p}`);
+        return resp.json();
+      })
+      .then((json) => {
+        j[p] = json;
+        delete j._l[p];
+        return j[p];
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+    return j._l[p];
+  }
+})();
+window.store = store;
+
+export function assertValidDocsURL(url) {
   if (url.startsWith('/')) return true;
   const { origin } = new URL(url);
   if (Object.values(DOCS_ORIGINS).includes(origin)) return true;
@@ -106,39 +219,13 @@ export function render(template, fragment) {
 }
 
 /**
- * Load article as HTML
- * @param {string} path
- * @returns {Promise<Record<string, unknown>>}
- */
-async function loadArticle(path) {
-  assertValidDocsURL(path);
-
-  const resp = await fetch(`${path}.plain.html`);
-  if (!resp.ok) return null;
-  try {
-    return await resp.text();
-  } catch (e) {
-    console.error('failed to parse book: ', e);
-    return null;
-  }
-}
-
-/**
  * Load book as JSON
- * @param {string} path
+ * @param {string} href
  * @returns {Promise<Record<string, unknown>>}
  */
-async function loadBook(path) {
-  assertValidDocsURL(path);
-
-  const resp = await fetch(`${path}.json?sheet=default&sheet=chapters&sheet=topics`);
-  if (!resp.ok) return null;
-  try {
-    return await resp.json();
-  } catch (e) {
-    console.error('failed to parse book: ', e);
-    return null;
-  }
+export async function loadBook(href) {
+  assertValidDocsURL(href);
+  return store.fetchJSON(href, ['default', 'chapters', 'topics']);
 }
 
 /**
@@ -147,34 +234,80 @@ async function loadBook(path) {
  */
 function buildHeroBlock(main) {
   const h1 = main.querySelector('h1');
-  if (h1) {
+  const picture = main.querySelector('picture');
+  // eslint-disable-next-line no-bitwise
+  if (h1 && picture && (h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING)) {
     const section = document.createElement('div');
-    section.append(buildBlock('hero', { elems: [h1] }));
+    section.append(buildBlock('hero', { elems: [picture, h1] }));
     main.prepend(section);
   }
 }
 
 /**
- * Builds breadcrumbs block and prepends to main in a new section.
- * @param {Element} main The container element
+ * Builds breadcrumbs block
+ * @param {string} bookHref
  */
-function buildBreadcrumbsBlock(main) {
+function buildBreadcrumbsBlock() {
+  const link = document.createElement('a');
+  link.href = store.mainBook.href;
+  link.textContent = store.mainBook.title;
+  return buildBlock('breadcrumbs', { elems: [link] });
+}
+
+export function renderBreadCrumbs() {
   const section = document.createElement('div');
-  section.append(buildBlock('breadcrumbs', ''));
+  const wrapper = document.createElement('div');
+  const breadcrumbs = buildBreadcrumbsBlock();
+  wrapper.append(breadcrumbs);
+  section.append(wrapper);
+
+  const main = document.querySelector('main');
   main.prepend(section);
+
+  decorateBlock(breadcrumbs);
+  loadBlock(breadcrumbs);
+}
+
+function buildSideNavBlock() {
+  const links = store.additionalBooks.map(({ title, href }) => {
+    const link = document.createElement('a');
+    link.href = href;
+    link.textContent = title;
+    return link;
+  });
+
+  return buildBlock('sidenav', { elems: links });
+}
+
+export function renderSidenav(contentBlock) {
+  const section = contentBlock.closest('div.section');
+  const wrapper = document.createElement('div');
+  const sidenav = buildSideNavBlock();
+  wrapper.append(sidenav);
+  section.prepend(wrapper);
+
+  decorateBlock(sidenav);
+  loadBlock(sidenav);
+}
+
+function buildArticleBlock(articleHref) {
+  const link = document.createElement('a');
+  link.href = articleHref;
+  return buildBlock('article', { elems: [link] });
 }
 
 /**
  * Builds sidenav and article blocks and prepends to main in a new section.
  * @param {Element} main The container element
  */
-function buildBookBlock(main) {
-  const template = getMetadata('template');
-  if (template !== 'book') return;
+function buildBookSection(main) {
+  if (store.pageTemplate !== 'book') return;
+
+  const docMain = document.documentElement.querySelector('main');
+  if (main !== docMain) return;
 
   const section = document.createElement('div');
-  section.append(buildBlock('sidenav', ''));
-  section.append(buildBlock('article', ''));
+  section.append(buildArticleBlock(store.articleHref));
   main.prepend(section);
 }
 
@@ -185,8 +318,7 @@ function buildBookBlock(main) {
 function buildAutoBlocks(main) {
   try {
     buildHeroBlock(main);
-    buildBookBlock(main);
-    buildBreadcrumbsBlock(main);
+    buildBookSection(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
@@ -243,39 +375,6 @@ export function addFavIcon(href) {
  * @param {Element} doc The container element
  */
 async function loadLazy(doc) {
-  const loadArr = [];
-
-  // Default to en
-  const lang = window.location.pathname.split('/').indexOf('jp') !== -1 ? 'jp' : 'en';
-  doc.documentElement.lang = lang;
-  loadArr.push(fetchPlaceholders(`${PATH_PREFIX}/${lang}`));
-
-  // Load article
-  const template = getMetadata('template');
-  // Fetch book data
-  if (template === 'book') {
-    const bookName = getMetadata('book-name') || 'book';
-    const bookPath = getMetadata('book');
-    const origin = DOCS_ORIGINS[getEnv()];
-
-    const docURL = `${origin}${PATH_PREFIX}/docs${window.location.pathname.substring(PATH_PREFIX.length)}`;
-    loadArr.push(loadArticle(docURL));
-
-    const bookURL = `${origin}${bookPath}/${bookName}`;
-    // Used in breadcrumbs and sidenav block
-    loadArr.push(loadBook(bookURL));
-  }
-
-  (await Promise.all(loadArr)).forEach((res, index) => {
-    if (index === 1) {
-      window.article = res;
-    }
-
-    if (index === 2) {
-      window.book = res;
-    }
-  });
-
   const main = doc.querySelector('main');
   await loadBlocks(main);
 
@@ -310,3 +409,9 @@ async function loadPage() {
 }
 
 loadPage();
+
+function polyfill() {
+  if (typeof queueMicrotask === 'undefined') {
+    window.queueMicrotask = (fn) => Promise.resolve().then(fn);
+  }
+}
