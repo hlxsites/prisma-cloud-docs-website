@@ -347,6 +347,14 @@ async function loadEager(doc) {
   decorateTemplateAndTheme();
   const main = doc.querySelector('main');
   if (main) {
+    if (store.pageTemplate === 'book') {
+      // cleanup empty sections
+      main.querySelectorAll('div').forEach((section) => {
+        if (section.childElementCount === 0) {
+          section.remove();
+        }
+      });
+    }
     decorateMain(main);
     document.body.classList.add('appear');
     await waitForLCP(LCP_BLOCKS);
