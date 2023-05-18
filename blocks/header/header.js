@@ -532,9 +532,15 @@ export default async function decorate(block) {
   localize(block);
   addEventListeners(block);
   decorateIcons(block);
-  if (store.pageTemplate === 'book') {
-    renderBreadCrumbs();
-  }
-
   document.body.querySelector('header').classList.add('loaded');
+
+  if (store.pageTemplate === 'book') {
+    if (window.screen.width > 768) {
+      renderBreadCrumbs();
+    } else {
+      document.addEventListener('load:delayed', () => {
+        renderBreadCrumbs();
+      });
+    }
+  }
 }

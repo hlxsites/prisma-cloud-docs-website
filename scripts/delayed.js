@@ -5,3 +5,4 @@ import { sampleRUM } from './lib-franklin.js';
 sampleRUM('cwv');
 
 // add more delayed functionality here
+document.dispatchEvent(new Event('load:delayed'));
