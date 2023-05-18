@@ -44,7 +44,7 @@ const TEMPLATE = /* html */`
               <div class="search-toc">
                   <div class="search-toc-label">
                       <div class="filter-icon">
-                          <img src="/assets/filter.svg" alt="" loading="lazy">
+                          <img src="/icons/filter.svg" alt="" loading="lazy">
                       </div>
                       <span class="locale-toc-filter"></span>
                   </div>
