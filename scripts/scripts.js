@@ -17,6 +17,7 @@ import {
 
 const range = document.createRange();
 
+const PATH_PREFIX = '/prisma/prisma-cloud';
 const LCP_BLOCKS = ['article']; // add your LCP blocks to the list
 window.hlx.RUM_GENERATION = 'prisma-cloud-docs-website'; // add your RUM generation information here
 
@@ -149,7 +150,8 @@ function buildBookBlocks(main) {
   const bookPath = getMetadata('book');
   const additionalBookPaths = (getMetadata('additional-books') || '').split(',').map((s) => s.trim()).filter((s) => !!s);
   const origin = DOCS_ORIGINS[getEnv()];
-  const docHref = `${origin}${window.location.pathname}`; // matches article path
+  const docPath = `${PATH_PREFIX}/docs${window.location.pathname.substring(PATH_PREFIX.length)}`;
+  const docHref = `${origin}${docPath}`;
   const navHref = (path) => `${origin}${path}/${bookName}`; // points to book in docs repo, no extension
   const navHrefs = [navHref(bookPath), ...additionalBookPaths.map(navHref)];
 
