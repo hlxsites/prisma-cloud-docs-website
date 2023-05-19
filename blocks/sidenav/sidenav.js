@@ -29,7 +29,7 @@ const TEMPLATE = /* html */`
                       <div class="version-dropdown">
                           <a>
                               <span>Prisma Cloud Enterprise Edition</span>
-                              <i class="icon-arrow-down"></i>
+                              <i class="icon-arrow-right"></i>
                           </a>
                           <div class="version-dropdown-menu">
                               <ul>
@@ -48,7 +48,7 @@ const TEMPLATE = /* html */`
 
       <div class="content">
           <div class="toggle-aside">
-              <i class="icon-arrow-left"></i>
+              <i class="icon-arrow-${isMobile() ? 'down' : 'left'}"></i>
           </div>
           <h2 class="locale-toc-title"></h2>
           <hr>
@@ -79,8 +79,14 @@ const TEMPLATE = /* html */`
  */
 function addEventListeners(wrapper) {
   wrapper.addEventListener('click', (event) => {
-    if (event.target.closest('.toggle-aside')) {
-      wrapper.parentElement.classList.toggle('aside-close', !wrapper.parentElement.classList.contains('aside-close'));
+    /** @type {HTMLElement} */
+    const toggle = event.target.closest('.toggle-aside');
+    if (!toggle) return;
+
+    const next = !wrapper.parentElement.classList.contains('aside-close');
+    wrapper.parentElement.classList.toggle('aside-close', next);
+    if (isMobile()) {
+      toggle.querySelector('i').className = `icon-arrow-${next ? 'down' : 'up'}`;
     }
   });
 }
@@ -256,6 +262,7 @@ export default async function decorate(block) {
     const [month, day, year] = info.lastModified.toString().split(' ').slice(1);
     block.querySelector('slot[name="date"]').textContent = `${month} ${day}, ${year}`;
   });
+
   store.once('book:loaded', (book) => {
     block.querySelector('a[slot="document"]').textContent = book.default.data[0].title;
 
