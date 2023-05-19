@@ -331,6 +331,15 @@ main .section.highlight {
   flex-direction: column;
 }
 
+.book .article-wrapper {
+  max-width: calc(min(100vw, 1400px) - 330px);
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+  flex-grow: 1;
+  margin: 0;
+}
+
 @media (min-width: 768px) {
   .book .sidenav-container.article-container {
     flex-direction: row;
@@ -347,15 +356,9 @@ main .section.highlight {
     margin-top: 0;
     padding-left: 30px;
   }
-}
 
-.book .article-wrapper {
-  max-width: calc(min(100vw, 1400px) - 330px);
-  display: flex;
-  flex-direction: column;
-  align-self: stretch;
-  flex-grow: 1;
-  margin: 0;
-  padding-right: 30px;
+  .book .article-wrapper {
+    padding-right: 30px;
+  }
 }
 
