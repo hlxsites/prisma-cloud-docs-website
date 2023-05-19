@@ -36,7 +36,6 @@ export default async function decorate(block) {
   const book = await loadBook(block.querySelector('a').href);
 
   block.innerHTML = '';
-  block.classList.add('container');
 
   const fragment = parseFragment(TEMPLATE);
 

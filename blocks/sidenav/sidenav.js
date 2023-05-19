@@ -1,4 +1,4 @@
-import { getPlaceholders, parseFragment } from '../../scripts/scripts.js';
+import { getPlaceholders, parseFragment, render } from '../../scripts/scripts.js';
 
 const TEMPLATE = /* html */`
   <aside class="pan-sidenav">
@@ -7,6 +7,16 @@ const TEMPLATE = /* html */`
       </div>
       <div class="banner">
           <div class="banner-inner">
+              <span class="banner-inner-mobile">
+                <h2>
+                    <span class="locale-article-document">Document</span>
+                    <slot name="document"></slot>
+                </h2>
+                <hr>
+                <span class="title">
+                  <h1><slot name="title"></slot></h1>
+                </span>
+              </span>
               <div class="book-detail-banner-info">
                   <div class="banner-info-label locale-book-last-updated"></div>
                   <slot name="date">May 4, 2023</slot>
@@ -34,7 +44,7 @@ const TEMPLATE = /* html */`
           </div>
       </div>
 
-      <div class="content hidden-xs">
+      <div class="content">
           <div class="content-inner">
               <div class="toggle-aside">
                   <i class="icon-arrow-left"></i>
@@ -80,6 +90,8 @@ function localize(block) {
     block.querySelector('.locale-book-current-version').textContent = ph.bookCurrentVersion;
     block.querySelector('.locale-toc-title').textContent = ph.tocTitle;
     block.querySelector('.locale-toc-filter').textContent = ph.tocFilter;
+
+    block.querySelector('.locale-article-document').textContent = ph.articleDocument;
   });
 }
 
@@ -88,15 +100,29 @@ function localize(block) {
  */
 export default async function decorate(block) {
   block.innerHTML = '';
-  const fragment = parseFragment(TEMPLATE);
+  const template = parseFragment(TEMPLATE);
 
-  const toggle = fragment.querySelector('.toggle-aside');
+  const toggle = template.querySelector('.toggle-aside');
   const wrapper = block.closest('.sidenav-wrapper');
-  wrapper.classList.add('hidden-xs');
-
   wrapper.append(toggle);
-  block.append(fragment);
+
+  const div = document.createElement('div');
+  const docTitle = document.createElement('a');
+  docTitle.setAttribute('slot', 'document');
+  docTitle.href = window.location.href.split('/').slice(0, -2).join('/');
+  div.append(docTitle);
+
+  // Render with slots
+  render(template, div);
+  block.append(template);
   localize(block);
+
+  store.once('article:loaded', () => {
+    block.querySelector('slot[name="title"]').textContent = document.title;
+  });
+  store.once('book:loaded', (book) => {
+    block.querySelector('a[slot="document"]').textContent = book.default.data[0].title;
+  });
 
   addEventListeners(wrapper);
 

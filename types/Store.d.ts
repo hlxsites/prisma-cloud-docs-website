@@ -11,8 +11,11 @@
  */
 
 import { FilterPrivate } from "./util";
+import type { EventHandler, EventMap, OffEventFn } from './Events';
 
 type BookDescriptor = { title: string; href: string; };
+
+type RemoveFn = () => void;
 
 declare class StoreImpl {
   /** Fetched JSON, by filename */
@@ -85,6 +88,28 @@ declare class StoreImpl {
    * @param sheets sheet name(s) to fetch
    */
   fetchJSON: <TData = any>(path: string, sheets?: string | string[]) => Promise<TData>;
+
+  /**
+   * Emit event via document
+   * Mark event as emitted
+   */
+  emit: <T extends keyof EventMap>(ev: T, data: EventMap[T]) => void;
+
+  /**
+   * Trigger handler once.
+   * Immediately if event has already occurred, or when it is emitted.
+   */
+  once: <T extends keyof EventMap>(ev: T, handler: EventHandler<T>) => OffEventFn;
+
+  /**
+   * Trigger handler whenever event occurs.
+   */
+  on: <T extends keyof EventMap>(ev: T, handler: EventHandler<T>) => OffEventFn;
+
+  /**
+   * Check if event has been emitted yet
+   */
+  isEmitted: (ev: string) => boolean;
 }
 
 /**

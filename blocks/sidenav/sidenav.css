@@ -1,3 +1,7 @@
+:root {
+    --sidebar-banner-padding: 50px;
+}
+
 .sidenav-wrapper.aside-close {
     min-width: 30px;
     max-width: 30px;
@@ -44,19 +48,9 @@
 }
 
 .pan-sidenav .banner {
-    height: 364px;
-    margin-top: -160px;
-    display: flex;
-    justify-content: flex-end;
+    padding-top: 50px;
     padding-left: 15px;
     padding-right: 15px;
-}
-
-.pan-sidenav .banner-inner {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding-top: 210px;
 }
 
 .pan-sidenav::before {
@@ -155,10 +149,6 @@
     background-size: 100% 100%;
 }
 
-.pan-sidenav .content {
-    height: calc( 100vh - 204px );
-}
-
 .pan-sidenav .content-inner {
     position: relative;
     display: flex;
@@ -167,9 +157,24 @@
     padding: 20px 15px;
     z-index: 1;
     height: 100%;
+    margin-top: 35px;
 }
 
-.pan-sidenav h2 {
+.pan-sidenav .banner-inner-mobile h2,
+.pan-sidenav .banner-inner-mobile h2 a {
+    color: #000;
+    font-size: 20px;
+}
+
+.pan-sidenav .banner-inner-mobile hr {
+    margin-top: 25px;
+}
+
+.pan-sidenav .banner-inner-mobile .title {
+    margin-bottom: 12px;
+}
+
+.pan-sidenav .locale-toc-title h2 {
     font-size: 22px;
     margin-top: 20px;
     margin-bottom: 10px;
@@ -251,4 +256,26 @@
     border: none;
     resize: none;
     outline: 0;
+}
+
+@media (min-width: 768px) {
+    .pan-sidenav .content {
+        height: calc( 100vh - 204px );
+    }
+
+    .pan-sidenav .banner {
+        display: flex;
+        justify-content: flex-end;
+        padding-bottom: var(--sidebar-banner-padding);
+    }
+    
+    .pan-sidenav .banner-inner {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .pan-sidenav .banner-inner .banner-inner-mobile {
+        display: none;
+    }
 }

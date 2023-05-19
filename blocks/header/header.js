@@ -144,19 +144,15 @@ async function load() {
   const navMeta = getMetadata('nav');
   const { lang } = document.documentElement;
   const navPath = `${navMeta ? new URL(navMeta).pathname : `${PATH_PREFIX}/${lang}/nav`}.plain.html`;
-  // const templatePath = '/blocks/header/header.html';
-
-  // const reqNav = fetch(navPath);
-  // const reqTemplate = fetch(templatePath);
 
   try {
-    // const [resNav, resTemplate] = await Promise.all([reqNav, reqTemplate]);
-    // const [nav, template] = await Promise.all([resNav.text(), resTemplate.text()]);
     const res = await fetch(navPath);
     const nav = await res.text();
 
     return {
-      ok: true, nav: parseFragment(nav), template: parseFragment(TEMPLATE),
+      ok: true,
+      nav: parseFragment(nav),
+      template: parseFragment(TEMPLATE),
     };
   } catch (error) {
     console.error(error);
@@ -538,9 +534,7 @@ export default async function decorate(block) {
     if (window.screen.width > 768) {
       renderBreadCrumbs();
     } else {
-      document.addEventListener('load:delayed', () => {
-        renderBreadCrumbs();
-      });
+      store.once('delayed:loaded', renderBreadCrumbs);
     }
   }
 }

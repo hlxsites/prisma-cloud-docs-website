@@ -32,15 +32,30 @@
   --body-font-size-xs: 16px;
 
   /* heading sizes */
-  --heading-font-size-xxl: 48px;
-  --heading-font-size-xl: 40px;
-  --heading-font-size-l: 32px;
+  --heading-font-size-xxl: 40px;
+  --heading-font-size-xl: 28px;
+  --heading-font-size-l: 26px;
   --heading-font-size-m: 24px;
   --heading-font-size-s: 20px;
   --heading-font-size-xs: 18px;
 
   /* nav height */
   --nav-height: 119px;
+
+  /* max width */
+  --max-width: 1400px;
+}
+
+@media (min-width: 768px) {
+  :root {
+    /* heading sizes */
+    --heading-font-size-xxl: 48px;
+    --heading-font-size-xl: 40px;
+    --heading-font-size-l: 32px;
+    --heading-font-size-m: 24px;
+    --heading-font-size-s: 20px;
+    --heading-font-size-xs: 18px;
+  }
 }
 
 * {
@@ -54,8 +69,8 @@ body {
   color: #36424b;
   background-color: #fff;
   display: none;
-  margin: 0;
   overflow-x: hidden;
+  margin: 0;
 }
 
 body.appear {
@@ -69,6 +84,13 @@ body.no-body-scroll {
 header {
   background: #00C0E8;
   height: var(--nav-height);
+  max-width: var(--max-width);
+  margin: auto;
+}
+
+body main {
+  max-width: var(--max-width);
+  margin: auto;
 }
 
 .book header {
@@ -306,26 +328,34 @@ main .section.highlight {
 .book .sidenav-container.article-container {
   display: flex;
   padding: 0;
+  flex-direction: column;
 }
 
-.book .sidenav-wrapper {
-  min-width: 330px;
-  position: sticky;
-  overflow: hidden;
-  top: 0;
-  display: flex;
-  flex-direction: column;
-  z-index: 1;
-  margin-top: 0;
-  padding-left: 30px;
+@media (min-width: 768px) {
+  .book .sidenav-container.article-container {
+    flex-direction: row;
+  }
+
+  .book .sidenav-wrapper {
+    min-width: 330px;
+    position: sticky;
+    overflow: hidden;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    z-index: 1;
+    margin-top: 0;
+    padding-left: 30px;
+  }
 }
 
 .book .article-wrapper {
-  max-width: calc(100vw - 330px);
+  max-width: calc(min(100vw, 1400px) - 330px);
   display: flex;
   flex-direction: column;
   align-self: stretch;
   flex-grow: 1;
   margin: 0;
+  padding-right: 30px;
 }
 

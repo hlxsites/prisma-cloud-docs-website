@@ -1,18 +1,14 @@
-.pan-article {
-    margin-top: 50px;
-}
-
-.pan-article .hero {
+.pan-article .title {
     padding: 0;
 }
 
-.pan-article .hero h1 {
+.pan-article .title h1 {
     color: black;
     font-size: 40px;
     padding: 0;
 }
 
-.pan-article .hero h1 + hr {
+.pan-article .title h1 + hr {
     display: none;
 }
 
@@ -26,7 +22,7 @@
     /* disable for perf
     background-image: url("/assets/sase-cns-pattern.webp");
     */
-    
+
     /* display: block; */
 
     display: none;
@@ -126,14 +122,6 @@
     padding: 7.5px;
 }
 
-.pan-article .content {
-    display: flex;
-    justify-content: flex-start;
-    padding: 25px 30px 0 0;
-    flex-grow: 1;
-    border-left: 1px solid #f4f4f2;
-}
-
 .pan-article .content-inner {
     padding-top: 20px;
     border-left: 1px solid #f4f4f2;
@@ -206,6 +194,20 @@
     color: #36424b;
 }
 
+@media (min-width: 768px) {
+    .pan-article {
+        margin-top: 50px;
+    }
+
+    .pan-article .content {
+        display: flex;
+        justify-content: flex-start;
+        padding: 25px 0;
+        flex-grow: 1;
+        border-left: 1px solid #f4f4f2;
+    }
+}
+
 @media (max-width: 768px) {
     .book .article-wrapper {
         width: 100%;
@@ -215,4 +217,9 @@
     .pan-article .content {
         padding-right: 0;
     }
+
+    .pan-article .banner-inner .banner-inner-desktop {
+        display: none;
+    }
 }
+

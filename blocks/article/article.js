@@ -16,16 +16,16 @@ const TEMPLATE = /* html */`
   <article class="pan-article">
       <div class="banner">
           <div class="banner-inner">
+            <span class="banner-inner-desktop">
               <h2>
-                  <span class="locale-article-document"></span>
+                  <span class="locale-article-document">Document</span>
                   <slot name="document"></slot>
               </h2>
               <hr>
-              <div class="hero">
-                  <h1>
-                      <slot name="title"></slot>
-                  </h1>
-              </div>
+              <span class="title">
+                <h1><slot name="title"></slot></h1>
+              </span>
+            </span>
           </div>
       </div>
       <div class="content">
@@ -127,6 +127,7 @@ export default async function decorate(block) {
 
   const articleTitle = article.querySelector('h1, h2');
   if (articleTitle) {
+    document.title = articleTitle.textContent;
     const span = document.createElement('span');
     span.setAttribute('slot', 'title');
     span.textContent = articleTitle.textContent;
@@ -144,12 +145,15 @@ export default async function decorate(block) {
   render(template, div);
   block.append(template);
   localize(block);
+  store.emit('article:loaded');
 
   // Post render
   block.querySelector('.edit-github a').href = `https://github.com/hlxsites/prisma-cloud-docs/blob/main/${window.location.pathname.replace(PATH_PREFIX, 'docs')}.adoc`;
 
   loadBook(store.mainBook.href).then((book) => {
-    docTitle.textContent = book.default.data[0].title;
+    const docSlot = block.querySelector('a[slot="document"]');
+    docSlot.textContent = book.default.data[0].title;
+    store.emit('book:loaded', book);
 
     const href = window.location.href.split('/');
     const subPath = href.pop();

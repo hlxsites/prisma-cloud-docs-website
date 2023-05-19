@@ -55,11 +55,45 @@ const store = new (class {
     this._json = {
       _l: {},
     };
+    this._emitted = {};
     this.env = getEnv();
     this.pageTemplate = getMetadata('template');
     if (this.pageTemplate === 'book') {
       this.initBook();
     }
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  on(ev, handler) {
+    const fn = (e) => {
+      handler.call(null, e.detail);
+    };
+    const rm = () => document.removeEventListener(ev, fn);
+    document.addEventListener(ev, fn);
+    return rm;
+  }
+
+  once(ev, handler) {
+    let rm = () => {};
+    if (this.wasEmitted(ev)) {
+      Promise.resolve().then(() => handler.call(null, this._emitted[ev]));
+    } else {
+      const fn = (data) => {
+        handler.call(null, data);
+        rm();
+      };
+      rm = this.on(ev, fn);
+    }
+    return rm;
+  }
+
+  emit(ev, data) {
+    document.dispatchEvent(new CustomEvent(ev, { detail: data }));
+    this._emitted[ev] = data || null;
+  }
+
+  wasEmitted(ev) {
+    return this._emitted[ev] !== undefined;
   }
 
   initBook() {
