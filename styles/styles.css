@@ -340,6 +340,10 @@ main .section.highlight {
   margin: 0;
 }
 
+.book .sidenav-container.aside-close .article-wrapper {
+  max-width: min(100vw, 1400px);
+}
+
 @media (min-width: 768px) {
   .book .sidenav-container.article-container {
     flex-direction: row;
@@ -354,6 +358,7 @@ main .section.highlight {
     flex-direction: column;
     z-index: 1;
     margin-top: 0;
+    margin-bottom: auto;
     padding-left: 30px;
   }
 

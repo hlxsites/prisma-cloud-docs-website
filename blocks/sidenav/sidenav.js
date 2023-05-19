@@ -45,12 +45,12 @@ const TEMPLATE = /* html */`
       </div>
 
       <div class="content">
+          <div class="toggle-aside">
+              <i class="icon-arrow-left"></i>
+          </div>
+          <h2 class="locale-toc-title"></h2>
+          <hr>
           <div class="content-inner">
-              <div class="toggle-aside">
-                  <i class="icon-arrow-left"></i>
-              </div>
-              <h2 class="locale-toc-title"></h2>
-              <hr>
               <div class="search-toc">
                   <div class="search-toc-label">
                       <div class="filter-icon">
@@ -77,7 +77,7 @@ const TEMPLATE = /* html */`
 function addEventListeners(wrapper) {
   wrapper.addEventListener('click', (event) => {
     if (event.target.closest('.toggle-aside')) {
-      wrapper.classList.toggle('aside-close', !wrapper.classList.contains('aside-close'));
+      wrapper.parentElement.classList.toggle('aside-close', !wrapper.parentElement.classList.contains('aside-close'));
     }
   });
 }
@@ -124,6 +124,9 @@ export default async function decorate(block) {
     block.querySelector('a[slot="document"]').textContent = book.default.data[0].title;
   });
 
+  if (window.screen.width < 768) {
+    wrapper.parentElement.classList.add('aside-close');
+  }
   addEventListeners(wrapper);
 
   // TODO display TOC links and filter
