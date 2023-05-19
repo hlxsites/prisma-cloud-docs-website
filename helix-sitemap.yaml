@@ -3,10 +3,10 @@ sitemaps:
     origin: https://docs.paloaltonetworks.com
     languages:
       en:
-        source: /en/query-index.json
-        destination: /en/sitemap.xml
+        source: /prisma/prisma-cloud/en/query-index.json
+        destination: /prisma/prisma-cloud/en/sitemap.xml
         hreflang: en
       jp:
-        source: /jp/query-index.json
-        destination: /jp/sitemap.xml
+        source: /prisma/prisma-cloud/jp/query-index.json
+        destination: /prisma/prisma-cloud/jp/sitemap.xml
         hreflang: jp

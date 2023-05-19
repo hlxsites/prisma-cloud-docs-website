@@ -2,11 +2,11 @@ version: 1
 indices:
   en: &default
     include:
-      - '/en/**'
+      - '/prisma/prisma-cloud/en/**'
     exclude:
       - '**/Document.*'
       - '**/fragments/**'
-    target: /en/query-index
+    target: /prisma/prisma-cloud/en/query-index
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -26,11 +26,11 @@ indices:
           parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   jp: &default
     include:
-      - '/jp/**'
+      - '/prisma/prisma-cloud/jp/**'
     exclude:
       - '**/Document.*'
       - '**/fragments/**'
-    target: /jp/query-index
+    target: /prisma/prisma-cloud/jp/query-index
     properties:
       title:
         select: head > meta[property="og:title"]
