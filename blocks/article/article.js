@@ -157,7 +157,7 @@ export default async function decorate(block) {
 
     const href = window.location.href.split('/');
     const subPath = href.pop();
-    const topicIndex = book.topics.data.findIndex(({ key }) => key === subPath.replaceAll('-', '_'));
+    const topicIndex = book.topics.data.findIndex(({ key }) => key === subPath);
     const currentTopic = book.topics.data[topicIndex];
     const prevTopic = book.topics.data[topicIndex - 1];
     const nextTopic = book.topics.data[topicIndex + 1];

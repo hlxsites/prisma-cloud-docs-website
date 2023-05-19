@@ -1,4 +1,6 @@
-import { getPlaceholders, parseFragment, render } from '../../scripts/scripts.js';
+import {
+  PATH_PREFIX, getPlaceholders, parseFragment, render,
+} from '../../scripts/scripts.js';
 
 const TEMPLATE = /* html */`
   <aside class="pan-sidenav">
@@ -66,6 +68,7 @@ const TEMPLATE = /* html */`
                       </div>
                   </div>
               </div>
+              <div class="toc-books"></div>
           </div>
       </div>
   </aside>`;
@@ -95,6 +98,131 @@ function localize(block) {
   });
 }
 
+function sortBook(book) {
+  // eslint-disable-next-line no-param-reassign
+  book = JSON.parse(JSON.stringify(book));
+
+  const data = book.default.data[0];
+  data.path = data.path.replace(`${PATH_PREFIX}/docs`, PATH_PREFIX);
+
+  data.chapters = book.chapters.data;
+
+  const topics = book.topics.data;
+  topics.forEach(({ chapter, parent, ...topic }) => {
+    let parentItem = data.chapters.find(({ key }) => key === chapter);
+    if (parent) {
+      parentItem = parentItem.children.find(({ key }) => key === parent);
+    }
+
+    parentItem.children = parentItem.children || [];
+    parentItem.children.push(topic);
+  });
+  return data;
+}
+
+function bookToList(book) {
+  const root = document.createElement('ul');
+
+  let current = root;
+  const addSubList = (title, href, key) => {
+    const item = document.createElement('li');
+    item.dataset.key = key;
+    const link = document.createElement('a');
+    link.innerText = title;
+    link.href = href || '';
+    item.append(link);
+
+    const expander = document.createElement('a');
+    expander.innerText = 'v';
+    expander.classList.add('expand-trigger');
+    item.append(expander);
+
+    current.append(item);
+
+    expander.addEventListener('click', (e) => {
+      e.preventDefault();
+      const li = link.closest('li');
+      li.ariaExpanded = !(li.ariaExpanded === 'true');
+    });
+
+    const next = document.createElement('ul');
+    item.append(next);
+    current = next;
+    return current;
+  };
+
+  const bookUl = addSubList(book.title, book.path, book.path);
+  book.chapters.forEach((chapter) => {
+    // reset back to the book list for each new chapter
+    current = bookUl;
+
+    // add the chapter
+    addSubList(chapter.name, `${book.path}/${chapter.key}`, chapter.key);
+
+    const makeHref = (topic, parentKey) => `${book.path}/${chapter.key}/${parentKey ? `${parentKey}/` : ''}${topic.key}`;
+
+    // then the topics recursively
+    const processTopic = (topic, parentKey) => {
+      const li = document.createElement('li');
+      const link = document.createElement('a');
+      link.innerText = topic.name;
+      link.href = makeHref(topic, parentKey);
+      li.append(link);
+      current.append(li);
+
+      if (topic.children) {
+        addSubList(topic.name, `${book.path}/${chapter.key}/${parentKey ? `${parentKey}/` : ''}${topic.key}`, topic.key);
+        topic.children.forEach((subtopic) => {
+          processTopic(subtopic, `${parentKey ? `${parentKey}/` : ''}${topic.key}${subtopic.parent ? `/${subtopic.parent}` : ''}`);
+        });
+      }
+    };
+    chapter.children.forEach((topic) => processTopic(topic));
+  });
+
+  return root;
+}
+
+function expandTOCByPath(container, path) {
+  let rootPath;
+  const nextItem = (list, key) => [...list.querySelectorAll(':scope > ul > li')].find((li) => {
+    if (!key.startsWith(li.dataset.key)) {
+      return false;
+    }
+    if (!rootPath) {
+      rootPath = li.dataset.key;
+    }
+    return true;
+  });
+
+  let currentItem = nextItem(container, path);
+  if (!currentItem) return;
+
+  const segments = path.substring(rootPath.length).split('/').slice(1);
+  while (currentItem && segments.length) {
+    currentItem.ariaExpanded = 'true';
+    const nextKey = segments.shift();
+    currentItem = nextItem(currentItem, nextKey);
+  }
+}
+
+// eslint-disable-next-line no-unused-vars
+function filterBook(book, query) {
+  // TODO: filter by includes in name/title
+  return book;
+}
+
+function renderTOC(container, book, query) {
+  let filtered = book;
+  if (query) {
+    filtered = filterBook(book, query);
+  }
+
+  const list = bookToList(filtered);
+  container.append(list);
+  expandTOCByPath(container, window.location.pathname);
+}
+
 /**
  * @param {HTMLDivElement} block
  */
@@ -117,17 +245,22 @@ export default async function decorate(block) {
   block.append(template);
   localize(block);
 
+  const toc = block.querySelector('.content-inner .toc-books');
+  if (window.screen.width < 768) {
+    wrapper.parentElement.classList.add('aside-close');
+  }
+
   store.once('article:loaded', () => {
     block.querySelector('slot[name="title"]').textContent = document.title;
   });
   store.once('book:loaded', (book) => {
     block.querySelector('a[slot="document"]').textContent = book.default.data[0].title;
-  });
 
-  if (window.screen.width < 768) {
-    wrapper.parentElement.classList.add('aside-close');
-  }
-  addEventListeners(wrapper);
+    const sorted = sortBook(book);
+    renderTOC(toc, sorted, undefined);
+
+    addEventListeners(wrapper);
+  });
 
   // TODO display TOC links and filter
 }

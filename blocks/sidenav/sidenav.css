@@ -248,6 +248,14 @@
     outline: 0;
 }
 
+.pan-sidenav .toc-books li > ul {
+    display: none;
+}
+
+.pan-sidenav .toc-books li[aria-expanded="true"] > ul {
+    display: block;
+}
+
 @media (min-width: 768px) {
     .sidenav-container.aside-close .sidenav-wrapper {
         min-width: 30px;
@@ -263,8 +271,10 @@
         display: flex;
     }
 
-    .pan-sidenav .content {
-        height: calc( 100vh - 204px );
+    .pan-sidenav .content .content-inner .toc-books {
+        min-height: 204px;
+        max-height: calc( 100vh - 204px );
+        overflow: scroll;
     }
 
     .pan-sidenav .banner {
