@@ -105,7 +105,7 @@ header.loaded {
 h1, h2, h3,
 h4, h5, h6 {
   font-family: var(--heading-font-family);
-  font-weight: 300;
+  font-weight: 400;
   line-height: 1.25;
   margin: 0;
   scroll-margin: calc(var(--nav-height) + 1em);

@@ -11,7 +11,7 @@ const TEMPLATE = /* html */`
           <div class="banner-inner">
               <span class="banner-inner-mobile">
                 <h2>
-                    <span class="locale-article-document">Document</span>
+                    <span class="locale-article-document">Document:</span>
                     <slot name="document"></slot>
                 </h2>
                 <hr>

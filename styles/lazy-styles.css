@@ -16,21 +16,6 @@
     For more information, please visit us at http://typography.com.
 */
 
-@font-face {
-    font-family: 'HCo Decimal';
-    src: url('/fonts/decimal/Decimal-Book-Pro.woff2') format('woff2');
-    font-weight: 300;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'HCo Decimal';
-    src: url('/fonts/decimal/Decimal-BookItalic-Pro.woff2') format('woff2');
-    font-weight: 300;
-    font-style: italic;
-    font-display: swap;
-}
 
 @font-face {
     font-family: 'HCo Decimal';
@@ -80,7 +65,7 @@
     font-display: swap;
 }
 
-@font-face {
+/* @font-face {
     font-family: 'HCo Decimal';
     src: url('/fonts/decimal/Decimal-Bold-Pro_Web.woff2') format('woff2');
     font-weight: 700;
@@ -126,4 +111,4 @@
     font-weight: 900;
     font-style: italic;
     font-display: swap;
-}
+} */
