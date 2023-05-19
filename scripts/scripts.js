@@ -32,6 +32,7 @@ document.documentElement.lang = lang;
 
 export const DOCS_ORIGINS = {
   dev: 'http://127.0.0.1:3001',
+  // dev: 'https://main--prisma-cloud-docs--hlxsites.hlx.page',
   preview: 'https://main--prisma-cloud-docs--hlxsites.hlx.page',
   publish: 'https://main--prisma-cloud-docs--hlxsites.hlx.live',
   prod: '',
@@ -39,6 +40,10 @@ export const DOCS_ORIGINS = {
 
 export function getPlaceholders() {
   return fetchPlaceholders(`${PATH_PREFIX}/${lang}`);
+}
+
+export function isMobile() {
+  return window.screen.width < 768;
 }
 
 function getEnv() {

@@ -17,13 +17,11 @@ import type * as StoreT from './Store';
  */
 
 export interface FranklinGlobals {
-  store: Store;
+  store: StoreT.Store;
 }
-
 
 declare global {
   export type Store = StoreT.Store;
-
   var store: Store;
 
   export interface Window extends FranklinGlobals { }

@@ -10,12 +10,13 @@
  * governing permissions and limitations under the License.
  */
 
+import { ArticleInfo } from "./Article";
 import { BookDefinition } from "./Book";
 
 export interface EventMap {
   'delayed:loaded': void;
   'book:loaded': BookDefinition;
-  'article:loaded': void;
+  'article:loaded': ArticleInfo;
 }
 
 export type AnyEventType = keyof EventMap;

@@ -1,5 +1,5 @@
 import {
-  PATH_PREFIX, getPlaceholders, parseFragment, render,
+  PATH_PREFIX, getPlaceholders, isMobile, parseFragment, render,
 } from '../../scripts/scripts.js';
 
 const TEMPLATE = /* html */`
@@ -21,7 +21,7 @@ const TEMPLATE = /* html */`
               </span>
               <div class="book-detail-banner-info">
                   <div class="banner-info-label locale-book-last-updated"></div>
-                  <slot name="date">May 4, 2023</slot>
+                  <slot name="date">-</slot>
               </div>
               <div class="versions">
                   <div class="book-detail-banner-info">
@@ -246,12 +246,15 @@ export default async function decorate(block) {
   localize(block);
 
   const toc = block.querySelector('.content-inner .toc-books');
-  if (window.screen.width < 768) {
+  if (isMobile()) {
     wrapper.parentElement.classList.add('aside-close');
   }
 
-  store.once('article:loaded', () => {
-    block.querySelector('slot[name="title"]').textContent = document.title;
+  store.once('article:loaded', (info) => {
+    block.querySelector('slot[name="title"]').textContent = info.title;
+
+    const [month, day, year] = info.lastModified.toString().split(' ').slice(1);
+    block.querySelector('slot[name="date"]').textContent = `${month} ${day}, ${year}`;
   });
   store.once('book:loaded', (book) => {
     block.querySelector('a[slot="document"]').textContent = book.default.data[0].title;

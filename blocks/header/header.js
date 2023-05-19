@@ -6,7 +6,7 @@ import {
   getMetadata, decorateIcons,
 } from '../../scripts/lib-franklin.js';
 import {
-  render, parseFragment, PATH_PREFIX, renderBreadCrumbs, getPlaceholders,
+  render, parseFragment, PATH_PREFIX, renderBreadCrumbs, getPlaceholders, isMobile,
 } from '../../scripts/scripts.js';
 
 const TEMPLATE = /* html */`
@@ -531,7 +531,7 @@ export default async function decorate(block) {
   document.body.querySelector('header').classList.add('loaded');
 
   if (store.pageTemplate === 'book') {
-    if (window.screen.width > 768) {
+    if (!isMobile()) {
       renderBreadCrumbs();
     } else {
       store.once('delayed:loaded', renderBreadCrumbs);

@@ -67,6 +67,9 @@ async function loadArticle(href) {
     return {
       ok: true,
       status: resp.status,
+      info: {
+        lastModified: new Date(resp.headers.get('last-modified')),
+      },
       data: await resp.text(),
     };
   } catch (e) {
@@ -98,9 +101,9 @@ export default async function decorate(block) {
     console.error(`failed to load article (${res.status}): `, res);
     return;
   }
-
+  const { data, info } = res;
   const template = parseFragment(TEMPLATE);
-  const article = parseFragment(res.data);
+  const article = parseFragment(data);
 
   block.innerHTML = '';
 
@@ -127,10 +130,11 @@ export default async function decorate(block) {
 
   const articleTitle = article.querySelector('h1, h2');
   if (articleTitle) {
-    document.title = articleTitle.textContent;
+    info.title = articleTitle.textContent;
+    document.title = info.title;
     const span = document.createElement('span');
     span.setAttribute('slot', 'title');
-    span.textContent = articleTitle.textContent;
+    span.textContent = info.title;
     articleTitle.remove();
     div.append(span);
   }
@@ -145,7 +149,7 @@ export default async function decorate(block) {
   render(template, div);
   block.append(template);
   localize(block);
-  store.emit('article:loaded');
+  store.emit('article:loaded', info);
 
   // Post render
   block.querySelector('.edit-github a').href = `https://github.com/hlxsites/prisma-cloud-docs/blob/main/${window.location.pathname.replace(PATH_PREFIX, 'docs')}.adoc`;
