@@ -97,67 +97,74 @@ function localize(block) {
 /** @param {HTMLDivElement} block */
 export default async function decorate(block) {
   const res = await loadArticle(block.querySelector('a').href);
+  let articleFound = true;
   if (!res.ok) {
     console.error(`failed to load article (${res.status}): `, res);
-    return;
+    articleFound = false;
   }
-  const { data, info } = res;
-  const template = parseFragment(TEMPLATE);
-  const article = parseFragment(data);
 
-  block.innerHTML = '';
+  if (articleFound) {
+    const { data, info } = res;
+    const template = parseFragment(TEMPLATE);
+    const article = parseFragment(data);
 
-  // Fixup images src
-  for (const image of article.querySelectorAll('img')) {
-    const { pathname } = new URL(image.src);
-    image.src = `${store.docsOrigin}${pathname.replace(PATH_PREFIX, `${PATH_PREFIX}/docs`)}`;
+    block.innerHTML = '';
 
-    const picture = image.parentElement;
-    if (picture.tagName === 'PICTURE') {
-      for (const source of picture.querySelectorAll('source')) {
-        const search = source.srcset.split('?')[1];
-        source.srcset = `${image.src}?${search}`;
+    // Fixup images src
+    for (const image of article.querySelectorAll('img')) {
+      const { pathname } = new URL(image.src);
+      image.src = `${store.docsOrigin}${pathname.replace(PATH_PREFIX, `${PATH_PREFIX}/docs`)}`;
+
+      const picture = image.parentElement;
+      if (picture.tagName === 'PICTURE') {
+        for (const source of picture.querySelectorAll('source')) {
+          const search = source.srcset.split('?')[1];
+          source.srcset = `${image.src}?${search}`;
+        }
       }
     }
+
+    // "Slotify"
+    const div = document.createElement('div');
+    const docTitle = document.createElement('a');
+    docTitle.setAttribute('slot', 'document');
+    docTitle.href = window.location.href.split('/').slice(0, -2).join('/');
+    div.append(docTitle);
+
+    const articleTitle = article.querySelector('h1, h2');
+    if (articleTitle) {
+      info.title = articleTitle.textContent;
+      document.title = info.title;
+      const span = document.createElement('span');
+      span.setAttribute('slot', 'title');
+      span.textContent = info.title;
+      articleTitle.remove();
+      div.append(span);
+    }
+
+    const content = document.createElement('div');
+    content.setAttribute('slot', 'content');
+    content.append(article);
+
+    div.append(content);
+
+    // Render with slots
+    render(template, div);
+    block.append(template);
+    localize(block);
+    store.emit('article:loaded', info);
+
+    // Post render
+    block.querySelector('.edit-github a').href = `https://github.com/hlxsites/prisma-cloud-docs/blob/main/${window.location.pathname.replace(PATH_PREFIX, 'docs')}.adoc`;
   }
-
-  // "Slotify"
-  const div = document.createElement('div');
-  const docTitle = document.createElement('a');
-  docTitle.setAttribute('slot', 'document');
-  docTitle.href = window.location.href.split('/').slice(0, -2).join('/');
-  div.append(docTitle);
-
-  const articleTitle = article.querySelector('h1, h2');
-  if (articleTitle) {
-    info.title = articleTitle.textContent;
-    document.title = info.title;
-    const span = document.createElement('span');
-    span.setAttribute('slot', 'title');
-    span.textContent = info.title;
-    articleTitle.remove();
-    div.append(span);
-  }
-
-  const content = document.createElement('div');
-  content.setAttribute('slot', 'content');
-  content.append(article);
-
-  div.append(content);
-
-  // Render with slots
-  render(template, div);
-  block.append(template);
-  localize(block);
-  store.emit('article:loaded', info);
-
-  // Post render
-  block.querySelector('.edit-github a').href = `https://github.com/hlxsites/prisma-cloud-docs/blob/main/${window.location.pathname.replace(PATH_PREFIX, 'docs')}.adoc`;
 
   loadBook(store.mainBook.href).then((book) => {
+    store.emit('book:loaded', book);
+
+    if (!articleFound) return;
+
     const docSlot = block.querySelector('a[slot="document"]');
     docSlot.textContent = book.default.data[0].title;
-    store.emit('book:loaded', book);
 
     const href = window.location.href.split('/');
     const subPath = href.pop();
@@ -182,10 +189,12 @@ export default async function decorate(block) {
   // Load sidenav
   renderSidenav(block);
 
+  if (articleFound) {
   // Load article blocks
-  const blocks = '.hero, .admonition';
-  for (const el of block.querySelectorAll(blocks)) {
-    el.setAttribute('data-block-name', el.className.split(' ')[0]);
-    loadBlock(el);
+    const blocks = '.hero, .admonition';
+    for (const el of block.querySelectorAll(blocks)) {
+      el.setAttribute('data-block-name', el.className.split(' ')[0]);
+      loadBlock(el);
+    }
   }
 }
