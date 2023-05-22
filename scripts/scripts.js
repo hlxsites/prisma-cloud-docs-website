@@ -13,28 +13,181 @@ import {
   loadBlocks,
   loadCSS,
   fetchPlaceholders,
+  decorateBlock,
+  loadBlock,
+  updateSectionsStatus,
 } from './lib-franklin.js';
+
+// eslint-disable-next-line no-use-before-define
+polyfill();
 
 const range = document.createRange();
 
-const PATH_PREFIX = '/prisma/prisma-cloud';
+export const PATH_PREFIX = '/prisma/prisma-cloud';
 const LCP_BLOCKS = ['article']; // add your LCP blocks to the list
 window.hlx.RUM_GENERATION = 'prisma-cloud-docs-website'; // add your RUM generation information here
 
+const [lang] = window.location.pathname.substring(PATH_PREFIX.length).split('/').slice(1);
+document.documentElement.lang = lang;
+
 export const DOCS_ORIGINS = {
   dev: 'http://127.0.0.1:3001',
+  // dev: 'https://main--prisma-cloud-docs--hlxsites.hlx.page',
   preview: 'https://main--prisma-cloud-docs--hlxsites.hlx.page',
   publish: 'https://main--prisma-cloud-docs--hlxsites.hlx.live',
-  cdn: '',
+  prod: '',
 };
+
+export function getPlaceholders() {
+  return fetchPlaceholders(`${PATH_PREFIX}/${lang}`);
+}
+
+export function isMobile() {
+  return window.screen.width < 768;
+}
 
 function getEnv() {
   const { hostname } = window.location;
   if (['localhost', '127.0.0.1'].includes(hostname)) return 'dev';
   if (hostname.endsWith('hlx.page')) return 'preview';
   if (hostname.endsWith('hlx.live')) return 'publish';
-  return 'cdn';
+  return 'prod';
 }
+
+/** @type {Store} */
+const store = new (class {
+  constructor() {
+    this._json = {
+      _l: {},
+    };
+    this._emitted = {};
+    this.env = getEnv();
+    this.pageTemplate = getMetadata('template');
+    if (this.pageTemplate === 'book') {
+      this.initBook();
+    }
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  on(ev, handler) {
+    const fn = (e) => {
+      handler.call(null, e.detail);
+    };
+    const rm = () => document.removeEventListener(ev, fn);
+    document.addEventListener(ev, fn);
+    return rm;
+  }
+
+  once(ev, handler) {
+    let rm = () => {};
+    if (this.wasEmitted(ev)) {
+      Promise.resolve().then(() => handler.call(null, this._emitted[ev]));
+    } else {
+      const fn = (data) => {
+        handler.call(null, data);
+        rm();
+      };
+      rm = this.on(ev, fn);
+    }
+    return rm;
+  }
+
+  emit(ev, data) {
+    document.dispatchEvent(new CustomEvent(ev, { detail: data }));
+    this._emitted[ev] = data || null;
+  }
+
+  wasEmitted(ev) {
+    return this._emitted[ev] !== undefined;
+  }
+
+  initBook() {
+    this.docsOrigin = DOCS_ORIGINS[this.env];
+    this.bookPath = getMetadata('book');
+    this.docPath = `${PATH_PREFIX}/docs${window.location.pathname.substring(PATH_PREFIX.length)}`;
+    this.articleHref = `${this.docsOrigin}${this.docPath}`;
+
+    const makeBookHref = (path) => `${this.docsOrigin}${path}/book`;
+
+    let mainBookTitle;
+    const addlBooks = (getMetadata('additional-books') || '').split(';;').map((s) => s.trim()).filter((s) => !!s);
+    this.additionalBooks = addlBooks.map((addlBook) => {
+      const [path, title] = addlBook.split(';');
+
+      // exclude main book from additionalBooks
+      if (path === this.bookPath) {
+        mainBookTitle = title;
+        return undefined;
+      }
+
+      return {
+        title,
+        href: makeBookHref(path),
+      };
+    }).filter((b) => !!b);
+
+    this.mainBook = {
+      title: mainBookTitle,
+      href: makeBookHref(this.bookPath),
+    };
+  }
+
+  getAllBookLinks() {
+    const makeLink = ({ title, href }) => {
+      const a = document.createElement('a');
+      a.href = href;
+      a.textContent = title;
+      return a;
+    };
+    return [
+      makeLink(this.boo),
+    ];
+  }
+
+  /**
+   * @param {string} path
+   * @param {string|string[]} [sheets]
+   */
+  async fetchJSON(path, sheets) {
+    const qps = new URLSearchParams();
+    if (sheets) {
+      // eslint-disable-next-line no-param-reassign
+      sheets = Array.isArray(sheets) ? [...sheets] : [sheets];
+      sheets.sort().forEach((sheet) => {
+        qps.append('sheet', sheet);
+      });
+    }
+
+    const j = this._json;
+    const p = `${path}.json${sheets ? `?${qps.toString()}` : ''}`;
+
+    const loaded = j[p];
+    if (loaded) {
+      return loaded;
+    }
+
+    const pending = j._l[p];
+    if (pending) {
+      return pending;
+    }
+
+    j._l[p] = fetch(p)
+      .then((resp) => {
+        if (!resp.ok) throw Error(`JSON sheet not found: ${p}`);
+        return resp.json();
+      })
+      .then((json) => {
+        j[p] = json;
+        delete j._l[p];
+        return j[p];
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+    return j._l[p];
+  }
+})();
+window.store = store;
 
 export function assertValidDocsURL(url) {
   if (url.startsWith('/')) return true;
@@ -106,6 +259,16 @@ export function render(template, fragment) {
 }
 
 /**
+ * Load book as JSON
+ * @param {string} href
+ * @returns {Promise<Record<string, unknown>>}
+ */
+export async function loadBook(href) {
+  assertValidDocsURL(href);
+  return store.fetchJSON(href, ['default', 'chapters', 'topics']);
+}
+
+/**
  * Builds hero block and prepends to main in a new section.
  * @param {Element} main The container element
  */
@@ -120,43 +283,77 @@ function buildHeroBlock(main) {
   }
 }
 
-function buildArticleBlock(main, docHref) {
-  const section = document.createElement('div');
+/**
+ * Builds breadcrumbs block
+ * @param {string} bookHref
+ */
+function buildBreadcrumbsBlock() {
   const link = document.createElement('a');
-  link.href = docHref;
-  section.append(buildBlock('article', { elems: [link] }));
-  main.prepend(section);
-  return section;
+  link.href = store.mainBook.href;
+  link.textContent = store.mainBook.title;
+  return buildBlock('breadcrumbs', { elems: [link] });
 }
 
-function buildSideNavBlock(section, navHrefs) {
-  const links = navHrefs.map((href) => {
+export function renderBreadCrumbs() {
+  const section = document.createElement('div');
+  section.classList.add('breadcrumbs-container');
+  const wrapper = document.createElement('div');
+  const breadcrumbs = buildBreadcrumbsBlock();
+  wrapper.append(breadcrumbs);
+  section.append(wrapper);
+
+  const main = document.querySelector('main');
+  main.prepend(section);
+
+  decorateBlock(breadcrumbs);
+  loadBlock(breadcrumbs).then(() => {
+    updateSectionsStatus(document.querySelector('main'));
+  });
+}
+
+function buildSideNavBlock() {
+  const links = store.additionalBooks.map(({ title, href }) => {
     const link = document.createElement('a');
     link.href = href;
+    link.textContent = title;
     return link;
   });
 
-  section.prepend(buildBlock('side-nav', { elems: links }));
+  return buildBlock('sidenav', { elems: links });
 }
 
-function buildBookBlocks(main) {
-  const template = getMetadata('template');
-  if (template !== 'book') return;
+export function renderSidenav(contentBlock) {
+  const section = contentBlock.closest('div.section');
+  const wrapper = document.createElement('div');
+  const sidenav = buildSideNavBlock();
+  wrapper.append(sidenav);
+  section.prepend(wrapper);
+
+  decorateBlock(sidenav);
+  loadBlock(sidenav).then(() => {
+    updateSectionsStatus(document.querySelector('main'));
+  });
+}
+
+function buildArticleBlock(articleHref) {
+  const link = document.createElement('a');
+  link.href = articleHref;
+  return buildBlock('article', { elems: [link] });
+}
+
+/**
+ * Builds sidenav and article blocks and prepends to main in a new section.
+ * @param {Element} main The container element
+ */
+function buildBookSection(main) {
+  if (store.pageTemplate !== 'book') return;
 
   const docMain = document.documentElement.querySelector('main');
   if (main !== docMain) return;
 
-  const bookName = getMetadata('book-name') || 'book';
-  const bookPath = getMetadata('book');
-  const additionalBookPaths = (getMetadata('additional-books') || '').split(',').map((s) => s.trim()).filter((s) => !!s);
-  const origin = DOCS_ORIGINS[getEnv()];
-  const docPath = `${PATH_PREFIX}/docs${window.location.pathname.substring(PATH_PREFIX.length)}`;
-  const docHref = `${origin}${docPath}`;
-  const navHref = (path) => `${origin}${path}/${bookName}`; // points to book in docs repo, no extension
-  const navHrefs = [navHref(bookPath), ...additionalBookPaths.map(navHref)];
-
-  const articleSection = buildArticleBlock(main, docHref);
-  buildSideNavBlock(articleSection, navHrefs);
+  const section = document.createElement('div');
+  section.append(buildArticleBlock(store.articleHref));
+  main.prepend(section);
 }
 
 /**
@@ -166,7 +363,7 @@ function buildBookBlocks(main) {
 function buildAutoBlocks(main) {
   try {
     buildHeroBlock(main);
-    buildBookBlocks(main);
+    buildBookSection(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
@@ -195,6 +392,14 @@ async function loadEager(doc) {
   decorateTemplateAndTheme();
   const main = doc.querySelector('main');
   if (main) {
+    if (store.pageTemplate === 'book') {
+      // cleanup empty sections
+      main.querySelectorAll('div').forEach((section) => {
+        if (section.childElementCount === 0) {
+          section.remove();
+        }
+      });
+    }
     decorateMain(main);
     document.body.classList.add('appear');
     await waitForLCP(LCP_BLOCKS);
@@ -223,11 +428,6 @@ export function addFavIcon(href) {
  * @param {Element} doc The container element
  */
 async function loadLazy(doc) {
-  // Default to en
-  const lang = window.location.pathname.split('/').indexOf('jp') !== -1 ? 'jp' : 'en';
-  doc.documentElement.lang = lang;
-  await fetchPlaceholders(`/prisma/prisma-cloud/${lang}`);
-
   const main = doc.querySelector('main');
   await loadBlocks(main);
 
@@ -262,3 +462,9 @@ async function loadPage() {
 }
 
 loadPage();
+
+function polyfill() {
+  if (typeof queueMicrotask === 'undefined') {
+    window.queueMicrotask = (fn) => Promise.resolve().then(fn);
+  }
+}

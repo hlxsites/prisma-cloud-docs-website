@@ -4,6 +4,9 @@ module.exports = {
   env: {
     browser: true,
   },
+  globals: {
+    store: true,
+  },
   parser: '@babel/eslint-parser',
   parserOptions: {
     allowImportExportEverywhere: true,
@@ -20,5 +23,6 @@ module.exports = {
     'no-restricted-syntax': 0,
     // Temp disable for development
     'no-console': 0,
+    'no-underscore-dangle': 0,
   },
 };

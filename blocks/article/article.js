@@ -1,39 +1,200 @@
 import {
   assertValidDocsURL,
-  decorateMain,
+  renderSidenav,
+  getPlaceholders,
+  loadBook,
+  parseFragment,
+  PATH_PREFIX,
+  render,
 } from '../../scripts/scripts.js';
 
 import {
-  loadBlocks,
+  loadBlock,
 } from '../../scripts/lib-franklin.js';
 
+const TEMPLATE = /* html */`
+  <article class="pan-article">
+      <div class="banner">
+          <div class="banner-inner">
+            <span class="banner-inner-desktop">
+              <h2>
+                  <span class="locale-article-document">Document:</span>
+                  <slot name="document"></slot>
+              </h2>
+              <hr>
+              <span class="title">
+                <h1><slot name="title"></slot></h1>
+              </span>
+            </span>
+          </div>
+      </div>
+      <div class="content">
+          <div class="content-inner">
+              <div class="book-detail-pagination">
+                  <a class="prev" href="#">
+                      <i class="icon-arrow-left-circle"></i>
+                      <div class="locale-article-previous">Previous</div>
+                  </a>
+                  <a class="next" href="#">
+                      <div class="locale-article-next">Next</div>
+                      <i class="icon-arrow-right-circle"></i>
+                  </a>
+              </div>
+              <div class="edit-github">
+                  <a href="#" target="_blank" rel="nofollow">
+                      <span class="locale-article-edit-github"></span>
+                      <i class="icon-share-alt"></i>
+                  </a>
+              </div>
+              <div class="book-pdf-content">
+                  <slot name="content"></slot>
+              </div>
+          </div>
+      </div>
+  </article>`;
+
 /**
- * Loads an article.
- * @param {string} path The path or url to the article
- * @returns {Promise<HTMLElement>} The root element of the article
+ * Load article as HTML
+ * @param {string} href
+ * @returns {Promise<{ok:boolean;data?:string;status:number;}>}
  */
-async function loadArticle(path) {
-  assertValidDocsURL(path);
+async function loadArticle(href) {
+  assertValidDocsURL(href);
 
-  const resp = await fetch(`${path}.plain.html`);
-  if (!resp.ok) return null;
-
-  const main = document.createElement('main');
-  main.innerHTML = await resp.text();
-  decorateMain(main);
-  await loadBlocks(main);
-  return main;
+  const resp = await fetch(`${href}.plain.html`);
+  if (!resp.ok) return resp;
+  try {
+    return {
+      ok: true,
+      status: resp.status,
+      info: {
+        lastModified: new Date(resp.headers.get('last-modified')),
+      },
+      data: await resp.text(),
+    };
+  } catch (e) {
+    console.error('failed to parse article: ', e);
+    return {
+      ...resp,
+      ok: false,
+    };
+  }
 }
 
+/**
+ * @param {HTMLDivElement} block
+ */
+function localize(block) {
+  queueMicrotask(async () => {
+    const ph = await getPlaceholders();
+    block.querySelector('.locale-article-previous').textContent = ph.articlePrevious;
+    block.querySelector('.locale-article-next').textContent = ph.articleNext;
+    block.querySelector('.locale-article-edit-github').textContent = ph.articleEditGithub;
+    block.querySelector('.locale-article-document').textContent = ph.articleDocument;
+  });
+}
+
+/** @param {HTMLDivElement} block */
 export default async function decorate(block) {
-  const link = block.querySelector('a');
-  const path = link ? link.getAttribute('href') : block.textContent.trim();
-  const article = await loadArticle(path);
-  if (article) {
-    const articleSection = article.querySelector(':scope .section');
-    if (articleSection) {
-      block.closest('.section').classList.add(...articleSection.classList);
-      block.closest('.article-wrapper').replaceWith(...articleSection.childNodes);
+  const res = await loadArticle(block.querySelector('a').href);
+  let articleFound = true;
+  if (!res.ok) {
+    console.error(`failed to load article (${res.status}): `, res);
+    articleFound = false;
+  }
+
+  if (articleFound) {
+    const { data, info } = res;
+    const template = parseFragment(TEMPLATE);
+    const article = parseFragment(data);
+
+    block.innerHTML = '';
+
+    // Fixup images src
+    for (const image of article.querySelectorAll('img')) {
+      const { pathname } = new URL(image.src);
+      image.src = `${store.docsOrigin}${pathname.replace(PATH_PREFIX, `${PATH_PREFIX}/docs`)}`;
+
+      const picture = image.parentElement;
+      if (picture.tagName === 'PICTURE') {
+        for (const source of picture.querySelectorAll('source')) {
+          const search = source.srcset.split('?')[1];
+          source.srcset = `${image.src}?${search}`;
+        }
+      }
+    }
+
+    // "Slotify"
+    const div = document.createElement('div');
+    const docTitle = document.createElement('a');
+    docTitle.setAttribute('slot', 'document');
+    docTitle.href = window.location.href.split('/').slice(0, -2).join('/');
+    div.append(docTitle);
+
+    const articleTitle = article.querySelector('h1, h2');
+    if (articleTitle) {
+      info.title = articleTitle.textContent;
+      document.title = info.title;
+      const span = document.createElement('span');
+      span.setAttribute('slot', 'title');
+      span.textContent = info.title;
+      articleTitle.remove();
+      div.append(span);
+    }
+
+    const content = document.createElement('div');
+    content.setAttribute('slot', 'content');
+    content.append(article);
+
+    div.append(content);
+
+    // Render with slots
+    render(template, div);
+    block.append(template);
+    localize(block);
+    store.emit('article:loaded', info);
+
+    // Post render
+    block.querySelector('.edit-github a').href = `https://github.com/hlxsites/prisma-cloud-docs/blob/main/${window.location.pathname.replace(PATH_PREFIX, 'docs')}.adoc`;
+  }
+
+  loadBook(store.mainBook.href).then((book) => {
+    store.emit('book:loaded', book);
+
+    if (!articleFound) return;
+
+    const docSlot = block.querySelector('a[slot="document"]');
+    docSlot.textContent = book.default.data[0].title;
+
+    const href = window.location.href.split('/');
+    const subPath = href.pop();
+    const topicIndex = book.topics.data.findIndex(({ key }) => key === subPath);
+    const currentTopic = book.topics.data[topicIndex];
+    const prevTopic = book.topics.data[topicIndex - 1];
+    const nextTopic = book.topics.data[topicIndex + 1];
+
+    if (prevTopic.chapter === currentTopic.chapter) {
+      block.querySelector('.prev').href = `${href.join('/')}/${prevTopic.key.replaceAll('_', '-')}`;
+    } else {
+      block.querySelector('.prev').href = `${href.slice(0, -1).join('/')}/${prevTopic.chapter}/${prevTopic.key.replaceAll('_', '-')}`;
+    }
+
+    if (nextTopic.chapter === currentTopic.chapter) {
+      block.querySelector('.next').href = `${href.join('/')}/${nextTopic.key.replaceAll('_', '-')}`;
+    } else {
+      block.querySelector('.next').href = `${href.slice(0, -1).join('/')}/${nextTopic.chapter}/${nextTopic.key.replaceAll('_', '-')}`;
+    }
+  });
+
+  // Load sidenav
+  renderSidenav(block);
+
+  if (articleFound) {
+  // Load article blocks
+    const blocks = '.hero, .admonition';
+    for (const el of block.querySelectorAll(blocks)) {
+      el.setAttribute('data-block-name', el.className.split(' ')[0]);
+      loadBlock(el);
     }
   }
 }

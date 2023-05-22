@@ -393,7 +393,7 @@
 .pan-search-panel {
     overflow: hidden;
     position: absolute;
-    z-index: 1;
+    z-index: 100;
     top: 0;
     height: 0;
     width: 100%;
@@ -428,7 +428,7 @@
 
 .pan-desktop-nav .nav-menu-section {
     position: relative;
-    z-index: 1;
+    z-index: 10;
     flex-grow: 1;
     display: flex;
     flex-wrap: wrap;
@@ -505,7 +505,7 @@
 
 .pan-desktop-nav .nav-logo-section {
     position: relative;
-    z-index: 1;
+    z-index: 10;
     margin-right: 40px;
     margin-top: -10px;
     display: flex;
@@ -861,7 +861,8 @@
 
 .pan-banner::before,
 .pan-banner::after {
-    background-image: url("/blocks/header/assets/sase-cns-pattern.webp");
+    pointer-events: none;
+    background-image: url("/assets/sase-cns-pattern.webp");
 }
 
 .pan-banner::before {
@@ -949,9 +950,15 @@
     }
 }
 
-/* Banner docs */
+/* Books */
+.book .pan-desktop-nav {
+    margin-left: 15px;
+    margin-right: 15px;
+    width: auto;
+}
+
 .book .pan-banner {
-    background: rgb(244 244 242 / 50%);
+    background: transparent;
 }
 
 .book .pan-banner::before,
