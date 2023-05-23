@@ -19,13 +19,8 @@
 }
 
 .pan-article .banner-inner::before {
-    /* disable for perf
     background-image: url("/assets/sase-cns-pattern.webp");
-    */
-
-    /* display: block; */
-
-    display: none;
+    display: block;
     content: '';
     pointer-events: none;
     position: absolute;
