@@ -74,9 +74,10 @@
 
 .pan-sidenav .version-dropdown {
     position: relative;
+    min-width: 150px;
 }
 
-.pan-sidenav .version-dropdown a {
+.pan-sidenav .version-dropdown > a {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -105,7 +106,8 @@
     transition: transform 0.3s ease, opacity 0.4s ease-out, height 0.2s ease;
     transform-origin: top;
     z-index: 10;
-    width: 100%;
+    width: 260px;
+    left: -120px;
 }
 
 .pan-sidenav .version-dropdown .version-dropdown-menu ul {

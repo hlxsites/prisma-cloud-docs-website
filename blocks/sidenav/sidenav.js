@@ -152,8 +152,29 @@ function addEventListeners(wrapper) {
   });
 
   const versionsDropdown = wrapper.querySelector('.version-dropdown');
-  versionsDropdown.addEventListener('mouseenter', () => {
-    console.log('TODO load all versions');
+  const versionsDropdownMenu = versionsDropdown.querySelector('.version-dropdown-menu ul');
+
+  versionsDropdown.addEventListener('mouseenter', async () => {
+    const req = await fetch(`/prisma/prisma-cloud/${document.documentElement.lang}/versions.json`);
+    if (req.ok) {
+      const versions = await req.json();
+      const pathname = window.location.pathname.split('/');
+      const product = pathname[4];
+      const productVersions = versions[product];
+      if (productVersions) {
+        const newVersions = productVersions.data.map((version) => {
+          const li = document.createElement('li');
+          const a = document.createElement('a');
+          li.append(a);
+          a.href = `#${version.Key}`;
+          a.textContent = version.Title;
+
+          return li;
+        });
+
+        versionsDropdownMenu.append(...newVersions);
+      }
+    }
   }, { once: true });
 }
 
