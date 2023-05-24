@@ -73,6 +73,39 @@ const TEMPLATE = /* html */`
   </aside>`;
 
 /**
+ * Add version dropdown
+ * @param {Element} wrapper
+ */
+function initVersionDropdown(wrapper) {
+  const versionsDropdown = wrapper.querySelector('.version-dropdown');
+  if (!store.product) {
+    versionsDropdown.remove();
+    return;
+  }
+
+  const versionsDropdownMenu = versionsDropdown.querySelector('.version-dropdown-menu ul');
+  versionsDropdown.addEventListener('mouseenter', async () => {
+    const req = await fetch(`/prisma/prisma-cloud/${document.documentElement.lang}/versions.json?sheet=${store.product}`);
+    if (req.ok) {
+      const versions = await req.json();
+      if (versions.data) {
+        const newVersions = versions.data.map((version) => {
+          const li = document.createElement('li');
+          const a = document.createElement('a');
+          li.append(a);
+          a.href = `#${version.Key}`;
+          a.textContent = version.Title;
+
+          return li;
+        });
+
+        versionsDropdownMenu.append(...newVersions);
+      }
+    }
+  }, { once: true });
+}
+
+/**
  * Add toggle interaction
  * @param {Element} wrapper
  */
@@ -150,32 +183,6 @@ function addEventListeners(wrapper) {
   form.addEventListener('submit', (event) => {
     event.preventDefault();
   });
-
-  const versionsDropdown = wrapper.querySelector('.version-dropdown');
-  const versionsDropdownMenu = versionsDropdown.querySelector('.version-dropdown-menu ul');
-
-  versionsDropdown.addEventListener('mouseenter', async () => {
-    const req = await fetch(`/prisma/prisma-cloud/${document.documentElement.lang}/versions.json`);
-    if (req.ok) {
-      const versions = await req.json();
-      const pathname = window.location.pathname.split('/');
-      const product = pathname[4];
-      const productVersions = versions[product];
-      if (productVersions) {
-        const newVersions = productVersions.data.map((version) => {
-          const li = document.createElement('li');
-          const a = document.createElement('a');
-          li.append(a);
-          a.href = `#${version.Key}`;
-          a.textContent = version.Title;
-
-          return li;
-        });
-
-        versionsDropdownMenu.append(...newVersions);
-      }
-    }
-  }, { once: true });
 }
 
 function localize(block) {
@@ -365,7 +372,6 @@ export default async function decorate(block) {
     renderTOC(toc, sorted);
 
     addEventListeners(wrapper);
+    initVersionDropdown(wrapper);
   });
-
-  // TODO display TOC links and filter
 }

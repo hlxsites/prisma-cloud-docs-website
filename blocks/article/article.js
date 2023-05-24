@@ -110,16 +110,18 @@ export default async function decorate(block) {
 
     block.innerHTML = '';
 
-    // Fixup images src
-    for (const image of article.querySelectorAll('img')) {
-      const { pathname } = new URL(image.src);
-      image.src = `${store.docsOrigin}${pathname.replace(PATH_PREFIX, `${PATH_PREFIX}/docs`)}`;
+    // Fixup images src on dev
+    if (store.env === 'dev') {
+      for (const image of article.querySelectorAll('img')) {
+        const { pathname } = new URL(image.src);
+        image.src = `${store.docsOrigin}${pathname}`;
 
-      const picture = image.parentElement;
-      if (picture.tagName === 'PICTURE') {
-        for (const source of picture.querySelectorAll('source')) {
-          const search = source.srcset.split('?')[1];
-          source.srcset = `${image.src}?${search}`;
+        const picture = image.parentElement;
+        if (picture.tagName === 'PICTURE') {
+          for (const source of picture.querySelectorAll('source')) {
+            const search = source.srcset.split('?')[1];
+            source.srcset = `${image.src}?${search}`;
+          }
         }
       }
     }
