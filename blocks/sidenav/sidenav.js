@@ -1,3 +1,4 @@
+import { getMetadata } from '../../scripts/lib-franklin.js';
 import {
   PATH_PREFIX, getPlaceholders, isMobile, parseFragment, render,
 } from '../../scripts/scripts.js';
@@ -83,25 +84,48 @@ function initVersionDropdown(wrapper) {
     return;
   }
 
+  const { lang } = document.documentElement;
+  const curVersionKey = getMetadata('version');
   const versionsDropdownMenu = versionsDropdown.querySelector('.version-dropdown-menu ul');
+
   versionsDropdown.addEventListener('mouseenter', async () => {
-    const req = await fetch(`/prisma/prisma-cloud/${document.documentElement.lang}/versions.json?sheet=${store.product}`);
-    if (req.ok) {
-      const versions = await req.json();
-      if (versions.data) {
-        const newVersions = versions.data.map((version) => {
-          const li = document.createElement('li');
-          const a = document.createElement('a');
-          li.append(a);
-          a.href = `#${version.Key}`;
-          a.textContent = version.Title;
+    const json = await store.fetchJSON(`${PATH_PREFIX}/${lang}/versions`, store.product);
+    if (!json) return;
 
-          return li;
-        });
+    const curVersion = json.data.find((row) => row.Key === curVersionKey);
 
-        versionsDropdownMenu.append(...newVersions);
-      }
+    const { pathname } = window.location;
+    // rm leading slash, lang, product
+    let segments = pathname.substring(PATH_PREFIX.length).split('/').slice(3);
+    // if current href has version folder, remove it
+    if (curVersion.Folder) {
+      segments = segments.slice(1);
     }
+    const unversionedPath = segments.join('/');
+
+    // TODO: This still doesn't quite work since the book directory names also change
+    //        eg. `admin-guide-pcee` -> `<version>/admin-guide-pcce`
+    // Possible workaround is to specify the entire folder path inside versions.json,
+    // but first will figure out whether paths can be normalized to match across versions.
+    const makeHref = (folder) => `${PATH_PREFIX}/${lang}/${store.product}/${folder ? `${folder}/` : ''}${unversionedPath}`;
+
+    const newVersions = json.data.map((row) => {
+      // exclude current version from dropdown
+      if (row.Key === curVersionKey) {
+        return undefined;
+      }
+
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      li.append(a);
+
+      a.href = makeHref(row.Folder);
+      a.textContent = row.Title;
+
+      return li;
+    }).filter((item) => !!item);
+
+    versionsDropdownMenu.append(...newVersions);
   }, { once: true });
 }
 
@@ -341,6 +365,7 @@ export default async function decorate(block) {
   wrapper.append(toggle);
 
   const div = document.createElement('div');
+
   const docTitle = document.createElement('a');
   docTitle.setAttribute('slot', 'document');
   docTitle.href = window.location.href.split('/').slice(0, -2).join('/');
@@ -350,6 +375,11 @@ export default async function decorate(block) {
   render(template, div);
   block.append(template);
   localize(block);
+
+  const curVersionBtn = block.querySelector('[slot="version"]');
+  if (curVersionBtn) {
+    curVersionBtn.textContent = getMetadata('version-title');
+  }
 
   const toc = block.querySelector('.content-inner .toc-books');
   if (isMobile()) {
@@ -365,9 +395,7 @@ export default async function decorate(block) {
 
   store.once('book:loaded', (book) => {
     block.querySelector('a[slot="document"]').textContent = book.default.data[0].title;
-    block.querySelectorAll('[slot="version"]').forEach((el) => {
-      el.textContent = book.default.data[0].version;
-    });
+
     const sorted = sortBook(book);
     renderTOC(toc, sorted);
 
