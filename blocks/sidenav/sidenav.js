@@ -28,15 +28,13 @@ const TEMPLATE = /* html */`
                       <div class="banner-info-label locale-book-current-version"></div>
                       <div class="version-dropdown">
                           <a>
-                              <span>Prisma Cloud Enterprise Edition</span>
-                              <i class="icon-arrow-right"></i>
+                              <span slot="version"></span>
+                              <i class="icon-arrow-down"></i>
                           </a>
                           <div class="version-dropdown-menu">
                               <ul>
                                   <li class="active">
-                                      <a href="#">
-                                          Version Prisma Cloud Enterprise Edition
-                                      </a>
+                                      <a href="#" slot="version"></a>
                                   </li>
                               </ul>
                           </div>
@@ -152,6 +150,11 @@ function addEventListeners(wrapper) {
   form.addEventListener('submit', (event) => {
     event.preventDefault();
   });
+
+  const versionsDropdown = wrapper.querySelector('.version-dropdown');
+  versionsDropdown.addEventListener('mouseenter', () => {
+    console.log('TODO load all versions');
+  }, { once: true });
 }
 
 function localize(block) {
@@ -334,7 +337,9 @@ export default async function decorate(block) {
 
   store.once('book:loaded', (book) => {
     block.querySelector('a[slot="document"]').textContent = book.default.data[0].title;
-
+    block.querySelectorAll('[slot="version"]').forEach((el) => {
+      el.textContent = book.default.data[0].version;
+    });
     const sorted = sortBook(book);
     renderTOC(toc, sorted);
 
