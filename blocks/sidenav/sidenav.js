@@ -62,9 +62,10 @@ const TEMPLATE = /* html */`
                   </div>
                   <div class="search-toc-container">
                       <div class="form">
-                          <div class="form-input">
+                          <form class="form-input">
                               <input class="locale-toc-form-input">
-                          </div>
+                              <button type="reset" hidden><span class="ion-close"></span></button>
+                          </form>
                       </div>
                   </div>
               </div>
@@ -88,6 +89,68 @@ function addEventListeners(wrapper) {
     if (isMobile()) {
       toggle.querySelector('i').className = `icon-arrow-${next ? 'down' : 'up'}`;
     }
+  });
+
+  const form = wrapper.querySelector('.form-input');
+  const input = form.querySelector('input');
+  const reset = form.querySelector('button');
+  const toc = wrapper.querySelector('.toc-books');
+
+  const toggleExpanded = (el, toggle) => {
+    let parent = el.parentElement.closest('li');
+    while (parent) {
+      parent.ariaExpanded = toggle;
+      if (parent.dataset.key) {
+        parent.hidden = !toggle;
+      }
+      parent = parent.parentElement.closest('li');
+    }
+  };
+
+  input.addEventListener('input', () => {
+    const { value } = input;
+
+    if (value) {
+      reset.hidden = false;
+
+      toc.querySelectorAll('a').forEach((a) => {
+        const { textContent } = a;
+
+        if (a.textContent.toLowerCase().includes(value.toLowerCase())) {
+          a.innerHTML = a.textContent.replace(new RegExp(`(${value})`, 'gi'), '<mark>$1</mark>').replaceAll(' ', '&nbsp;');
+
+          toggleExpanded(a, true);
+        } else {
+          a.textContent = textContent;
+
+          toggleExpanded(a, false);
+        }
+      });
+    } else {
+      reset.hidden = true;
+
+      toc.querySelectorAll('a').forEach((a) => {
+        const { textContent } = a;
+
+        a.textContent = textContent;
+        a.closest('li[data-key]').hidden = false;
+
+        toggleExpanded(a, 'false');
+      });
+
+      toggleExpanded(toc.querySelector('li.current'), 'true');
+    }
+  });
+
+  reset.addEventListener('click', () => {
+    reset.hidden = true;
+    requestAnimationFrame(() => {
+      input.dispatchEvent(new Event('input'));
+    });
+  });
+
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
   });
 }
 
@@ -133,15 +196,17 @@ function bookToList(book) {
   const addSubList = (title, href, key) => {
     const item = document.createElement('li');
     item.dataset.key = key;
+    const div = document.createElement('div');
     const link = document.createElement('a');
     link.innerText = title;
     link.href = href || '';
-    item.append(link);
+    div.append(link);
 
-    const expander = document.createElement('a');
-    expander.innerText = 'v';
-    expander.classList.add('expand-trigger');
-    item.append(expander);
+    const expander = document.createElement('span');
+    expander.classList.add('icon-arrow-right', 'icon-toggle');
+    div.append(expander);
+
+    item.append(div);
 
     current.append(item);
 
@@ -173,7 +238,9 @@ function bookToList(book) {
       const link = document.createElement('a');
       link.innerText = topic.name;
       link.href = makeHref(topic, parentKey);
-      li.append(link);
+      const div = document.createElement('div');
+      div.append(link);
+      li.append(div);
       current.append(li);
 
       if (topic.children) {
@@ -189,9 +256,9 @@ function bookToList(book) {
   return root;
 }
 
-function expandTOCByPath(container, path) {
+function expandTOCByPath(rootList, path) {
   let rootPath;
-  const nextItem = (list, key) => [...list.querySelectorAll(':scope > ul > li')].find((li) => {
+  const nextItem = (list, key) => [...list.querySelectorAll(':scope > li')].find((li) => {
     if (!key.startsWith(li.dataset.key)) {
       return false;
     }
@@ -201,7 +268,7 @@ function expandTOCByPath(container, path) {
     return true;
   });
 
-  let currentItem = nextItem(container, path);
+  let currentItem = nextItem(rootList, path);
   if (!currentItem) return;
 
   const segments = path.substring(rootPath.length).split('/').slice(1);
@@ -212,21 +279,23 @@ function expandTOCByPath(container, path) {
   }
 }
 
-// eslint-disable-next-line no-unused-vars
-function filterBook(book, query) {
-  // TODO: filter by includes in name/title
-  return book;
-}
-
-function renderTOC(container, book, query) {
-  let filtered = book;
-  if (query) {
-    filtered = filterBook(book, query);
+function renderTOC(container, book) {
+  const list = bookToList(book);
+  const rootList = list.querySelector(':scope > li > ul');
+  // Clean dups
+  rootList.querySelectorAll(':scope > li li[data-key]').forEach((li) => {
+    const prev = li.previousElementSibling;
+    if (prev && prev.querySelector('a').textContent.trim() === li.querySelector('a').textContent.trim()) {
+      prev.remove();
+    }
+  });
+  // Set current
+  const current = rootList.querySelector(`a[href="${window.location.pathname}"]`);
+  if (current) {
+    current.closest('li').classList.add('current');
   }
-
-  const list = bookToList(filtered);
-  container.append(list);
-  expandTOCByPath(container, window.location.pathname);
+  container.append(rootList);
+  expandTOCByPath(rootList, window.location.pathname.split('/').slice(6).join('/'));
 }
 
 /**
@@ -267,7 +336,7 @@ export default async function decorate(block) {
     block.querySelector('a[slot="document"]').textContent = book.default.data[0].title;
 
     const sorted = sortBook(book);
-    renderTOC(toc, sorted, undefined);
+    renderTOC(toc, sorted);
 
     addEventListeners(wrapper);
   });

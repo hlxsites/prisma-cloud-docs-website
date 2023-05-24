@@ -62,10 +62,13 @@
   box-sizing: border-box;
 }
 
+[hidden] {
+  display: none !important;
+}
+
 body {
   font-family: var(--body-font-family);
   font-size: 14px;
-  font-display: optional;
   line-height: 1.4;
   color: #36424b;
   background-color: #fff;

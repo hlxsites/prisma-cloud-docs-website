@@ -27,7 +27,7 @@ export const PATH_PREFIX = '/prisma/prisma-cloud';
 const LCP_BLOCKS = ['article']; // add your LCP blocks to the list
 window.hlx.RUM_GENERATION = 'prisma-cloud-docs-website'; // add your RUM generation information here
 
-const [lang] = window.location.pathname.substring(PATH_PREFIX.length).split('/').slice(1);
+const lang = window.location.pathname.substring(PATH_PREFIX.length).split('/').slice(1)[0] || 'en';
 document.documentElement.lang = lang;
 
 export const DOCS_ORIGINS = {
@@ -285,7 +285,6 @@ function buildHeroBlock(main) {
 
 /**
  * Builds breadcrumbs block
- * @param {string} bookHref
  */
 function buildBreadcrumbsBlock() {
   const link = document.createElement('a');
