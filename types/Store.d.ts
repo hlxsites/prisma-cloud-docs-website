@@ -13,7 +13,7 @@
 import { FilterPrivate } from "./util";
 import type { EventHandler, EventMap, OffEventFn } from './Events';
 
-type BookDescriptor = { title: string; href: string; };
+type BookDescriptor = { title: string; href: string; value: JSONData | undefined };
 
 type RemoveFn = () => void;
 
@@ -34,35 +34,35 @@ declare class StoreImpl {
   /**
    * Origin that article content is loaded from.
    * Should be empty string in production/cdn.
-   * 
+   *
    * @note defined when `pageTemplate` is `book`
    */
   docsOrigin: string | undefined;
 
   /**
    * Path to current doc topic
-   * 
+   *
    * @note defined when `pageTemplate` is `book`
    */
   docPath: string | undefined;
 
   /**
    * Main book path for current page.
-   * 
+   *
    * @note defined when `pageTemplate` is `book`
    */
   bookPath: string | undefined;
 
   /**
    * Additional books for sidenav.
-   * 
+   *
    * @note defined when `pageTemplate` is `book`
    */
   additionalBooks: BookDescriptor[] | undefined;
 
   /**
    * Href to article including origin
-   * 
+   *
    * @note defined when `pageTemplate` is `book`
    */
   articleHref: string | undefined;
@@ -70,7 +70,7 @@ declare class StoreImpl {
   /**
    * Current book descriptor.
    * Title will be undefined if the additional-books meta list doesn't contain the main book.
-   * 
+   *
    * @note defined when `pageTemplate` is `book`
    */
   mainBook: BookDescriptor | undefined;
