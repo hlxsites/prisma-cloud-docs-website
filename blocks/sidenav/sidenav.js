@@ -79,13 +79,14 @@ const TEMPLATE = /* html */`
  */
 function initVersionDropdown(wrapper) {
   const versionsDropdown = wrapper.querySelector('.version-dropdown');
-  if (!store.product) {
+  const curVersionKey = getMetadata('version');
+
+  if (!store.product || curVersionKey === 'not-applicable') {
     versionsDropdown.remove();
     return;
   }
 
   const { lang } = document.documentElement;
-  const curVersionKey = getMetadata('version');
   const versionsDropdownMenu = versionsDropdown.querySelector('.version-dropdown-menu ul');
 
   versionsDropdown.addEventListener('mouseenter', async () => {
