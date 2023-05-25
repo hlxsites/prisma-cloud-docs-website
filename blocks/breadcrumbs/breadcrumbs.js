@@ -33,66 +33,67 @@ function localize(block) {
 
 /** @param {HTMLDivElement} block */
 export default async function decorate(block) {
-  const book = await loadBook(block.querySelector('a').href);
+  const bookHref = block.querySelector('a').href;
+  const book = bookHref ? await loadBook(bookHref) : undefined;
 
   block.innerHTML = '';
 
   const fragment = parseFragment(TEMPLATE);
 
   const slot = fragment.querySelector('slot');
-  if (store.pageTemplate !== 'book') {
+  if (store.pageTemplate !== 'book' || !book) {
     slot.remove();
-    return;
+  } else {
+    const { lang } = document.documentElement;
+    const path = [];
+    const pathname = window.location.pathname.replace(PATH_PREFIX, '').split('/').slice(2);
+
+    const additionalNavItems = pathname.map((subPath, index) => {
+      path.push(subPath);
+
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.href = `${PATH_PREFIX}/${lang}/${path.join('/')}`;
+      li.append(a);
+
+      // Book
+      if (index === 1) {
+        a.textContent = book.default.data[0].title;
+        a.href = `${PATH_PREFIX}/${lang}/${path.join('/')}`;
+
+        return li;
+      }
+
+      // TODO Identify version via meta
+
+      // Chapter
+      if (index === 2) {
+        const chapter = book.chapters.data.find(({ key }) => key === subPath);
+        if (chapter) {
+          a.textContent = chapter.name;
+          a.href = `${PATH_PREFIX}/${lang}/${path.join('/')}/${chapter.key}`;
+
+          return li;
+        }
+      }
+
+      // Topic
+      if (index > 2) {
+        const topic = book.topics.data.find(({ key }) => key.replaceAll('_', '-') === subPath);
+        if (topic && topic.key.replaceAll('_', '-') !== topic.chapter) {
+          a.textContent = topic.name;
+
+          return li;
+        }
+      }
+
+      return null;
+    })
+      .filter((el) => el !== null);
+
+    slot.replaceWith(...additionalNavItems);
   }
 
-  const { lang } = document.documentElement;
-  const path = [];
-  const pathname = window.location.pathname.replace(PATH_PREFIX, '').split('/').slice(2);
-
-  const additionalNavItems = pathname.map((subPath, index) => {
-    path.push(subPath);
-
-    const li = document.createElement('li');
-    const a = document.createElement('a');
-    a.href = `${PATH_PREFIX}/${lang}/${path.join('/')}`;
-    li.append(a);
-
-    // Book
-    if (index === 1) {
-      a.textContent = book.default.data[0].title;
-      a.href = `${PATH_PREFIX}/${lang}/${path.join('/')}`;
-
-      return li;
-    }
-
-    // TODO Identify version via meta
-
-    // Chapter
-    if (index === 2) {
-      const chapter = book.chapters.data.find(({ key }) => key === subPath);
-      if (chapter) {
-        a.textContent = chapter.name;
-        a.href = `${PATH_PREFIX}/${lang}/${path.join('/')}/${chapter.key}`;
-
-        return li;
-      }
-    }
-
-    // Topic
-    if (index > 2) {
-      const topic = book.topics.data.find(({ key }) => key.replaceAll('_', '-') === subPath);
-      if (topic && topic.key.replaceAll('_', '-') !== topic.chapter) {
-        a.textContent = topic.name;
-
-        return li;
-      }
-    }
-
-    return null;
-  })
-    .filter((el) => el !== null);
-
-  slot.replaceWith(...additionalNavItems);
   block.append(fragment);
   localize(block);
 }

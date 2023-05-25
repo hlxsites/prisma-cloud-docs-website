@@ -289,8 +289,10 @@ function buildHeroBlock(main) {
  */
 function buildBreadcrumbsBlock() {
   const link = document.createElement('a');
-  link.href = store.mainBook.href;
-  link.textContent = store.mainBook.title;
+  if (store.mainBook) {
+    link.href = store.mainBook.href;
+    link.textContent = store.mainBook.title;
+  }
   return buildBlock('breadcrumbs', { elems: [link] });
 }
 

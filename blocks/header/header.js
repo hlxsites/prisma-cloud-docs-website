@@ -530,11 +530,9 @@ export default async function decorate(block) {
   decorateIcons(block);
   document.body.querySelector('header').classList.add('loaded');
 
-  if (store.pageTemplate === 'book') {
-    if (!isMobile()) {
-      renderBreadCrumbs();
-    } else {
-      store.once('delayed:loaded', renderBreadCrumbs);
-    }
+  if (!isMobile()) {
+    renderBreadCrumbs();
+  } else {
+    store.once('delayed:loaded', renderBreadCrumbs);
   }
 }
