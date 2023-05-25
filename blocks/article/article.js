@@ -113,7 +113,7 @@ export default async function decorate(block) {
     // Fixup images src
     for (const image of article.querySelectorAll('img')) {
       const { pathname } = new URL(image.src);
-      image.src = `${store.docsOrigin}${pathname.replace(PATH_PREFIX, `${PATH_PREFIX}/docs`)}`;
+      image.src = `${store.docsOrigin}${pathname}`;
 
       const picture = image.parentElement;
       if (picture.tagName === 'PICTURE') {

@@ -104,6 +104,7 @@ const store = new (class {
   initBook() {
     this.docsOrigin = DOCS_ORIGINS[this.env];
     this.bookPath = getMetadata('book');
+    this.product = getMetadata('product');
     this.docPath = `${PATH_PREFIX}/docs${window.location.pathname.substring(PATH_PREFIX.length)}`;
     this.articleHref = `${this.docsOrigin}${this.docPath}`;
 
