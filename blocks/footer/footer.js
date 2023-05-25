@@ -27,8 +27,18 @@ export default async function decorate(block) {
   const classes = ['links', 'socials', 'legal'];
   classes.forEach((c, i) => {
     const section = footer.children[i];
-    if (section) section.classList.add(`footer-${c}`);
+    if (!section) {
+      return;
+    }
+    section.classList.add(`footer-${c}`);
   });
+
+  const legal = footer.querySelector('.footer-legal');
+  if (legal) {
+    const wrap = document.createElement('div');
+    wrap.append(...legal.children);
+    legal.replaceChildren(wrap);
+  }
 
   block.append(footer);
 }

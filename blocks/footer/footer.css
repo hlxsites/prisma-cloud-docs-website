@@ -73,15 +73,18 @@ footer .footer .footer-legal {
   padding: 30px 0;
   padding-left: 0;
   padding-right: 0;
+}
+
+footer .footer .footer-legal div {
   display: flex;
   flex-direction: column;
   gap: 8px;
   justify-content: space-between;
-}
-
-footer .footer .footer-legal p {
   padding-left: 1rem;
   padding-right: 1rem;
+  max-width: 1200px;
+  margin: auto;
+  align-items: center;
 }
 
 footer .footer .footer-legal img {
@@ -101,13 +104,21 @@ footer .footer .footer-legal img {
     padding-right: 3rem;
   }
 
-  footer .footer .footer-legal {
+  footer .footer .footer-legal div {
     flex-direction: row;
-  }
-
-  footer .footer .footer-legal p {
     padding-left: 3rem;
     padding-right: 3rem;
   }
-  
+}
+
+@media (min-width: 1000px) {
+  footer .footer > div > div {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  footer .footer .footer-legal div {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
 }
