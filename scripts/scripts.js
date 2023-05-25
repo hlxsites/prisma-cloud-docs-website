@@ -107,6 +107,8 @@ const store = new (class {
     this.product = getMetadata('product');
     this.docPath = `${PATH_PREFIX}/docs${window.location.pathname.substring(PATH_PREFIX.length)}`;
     this.articleHref = `${this.docsOrigin}${this.docPath}`;
+    this.redirectedArticle = !!sessionStorage.getItem('redirected-article');
+    sessionStorage.removeItem('redirected-article');
 
     const makeBookHref = (path) => `${this.docsOrigin}${path}/book`;
 

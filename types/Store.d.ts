@@ -83,6 +83,14 @@ declare class StoreImpl {
   product: string | undefined;
 
   /**
+   * Whether the previously visited article redirected to first chapter.
+   * If set, avoid redirecting again on this load since it will loop.
+   * 
+   * @note defined when `pageTemplate` is `book`
+   */
+  redirectedArticle: boolean | undefined;
+
+  /**
    * Returns array of link elements representing the books in sidenav.
    * First link is the main book, ie. the book that contains the current chapter/topic.
    * Links 2..N are the additional books, where the `textContent` is the book title and `href` is the href.
