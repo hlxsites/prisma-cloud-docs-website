@@ -1,3 +1,4 @@
+import { getMetadata } from '../../scripts/lib-franklin.js';
 import {
   PATH_PREFIX, getPlaceholders, isMobile, parseFragment, render,
 } from '../../scripts/scripts.js';
@@ -28,15 +29,13 @@ const TEMPLATE = /* html */`
                       <div class="banner-info-label locale-book-current-version"></div>
                       <div class="version-dropdown">
                           <a>
-                              <span>Prisma Cloud Enterprise Edition</span>
-                              <i class="icon-arrow-right"></i>
+                              <span slot="version"></span>
+                              <i class="icon-arrow-down"></i>
                           </a>
                           <div class="version-dropdown-menu">
                               <ul>
                                   <li class="active">
-                                      <a href="#">
-                                          Version Prisma Cloud Enterprise Edition
-                                      </a>
+                                      <a href="#" slot="version"></a>
                                   </li>
                               </ul>
                           </div>
@@ -73,6 +72,63 @@ const TEMPLATE = /* html */`
           </div>
       </div>
   </aside>`;
+
+/**
+ * Add version dropdown
+ * @param {Element} wrapper
+ */
+function initVersionDropdown(wrapper) {
+  const versionsDropdown = wrapper.querySelector('.version-dropdown');
+  const curVersionKey = getMetadata('version');
+
+  if (!store.product || curVersionKey === 'not-applicable') {
+    versionsDropdown.remove();
+    return;
+  }
+
+  const { lang } = document.documentElement;
+  const versionsDropdownMenu = versionsDropdown.querySelector('.version-dropdown-menu ul');
+
+  versionsDropdown.addEventListener('mouseenter', async () => {
+    const json = await store.fetchJSON(`${PATH_PREFIX}/${lang}/versions`, store.product);
+    if (!json) return;
+
+    const curVersion = json.data.find((row) => row.Key === curVersionKey);
+
+    const { pathname } = window.location;
+    // rm leading slash, lang, product
+    let segments = pathname.substring(PATH_PREFIX.length).split('/').slice(3);
+    // if current href has version folder, remove it
+    if (curVersion.Folder) {
+      segments = segments.slice(1);
+    }
+    const unversionedPath = segments.join('/');
+
+    // TODO: This still doesn't quite work since the book directory names also change
+    //        eg. `admin-guide-pcee` -> `<version>/admin-guide-pcce`
+    // Possible workaround is to specify the entire folder path inside versions.json,
+    // but first will figure out whether paths can be normalized to match across versions.
+    const makeHref = (folder) => `${PATH_PREFIX}/${lang}/${store.product}/${folder ? `${folder}/` : ''}${unversionedPath}`;
+
+    const newVersions = json.data.map((row) => {
+      // exclude current version from dropdown
+      if (row.Key === curVersionKey) {
+        return undefined;
+      }
+
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      li.append(a);
+
+      a.href = makeHref(row.Folder);
+      a.textContent = row.Title;
+
+      return li;
+    }).filter((item) => !!item);
+
+    versionsDropdownMenu.append(...newVersions);
+  }, { once: true });
+}
 
 /**
  * Add toggle interaction
@@ -323,6 +379,7 @@ export default async function decorate(block) {
   wrapper.append(toggle);
 
   const div = document.createElement('div');
+
   const docTitle = document.createElement('a');
   docTitle.setAttribute('slot', 'document');
   docTitle.href = window.location.href.split('/').slice(0, -2).join('/');
@@ -332,6 +389,11 @@ export default async function decorate(block) {
   render(template, div);
   block.append(template);
   localize(block);
+
+  const curVersionBtn = block.querySelector('[slot="version"]');
+  if (curVersionBtn) {
+    curVersionBtn.textContent = getMetadata('version-title');
+  }
 
   const toc = block.querySelector('.content-inner .toc-books');
   if (isMobile()) {
@@ -352,6 +414,7 @@ export default async function decorate(block) {
     renderTOC(toc, sorted, true);
 
     addEventListeners(wrapper);
+    initVersionDropdown(wrapper);
 
     // Lazy load additional books non blocking
     Promise.all(store.additionalBooks.map((additionalBook) => new Promise((resolve) => {

@@ -13,20 +13,32 @@ export default async function decorate(block) {
   const footerPath = cfg.footer || `${PATH_PREFIX}/${document.documentElement.lang}/footer`;
   const resp = await fetch(`${footerPath}.plain.html`, window.location.pathname.endsWith('/footer') ? { cache: 'reload' } : {});
 
-  if (resp.ok) {
-    const html = await resp.text();
-
-    // decorate footer DOM
-    const footer = document.createElement('div');
-    footer.innerHTML = html;
-    decorateIcons(footer);
-
-    const classes = ['links', 'socials', 'legal'];
-    classes.forEach((c, i) => {
-      const section = footer.children[i];
-      if (section) section.classList.add(`footer-${c}`);
-    });
-
-    block.append(footer);
+  if (!resp.ok) {
+    return;
   }
+
+  const html = await resp.text();
+
+  // decorate footer DOM
+  const footer = document.createElement('div');
+  footer.innerHTML = html;
+  decorateIcons(footer);
+
+  const classes = ['links', 'socials', 'legal'];
+  classes.forEach((c, i) => {
+    const section = footer.children[i];
+    if (!section) {
+      return;
+    }
+    section.classList.add(`footer-${c}`);
+  });
+
+  const legal = footer.querySelector('.footer-legal');
+  if (legal) {
+    const wrap = document.createElement('div');
+    wrap.append(...legal.children);
+    legal.replaceChildren(wrap);
+  }
+
+  block.append(footer);
 }

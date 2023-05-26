@@ -74,9 +74,10 @@
 
 .pan-sidenav .version-dropdown {
     position: relative;
+    min-width: 150px;
 }
 
-.pan-sidenav .version-dropdown a {
+.pan-sidenav .version-dropdown > a {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -105,8 +106,8 @@
     transition: transform 0.3s ease, opacity 0.4s ease-out, height 0.2s ease;
     transform-origin: top;
     z-index: 10;
-    width: 320px;
-    left: -146px;
+    width: 260px;
+    left: -120px;
 }
 
 .pan-sidenav .version-dropdown .version-dropdown-menu ul {
@@ -128,15 +129,8 @@
 .pan-sidenav .version-dropdown li a {
     text-decoration: none;
     padding: 0;
-    background: linear-gradient(to right, #ffcb26, #fff0c8 70%, rgb(0 0 0 / 0%)) no-repeat 0 0.85em;
-    background-size: 0 100%;
     transition: background-size 0.2s;
     color: black;
-    white-space: nowrap;
-}
-
-.pan-sidenav .version-dropdown li a:hover {
-    background-size: 100% 100%;
 }
 
 .pan-sidenav .content {

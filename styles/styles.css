@@ -355,7 +355,6 @@ main .section.highlight {
   .book .sidenav-wrapper {
     min-width: 330px;
     position: sticky;
-    overflow: hidden;
     top: 0;
     display: flex;
     flex-direction: column;

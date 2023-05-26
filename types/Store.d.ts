@@ -76,6 +76,13 @@ declare class StoreImpl {
   mainBook: BookDescriptor | undefined;
 
   /**
+   * Current page's `product` name from metadata
+   * 
+   * @note defined when `pageTemplate` is `book`
+   */
+  product: string | undefined;
+
+  /**
    * Returns array of link elements representing the books in sidenav.
    * First link is the main book, ie. the book that contains the current chapter/topic.
    * Links 2..N are the additional books, where the `textContent` is the book title and `href` is the href.
