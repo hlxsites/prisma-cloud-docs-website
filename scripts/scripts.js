@@ -372,7 +372,7 @@ function buildAutoBlocks(main) {
   }
 }
 
-function decorateHeading1(main) {
+function decorateLandingSections(main) {
   if (getMetadata('template') === 'landing-division') {
     const h1 = main.querySelector('h1');
     if (h1) {
@@ -386,6 +386,24 @@ function decorateHeading1(main) {
       section.append(container);
 
       main.prepend(section);
+    }
+
+    const sectionWithAside = main.querySelector('.section.aside-right');
+    if (sectionWithAside) {
+      const sectionMain = sectionWithAside.querySelectorAll(':scope > div > *:not(.aside)');
+      const sectionAside = sectionWithAside.querySelector('.aside');
+
+      const div = document.createElement('div');
+      div.classList.add('section-main');
+      div.append(...sectionMain);
+
+      const aside = document.createElement('div');
+      aside.classList.add('section-aside');
+      aside.append(sectionAside);
+
+      sectionWithAside.innerHTML = '';
+      sectionWithAside.append(div);
+      sectionWithAside.append(aside);
     }
   }
 }
@@ -401,7 +419,7 @@ export function decorateMain(main) {
   decorateIcons(main);
   buildAutoBlocks(main);
   decorateSections(main);
-  decorateHeading1(main);
+  decorateLandingSections(main);
   decorateBlocks(main);
 }
 

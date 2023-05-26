@@ -421,3 +421,17 @@ main .section.highlight {
     border-left: 1px solid #ded9d6;
   }
 }
+
+.landing-division .section.aside-right {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.landing-division .section.aside-right .section-main {
+  width: 75%;
+}
+
+.landing-division .section.aside-right .section-aside {
+  width: 25%;
+  margin-top: 0;
+}
