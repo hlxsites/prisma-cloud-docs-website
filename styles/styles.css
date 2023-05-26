@@ -370,6 +370,14 @@ main .section.highlight {
 }
 
 /* landing-division template */
+.landing-division a {
+  color: #fa582d;
+}
+
+.landing-division a:hover {
+  text-decoration: underline;
+}
+
 .landing-division .section-has-h1 {
   position: absolute;
   left: 0;
@@ -392,10 +400,24 @@ main .section.highlight {
 }
 
 .landing-division .section-has-h1 + .section {
-  margin-top: 100px;
+  margin-top: 130px;
+  padding-top: 34px;
 }
 
 .landing-division .section-has-h1:first-child + .section {
   /* +20px for breadcrumb layout not loaded yet */
-  margin-top: 120px;
+  margin-top: 150px;
+}
+
+.landing-division .section-has-h1 ~ .section {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+@media (min-width: 992px) {
+  .landing-division .section-has-h1 ~ .section {
+    margin-left: 200px;
+    margin-right: 100px;
+    border-left: 1px solid #ded9d6;
+  }
 }
