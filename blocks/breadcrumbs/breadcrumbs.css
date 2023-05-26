@@ -4,6 +4,10 @@ main .breadcrumbs-container {
     width: 100vw;
 }
 
+.landing-division .breadcrumbs-container {
+    width: auto;
+}
+
 main .breadcrumbs-container::before {
     content: "";
     position: absolute;

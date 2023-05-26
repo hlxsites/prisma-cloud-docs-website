@@ -1,6 +1,7 @@
 import {
   PATH_PREFIX, getPlaceholders, loadBook, parseFragment,
 } from '../../scripts/scripts.js';
+import { getMetadata } from '../../scripts/lib-franklin.js';
 
 const TEMPLATE = /* html */`
   <nav class="pan-breadcrumbs">
@@ -96,4 +97,8 @@ export default async function decorate(block) {
 
   block.append(fragment);
   localize(block);
+
+  if (getMetadata('template') === 'landing-division') {
+    block.classList.add('container');
+  }
 }

@@ -372,6 +372,24 @@ function buildAutoBlocks(main) {
   }
 }
 
+function decorateHeading1(main) {
+  if (getMetadata('template') === 'landing-division') {
+    const h1 = main.querySelector('h1');
+    if (h1) {
+      const section = document.createElement('div');
+      section.classList.add('section-has-h1');
+      const container = document.createElement('div');
+      container.classList.add('container');
+
+      container.append(h1);
+      container.append(document.createElement('hr'));
+      section.append(container);
+
+      main.prepend(section);
+    }
+  }
+}
+
 /**
  * Decorates the main element.
  * @param {Element} main The main element
@@ -383,6 +401,7 @@ export function decorateMain(main) {
   decorateIcons(main);
   buildAutoBlocks(main);
   decorateSections(main);
+  decorateHeading1(main);
   decorateBlocks(main);
 }
 

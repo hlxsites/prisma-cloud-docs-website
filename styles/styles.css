@@ -88,7 +88,6 @@ body.no-body-scroll {
 header {
   background: #00C0E8;
   height: var(--nav-height);
-  max-width: var(--max-width);
   margin: auto;
 }
 
@@ -99,6 +98,7 @@ body main {
 
 .book header {
   background: rgb(244 244 242 / 50%);
+  max-width: var(--max-width);
 }
 
 header.loaded {
@@ -369,3 +369,33 @@ main .section.highlight {
   }
 }
 
+/* landing-division template */
+.landing-division .section-has-h1 {
+  position: absolute;
+  left: 0;
+  width: 100vw;
+  background: #00C0E8;
+  padding-top: 165px;
+  padding-bottom: 30px;
+  top: 0;
+  z-index: -10;
+}
+
+.landing-division .section-has-h1 h1 {
+  color: white;
+}
+
+.landing-division .section-has-h1 hr {
+  border-top: 3px solid #fff;
+  margin: 10px auto 15px 0;
+  width: 74px;
+}
+
+.landing-division .section-has-h1 + .section {
+  margin-top: 100px;
+}
+
+.landing-division .section-has-h1:first-child + .section {
+  /* +20px for breadcrumb layout not loaded yet */
+  margin-top: 120px;
+}
