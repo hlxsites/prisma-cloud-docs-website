@@ -31,6 +31,10 @@ main .breadcrumbs-container::before {
     color: #fff;
 }
 
+.pan-breadcrumbs a:visited {
+    color: #fff;
+}
+
 .pan-breadcrumbs li+li::before {
     content: "|\00a0";
     padding: 0 5px;

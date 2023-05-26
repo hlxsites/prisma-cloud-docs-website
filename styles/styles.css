@@ -378,6 +378,14 @@ main .section.highlight {
   text-decoration: underline;
 }
 
+.landing-division a:visited {
+  color: #962D10;
+}
+
+.landing-division .section {
+  padding: 0;
+}
+
 .landing-division .section-has-h1 {
   position: absolute;
   left: 0;
@@ -425,13 +433,23 @@ main .section.highlight {
 .landing-division .section.aside-right {
   display: flex;
   flex-wrap: wrap;
+  margin-top: -15px;
+  padding-top: 15px;
 }
 
 .landing-division .section.aside-right .section-main {
   width: 75%;
+  padding-right: 30px;
 }
 
 .landing-division .section.aside-right .section-aside {
   width: 25%;
   margin-top: 0;
+}
+
+@media screen and (max-width: 767px) {
+  .landing-division .section.aside-right .section-main,
+  .landing-division .section.aside-right .section-aside {
+    width: 100%;
+  }
 }
