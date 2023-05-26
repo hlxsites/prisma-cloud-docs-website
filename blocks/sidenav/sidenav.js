@@ -166,32 +166,40 @@ function addEventListeners(wrapper) {
   input.addEventListener('input', () => {
     const { value } = input;
 
+    const links = toc.querySelectorAll('a');
+
     if (value) {
       reset.hidden = false;
 
-      toc.querySelectorAll('a').forEach((a) => {
-        const { textContent } = a;
+      const query = value.toLowerCase();
+      const find = (link) => link.textContent.toLowerCase().includes(query);
 
-        if (a.textContent.toLowerCase().includes(value.toLowerCase())) {
-          a.innerHTML = a.textContent.replace(new RegExp(`(${value})`, 'gi'), '<mark>$1</mark>').replaceAll(' ', '&nbsp;');
+      links.forEach((link) => {
+        if (!find(link)) {
+          const { textContent } = link;
+          link.textContent = textContent;
 
-          toggleExpanded(a, true);
-        } else {
-          a.textContent = textContent;
+          toggleExpanded(link, false);
+        }
+      });
 
-          toggleExpanded(a, false);
+      links.forEach((link) => {
+        if (find(link)) {
+          link.innerHTML = link.textContent.replace(new RegExp(`(${value})`, 'gi'), '<mark>$1</mark>').replaceAll(' ', '&nbsp;');
+
+          toggleExpanded(link, true);
         }
       });
     } else {
       reset.hidden = true;
 
-      toc.querySelectorAll('a').forEach((a) => {
-        const { textContent } = a;
+      links.forEach((link) => {
+        const { textContent } = link;
 
-        a.textContent = textContent;
-        a.closest('li[data-key]').hidden = false;
+        link.textContent = textContent;
+        link.closest('li[data-key]').hidden = false;
 
-        toggleExpanded(a, 'false');
+        toggleExpanded(link, 'false');
       });
 
       toggleExpanded(toc.querySelector('li.current'), 'true');
@@ -335,7 +343,7 @@ function expandTOCByPath(rootList, path) {
   }
 }
 
-function renderTOC(container, book) {
+function renderTOC(container, book, expand) {
   const list = bookToList(book);
   const rootList = list.querySelector(':scope > li > ul');
   // Clean dups
@@ -350,7 +358,12 @@ function renderTOC(container, book) {
   if (current) {
     current.closest('li').classList.add('current');
   }
-  container.append(rootList);
+  container.append(list);
+
+  if (expand) {
+    list.querySelector('li').ariaExpanded = 'true';
+  }
+
   expandTOCByPath(rootList, window.location.pathname.split('/').slice(6).join('/'));
 }
 
@@ -398,9 +411,24 @@ export default async function decorate(block) {
     block.querySelector('a[slot="document"]').textContent = book.default.data[0].title;
 
     const sorted = sortBook(book);
-    renderTOC(toc, sorted);
+    renderTOC(toc, sorted, true);
 
     addEventListeners(wrapper);
     initVersionDropdown(wrapper);
+  });
+
+  store.once('delayed:loaded', () => {
+    // Lazy load additional books non blocking
+    Promise.all(store.additionalBooks.map((additionalBook) => new Promise((resolve) => {
+      store.fetchJSON(additionalBook.href, ['default', 'chapters', 'topics']).then((value) => {
+        additionalBook.value = value;
+        resolve();
+      });
+    })))
+      .then(() => {
+        store.additionalBooks.forEach((additionalBook) => {
+          renderTOC(toc, sortBook(additionalBook.value));
+        });
+      });
   });
 }
