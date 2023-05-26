@@ -415,22 +415,19 @@ export default async function decorate(block) {
 
     addEventListeners(wrapper);
     initVersionDropdown(wrapper);
+  });
 
+  store.once('delayed:loaded', () => {
     // Lazy load additional books non blocking
     Promise.all(store.additionalBooks.map((additionalBook) => new Promise((resolve) => {
       store.fetchJSON(additionalBook.href, ['default', 'chapters', 'topics']).then((value) => {
         additionalBook.value = value;
-        resolve(value);
-      }).catch(() => {
-        // TODO eg "/prisma/prisma-cloud/docs/en/compute/admin-guide-pcce/book.json" doesn't resolve
         resolve();
       });
     })))
       .then(() => {
         store.additionalBooks.forEach((additionalBook) => {
-          if (additionalBook.value) {
-            renderTOC(toc, sortBook(additionalBook.value));
-          }
+          renderTOC(toc, sortBook(additionalBook.value));
         });
       });
   });
