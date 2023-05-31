@@ -23,6 +23,7 @@ polyfill();
 
 const range = document.createRange();
 
+export const REDIRECTED_ARTICLE_KEY = 'redirected-article';
 export const PATH_PREFIX = '/prisma/prisma-cloud';
 const LCP_BLOCKS = ['article']; // add your LCP blocks to the list
 window.hlx.RUM_GENERATION = 'prisma-cloud-docs-website'; // add your RUM generation information here
@@ -107,8 +108,14 @@ const store = new (class {
     this.product = getMetadata('product');
     this.docPath = `${PATH_PREFIX}/docs${window.location.pathname.substring(PATH_PREFIX.length)}`;
     this.articleHref = `${this.docsOrigin}${this.docPath}`;
-    this.redirectedArticle = !!sessionStorage.getItem('redirected-article');
-    sessionStorage.removeItem('redirected-article');
+
+    try {
+      this.redirectedArticle = !!sessionStorage.getItem(REDIRECTED_ARTICLE_KEY);
+      sessionStorage.removeItem(REDIRECTED_ARTICLE_KEY);
+    } catch (_) {
+      this.redirectedArticle = window.location.hash.includes(REDIRECTED_ARTICLE_KEY);
+      window.location.hash = window.location.hash.replace(REDIRECTED_ARTICLE_KEY, '');
+    }
 
     const makeBookHref = (path) => `${this.docsOrigin}${path}/book`;
 

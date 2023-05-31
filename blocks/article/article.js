@@ -6,6 +6,7 @@ import {
   parseFragment,
   PATH_PREFIX,
   render,
+  REDIRECTED_ARTICLE_KEY,
 } from '../../scripts/scripts.js';
 
 import {
@@ -112,10 +113,14 @@ async function redirectToFirstChapter() {
   const chapter = book.chapters.data[0];
   const version = getMetadata('version');
   const bookKey = book.default.data[0].path.split('/').pop();
-  const redirect = `${PATH_PREFIX}/${document.documentElement.lang}/${store.product}/${version ? `${version}/` : ''}${bookKey}/${chapter.key}`;
+  let redirect = `${PATH_PREFIX}/${document.documentElement.lang}/${store.product}/${version ? `${version}/` : ''}${bookKey}/${chapter.key}`;
 
   // set flag to avoid infinite loops on books with bad first chapter/topics
-  sessionStorage.setItem('redirected-article', 'true');
+  try {
+    sessionStorage.setItem(REDIRECTED_ARTICLE_KEY, 'true');
+  } catch (_) {
+    redirect += `#${REDIRECTED_ARTICLE_KEY}`;
+  }
   window.location.href = redirect;
 }
 
