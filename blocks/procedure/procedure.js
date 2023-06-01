@@ -2,7 +2,7 @@
  * @param {HTMLDivElement} block
  */
 export default function decorate(block) {
-  const lists = block.querySelectorAll(':scope > div > ol');
+  const lists = block.querySelectorAll(':scope > div > div > ol');
   lists.forEach((list) => {
     list.classList.add('steps');
 
