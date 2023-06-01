@@ -7,11 +7,12 @@ import {
   PATH_PREFIX,
   render,
   REDIRECTED_ARTICLE_KEY,
+  decorateMain,
 } from '../../scripts/scripts.js';
 
 import {
   getMetadata,
-  loadBlock,
+  loadBlocks,
 } from '../../scripts/lib-franklin.js';
 
 const TEMPLATE = /* html */`
@@ -48,7 +49,7 @@ const TEMPLATE = /* html */`
                       <i class="icon-share-alt"></i>
                   </a>
               </div>
-              <div class="book-pdf-content">
+              <div class="book-content">
                   <slot name="content"></slot>
               </div>
           </div>
@@ -223,11 +224,10 @@ export default async function decorate(block) {
   renderSidenav(block);
 
   if (articleFound) {
-  // Load article blocks
-    const blocks = '.hero, .admonition';
-    for (const el of block.querySelectorAll(blocks)) {
-      el.setAttribute('data-block-name', el.className.split(' ')[0]);
-      loadBlock(el);
+    const bookContent = block.querySelector('.book-content div[slot="content"]');
+    if (bookContent) {
+      decorateMain(bookContent);
+      loadBlocks(bookContent);
     }
   }
 }
