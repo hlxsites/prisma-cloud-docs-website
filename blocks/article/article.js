@@ -6,9 +6,11 @@ import {
   parseFragment,
   PATH_PREFIX,
   render,
+  REDIRECTED_ARTICLE_KEY,
 } from '../../scripts/scripts.js';
 
 import {
+  getMetadata,
   loadBlock,
 } from '../../scripts/lib-franklin.js';
 
@@ -94,12 +96,43 @@ function localize(block) {
   });
 }
 
+function shouldRedirectMissing() {
+  if (store.redirectedArticle) {
+    return false;
+  }
+  const { pathname } = window.location;
+  const segments = pathname.substring(PATH_PREFIX.length).split('/').slice(2);
+  const version = getMetadata('version');
+  return segments.length >= (version === 'not-applicable' ? 4 : 5);
+}
+
+async function redirectToFirstChapter() {
+  const book = await loadBook(store.mainBook.href);
+  if (!book) return;
+
+  const chapter = book.chapters.data[0];
+  const version = getMetadata('version');
+  const bookKey = book.default.data[0].path.split('/').pop();
+  let redirect = `${PATH_PREFIX}/${document.documentElement.lang}/${store.product}/${version ? `${version}/` : ''}${bookKey}/${chapter.key}`;
+
+  // set flag to avoid infinite loops on books with bad first chapter/topics
+  try {
+    sessionStorage.setItem(REDIRECTED_ARTICLE_KEY, 'true');
+  } catch (_) {
+    redirect += `#${REDIRECTED_ARTICLE_KEY}`;
+  }
+  window.location.href = redirect;
+}
+
 /** @param {HTMLDivElement} block */
 export default async function decorate(block) {
   const res = await loadArticle(block.querySelector('a').href);
   let articleFound = true;
   if (!res.ok) {
     console.error(`failed to load article (${res.status}): `, res);
+    if (res.status === 404 && shouldRedirectMissing()) {
+      await redirectToFirstChapter();
+    }
     articleFound = false;
   }
 
