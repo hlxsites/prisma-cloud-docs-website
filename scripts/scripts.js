@@ -289,8 +289,10 @@ function buildHeroBlock(main) {
  */
 function buildBreadcrumbsBlock() {
   const link = document.createElement('a');
-  link.href = store.mainBook.href;
-  link.textContent = store.mainBook.title;
+  if (store.mainBook) {
+    link.href = store.mainBook.href;
+    link.textContent = store.mainBook.title;
+  }
   return buildBlock('breadcrumbs', { elems: [link] });
 }
 
@@ -370,6 +372,42 @@ function buildAutoBlocks(main) {
   }
 }
 
+function decorateLandingSections(main) {
+  if (getMetadata('template') === 'landing-division') {
+    const h1 = main.querySelector('h1');
+    if (h1) {
+      const section = document.createElement('div');
+      section.classList.add('section-has-h1');
+      const container = document.createElement('div');
+      container.classList.add('container');
+
+      container.append(h1);
+      container.append(document.createElement('hr'));
+      section.append(container);
+
+      main.prepend(section);
+    }
+
+    const sectionWithAside = main.querySelector('.section.aside-right');
+    if (sectionWithAside) {
+      const sectionMain = sectionWithAside.querySelectorAll(':scope > div > *:not(.aside)');
+      const sectionAside = sectionWithAside.querySelector('.aside');
+
+      const div = document.createElement('div');
+      div.classList.add('section-main');
+      div.append(...sectionMain);
+
+      const aside = document.createElement('div');
+      aside.classList.add('section-aside');
+      aside.append(sectionAside);
+
+      sectionWithAside.innerHTML = '';
+      sectionWithAside.append(div);
+      sectionWithAside.append(aside);
+    }
+  }
+}
+
 /**
  * Decorates the main element.
  * @param {Element} main The main element
@@ -381,6 +419,7 @@ export function decorateMain(main) {
   decorateIcons(main);
   buildAutoBlocks(main);
   decorateSections(main);
+  decorateLandingSections(main);
   decorateBlocks(main);
 }
 

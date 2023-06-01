@@ -4,6 +4,10 @@ main .breadcrumbs-container {
     width: 100vw;
 }
 
+.landing-division .breadcrumbs-container {
+    width: auto;
+}
+
 main .breadcrumbs-container::before {
     content: "";
     position: absolute;
@@ -24,6 +28,10 @@ main .breadcrumbs-container::before {
 
 .pan-breadcrumbs a {
     font-size: 13px;
+    color: #fff;
+}
+
+.pan-breadcrumbs a:visited {
     color: #fff;
 }
 
