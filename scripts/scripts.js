@@ -418,6 +418,23 @@ function decorateLandingSections(main) {
 }
 
 /**
+ * @template {Function} T
+ * @param {T} fn
+ * @param {number} [time=600]
+ * @returns {T}
+ */
+export function debounce(fn, time = 600) {
+  let timer;
+  return (...args) => {
+    if (timer) {
+      clearTimeout(timer);
+      timer = undefined;
+    }
+    timer = setTimeout(() => fn(...args), time);
+  };
+}
+
+/**
  * Decorates the main element.
  * @param {Element} main The main element
  */

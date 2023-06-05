@@ -17,6 +17,11 @@ main .breadcrumbs-container::before {
     z-index: -2;
 }
 
+.breadcrumbs {
+    max-width: var(--max-width);
+    margin: auto;
+}
+
 .pan-breadcrumbs ol {
     display: flex;
     flex-wrap: wrap;

@@ -1,0 +1,34 @@
+.product-tiles > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.product-tiles img {
+  width: 100%;
+}
+
+.product-tiles > div > div {
+  order: 1;
+  text-align: center;
+}
+
+.product-tiles > div > .product-tiles-img-col {
+  order: 0;
+}
+
+.product-tiles > div > .product-tiles-img-col img {
+  display: block;
+}
+
+@media (min-width: 900px) {
+  .product-tiles > div {
+    align-items: center;
+    flex-direction: unset;
+    gap: 32px;
+  }
+
+  .product-tiles > div > div {
+    flex: 1;
+    order: unset;
+  }
+}

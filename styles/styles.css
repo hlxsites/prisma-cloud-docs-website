@@ -40,7 +40,7 @@
   --heading-font-size-xs: 18px;
 
   /* nav height */
-  --nav-height: 119px;
+  --nav-height: 116px;
 
   /* max width */
   --max-width: 1400px;
@@ -236,6 +236,15 @@ main .section {
 /* section metadata */
 main .section.highlight {
   background-color: var(--highlight-background-color);
+}
+
+main .section.full-width {
+  width: 100vw;
+  margin-left: calc(0px - max(0px, (100vw - var(--max-width)) / 2));
+}
+
+main .section.full-width > div {
+  max-width: initial;
 }
 
 /* utils */
