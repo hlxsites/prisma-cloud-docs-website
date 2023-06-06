@@ -318,7 +318,7 @@ main .section.full-width > div {
 
 @media (min-width: 992px) {
   :root {
-    --nav-height: 135px;
+    --nav-height: 134px;
   }
 
   .container {

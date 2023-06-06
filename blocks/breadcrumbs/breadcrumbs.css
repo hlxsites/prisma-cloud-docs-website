@@ -12,7 +12,8 @@ main .breadcrumbs-container::before {
     content: "";
     position: absolute;
     width: 100%;
-    height: 100%;
+    height: 120%;
+    top: -1px;
     background: #00C0E8;
     z-index: -2;
 }
