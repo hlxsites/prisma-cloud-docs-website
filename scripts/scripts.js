@@ -55,6 +55,30 @@ function getEnv() {
   return 'prod';
 }
 
+// Coveo Configuration
+export function coveoConfig() {
+  this.orgID="";
+  this.apiKey="";
+  this.searchPageURL="";
+  switch (getEnv()) {
+    case 'prod':
+      this.apiKey = "xx2bec4a3c-f9a2-48b0-8675-d51ad3e6a4cf";
+      this.orgID = "paloaltonetworksintranet";
+      this.searchPageURL = "https://docs.paloaltonetworks.com/search/";
+      break;
+    default:
+      this.apiKey = "xx8731a310-9aee-4aa4-8fab-81967a8f7391";
+      this.orgID = "paloaltonetworksintranetsandbox2";
+      this.searchPageURL = "https://dev.docs.paloaltonetworks.com/search/";
+      break;
+  }
+  return {
+    "apiKey":this.apiKey,
+    "orgID":this.orgID,
+    "searchPageURL":this.searchPageURL
+  }
+}
+
 /** @type {Store} */
 const store = new (class {
   constructor() {
