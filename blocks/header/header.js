@@ -94,10 +94,10 @@ const TEMPLATE = /* html */`
       </head>
       <div class="coveosearchbox">
         <div class="dropdown">
-          <button id="selectedButton" class='dropbtn'>All Documentation</button>
+          <button id="selectedButton" class='dropbtn'>All Prisma Cloud Documentation</button>
           <div class="dropdown-content" style="display: none;">
+            <a class="coveo-dropdown-item selected" data-label="All Prisma Cloud Documentation" data-value="@panproductcategory==('Prisma Cloud')">All Prisma Cloud Documentation</a>
             <a class="coveo-dropdown-item" data-label="All Documentation" data-value="all">All Documentation</a>
-            <a class="coveo-dropdown-item" data-label="All Prisma Cloud Documentation" data-value="@panproductcategory==('Prisma Cloud')">All Prisma Cloud Documentation</a>
           </div>
         </div>
         <div id="searchbox">
@@ -370,20 +370,31 @@ function addEventListeners(block) {
 
   if (docsetMeta && productMeta) {
     const docSetOption = document.createElement('a');
-    docSetOption.classList.add('coveo-dropdown-item');
+    docSetOption.classList.add('coveo-dropdown-item')
+    if (!booknameMeta) {
+      block.querySelector('.coveo-dropdown-item.selected').classList.remove("selected");
+      docSetOption.classList.add('selected' );
+      block.querySelector('.dropbtn').textContent = 'All ' + productMeta + ' books';
+    }
     docSetOption.setAttribute('data-label', 'All ' + productMeta + ' books');
     docSetOption.setAttribute('data-value', '@td_docsetid==(' + docsetMeta + ')');
     docSetOption.append('All ' + productMeta + ' books');
     appendDropdown.prepend(docSetOption);
+    
   }
   if (booknameMeta) {
     const bookOption= document.createElement('a');
-    bookOption.classList.add('coveo-dropdown-item');
+    block.querySelector('.coveo-dropdown-item.selected').classList.remove("selected");
+    bookOption.classList.add('coveo-dropdown-item' );
+    bookOption.classList.add('selected' );
+    block.querySelector('.dropbtn').textContent = booknameMeta;
     bookOption.setAttribute('data-label', booknameMeta);
     bookOption.setAttribute('data-value', '@panbookname==(' + booknameMeta + ')');
     bookOption.append(booknameMeta);
     appendDropdown.prepend(bookOption);
+
   }
+
 
   searchButtonOpen.addEventListener('click', () => {
     searchPanel.classList.add('active');
@@ -391,10 +402,23 @@ function addEventListeners(block) {
       const searchBoxRoot = block.querySelector('#searchbox');
       const c_config = coveoConfig();
       Coveo.SearchEndpoint.configureCloudV2Endpoint(c_config.orgID, c_config.apiKey);
+      Coveo.$$(searchBoxRoot).on('newQuery', () => {
+        const dropdownSelectedValue = block.querySelector(".coveo-dropdown-item.selected").getAttribute('data-value');
+        try {
+          if (dropdownSelectedValue !== 'all') {
+            // eslint-disable-next-line no-undef
+            Coveo.state(searchBoxRoot, 'hq', dropdownSelectedValue);
+            // eslint-disable-next-line no-undef
+            Coveo.state(searchBoxRoot, 'hd', block.querySelector(".coveo-dropdown-item.selected").getAttribute('data-label').trim());
+          }
+        } catch (error) {
+          console.log(error);
+        }
+        
+      });
       Coveo.initSearchbox(searchBoxRoot, c_config.searchPageURL);
       const dropDownOpen = block.querySelector('.dropbtn');
       const dropDownLoad = block.querySelector('.dropdown-content');
-      const dropDownItem = block.querySelectorAll('.coveo-dropdown-item');
       dropDownOpen.addEventListener('click', () => {
         // event.target.style.display = 'block';
         if (dropDownLoad.style.display === 'none') {
@@ -404,29 +428,15 @@ function addEventListeners(block) {
         }
       });
       dropDownLoad.addEventListener('click', (event) => {
-        const selectedValue = event.target.getAttribute('data-label');
-        const dropdownSelectedValue = event.target.getAttribute('data-value');
+        block.querySelector('.coveo-dropdown-item.selected').classList.remove("selected");
+
+        event.target.classList.add("selected");
         // debugger;
-        const button = block.querySelector('.dropbtn');
-        if (selectedValue) {
-          button.textContent = selectedValue;
-        }
+        block.querySelector('.dropbtn').textContent = event.target.getAttribute('data-label');
+
         dropDownLoad.setAttribute('style', 'display : none');
         // eslint-disable-next-line no-undef
-        Coveo.$$(searchBoxRoot).on('newQuery', () => {
-          if (dropDownItem.length > 0) {
-            try {
-              if (dropdownSelectedValue !== 'all') {
-                // eslint-disable-next-line no-undef
-                Coveo.state(searchBoxRoot, 'hq', dropdownSelectedValue);
-                // eslint-disable-next-line no-undef
-                Coveo.state(searchBoxRoot, 'hd', selectedValue.trim());
-              }
-            } catch (error) {
-              console.log(error);
-            }
-          }
-        });
+        
       });
     }
   });
