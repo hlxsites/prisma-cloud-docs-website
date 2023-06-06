@@ -9,7 +9,7 @@ import {
   render, parseFragment, PATH_PREFIX, renderBreadCrumbs, getPlaceholders, isMobile,
 } from '../../scripts/scripts.js';
 
-const TEMPLATE = /* html */`
+const TEMPLATE = /* html */`    
   <!-- Mobile -->
   <section class="pan-mobile-nav hidden-md hidden-lg">
       <div class="nav-header">
@@ -87,11 +87,29 @@ const TEMPLATE = /* html */`
 
   <!-- Search -->
   <div class="pan-search-panel">
-      <div class="search-panel-container container">
-          <button class="search-panel-close locale-search-panel-close">
-              <i class="ion-ios-close-outline"></i>
-          </button>
+    <div class="search-panel-container container">
+      <!-- Start: Coveo Search Box Implementation -->
+      <script class="coveo-script" src="https://static.cloud.coveo.com/searchui/v2.10082/js/CoveoJsSearch.min.js"></script>
+      <link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v2.10082/css/CoveoFullSearch.min.css"/>
+      </head>
+      <div class="coveosearchbox">
+        <div class="dropdown">
+          <button id="selectedButton" class='dropbtn'>All Documentation</button>
+          <div class="dropdown-content" style="display: none;">
+            <a class="coveo-dropdown-item" data-label="All Documentation" data-value="all">All Documentation</a>
+            <a class="coveo-dropdown-item" data-label="All Prisma Cloud Documentation" data-value="@panproductcategory==('Prisma Cloud')">All Prisma Cloud Documentation</a>
+          </div>
+        </div>
+        <div id="searchbox">
+          <div class="CoveoAnalytics" data-search-hub="TechDocsPANW_SH"></div>
+          <div class="CoveoSearchbox"></div>
+        </div>
       </div>
+      <!-- Start: Coveo Search Box Implementation -->
+      <button class="search-panel-close locale-search-panel-close">
+        <i class="ion-ios-close-outline"></i>
+      </button>
+    </div>
   </div>
 
   <!-- Desktop -->
@@ -341,9 +359,87 @@ function addEventListeners(block) {
   /* Search */
   const searchButtonOpen = desktopNav.querySelector('.nav-search-button');
   const searchButtonClose = searchPanel.querySelector('.search-panel-close');
+
+  /* Start: Coveo Search Box Implementation */
+
+  const booknameMeta = getMetadata('book-name');
+  const productMeta = getMetadata('product');
+  const docsetMeta = getMetadata('docset-id');
+
+  const appendDropdown = block.querySelector('.dropdown-content');
+
+  if (docsetMeta && productMeta) {
+    const appendDropdownItem = document.createElement('a');
+    appendDropdownItem.classList.add('coveo-dropdown-item');
+    appendDropdownItem.setAttribute('data-label', 'All ' + productMeta + ' books');
+    appendDropdownItem.setAttribute('data-value', '@td_docsetid==(' + docsetMeta + ')');
+    appendDropdownItem.append('All ' + productMeta + ' books');
+    appendDropdown.append(appendDropdownItem);
+  }
+  if (booknameMeta) {
+    const appendDropdownItem1 = document.createElement('a');
+    appendDropdownItem1.classList.add('coveo-dropdown-item');
+    appendDropdownItem1.setAttribute('data-label', booknameMeta);
+    appendDropdownItem1.setAttribute('data-value', '@panbookname==(' + booknameMeta + ')');
+    appendDropdownItem1.append(booknameMeta);
+    appendDropdown.append(appendDropdownItem1);
+  }
+
   searchButtonOpen.addEventListener('click', () => {
     searchPanel.classList.add('active');
+    // eslint-disable-next-line no-undef
+    if (Coveo.SearchEndpoint.defaultEndpoint === undefined) {
+      const searchBoxRoot = block.querySelector('#searchbox');
+      const devOrgID = 'paloaltonetworksintranetsandbox2';
+      // const prodOrdId = 'paloaltonetworksintranet';
+      const devApiKey = 'xx8731a310-9aee-4aa4-8fab-81967a8f7391';
+      // const prodApiKey = 'xx2bec4a3c-f9a2-48b0-8675-d51ad3e6a4cf';
+      const devSearchPageUrl = 'https://dev.docs.paloaltonetworks.com/search/';
+      // const prodSearchPageUrl = 'https://docs.paloaltonetworks.com/search/';
+      // eslint-disable-next-line no-undef
+      Coveo.SearchEndpoint.configureCloudV2Endpoint(devOrgID, devApiKey);
+      // eslint-disable-next-line no-undef
+      Coveo.initSearchbox(searchBoxRoot, devSearchPageUrl);
+      const dropDownOpen = block.querySelector('.dropbtn');
+      const dropDownLoad = block.querySelector('.dropdown-content');
+      const dropDownItem = block.querySelectorAll('.coveo-dropdown-item');
+      dropDownOpen.addEventListener('click', () => {
+        // event.target.style.display = 'block';
+        if (dropDownLoad.style.display === 'none') {
+          dropDownLoad.style.display = 'block';
+        } else {
+          dropDownLoad.style.display = 'none';
+        }
+      });
+      dropDownLoad.addEventListener('click', (event) => {
+        const selectedValue = event.target.getAttribute('data-label');
+        const dropdownSelectedValue = event.target.getAttribute('data-value');
+        // debugger;
+        const button = block.querySelector('.dropbtn');
+        if (selectedValue) {
+          button.textContent = selectedValue;
+        }
+        dropDownLoad.setAttribute('style', 'display : none');
+        // eslint-disable-next-line no-undef
+        Coveo.$$(searchBoxRoot).on('newQuery', () => {
+          if (dropDownItem.length > 0) {
+            try {
+              if (dropdownSelectedValue !== 'all') {
+                // eslint-disable-next-line no-undef
+                Coveo.state(searchBoxRoot, 'hq', dropdownSelectedValue);
+                // eslint-disable-next-line no-undef
+                Coveo.state(searchBoxRoot, 'hd', selectedValue.trim());
+              }
+            } catch (error) {
+              console.log(error);
+            }
+          }
+        });
+      });
+    }
   });
+
+  /* End : Coveo Search Box Implementation */
 
   searchButtonClose.addEventListener('click', () => {
     searchPanel.classList.remove('active');
@@ -530,9 +626,9 @@ export default async function decorate(block) {
   decorateIcons(block);
   document.body.querySelector('header').classList.add('loaded');
 
-  if (!isMobile()) {
-    renderBreadCrumbs();
-  } else {
-    store.once('delayed:loaded', renderBreadCrumbs);
+    if (!isMobile()) {
+      renderBreadCrumbs();
+    } else {
+      store.once('delayed:loaded', renderBreadCrumbs);
   }
 }
