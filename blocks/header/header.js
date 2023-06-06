@@ -389,8 +389,9 @@ function addEventListeners(block) {
     searchPanel.classList.add('active');
     if (Coveo.SearchEndpoint.defaultEndpoint === undefined) {
       const searchBoxRoot = block.querySelector('#searchbox');
-      Coveo.SearchEndpoint.configureCloudV2Endpoint(coveoConfig.orgID, coveoConfig.apiKey);
-      Coveo.initSearchbox(searchBoxRoot, coveoConfig.searchPageURL);
+      const c_config = coveoConfig();
+      Coveo.SearchEndpoint.configureCloudV2Endpoint(c_config.orgID, c_config.apiKey);
+      Coveo.initSearchbox(searchBoxRoot, c_config.searchPageURL);
       const dropDownOpen = block.querySelector('.dropbtn');
       const dropDownLoad = block.querySelector('.dropdown-content');
       const dropDownItem = block.querySelectorAll('.coveo-dropdown-item');
