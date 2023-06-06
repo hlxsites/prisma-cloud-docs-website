@@ -17,6 +17,10 @@ main .breadcrumbs-container::before {
     z-index: -2;
 }
 
+main.error .breadcrumbs-wrapper {
+    padding: 0 16px;
+}
+
 .breadcrumbs {
     max-width: var(--max-width);
     margin: auto;
@@ -48,7 +52,8 @@ main .breadcrumbs-container::before {
 }
 
 .book .breadcrumbs-wrapper {
-    margin-left: 30px;
+    margin-left: 15px;
+    max-width: var(--max-width);
 }
 
 .book .breadcrumbs-container::before {
@@ -58,5 +63,11 @@ main .breadcrumbs-container::before {
 .book .pan-breadcrumbs li+li::before,
 .book .pan-breadcrumbs a {
     color: #000;
+}
+
+@media (min-width: 768px) {
+    .book .breadcrumbs-wrapper {
+        margin-left: 45px;
+    }
 }
 
