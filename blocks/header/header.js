@@ -388,6 +388,7 @@ function addEventListeners(block) {
   searchButtonOpen.addEventListener('click', () => {
     searchPanel.classList.add('active');
     if (Coveo.SearchEndpoint.defaultEndpoint === undefined) {
+      const searchBoxRoot = block.querySelector('#searchbox');
       Coveo.SearchEndpoint.configureCloudV2Endpoint(coveoConfig.orgID, coveoConfig.apiKey);
       Coveo.initSearchbox(searchBoxRoot, coveoConfig.searchPageURL);
       const dropDownOpen = block.querySelector('.dropbtn');
