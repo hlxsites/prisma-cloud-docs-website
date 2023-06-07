@@ -6,7 +6,7 @@ import {
   getMetadata, decorateIcons,
 } from '../../scripts/lib-franklin.js';
 import {
-  render, parseFragment, PATH_PREFIX, renderBreadCrumbs, getPlaceholders, isMobile,coveoConfig,
+  render, parseFragment, PATH_PREFIX, renderBreadCrumbs, getPlaceholders, isMobile,
 } from '../../scripts/scripts.js';
 
 const TEMPLATE = /* html */`    
@@ -377,7 +377,7 @@ function addEventListeners(block) {
       block.querySelector('.dropbtn').textContent = 'All ' + productMeta + ' books';
     }
     docSetOption.setAttribute('data-label', 'All ' + productMeta + ' books');
-    docSetOption.setAttribute('data-value', '@td_docsetid==(' + docsetMeta + ')');
+    docSetOption.setAttribute('data-value', '@td_docsetid==("' + docsetMeta + '")');
     docSetOption.append('All ' + productMeta + ' books');
     appendDropdown.prepend(docSetOption);
     
@@ -389,7 +389,7 @@ function addEventListeners(block) {
     bookOption.classList.add('selected' );
     block.querySelector('.dropbtn').textContent = booknameMeta;
     bookOption.setAttribute('data-label', booknameMeta);
-    bookOption.setAttribute('data-value', '@panbookname==(' + booknameMeta + ')');
+    bookOption.setAttribute('data-value', '@panbookname==("' + booknameMeta + '")');
     bookOption.append(booknameMeta);
     appendDropdown.prepend(bookOption);
 
@@ -400,7 +400,7 @@ function addEventListeners(block) {
     searchPanel.classList.add('active');
     if (Coveo.SearchEndpoint.defaultEndpoint === undefined) {
       const searchBoxRoot = block.querySelector('#searchbox');
-      const c_config = coveoConfig();
+      const c_config = store.coveoConfig;
       Coveo.SearchEndpoint.configureCloudV2Endpoint(c_config.orgID, c_config.apiKey);
       Coveo.$$(searchBoxRoot).on('newQuery', () => {
         const dropdownSelectedValue = block.querySelector(".coveo-dropdown-item.selected").getAttribute('data-value');

@@ -55,30 +55,6 @@ function getEnv() {
   return 'prod';
 }
 
-// Coveo Configuration
-export function coveoConfig() {
-  let orgID="";
-  let apiKey="";
-  let searchPageURL="";
-  switch (getEnv()) {
-    case 'prod':
-      apiKey = "xx2bec4a3c-f9a2-48b0-8675-d51ad3e6a4cf";
-      orgID = "paloaltonetworksintranet";
-      searchPageURL = "https://docs.paloaltonetworks.com/search/";
-      break;
-    default:
-      apiKey = "xx8731a310-9aee-4aa4-8fab-81967a8f7391";
-      orgID = "paloaltonetworksintranetsandbox2";
-      searchPageURL = "https://dev.docs.paloaltonetworks.com/search/";
-      break;
-  }
-  return {
-    "apiKey":apiKey,
-    "orgID":orgID,
-    "searchPageURL":searchPageURL
-  }
-}
-
 /** @type {Store} */
 const store = new (class {
   constructor() {
@@ -87,6 +63,7 @@ const store = new (class {
     };
     this._emitted = {};
     this.env = getEnv();
+    this.coveoConfig = this.getCoveoConfig();
     this.pageTemplate = getMetadata('template');
     if (this.pageTemplate === 'book') {
       this.initBook();
@@ -219,6 +196,27 @@ const store = new (class {
         console.error(e);
       });
     return j._l[p];
+  }
+
+  getCoveoConfig() {
+    let coveoConfig_l = {
+      orgID:"",
+      apiKey:"",
+      searchPageURL:""
+    }
+    switch (this.env) {
+      case 'prod':
+        coveoConfig_l.apiKey = "xx2bec4a3c-f9a2-48b0-8675-d51ad3e6a4cf";
+        coveoConfig_l.orgID = "paloaltonetworksintranet";
+        coveoConfig_l.searchPageURL = "https://docs.paloaltonetworks.com/search/";
+        break;
+      default:
+        coveoConfig_l.apiKey = "xx8731a310-9aee-4aa4-8fab-81967a8f7391";
+        coveoConfig_l.orgID = "paloaltonetworksintranetsandbox2";
+        coveoConfig_l.searchPageURL = "https://dev.docs.paloaltonetworks.com/search/";
+        break;
+    }
+    return coveoConfig_l;
   }
 })();
 window.store = store;
