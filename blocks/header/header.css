@@ -430,6 +430,10 @@
 .coveosearchbox #searchbox .CoveoSearchbox .magic-box .magic-box-input {
     border-radius: 0;
 }
+
+#searchbox .CoveoSearchbox .magic-box .magic-box-clear-svg {
+    color: #fb582c;
+}
 .coveosearchbox #searchbox .CoveoSearchbox .CoveoSearchButton {
     height: 48px;
     width: 60px;
