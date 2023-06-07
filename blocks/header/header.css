@@ -1081,7 +1081,49 @@
         top: -84px;
         right: -386px;
     }
+    /* Mobile search Bar UI changes - START*/
+    .coveosearchbox .dropbtn {
+        font-size: 12px;
+    }
+    .coveosearchbox .dropbtn {
+        padding: 17px 15px;
+    }
+    .coveosearchbox {
+        width: 80%;
+    }
+    /* Mobile search Bar UI changes - END */
 }
+    /* Mobile search Bar UI changes - START*/
+
+@media (max-width: 500px) {
+    .coveosearchbox .dropbtn {
+        font-size: 12px;
+        white-space: break-spaces;
+    }
+    .coveosearchbox {
+        display: block;
+        width: 80%;
+    }
+    .coveosearchbox .dropdown {
+        width: 100%;
+    }
+    .CoveoSearchInterface .CoveoSearchbox {
+        max-width: 100%;
+        margin-right: 0;
+    }
+    .coveosearchbox .dropdown-content {
+        z-index: 11;
+        width: 100%;
+        min-width: 100%;
+    }
+    .pan-search-panel .search-panel-close  {
+        margin: 0;
+    }
+    .search-panel-close i {
+        font-size: 20px;
+    }
+}
+    /* Mobile search Bar UI changes - END*/
 
 /* Books */
 .book .pan-desktop-nav {
