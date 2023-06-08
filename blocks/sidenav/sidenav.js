@@ -90,7 +90,7 @@ function initVersionDropdown(wrapper) {
   const versionsDropdownMenu = versionsDropdown.querySelector('.version-dropdown-menu ul');
 
   versionsDropdown.addEventListener('mouseenter', async () => {
-    const json = await store.fetchJSON(`${PATH_PREFIX}/${lang}/versions`, store.product);
+    const json = await store.fetchJSON(`${window.location.origin}${PATH_PREFIX}/${lang}/versions`, store.product);
     if (!json) return;
 
     const curVersion = json.data.find((row) => row.Key === curVersionKey);

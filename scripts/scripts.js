@@ -62,10 +62,14 @@ function getEnv() {
  */
 export function setBranch(url) {
   const env = getEnv();
+
   if (env === 'dev' || env === 'preview') {
     const branch = new URLSearchParams(window.location.search).get('branch');
     if (branch) {
       url.searchParams.append('branch', branch);
+      url.protocol = 'https:';
+      url.port = '';
+      url.host = 'prisma-cloud-docs-production.adobeaem.workers.dev';
     }
   }
 }
@@ -184,7 +188,9 @@ const store = new (class {
       });
     }
 
-    setBranch(url);
+    if (path.endsWith('book')) {
+      setBranch(url);
+    }
 
     const j = this._json;
     const p = url.toString();
