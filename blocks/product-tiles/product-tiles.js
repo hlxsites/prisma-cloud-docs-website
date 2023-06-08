@@ -4,7 +4,6 @@ export default function decorate(block) {
   const cols = [...block.firstElementChild.children];
   block.classList.add(`product-tiles-${cols.length}-cols`);
 
-  // setup image columns
   [...block.children].forEach((row) => {
     [...row.children].forEach((col) => {
       const link = col.querySelector('a');
@@ -17,7 +16,6 @@ export default function decorate(block) {
         wrapLink.appendChild(child);
       });
       col.appendChild(wrapLink);
-      // wrapLink.appendChild(col);
     });
   });
 }

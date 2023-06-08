@@ -30,5 +30,17 @@
   .product-tiles > div > div {
     flex: 1;
     order: unset;
+    position: relative;
+  }
+
+  .product-tiles > div > div:not(:first-child)::before {
+    content: ' ';
+    border-left: solid 2px #fa582d;
+    position: absolute;
+    left: -16px;
+    top: calc( ( 100% - 80px ) / 2 );
+    margin: auto;
+    height: 100%;
+    max-height: 80px;
   }
 }

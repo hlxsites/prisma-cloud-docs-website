@@ -378,24 +378,24 @@ main .section.full-width > div {
   }
 }
 
-/* landing-division template */
-.landing-division a {
+/* landing-product template */
+.landing-product a {
   color: #fa582d;
 }
 
-.landing-division a:hover {
+.landing-product a:hover {
   text-decoration: underline;
 }
 
-.landing-division a:visited {
+.landing-product a:visited {
   color: #962D10;
 }
 
-.landing-division .section {
+.landing-product .section {
   padding: 0;
 }
 
-.landing-division .section-has-h1 {
+.landing-product .section-has-h1 {
   position: absolute;
   left: 0;
   width: 100vw;
@@ -406,71 +406,71 @@ main .section.full-width > div {
   z-index: -10;
 }
 
-.landing-division .section-has-h1 h1 {
+.landing-product .section-has-h1 h1 {
   color: white;
 }
 
-.landing-division .section-has-h1 hr {
+.landing-product .section-has-h1 hr {
   border-top: 3px solid #fff;
   margin: 10px auto 15px 0;
   width: 74px;
 }
 
-.landing-division .section-has-h1 + .section {
+.landing-product .section-has-h1 + .section {
   margin-top: 130px;
   padding-top: 34px;
 }
 
-.landing-division .section-has-h1:first-child + .section {
+.landing-product .section-has-h1:first-child + .section {
   /* +20px for breadcrumb layout not loaded yet */
   margin-top: 150px;
 }
 
-.landing-division .section-has-h1 ~ .section {
+.landing-product .section-has-h1 ~ .section {
   padding-left: 15px;
   padding-right: 15px;
 }
 
 @media (min-width: 992px) {
-  .landing-division .section-has-h1 ~ .section {
+  .landing-product .section-has-h1 ~ .section {
     margin-left: 200px;
     margin-right: 100px;
     border-left: 1px solid #ded9d6;
   }
 }
 
-.landing-division .section.aside-right {
+.landing-product .section.aside-right {
   display: flex;
   flex-wrap: wrap;
   margin-top: -15px;
   padding-top: 15px;
 }
 
-.landing-division .section.aside-right .section-main {
+.landing-product .section.aside-right .section-main {
   width: 75%;
   padding-right: 30px;
 }
 
-.landing-division .section.aside-right .section-aside {
+.landing-product .section.aside-right .section-aside {
   width: 25%;
   margin-top: 0;
 }
 
 @media screen and (max-width: 767px) {
-  .landing-division .section.aside-right .section-main,
-  .landing-division .section.aside-right .section-aside {
+  .landing-product .section.aside-right .section-main,
+  .landing-product .section.aside-right .section-aside {
     width: 100%;
   }
 }
 
-.landing-division .section.cards-container h2 {
+.landing-product .section.cards-container h2 {
   color: #aaa;
   padding: 15px 0;
   font-size: 48px;
   font-weight: 600;
 }
 
-.landing-division .section.cards-container h3 {
+.landing-product .section.cards-container h3 {
   border-left: 3px solid #807c7b;
   margin-left: -16.5px;
   padding-left: 15px;
@@ -480,24 +480,24 @@ main .section.full-width > div {
   font-weight: 600;
 }
 
-.landing-division .section.cards-container h3 ~ p,
-.landing-division .section.cards-container h3 ~ ul {
+.landing-product .section.cards-container h3 ~ p,
+.landing-product .section.cards-container h3 ~ ul {
   border: 15px solid #f4f4f2;
   padding: 8px 8px 18px;
   color: #141414;
 }
 
-.landing-division .section.cards-container h3 ~ ul {
+.landing-product .section.cards-container h3 ~ ul {
   padding-left: 20px;
   margin-top: 0;
   margin-bottom: 0;
 }
 
-.landing-division .section.cards-container h3 + p.is-sibling-of-ul {
+.landing-product .section.cards-container h3 + p.is-sibling-of-ul {
   border-bottom: 0;
   margin-bottom: 0;
 }
 
-.landing-division .section.cards-container h3 + p.is-sibling-of-ul + ul {
+.landing-product .section.cards-container h3 + p.is-sibling-of-ul + ul {
   border-top: 0;
 }

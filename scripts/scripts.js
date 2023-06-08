@@ -382,7 +382,7 @@ function buildAutoBlocks(main) {
 }
 
 function decorateLandingSections(main) {
-  if (getMetadata('template') === 'landing-division') {
+  if (getMetadata('template') === 'landing-product') {
     const h1 = main.querySelector('h1');
     if (h1) {
       const section = document.createElement('div');
