@@ -414,6 +414,10 @@ function decorateLandingSections(main) {
       sectionWithAside.append(div);
       sectionWithAside.append(aside);
     }
+
+    main.querySelectorAll('.section h3 + p + ul').forEach((h3pul) => {
+      h3pul.previousElementSibling.classList.add('is-sibling-of-ul');
+    });
   }
 }
 
