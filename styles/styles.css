@@ -453,3 +453,42 @@ main .section.highlight {
     width: 100%;
   }
 }
+
+.landing-division .section.cards-container h2 {
+  color: #aaa;
+  padding: 15px 0;
+  font-size: 48px;
+  font-weight: 600;
+}
+
+.landing-division .section.cards-container h3 {
+  border-left: 3px solid #807c7b;
+  margin-left: -16.5px;
+  padding-left: 15px;
+  font-size: 22px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.landing-division .section.cards-container h3 ~ p,
+.landing-division .section.cards-container h3 ~ ul {
+  border: 15px solid #f4f4f2;
+  padding: 8px 8px 18px;
+  color: #141414;
+}
+
+.landing-division .section.cards-container h3 ~ ul {
+  padding-left: 20px;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.landing-division .section.cards-container h3 + p.is-sibling-of-ul {
+  border-bottom: 0;
+  margin-bottom: 0;
+}
+
+.landing-division .section.cards-container h3 + p.is-sibling-of-ul + ul {
+  border-top: 0;
+}
