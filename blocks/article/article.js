@@ -8,6 +8,7 @@ import {
   render,
   REDIRECTED_ARTICLE_KEY,
   decorateMain,
+  setBranch,
 } from '../../scripts/scripts.js';
 
 import {
@@ -64,7 +65,10 @@ const TEMPLATE = /* html */`
 async function loadArticle(href) {
   assertValidDocsURL(href);
 
-  const resp = await fetch(`${href}.plain.html`);
+  const url = new URL(`${href}.plain.html`);
+  setBranch(url);
+
+  const resp = await fetch(url.toString());
   if (!resp.ok) return resp;
   try {
     return {
