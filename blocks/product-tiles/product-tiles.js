@@ -1,3 +1,5 @@
+import { html } from '../../scripts/scripts.js';
+
 export default function decorate(block) {
   const cols = [...block.firstElementChild.children];
   block.classList.add(`product-tiles-${cols.length}-cols`);
@@ -5,14 +7,17 @@ export default function decorate(block) {
   // setup image columns
   [...block.children].forEach((row) => {
     [...row.children].forEach((col) => {
-      const pic = col.querySelector('picture');
-      if (pic) {
-        const picWrapper = pic.closest('div');
-        if (picWrapper && picWrapper.children.length === 1) {
-          // picture is only content in column
-          picWrapper.classList.add('product-tiles-img-col');
-        }
+      const link = col.querySelector('a');
+      if (!link) {
+        return;
       }
+      const wrapLink = html`<a href="${link.href}">`;
+      [...col.children].forEach((child) => {
+        child.remove();
+        wrapLink.appendChild(child);
+      });
+      col.appendChild(wrapLink);
+      // wrapLink.appendChild(col);
     });
   });
 }
