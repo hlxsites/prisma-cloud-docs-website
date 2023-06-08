@@ -22,7 +22,7 @@
     src: url('/fonts/decimal/Decimal-Book-Pro.woff2') format('woff2');
     font-weight: 400;
     font-style: normal;
-    font-display: optional;
+    font-display: swap;
 }
 
 @font-face {
@@ -30,7 +30,7 @@
     src: url('/fonts/decimal/Decimal-BookItalic-Pro.woff2') format('woff2');
     font-weight: 400;
     font-style: italic;
-    font-display: optional;
+    font-display: swap;
 }
 
 @font-face {
@@ -38,7 +38,7 @@
     src: url('/fonts/decimal/Decimal-Medium-Pro_Web.woff2') format('woff2');
     font-weight: 500;
     font-style: normal;
-    font-display: optional;
+    font-display: swap;
 }
 
 @font-face {
@@ -46,7 +46,7 @@
     src: url('/fonts/decimal/Decimal-MediumItalic-Pro.woff2') format('woff2');
     font-weight: 500;
     font-style: italic;
-    font-display: optional;
+    font-display: swap;
 }
 
 @font-face {
@@ -54,7 +54,7 @@
     src: url('/fonts/decimal/Decimal-Semibold-Pro_Web.woff2') format('woff2');
     font-weight: 600;
     font-style: normal;
-    font-display: optional;
+    font-display: swap;
 }
 
 @font-face {
@@ -62,7 +62,7 @@
     src: url('/fonts/decimal/Decimal-SemiboldItalic-Pro.woff2') format('woff2');
     font-weight: 600;
     font-style: italic;
-    font-display: optional;
+    font-display: swap;
 }
 
 /* @font-face {

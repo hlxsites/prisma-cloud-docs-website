@@ -15,7 +15,7 @@
 }
 
 .procedure ol.steps li.step::before {
-  font-family: "HCo Decimal", Lato, "Helvetica Neue", Helvetica, Arial, sans-serif, FontAwesome;
+  font-family: 'HCo Decimal', 'HCo Decimal Fallback', Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif, FontAwesome;
   counter-increment: step-counter;
   content: "STEP " counter(step-counter) " \f101";
   color: #fa582d;
