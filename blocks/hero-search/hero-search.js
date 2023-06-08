@@ -10,6 +10,7 @@ function attachSearch(input) {
     }
   };
 
+  // eslint-disable-next-line no-unused-vars
   input.addEventListener('input', debounce((ev) => {
     // TODO: autocomplete
   }));
