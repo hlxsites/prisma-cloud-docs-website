@@ -43,7 +43,7 @@ export default function decorate(block) {
           ${cells.map((cell) => `<th>${cell.innerHTML}</th>`).join('\n')}
         </tr>
       </thead>
-    <table>`.firstElementChild;
+    </table>`.firstElementChild;
     table.appendChild(thead);
   }
 
