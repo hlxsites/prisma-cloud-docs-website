@@ -10,6 +10,18 @@
  * governing permissions and limitations under the License.
  */
 
+@font-face {
+  font-family: 'HCo Decimal Fallback';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Arial');
+  ascent-override: 78.87%;
+  descent-override: 16.43%;
+  line-gap-override: 4.03%;
+  size-adjust: 121.72%;
+}
+
+
 :root {
   /* colors */
   --link-color: #fa582d;
@@ -21,7 +33,7 @@
   --footer-background-color: #1f2b35;
 
   /* fonts */
-  --body-font-family: 'HCo Decimal', lato, 'Helvetica Neue', helvetica, arial, sans-serif;
+  --body-font-family: 'HCo Decimal', 'HCo Decimal Fallback', lato, 'Helvetica Neue', helvetica, arial, sans-serif;
   --heading-font-family: var(--body-font-family);
   --fixed-font-family: menlo, monaco, consolas, "Courier New", monospace;
 
