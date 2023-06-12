@@ -36,6 +36,10 @@ function localize(block) {
 export default async function decorate(block) {
   const bookHref = block.querySelector('a').href;
   const book = bookHref ? await loadBook(bookHref) : undefined;
+  const section = block.closest('.breadcrumbs-container');
+  if (section) {
+    section.classList.add('section', 'full-width');
+  }
 
   block.innerHTML = '';
 
@@ -98,7 +102,7 @@ export default async function decorate(block) {
   block.append(fragment);
   localize(block);
 
-  if (getMetadata('template') === 'landing-division') {
+  if (getMetadata('template').startsWith('landing')) {
     block.classList.add('container');
   }
 }

@@ -4,7 +4,7 @@ main .breadcrumbs-container {
     width: 100vw;
 }
 
-.landing-division .breadcrumbs-container {
+.landing-product .breadcrumbs-container {
     width: auto;
 }
 
@@ -12,9 +12,19 @@ main .breadcrumbs-container::before {
     content: "";
     position: absolute;
     width: 100%;
-    height: 100%;
+    height: 120%;
+    top: -1px;
     background: #00C0E8;
     z-index: -2;
+}
+
+main.error .breadcrumbs-wrapper {
+    padding: 0 16px;
+}
+
+.breadcrumbs {
+    max-width: var(--max-width);
+    margin: auto;
 }
 
 .pan-breadcrumbs ol {
@@ -43,7 +53,8 @@ main .breadcrumbs-container::before {
 }
 
 .book .breadcrumbs-wrapper {
-    margin-left: 30px;
+    margin-left: 15px;
+    max-width: var(--max-width);
 }
 
 .book .breadcrumbs-container::before {
@@ -53,5 +64,11 @@ main .breadcrumbs-container::before {
 .book .pan-breadcrumbs li+li::before,
 .book .pan-breadcrumbs a {
     color: #000;
+}
+
+@media (min-width: 768px) {
+    .book .breadcrumbs-wrapper {
+        margin-left: 45px;
+    }
 }
 

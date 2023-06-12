@@ -382,7 +382,7 @@ function buildAutoBlocks(main) {
 }
 
 function decorateLandingSections(main) {
-  if (getMetadata('template') === 'landing-division') {
+  if (getMetadata('template') === 'landing-product') {
     const h1 = main.querySelector('h1');
     if (h1) {
       const section = document.createElement('div');
@@ -419,6 +419,23 @@ function decorateLandingSections(main) {
       h3pul.previousElementSibling.classList.add('is-sibling-of-ul');
     });
   }
+}
+
+/**
+ * @template {Function} T
+ * @param {T} fn
+ * @param {number} [time=600]
+ * @returns {T}
+ */
+export function debounce(fn, time = 600) {
+  let timer;
+  return (...args) => {
+    if (timer) {
+      clearTimeout(timer);
+      timer = undefined;
+    }
+    timer = setTimeout(() => fn(...args), time);
+  };
 }
 
 /**

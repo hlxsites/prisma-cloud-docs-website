@@ -1,4 +1,4 @@
-.landing-division .cards {
+.landing-product .cards {
   display: flex;
   gap: 30px;
   flex-wrap: wrap;
@@ -8,12 +8,12 @@
 }
 
 @media (min-width: 992px) {
-  .landing-division .cards {
+  .landing-product .cards {
     margin: 20px -15px 20px -115px;
   }
 }
 
-.landing-division .cards-item {
+.landing-product .cards-item {
   max-width: 277px;
   margin-bottom: 10px;
   border-top: 1px solid #F4F4F2;
@@ -25,28 +25,28 @@
   padding: 25px 20px;
 }
 
-.landing-division .cards.large .cards-item {
+.landing-product .cards.large .cards-item {
   max-width: 360px;
 }
 
-.landing-division .cards.resources .cards-item {
+.landing-product .cards.resources .cards-item {
   background-color: #f4f4f2;
 }
 
-.landing-division .cards-item div {
+.landing-product .cards-item div {
   display: flex;
   flex-direction: column;
   height: 100%;
 }
 
-.landing-division .cards-item h4 {
+.landing-product .cards-item h4 {
   font-size: 20px;
   margin: 0;
   text-transform: initial;
   font-weight: 600;
 }
 
-.landing-division .cards-item hr {
+.landing-product .cards-item hr {
   border-top: 4px solid #00C0E8;
   width: 25px;
   margin-top: 20px;
@@ -54,7 +54,7 @@
   margin-left: 0;
 }
 
-.landing-division .cards-item .cards-item-text {
+.landing-product .cards-item .cards-item-text {
   flex-grow: 1;
   font-size: 12px;
   margin-top: 0;
@@ -68,7 +68,7 @@
   max-height: 100px;
 }
 
-.landing-division .cards-item .button-container {
+.landing-product .cards-item .button-container {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -76,7 +76,7 @@
   justify-content: flex-end;
 }
 
-.landing-division .cards-item a {
+.landing-product .cards-item a {
   max-width: 180px;
   display: block;
   cursor: pointer;
@@ -94,26 +94,26 @@
   color: black;
 }
 
-.landing-division .cards-item .button-container a:hover {
+.landing-product .cards-item .button-container a:hover {
   background-size: 101% 101%;
   text-decoration: none;
   color: white;
 }
 
-.landing-division .cards-item .yt-container {
+.landing-product .cards-item .yt-container {
   position: relative;
   width: 100%;
   height: 200px;
 }
 
-.landing-division .cards-item .yt-preview {
+.landing-product .cards-item .yt-preview {
   width: 100%;
   height: 100%;
   cursor: pointer;
   object-fit: cover;
 }
 
-.landing-division .cards-item .yt-button {
+.landing-product .cards-item .yt-button {
   position: absolute;
   left: 50%;
   top: 50%;
@@ -125,12 +125,12 @@
   border: none;
 }
 
-.landing-division .cards-item .yt-player {
+.landing-product .cards-item .yt-player {
   display: none;
   width: 100%;
   border: none;
 }
 
-.landing-division .cards-item .yt-player.is-playing {
+.landing-product .cards-item .yt-player.is-playing {
   display: block;
 }
