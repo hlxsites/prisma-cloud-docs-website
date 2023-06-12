@@ -468,11 +468,8 @@ function addEventListeners(block) {
       for (const dropoption of block.querySelectorAll('.coveo-dropdown-item')) {
         dropoption.addEventListener('click', (event) => {
           block.querySelector('.coveo-dropdown-item.selected').classList.remove('selected');
-  
           event.target.classList.add('selected');
-          // debugger;
           block.querySelector('.dropbtn').textContent = event.target.getAttribute('data-label');
-  
           dropDownLoad.setAttribute('style', 'display : none');
         });
       }
