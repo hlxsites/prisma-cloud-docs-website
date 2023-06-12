@@ -429,7 +429,7 @@ function addEventListeners(block) {
   };
 
   /**
-  * This function Initializes the Coveo widget 
+  * This function Initializes the Coveo widget
   */
   const initCoveo = () => {
     // Coveo initialization code
