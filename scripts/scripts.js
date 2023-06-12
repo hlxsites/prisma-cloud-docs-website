@@ -63,7 +63,6 @@ const store = new (class {
     };
     this._emitted = {};
     this.env = getEnv();
-    this.coveoConfig = this.getCoveoConfig();
     this.pageTemplate = getMetadata('template');
     if (this.pageTemplate === 'book') {
       this.initBook();
@@ -196,29 +195,6 @@ const store = new (class {
         console.error(e);
       });
     return j._l[p];
-  }
-
-  getCoveoConfig() {
-    const coveoConfigL = {
-      orgID: '',
-      apiKey: '',
-      searchPageURL: '',
-      cssScriptURL: 'https://static.cloud.coveo.com/searchui/v2.10082/css/CoveoFullSearch.min.css',
-      jsScriptURL: 'https://static.cloud.coveo.com/searchui/v2.10082/js/CoveoJsSearch.min.js',
-    };
-    switch (this.env) {
-      case 'prod':
-        coveoConfigL.apiKey = 'xx1149a803-7b6b-4fd3-b984-cd35445f7494';
-        coveoConfigL.orgID = 'paloaltonetworksintranet';
-        coveoConfigL.searchPageURL = 'https://docs.paloaltonetworks.com/search/';
-        break;
-      default:
-        coveoConfigL.apiKey = 'xx8731a310-9aee-4aa4-8fab-81967a8f7391';
-        coveoConfigL.orgID = 'paloaltonetworksintranetsandbox2';
-        coveoConfigL.searchPageURL = 'https://dev.docs.paloaltonetworks.com/search/';
-        break;
-    }
-    return coveoConfigL;
   }
 })();
 window.store = store;

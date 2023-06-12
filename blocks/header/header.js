@@ -90,19 +90,8 @@ const TEMPLATE = /* html */`
   <div class="pan-search-panel">
     <div class="search-panel-container container">
       <!-- Start: Coveo Search Box Implementation -->
-      <div class="header-search-box">
-        <div class="dropdown">
-          <button id="selected-button" class='dropbtn'>All Prisma Cloud Documentation</button>
-          <div class="dropdown-content" style="display: none;">
-            <a class="coveo-dropdown-item selected" data-label="All Prisma Cloud Documentation" data-value="@panproductcategory==('Prisma Cloud')">All Prisma Cloud Documentation</a>
-            <a class="coveo-dropdown-item" data-label="All Documentation" data-value="all">All Documentation</a>
-          </div>
-        </div>
-        <div id="searchbox">
-          <div class="CoveoAnalytics" data-search-hub="TechDocsPANW_SH"></div>
-          <div class="CoveoSearchbox" id="coveo-searchbox"></div>
-        </div>
-      </div>
+      <search-bar></search-bar>
+
       <!-- Start: Coveo Search Box Implementation -->
       <button class="search-panel-close locale-search-panel-close">
         <i class="ion-ios-close-outline"></i>
@@ -358,136 +347,13 @@ function addEventListeners(block) {
   const searchButtonOpen = desktopNav.querySelector('.nav-search-button');
   const searchButtonClose = searchPanel.querySelector('.search-panel-close');
 
-  /* Start: Coveo Search Box Implementation */
-  const cConfig = store.coveoConfig;
-  const booknameMeta = getMetadata('book-name');
-  const productMeta = getMetadata('product');
-  const docsetMeta = getMetadata('docset-id');
+  searchButtonOpen.addEventListener('mouseenter', () => {
+    import('../search-bar/search-bar.js');
+  }, { once: true });
 
-  const appendDropdown = block.querySelector('.dropdown-content');
-
-  if (docsetMeta && productMeta) {
-    const docSetOption = document.createElement('a');
-    docSetOption.classList.add('coveo-dropdown-item');
-    if (!booknameMeta) {
-      block.querySelector('.coveo-dropdown-item.selected').classList.remove('selected');
-      docSetOption.classList.add('selected');
-      block.querySelector('.dropbtn').textContent = 'All ' + productMeta + ' books';
-    }
-    docSetOption.setAttribute('data-label', 'All ' + productMeta + ' books');
-    docSetOption.setAttribute('data-value', '@td_docsetid==("' + docsetMeta + '")');
-    docSetOption.append('All ' + productMeta + ' books');
-    appendDropdown.prepend(docSetOption);
-  }
-  if (booknameMeta) {
-    const bookOption = document.createElement('a');
-    block.querySelector('.coveo-dropdown-item.selected').classList.remove('selected');
-    bookOption.classList.add('coveo-dropdown-item');
-    bookOption.classList.add('selected');
-    block.querySelector('.dropbtn').textContent = booknameMeta;
-    bookOption.setAttribute('data-label', booknameMeta);
-    bookOption.setAttribute('data-value', '@panbookname==("' + booknameMeta + '")');
-    bookOption.append(booknameMeta);
-    appendDropdown.prepend(bookOption);
-  }
-
-  /**
-  * This function loads JS scripts dynamicalay
-  * @param {url} String URL to load in head
-  * @param {callback} Function to call after script loaded
-  */
-  const loadJSScripts = (url, callback) => {
-    const script = document.createElement('script');
-    script.type = 'text/javascript';
-    if (script.readyState) {
-      // IE
-      script.onreadystatechange = () => {
-        if (script.readyState === 'loaded' || script.readyState === 'complete') {
-          script.onreadystatechange = null;
-          callback();
-        }
-      };
-    } else {
-      // Other
-      script.onload = () => {
-        callback();
-      };
-    }
-    script.src = url;
-    document.getElementsByTagName('head')[0].appendChild(script);
-  };
-
-  /**
-  * This function loads CSS scripts dynamicalay
-  * @param {url} String URL to load in head
-  */
-  const loadCSSScript = (url) => {
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = url;
-    document.getElementsByTagName('head')[0].appendChild(link);
-  };
-
-  /**
-  * This function Initializes the Coveo widget
-  */
-  const initCoveo = () => {
-    // Coveo initialization code
-    // eslint-disable-next-line no-undef
-    if (Coveo.SearchEndpoint.defaultEndpoint === undefined) {
-      const searchBoxRoot = block.querySelector('#searchbox');
-      // eslint-disable-next-line camelcase
-      // eslint-disable-next-line no-undef
-      Coveo.SearchEndpoint.configureCloudV2Endpoint(cConfig.orgID, cConfig.apiKey);
-      // eslint-disable-next-line no-undef
-      Coveo.$$(searchBoxRoot).on('newQuery', () => {
-        const dropdownSelectedValue = block.querySelector('.coveo-dropdown-item.selected').getAttribute('data-value');
-        try {
-          if (dropdownSelectedValue !== 'all') {
-            // eslint-disable-next-line no-undef
-            Coveo.state(searchBoxRoot, 'hq', dropdownSelectedValue);
-            // eslint-disable-next-line no-undef
-            Coveo.state(searchBoxRoot, 'hd', block.querySelector('.coveo-dropdown-item.selected').getAttribute('data-label').trim());
-          }
-        } catch (error) {
-          console.log(error);
-        }
-      });
-      // eslint-disable-next-line no-undef
-      Coveo.initSearchbox(searchBoxRoot, cConfig.searchPageURL);
-      const dropDownOpen = block.querySelector('.dropbtn');
-      const dropDownLoad = block.querySelector('.dropdown-content');
-      dropDownOpen.addEventListener('click', () => {
-        // event.target.style.display = 'block';
-        if (dropDownLoad.style.display === 'none') {
-          dropDownLoad.style.display = 'block';
-        } else {
-          dropDownLoad.style.display = 'none';
-        }
-      });
-      for (const dropoption of block.querySelectorAll('.coveo-dropdown-item')) {
-        dropoption.addEventListener('click', (event) => {
-          block.querySelector('.coveo-dropdown-item.selected').classList.remove('selected');
-          event.target.classList.add('selected');
-          block.querySelector('.dropbtn').textContent = event.target.getAttribute('data-label');
-          dropDownLoad.setAttribute('style', 'display : none');
-        });
-      }
-    }
-  };
   searchButtonOpen.addEventListener('click', () => {
     searchPanel.classList.add('active');
   });
-
-  searchButtonOpen.addEventListener('mouseover', () => {
-    // Load Coveo Scripts and initialize Coveo only on mouseover on search icon
-    if (typeof Coveo === 'undefined') {
-      loadCSSScript(cConfig.cssScriptURL);
-      loadJSScripts(cConfig.jsScriptURL, initCoveo);
-    }
-  });
-
-  /* End : Coveo Search Box Implementation */
 
   searchButtonClose.addEventListener('click', () => {
     searchPanel.classList.remove('active');
@@ -672,7 +538,9 @@ export default async function decorate(block) {
   localize(block);
   addEventListeners(block);
   decorateIcons(block);
+
   document.body.querySelector('header').classList.add('loaded');
+  store.emit('header:loaded');
 
   if (!isMobile()) {
     renderBreadCrumbs();

@@ -35,7 +35,7 @@
 
   .product-tiles > div > div:not(:first-child)::before {
     content: ' ';
-    border-left: solid 2px #fa582d;
+    border-left: solid 2px #00C0E8;
     position: absolute;
     left: -16px;
     top: calc( ( 100% - 80px ) / 2 );
