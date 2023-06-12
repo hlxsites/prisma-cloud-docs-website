@@ -538,7 +538,9 @@ export default async function decorate(block) {
   localize(block);
   addEventListeners(block);
   decorateIcons(block);
+
   document.body.querySelector('header').classList.add('loaded');
+  store.emit('header:loaded');
 
   if (!isMobile()) {
     renderBreadCrumbs();

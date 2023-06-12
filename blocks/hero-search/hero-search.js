@@ -5,7 +5,10 @@ import '../search-bar/search-bar.js';
  * @param {HTMLDivElement} block
  */
 export default function decorate(block) {
-  block.append(html`<search-bar></search-bar>`);
+  block.append(html`
+  <div class="search-bar-container">
+    <search-bar></search-bar>
+  </div>`);
 
   const section = block.closest('div.section');
   const wrapper = section.querySelector('.hero-search-wrapper');
@@ -39,4 +42,13 @@ export default function decorate(block) {
     });
     observer.observe(main, { childList: true });
   }
+
+  // hide header search trigger
+  store.once('header:loaded', () => {
+    const hSearchBtn = document.querySelector('header .nav-search-button');
+    console.log('hSearchBtn: ', hSearchBtn);
+    if (hSearchBtn) {
+      hSearchBtn.style.display = 'none';
+    }
+  });
 }

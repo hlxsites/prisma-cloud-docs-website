@@ -18,3 +18,7 @@
   top: 0;
   left: 0;
 }
+
+.hero-search .search-bar-container {
+  margin: 12px 0;
+}

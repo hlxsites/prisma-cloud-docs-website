@@ -134,10 +134,6 @@ search-bar {
     font-size: 12px;
     padding: 17px 15px;
   }
-
-  .search-bar {
-    width: 80%;
-  }
 }
 
 @media (max-width: 500px) {
@@ -148,7 +144,6 @@ search-bar {
 
   .search-bar {
     display: block;
-    width: 80%;
   }
 
   .search-bar .dropdown {
