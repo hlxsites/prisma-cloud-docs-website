@@ -408,6 +408,7 @@
     visibility: visible;
     height: 120px;
     overflow: visible;
+    margin-left: calc(0px - max(0px, (100vw - var(--max-width)) / 2));
 }
 
 .pan-search-panel .search-panel-container {
