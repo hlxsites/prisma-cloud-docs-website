@@ -6,7 +6,7 @@ export default function decorate(block) {
     if (ytLink) {
       const { searchParams } = new URL(ytLink.getAttribute('href'));
       const id = searchParams.get('v');
-      child.innerHTML = `
+      child.innerHTML = /* html */`
         <div class="yt-container">
           <img class="yt-preview" alt="video preview" src="https://i.ytimg.com/vi/${id}/hqdefault.jpg" loading="lazy"/>
           <button aria-label="Play" class="yt-button">

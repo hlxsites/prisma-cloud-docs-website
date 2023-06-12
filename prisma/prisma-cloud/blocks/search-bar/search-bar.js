@@ -3,7 +3,7 @@ import { getMetadata, loadCSS } from '../../scripts/lib-franklin.js';
 
 const TAG_NAME = 'search-bar';
 const COVEO_BUNDLE_VERSION = 'v2.10082';
-const BUNDLE_PATH = (ext) => `/blocks/search-bar/coveo-search-${COVEO_BUNDLE_VERSION}.min.${ext}`;
+const BUNDLE_PATH = (ext) => `${window.hlx.codeBasePath}/blocks/search-bar/coveo-search-${COVEO_BUNDLE_VERSION}.min.${ext}`;
 
 const TEMPLATE = /* html */`
 <div class="search-bar">
@@ -152,5 +152,5 @@ export default function decorate(block) {
 
 (async () => {
   customElements.define(TAG_NAME, SearchBar);
-  loadCSS('/blocks/search-bar/search-bar.css');
+  loadCSS(`${window.hlx.codeBasePath}/blocks/search-bar/search-bar.css`);
 })();

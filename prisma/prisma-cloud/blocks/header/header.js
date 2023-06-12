@@ -1,5 +1,4 @@
 /* eslint-disable prefer-template */
-// TODO Search
 // TODO a11y
 // TODO i18n
 
