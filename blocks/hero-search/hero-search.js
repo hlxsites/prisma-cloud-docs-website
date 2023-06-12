@@ -1,34 +1,14 @@
-import { debounce, html } from '../../scripts/scripts.js';
-
-/**
- * @param {HTMLInputElement} input
- */
-function attachSearch(input) {
-  const doSearch = (ev) => {
-    if (ev.key === 'ENTER') {
-      // TODO: make search call, redirect, etc
-    }
-  };
-
-  // eslint-disable-next-line no-unused-vars
-  input.addEventListener('input', debounce((ev) => {
-    // TODO: autocomplete
-  }));
-
-  input.addEventListener('keyup', doSearch);
-}
+import { html } from '../../scripts/scripts.js';
+import '../search-bar/search-bar.js';
 
 /**
  * @param {HTMLDivElement} block
  */
 export default function decorate(block) {
-  block.append(html`<input type="text" id="hero-search-input"/>`);
+  block.append(html`<search-bar></search-bar>`);
 
   const section = block.closest('div.section');
   const wrapper = section.querySelector('.hero-search-wrapper');
-  const input = block.querySelector('#hero-search-input');
-
-  attachSearch(input);
 
   wrapper.append(html`<div class="hero-search-background"></div>`);
   section.classList.add('full-width');
