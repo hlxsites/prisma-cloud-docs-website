@@ -199,24 +199,26 @@ const store = new (class {
   }
 
   getCoveoConfig() {
-    let coveoConfig_l = {
-      orgID:"",
-      apiKey:"",
-      searchPageURL:""
-    }
+    const coveoConfigL = {
+      orgID: '',
+      apiKey: '',
+      searchPageURL: '',
+      cssScriptURL: 'https://static.cloud.coveo.com/searchui/v2.10082/css/CoveoFullSearch.min.css',
+      jsScriptURL: 'https://static.cloud.coveo.com/searchui/v2.10082/js/CoveoJsSearch.min.js',
+    };
     switch (this.env) {
       case 'prod':
-        coveoConfig_l.apiKey = "xx2bec4a3c-f9a2-48b0-8675-d51ad3e6a4cf";
-        coveoConfig_l.orgID = "paloaltonetworksintranet";
-        coveoConfig_l.searchPageURL = "https://docs.paloaltonetworks.com/search/";
+        coveoConfigL.apiKey = 'xx1149a803-7b6b-4fd3-b984-cd35445f7494';
+        coveoConfigL.orgID = 'paloaltonetworksintranet';
+        coveoConfigL.searchPageURL = 'https://docs.paloaltonetworks.com/search/';
         break;
       default:
-        coveoConfig_l.apiKey = "xx8731a310-9aee-4aa4-8fab-81967a8f7391";
-        coveoConfig_l.orgID = "paloaltonetworksintranetsandbox2";
-        coveoConfig_l.searchPageURL = "https://dev.docs.paloaltonetworks.com/search/";
+        coveoConfigL.apiKey = 'xx8731a310-9aee-4aa4-8fab-81967a8f7391';
+        coveoConfigL.orgID = 'paloaltonetworksintranetsandbox2';
+        coveoConfigL.searchPageURL = 'https://dev.docs.paloaltonetworks.com/search/';
         break;
     }
-    return coveoConfig_l;
+    return coveoConfigL;
   }
 })();
 window.store = store;
