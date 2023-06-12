@@ -418,47 +418,54 @@
 .pan-search-panel .search-panel-container > * {
     margin: 0 10px;
 }
-/*Coveo Search Box*/
-.coveosearchbox #searchbox.CoveoSearchInterface {
+
+/* Coveo Search Box CSS Start */
+.header-search-box #searchbox {
     width: 100%;
     min-width: auto;
 }
-.coveosearchbox #searchbox .CoveoSearchbox .magic-box {
+
+.header-search-box #searchbox .coveo-searchbox .magic-box {
     border: none;
     border-radius: 0;
 }
-.coveosearchbox #searchbox .CoveoSearchbox .magic-box .magic-box-input {
+
+.header-search-box #searchbox .coveo-searchbox .magic-box .magic-box-input {
     border-radius: 0;
 }
 
-#searchbox .CoveoSearchbox .magic-box .magic-box-clear-svg {
+.header-search-box #searchbox .coveo-searchbox .magic-box .magic-box-clear-svg {
     color: #fb582c;
 }
-.coveosearchbox #searchbox .CoveoSearchbox .CoveoSearchButton {
+
+.header-search-box #searchbox .coveo-searchbox .coveo-accessible-button {
     height: 48px;
     width: 60px;
     background: white;
     border: none;
 }
-.coveosearchbox button#selectedButton:after {
-    font-family: 'simple-line-icons';
+
+.header-search-box button#selected-button::after {
+    font-family: simple-line-icons, var(--body-font-family);
     content: '\e604';
     margin-left: 10px;
 }
-.coveosearchbox {
+
+.header-search-box {
     display: flex;
     align-items: center;
     width: 100%;
 }
-.coveosearchbox select.ui.dropdown {
+
+.header-search-box select.ui.dropdown {
     padding: 15px;
 }
-.coveosearchbox #searchbox .CoveoSearchbox {
+
+.header-search-box #searchbox .coveo-searchbox {
     margin-top: 0;
 }
 
-.coveosearchbox .dropbtn {
-    background-color: #ffffff;
+.header-search-box .dropbtn {
     color: black;
     padding: 15px 15px 14px;
     font-size: 16px;
@@ -466,38 +473,87 @@
     cursor: pointer;
     width: 100%;
     text-align: left;
-    border-right: 1px solid #000000;
-    background: rgba(255, 255, 255, 0.55);
-    border: none;
+    border-right: 1px solid #000;
+    background: #ffffff8c;
     display: flex;
     align-items: center;
     justify-content: center;
     white-space: nowrap;
 }
-.coveosearchbox a.coveo-dropdown-item:hover {
+
+.header-search-box a.coveo-dropdown-item:hover {
     text-decoration: none;
     cursor: pointer;
     background-size: 100% 100%;
 }
-.coveosearchbox a.coveo-dropdown-item {
+
+.header-search-box a.coveo-dropdown-item {
     color: black;
     text-decoration: none;
     padding: 0;
-    background: linear-gradient(to right, #ffcb26, #fff0c8 70%, rgba(0, 0, 0, 0));
-    background-size: 100% 100%;
+    background: linear-gradient(to right, #ffcb26, #fff0c8 70%, #0000);
     background-repeat: no-repeat;
     background-position: 0 0.85em;
     transition: background-size 0.2s;
     background-size: 0% 100%;
     white-space: nowrap;
 }
-.coveosearchbox .coveo-search-button-svg {
+
+.header-search-box .coveo-search-button-svg {
     color: #fb582c;
 }
-.coveosearchbox .CoveoSearchButton:hover .coveo-magnifier-circle-svg {
+
+.header-search-box .coveo-accessible-button:hover .coveo-magnifier-circle-svg {
     fill: #fb582c;
 }
-  #myInput {
+
+.header-search-box .dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.header-search-box .dropdown-content {
+    display: none;
+    position: absolute;
+    min-width: 300px;
+    overflow: auto;
+    z-index: 1;
+    top: 100%;
+    left: 0;
+    background: #fff;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    border: none;
+    box-shadow: 0 14px 40px #36424b4d;
+    color: #000;
+    font-size: 13px;
+    margin: 0;
+    padding: 25px;
+    transition: transform 0.3s ease, opacity 0.4s ease-out, height 0.2s ease;
+    transform-origin: top;
+    transform: rotateX(-10deg);
+}
+
+.header-search-box .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    cursor: pointer;
+}
+
+.header-search-box .dropdown a:hover {
+    background-color: #ddd;
+}
+
+/* Coveo Search Box CSS End */
+
+.show {
+    display: block;
+}
+
+/*
+#myInput {
     box-sizing: border-box;
     background-image: url('searchicon.png');
     background-position: 14px 12px;
@@ -506,52 +562,11 @@
     padding: 14px 20px 12px 45px;
     border: none;
     border-bottom: 1px solid #ddd;
-  }
-  
-  #myInput:focus {outline: 3px solid #ddd;}
-  
-  .dropdown {
-    position: relative;
-    display: inline-block;
-  }
-  
-  .dropdown-content {
-    display: none;
-    position: absolute;
-    min-width: 300px;
-    overflow: auto;
-    border: 1px solid #ddd;
-    z-index: 1;
-    top: 100%;
-    left: 0;
-    background: #fff;
-    border-bottom-left-radius: 15px;
-    border-bottom-right-radius: 15px;
-    border: none;
-    box-shadow: 0 14px 40px rgba(54, 66, 75, 0.3);
-    color: #000;
-    font-size: 13px;
-    margin: 0;
-    padding: 25px;
-    transition: transform 0.3s ease, opacity 0.4s ease-out, height 0.2s ease;
-    transform-origin: top;
-    transform: rotateX(-10deg);
-  }
-  
-  .dropdown-content a {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-    cursor: pointer;
-  }
-  .dropdown a:hover {
-    background-color: #ddd;
-  }
-  
-  .show {
-    display: block;
-  }
+}
+
+#myInput:focus {outline: 3px solid #ddd;}
+*/
+
 /* Desktop */
 .pan-desktop-nav {
     padding-top: 45px;
@@ -1081,49 +1096,59 @@
         top: -84px;
         right: -386px;
     }
-    /* Mobile search Bar UI changes - START*/
-    .coveosearchbox .dropbtn {
+
+    /* Mobile search Bar UI changes - START */
+    .header-search-box .dropbtn {
         font-size: 12px;
-    }
-    .coveosearchbox .dropbtn {
         padding: 17px 15px;
     }
-    .coveosearchbox {
+
+    .header-search-box {
         width: 80%;
     }
+
     /* Mobile search Bar UI changes - END */
 }
-    /* Mobile search Bar UI changes - START*/
 
 @media (max-width: 500px) {
-    .coveosearchbox .dropbtn {
+    /* Mobile search Bar UI changes - Start */
+    .header-search-box .dropbtn {
         font-size: 12px;
         white-space: break-spaces;
     }
-    .coveosearchbox {
+
+    .header-search-box {
         display: block;
         width: 80%;
     }
-    .coveosearchbox .dropdown {
+
+    .header-search-box .dropdown {
         width: 100%;
     }
-    .CoveoSearchInterface .CoveoSearchbox {
+
+    .header-search-box .coveo-searchbox {
         max-width: 100%;
         margin-right: 0;
     }
-    .coveosearchbox .dropdown-content {
+
+    .header-search-box .dropdown-content {
         z-index: 11;
         width: 100%;
         min-width: 100%;
     }
+
     .pan-search-panel .search-panel-close  {
         margin: 0;
     }
+
     .search-panel-close i {
         font-size: 20px;
     }
+
+    /* Mobile search Bar UI changes - END */
 }
-    /* Mobile search Bar UI changes - END*/
+
+    
 
 /* Books */
 .book .pan-desktop-nav {

@@ -90,9 +90,9 @@ const TEMPLATE = /* html */`
   <div class="pan-search-panel">
     <div class="search-panel-container container">
       <!-- Start: Coveo Search Box Implementation -->
-      <div class="coveosearchbox">
+      <div class="header-search-box">
         <div class="dropdown">
-          <button id="selectedButton" class='dropbtn'>All Prisma Cloud Documentation</button>
+          <button id="selected-button" class='dropbtn'>All Prisma Cloud Documentation</button>
           <div class="dropdown-content" style="display: none;">
             <a class="coveo-dropdown-item selected" data-label="All Prisma Cloud Documentation" data-value="@panproductcategory==('Prisma Cloud')">All Prisma Cloud Documentation</a>
             <a class="coveo-dropdown-item" data-label="All Documentation" data-value="all">All Documentation</a>
@@ -100,7 +100,7 @@ const TEMPLATE = /* html */`
         </div>
         <div id="searchbox">
           <div class="CoveoAnalytics" data-search-hub="TechDocsPANW_SH"></div>
-          <div class="CoveoSearchbox"></div>
+          <div class="CoveoSearchbox" id="coveo-searchbox"></div>
         </div>
       </div>
       <!-- Start: Coveo Search Box Implementation -->
