@@ -46,7 +46,6 @@ export default function decorate(block) {
   // hide header search trigger
   store.once('header:loaded', () => {
     const hSearchBtn = document.querySelector('header .nav-search-button');
-    console.log('hSearchBtn: ', hSearchBtn);
     if (hSearchBtn) {
       hSearchBtn.style.display = 'none';
     }

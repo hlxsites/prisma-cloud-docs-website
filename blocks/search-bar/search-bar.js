@@ -107,10 +107,11 @@ export class SearchBar extends HTMLElement {
   }
 
   _initCoveo() {
-    const cConfig = this.coveoConfig;
+    const { orgID, apiKey, searchPageURL } = this.coveoConfig;
+
     if (Coveo.SearchEndpoint.defaultEndpoint === undefined) {
       const searchBoxRoot = this.querySelector('#searchbox');
-      Coveo.SearchEndpoint.configureCloudV2Endpoint(cConfig.orgID, cConfig.apiKey);
+      Coveo.SearchEndpoint.configureCloudV2Endpoint(orgID, apiKey);
       Coveo.$$(searchBoxRoot).on('newQuery', () => {
         const dropdownSelectedValue = this.querySelector('.coveo-dropdown-item.selected').getAttribute('data-value');
         try {
@@ -122,7 +123,7 @@ export class SearchBar extends HTMLElement {
           console.log(error);
         }
       });
-      Coveo.initSearchbox(searchBoxRoot, cConfig.searchPageURL);
+      Coveo.initSearchbox(searchBoxRoot, searchPageURL);
       const dropDownOpen = this.querySelector('.dropbtn');
       const dropDownLoad = this.querySelector('.dropdown-content');
       dropDownOpen.addEventListener('click', () => {
