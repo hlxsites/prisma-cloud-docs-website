@@ -6,7 +6,7 @@
 */
 @font-face {
   font-family: simple-line-icons;
-  src: url('/icons/simple-line-icons/Simple-Line-Icons.woff2') format('woff2');
+  src: url('/prisma/prisma-cloud/icons/simple-line-icons/Simple-Line-Icons.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
 }
@@ -975,7 +975,7 @@
 */
 @font-face {
   font-family: Ionicons;
-  src: url("/icons/ionicons/ionicons.woff2") format("woff2");
+  src: url("/prisma/prisma-cloud/icons/ionicons/ionicons.woff2") format("woff2");
   font-weight: normal;
   font-style: normal;
 }
@@ -4666,7 +4666,7 @@
  */
 @font-face {
   font-family: FontAwesome;
-  src: url('/icons/fontawesome/fontawesome-webfont.woff2') format('woff2');
+  src: url('/prisma/prisma-cloud/icons/fontawesome/fontawesome-webfont.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
 }

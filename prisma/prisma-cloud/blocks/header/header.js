@@ -1,5 +1,4 @@
 /* eslint-disable prefer-template */
-// TODO Search
 // TODO a11y
 // TODO i18n
 
@@ -116,7 +115,7 @@ const TEMPLATE = /* html */`
           <nav class="nav visible-lg visible-md">
               <section class="nav-list">
                   <slot name="menu"></slot>
-                  <img src="/assets/tdlogo-2020-white.webp" alt/>
+                  <img src="/prisma/prisma-cloud/assets/tdlogo-2020-white.webp" alt/>
               </section>
 
               <section class="nav-menu-dropdown">

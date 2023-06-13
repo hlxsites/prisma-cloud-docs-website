@@ -57,7 +57,7 @@
     background-size: 428px 270px;
     pointer-events: none;
     opacity: 0.5;
-    background-image: url("/assets/sase-cns-pattern.webp");
+    background-image: url("/prisma/prisma-cloud/assets/sase-cns-pattern.webp");
 }
 
 .pan-sidenav .book-detail-banner-info {
