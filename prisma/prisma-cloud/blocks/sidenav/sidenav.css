@@ -284,6 +284,11 @@
     align-items: center;
 }
 
+.pan-sidenav .toc-books > ul > li > div > a {
+    font-size: 14px;
+    font-weight: 500;
+}
+
 .pan-sidenav .toc-books > ul > li li[data-key] {
     padding-left: 18px;
 }
@@ -294,7 +299,7 @@
 }
 
 .pan-sidenav .toc-books a:visited {
-    color: #962d10;
+    /* color: #962d10; */
 }
 
 .pan-sidenav .toc-books li:not([data-key]) > div > a:hover,
