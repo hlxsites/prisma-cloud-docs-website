@@ -883,7 +883,7 @@
 .pan-banner::before,
 .pan-banner::after {
     pointer-events: none;
-    background-image: url("/assets/sase-cns-pattern.webp");
+    background-image: url("/prisma/prisma-cloud/assets/sase-cns-pattern.webp");
 }
 
 .pan-banner::before {

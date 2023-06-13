@@ -16,7 +16,7 @@
 
 .pan-admonition::before {
     background-color: #141414;
-    content: url("/assets/note-icon.webp");
+    content: url("/prisma/prisma-cloud/assets/note-icon.webp");
     color: #fff;
     font-size: 300%;
     display: flex;

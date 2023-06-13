@@ -19,7 +19,7 @@
 }
 
 .pan-article .banner-inner::before {
-    background-image: url("/assets/sase-cns-pattern.webp");
+    background-image: url("/prisma/prisma-cloud/assets/sase-cns-pattern.webp");
     display: block;
     content: '';
     pointer-events: none;
