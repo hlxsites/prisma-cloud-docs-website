@@ -5,32 +5,14 @@
  */
 
 import {
-  assertValidDocsURL,
-  assertValidWebURL,
   decorateMain,
+  isValidDocsURL,
+  isValidWebURL,
 } from '../../scripts/scripts.js';
 
 import {
   loadBlocks,
 } from '../../scripts/lib-franklin.js';
-
-function isValidWebURL(href) {
-  try {
-    assertValidWebURL(href);
-  } catch (_) {
-    return false;
-  }
-  return true;
-}
-
-function isValidDocsURL(href) {
-  try {
-    assertValidDocsURL(href);
-  } catch (_) {
-    return false;
-  }
-  return true;
-}
 
 /**
  * Loads a fragment.

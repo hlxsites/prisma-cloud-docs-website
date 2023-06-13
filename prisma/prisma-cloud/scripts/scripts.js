@@ -223,20 +223,32 @@ const store = new (class {
 })();
 window.store = store;
 
-function assertValidURL(url, origins) {
+function isValidURL(url, origins) {
   if (url.startsWith('/')) return true;
   const { origin } = new URL(url);
   if (window.location.origin === origin) return true;
   if (Object.values(origins).includes(origin)) return true;
-  throw Error('invalid origin');
+  return false;
 }
 
 export function assertValidDocsURL(url) {
-  assertValidURL(url, DOCS_ORIGINS);
+  if (!isValidURL(url, DOCS_ORIGINS)) {
+    throw Error('invalid origin');
+  }
 }
 
 export function assertValidWebURL(url) {
-  assertValidURL(url, WEB_ORIGINS);
+  if (!isValidURL(url, WEB_ORIGINS)) {
+    throw Error('invalid origin');
+  }
+}
+
+export function isValidWebURL(url) {
+  return isValidURL(url, WEB_ORIGINS);
+}
+
+export function isValidDocsURL(url) {
+  return isValidURL(url, DOCS_ORIGINS);
 }
 
 /**
