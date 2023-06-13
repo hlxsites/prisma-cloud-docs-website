@@ -5,6 +5,8 @@
  */
 
 import {
+  assertValidDocsURL,
+  assertValidWebURL,
   decorateMain,
 } from '../../scripts/scripts.js';
 
@@ -12,22 +14,53 @@ import {
   loadBlocks,
 } from '../../scripts/lib-franklin.js';
 
+function isValidWebURL(href) {
+  try {
+    assertValidWebURL(href);
+  } catch (_) {
+    return false;
+  }
+  return true;
+}
+
+function isValidDocsURL(href) {
+  try {
+    assertValidDocsURL(href);
+  } catch (_) {
+    return false;
+  }
+  return true;
+}
+
 /**
  * Loads a fragment.
  * @param {string} path The path to the fragment
  * @returns {Promise<HTMLElement>} The root element of the fragment
  */
 async function loadFragment(path) {
-  if (path && path.startsWith('/')) {
-    const resp = await fetch(`${path}.plain.html`);
-    if (resp.ok) {
-      const main = document.createElement('main');
-      main.innerHTML = await resp.text();
-      decorateMain(main);
-      await loadBlocks(main);
-      return main;
+  let href = path;
+  if (!href) return null;
+  if (!href.startsWith('/') && !href.startsWith('.')) {
+    if (isValidWebURL(href)) {
+      try {
+        href = href.slice(new URL(href).origin.length);
+      } catch (_) {
+        // noop
+      }
+    } else if (!isValidDocsURL(href)) {
+      return null;
     }
   }
+
+  const resp = await fetch(`${href}.plain.html`);
+  if (resp.ok) {
+    const main = document.createElement('main');
+    main.innerHTML = await resp.text();
+    decorateMain(main);
+    await loadBlocks(main);
+    return main;
+  }
+
   return null;
 }
 

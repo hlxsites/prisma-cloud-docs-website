@@ -8,6 +8,7 @@ import {
   render,
   REDIRECTED_ARTICLE_KEY,
   decorateMain,
+  DOCS_ORIGINS,
 } from '../../scripts/scripts.js';
 
 import {
@@ -127,9 +128,26 @@ async function redirectToFirstChapter() {
 
 /** @param {HTMLDivElement} block */
 export default async function decorate(block) {
-  const res = await loadArticle(block.querySelector('a').href);
+  let res;
   let articleFound = true;
-  if (!res.ok) {
+  const link = block.querySelector('a');
+
+  if (link) {
+    try {
+      let href = link.getAttribute('href') || link.innerText;
+      if (href) {
+        // change href to point to docs origin on lower envs
+        if (store.env !== 'prod' && href.startsWith('/')) {
+          href = `${DOCS_ORIGINS[store.env]}${href}`;
+        }
+        res = await loadArticle(href);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  if (!res || !res.ok) {
     console.error(`failed to load article (${res.status}): `, res);
     if (res.status === 404 && shouldRedirectMissing()) {
       await redirectToFirstChapter();
@@ -192,33 +210,35 @@ export default async function decorate(block) {
     block.querySelector('.edit-github a').href = `https://github.com/hlxsites/prisma-cloud-docs/blob/main/${window.location.pathname.replace(PATH_PREFIX, 'docs')}.adoc`;
   }
 
-  loadBook(store.mainBook.href).then((book) => {
-    store.emit('book:loaded', book);
+  if (store.mainBook) {
+    loadBook(store.mainBook.href).then((book) => {
+      store.emit('book:loaded', book);
 
-    if (!articleFound) return;
+      if (!articleFound) return;
 
-    const docSlot = block.querySelector('a[slot="document"]');
-    docSlot.textContent = book.default.data[0].title;
+      const docSlot = block.querySelector('a[slot="document"]');
+      docSlot.textContent = book.default.data[0].title;
 
-    const href = window.location.href.split('/');
-    const subPath = href.pop();
-    const topicIndex = book.topics.data.findIndex(({ key }) => key === subPath);
-    const currentTopic = book.topics.data[topicIndex];
-    const prevTopic = book.topics.data[topicIndex - 1];
-    const nextTopic = book.topics.data[topicIndex + 1];
+      const href = window.location.href.split('/');
+      const subPath = href.pop();
+      const topicIndex = book.topics.data.findIndex(({ key }) => key === subPath);
+      const currentTopic = book.topics.data[topicIndex];
+      const prevTopic = book.topics.data[topicIndex - 1];
+      const nextTopic = book.topics.data[topicIndex + 1];
 
-    if (prevTopic.chapter === currentTopic.chapter) {
-      block.querySelector('.prev').href = `${href.join('/')}/${prevTopic.key.replaceAll('_', '-')}`;
-    } else {
-      block.querySelector('.prev').href = `${href.slice(0, -1).join('/')}/${prevTopic.chapter}/${prevTopic.key.replaceAll('_', '-')}`;
-    }
+      if (prevTopic.chapter === currentTopic.chapter) {
+        block.querySelector('.prev').href = `${href.join('/')}/${prevTopic.key.replaceAll('_', '-')}`;
+      } else {
+        block.querySelector('.prev').href = `${href.slice(0, -1).join('/')}/${prevTopic.chapter}/${prevTopic.key.replaceAll('_', '-')}`;
+      }
 
-    if (nextTopic.chapter === currentTopic.chapter) {
-      block.querySelector('.next').href = `${href.join('/')}/${nextTopic.key.replaceAll('_', '-')}`;
-    } else {
-      block.querySelector('.next').href = `${href.slice(0, -1).join('/')}/${nextTopic.chapter}/${nextTopic.key.replaceAll('_', '-')}`;
-    }
-  });
+      if (nextTopic.chapter === currentTopic.chapter) {
+        block.querySelector('.next').href = `${href.join('/')}/${nextTopic.key.replaceAll('_', '-')}`;
+      } else {
+        block.querySelector('.next').href = `${href.slice(0, -1).join('/')}/${nextTopic.chapter}/${nextTopic.key.replaceAll('_', '-')}`;
+      }
+    });
+  }
 
   // Load sidenav
   renderSidenav(block);
