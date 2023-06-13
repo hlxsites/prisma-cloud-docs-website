@@ -364,7 +364,11 @@ function renderTOC(container, book, expand) {
     list.querySelector('li').ariaExpanded = 'true';
   }
 
-  expandTOCByPath(rootList, window.location.pathname.split('/').slice(6).join('/'));
+  // path to current doc inside book
+  // from: /prisma/prisma-cloud/en/compute/pcee/admin-guide/install/getting-started
+  // to: /install/getting-started
+  const docPath = window.location.pathname.split('/').slice(7).join('/');
+  expandTOCByPath(rootList, docPath);
 }
 
 /**
