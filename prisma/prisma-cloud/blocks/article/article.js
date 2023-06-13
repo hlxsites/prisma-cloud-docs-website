@@ -114,7 +114,7 @@ async function redirectToFirstChapter() {
   const chapter = book.chapters.data[0];
   const version = getMetadata('version');
   const bookKey = book.default.data[0].path.split('/').pop();
-  let redirect = `${PATH_PREFIX}/${document.documentElement.lang}/${store.product}/${version ? `${version}/` : ''}${bookKey}/${chapter.key}`;
+  let redirect = `${PATH_PREFIX}/${document.documentElement.lang}/${store.product}/${version ? `${version}/` : ''}${bookKey}/${chapter.key}/${chapter.key}`;
 
   // set flag to avoid infinite loops on books with bad first chapter/topics
   try {
