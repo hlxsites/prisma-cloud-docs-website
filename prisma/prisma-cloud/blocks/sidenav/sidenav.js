@@ -292,7 +292,7 @@ function bookToList(book) {
     current = bookUl;
 
     // add the chapter
-    addSubList(chapter.name, `${book.path}/${chapter.key}`, chapter.key);
+    addSubList(chapter.name, `${book.path}/${chapter.key}/${chapter.key}`, chapter.key);
 
     const makeHref = (topic, parentKey) => `${book.path}/${chapter.key}/${parentKey ? `${parentKey}/` : ''}${topic.key}`;
 
@@ -308,7 +308,7 @@ function bookToList(book) {
       current.append(li);
 
       if (topic.children) {
-        addSubList(topic.name, `${book.path}/${chapter.key}/${parentKey ? `${parentKey}/` : ''}${topic.key}`, topic.key);
+        addSubList(topic.name, `${book.path}/${chapter.key}/${parentKey ? `${parentKey}/` : ''}${topic.key}/${topic.key}`, topic.key);
         topic.children.forEach((subtopic) => {
           processTopic(subtopic, `${parentKey ? `${parentKey}/` : ''}${topic.key}${subtopic.parent ? `/${subtopic.parent}` : ''}`);
         });
