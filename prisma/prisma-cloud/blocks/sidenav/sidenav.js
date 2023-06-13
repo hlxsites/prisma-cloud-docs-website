@@ -292,7 +292,7 @@ function bookToList(book) {
     current = bookUl;
 
     // add the chapter
-    addSubList(chapter.name, `${book.path}/${chapter.key}`, chapter.key);
+    addSubList(chapter.name, `${book.path}/${chapter.key}/${chapter.key}`, chapter.key);
 
     const makeHref = (topic, parentKey) => `${book.path}/${chapter.key}/${parentKey ? `${parentKey}/` : ''}${topic.key}`;
 
@@ -308,7 +308,7 @@ function bookToList(book) {
       current.append(li);
 
       if (topic.children) {
-        addSubList(topic.name, `${book.path}/${chapter.key}/${parentKey ? `${parentKey}/` : ''}${topic.key}`, topic.key);
+        addSubList(topic.name, `${book.path}/${chapter.key}/${parentKey ? `${parentKey}/` : ''}${topic.key}/${topic.key}`, topic.key);
         topic.children.forEach((subtopic) => {
           processTopic(subtopic, `${parentKey ? `${parentKey}/` : ''}${topic.key}${subtopic.parent ? `/${subtopic.parent}` : ''}`);
         });
@@ -364,7 +364,11 @@ function renderTOC(container, book, expand) {
     list.querySelector('li').ariaExpanded = 'true';
   }
 
-  expandTOCByPath(rootList, window.location.pathname.split('/').slice(6).join('/'));
+  // path to current doc inside book
+  // from: /prisma/prisma-cloud/en/compute/pcee/admin-guide/install/getting-started
+  // to: /install/getting-started
+  const docPath = window.location.pathname.split('/').slice(7).join('/');
+  expandTOCByPath(rootList, docPath);
 }
 
 /**
