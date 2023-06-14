@@ -231,16 +231,20 @@ export default async function decorate(block) {
       const prevTopic = book.topics.data[topicIndex - 1];
       const nextTopic = book.topics.data[topicIndex + 1];
 
-      if (prevTopic.chapter === currentTopic.chapter) {
-        block.querySelector('.prev').href = `${href.join('/')}/${prevTopic.key.replaceAll('_', '-')}`;
-      } else {
-        block.querySelector('.prev').href = `${href.slice(0, -1).join('/')}/${prevTopic.chapter}/${prevTopic.key.replaceAll('_', '-')}`;
+      if (prevTopic) {
+        if (prevTopic.chapter === currentTopic.chapter) {
+          block.querySelector('.prev').href = `${href.join('/')}/${prevTopic.key.replaceAll('_', '-')}`;
+        } else {
+          block.querySelector('.prev').href = `${href.slice(0, -1).join('/')}/${prevTopic.chapter}/${prevTopic.key.replaceAll('_', '-')}`;
+        }
       }
 
-      if (nextTopic.chapter === currentTopic.chapter) {
-        block.querySelector('.next').href = `${href.join('/')}/${nextTopic.key.replaceAll('_', '-')}`;
-      } else {
-        block.querySelector('.next').href = `${href.slice(0, -1).join('/')}/${nextTopic.chapter}/${nextTopic.key.replaceAll('_', '-')}`;
+      if (nextTopic) {
+        if (nextTopic.chapter === currentTopic.chapter) {
+          block.querySelector('.next').href = `${href.join('/')}/${nextTopic.key.replaceAll('_', '-')}`;
+        } else {
+          block.querySelector('.next').href = `${href.slice(0, -1).join('/')}/${nextTopic.chapter}/${nextTopic.key.replaceAll('_', '-')}`;
+        }
       }
     });
   }

@@ -363,7 +363,6 @@
 
     .pan-sidenav .banner {
         display: flex;
-        justify-content: flex-end;
         padding-bottom: var(--sidebar-banner-padding);
     }
 
