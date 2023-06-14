@@ -1,6 +1,6 @@
 import { getMetadata } from '../../scripts/lib-franklin.js';
 import {
-  PATH_PREFIX, getPlaceholders, isMobile, parseFragment, render,
+  PATH_PREFIX, getPlaceholders, html, isMobile, parseFragment, render,
 } from '../../scripts/scripts.js';
 
 const TEMPLATE = /* html */`
@@ -343,7 +343,13 @@ function expandTOCByPath(rootList, path) {
   }
 }
 
-function renderTOC(container, book, expand) {
+/**
+ * @param {HTMLDivElement} container
+ * @param {any} book
+ * @param {boolean} expand
+ * @param {HTMLUListElement} replace
+ */
+function renderTOC(container, book, expand, replace) {
   const list = bookToList(book);
   const rootList = list.querySelector(':scope > li > ul');
   // Clean dups
@@ -353,12 +359,19 @@ function renderTOC(container, book, expand) {
       prev.remove();
     }
   });
+
   // Set current
   const current = rootList.querySelector(`a[href="${window.location.pathname}"]`);
   if (current) {
     current.closest('li').classList.add('current');
   }
-  container.append(list);
+
+  // replace or append
+  if (replace) {
+    container.replaceChild(list, replace);
+  } else {
+    container.append(list);
+  }
 
   if (expand) {
     list.querySelector('li').ariaExpanded = 'true';
@@ -369,6 +382,40 @@ function renderTOC(container, book, expand) {
   // to: /install/getting-started
   const docPath = window.location.pathname.split('/').slice(7).join('/');
   expandTOCByPath(rootList, docPath);
+}
+
+/**
+ * @param {HTMLElement} container
+ */
+function initAdditionalBooks(container) {
+  const mainBook = container.querySelector('ul');
+
+  let afterMainBook = false;
+  store.allBooks.forEach((book) => {
+    if (book.mainBook) {
+      afterMainBook = true;
+    } else {
+      // insert books in order defined in metadata
+      const position = afterMainBook ? 'afterend' : 'beforebegin';
+      const list = html`
+        <ul>
+          <li data-key="" aria-expanded="false">
+            <div>
+              <a>${book.title}</a>
+              <span class="icon-arrow-right icon-toggle"></span>
+            </div>
+          </li>
+        </ul>`;
+      mainBook.insertAdjacentElement(position, list);
+
+      // load additional book data on hover, replace toc list once loaded
+      list.addEventListener('mouseenter', async () => {
+        const data = await store.fetchJSON(book.href, ['default', 'chapters', 'topics']);
+        const sorted = sortBook(data);
+        renderTOC(container, sorted, false, list);
+      }, { once: true });
+    }
+  });
 }
 
 /**
@@ -416,23 +463,9 @@ export default async function decorate(block) {
 
     const sorted = sortBook(book);
     renderTOC(toc, sorted, true);
+    initAdditionalBooks(toc);
 
     addEventListeners(wrapper);
     initVersionDropdown(wrapper);
-  });
-
-  store.once('delayed:loaded', () => {
-    // Lazy load additional books non blocking
-    Promise.all(store.additionalBooks.map((additionalBook) => new Promise((resolve) => {
-      store.fetchJSON(additionalBook.href, ['default', 'chapters', 'topics']).then((value) => {
-        additionalBook.value = value;
-        resolve();
-      });
-    })))
-      .then(() => {
-        store.additionalBooks.forEach((additionalBook) => {
-          renderTOC(toc, sortBook(additionalBook.value));
-        });
-      });
   });
 }

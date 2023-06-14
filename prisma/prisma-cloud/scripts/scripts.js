@@ -162,21 +162,25 @@ const store = new (class {
     const makeBookHref = (path) => `${this.docsOrigin}${path}/book`;
 
     let mainBookTitle;
-    const addlBooks = (getMetadata('additional-books') || '').split(';;').map((s) => s.trim()).filter((s) => !!s);
-    this.additionalBooks = addlBooks.map((addlBook) => {
-      const [path, title] = addlBook.split(';');
+    this.allBooks = (getMetadata('additional-books') || '').split(';;').map((s) => s.trim()).filter((s) => !!s)
+      .map((data) => {
+        const [path, title] = data.split(';');
 
-      // exclude main book from additionalBooks
-      if (path === this.bookPath) {
-        mainBookTitle = title;
-        return undefined;
-      }
+        const book = {
+          title,
+          href: makeBookHref(path),
+        };
 
-      return {
-        title,
-        href: makeBookHref(path),
-      };
-    }).filter((b) => !!b);
+        if (path === this.bookPath) {
+          mainBookTitle = title;
+          book.mainBook = true;
+        }
+
+        return book;
+      });
+
+    // exclude main book from additionalBooks
+    this.additionalBooks = this.allBooks.filter((b) => !b.mainBook);
 
     this.mainBook = {
       title: mainBookTitle,
