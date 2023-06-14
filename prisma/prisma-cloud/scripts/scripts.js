@@ -147,6 +147,7 @@ const store = new (class {
 
   initBook() {
     this.bookPath = getMetadata('book');
+    this.version = getMetadata('version');
     this.product = getMetadata('product');
     this.docPath = `${PATH_PREFIX}/docs${window.location.pathname.substring(PATH_PREFIX.length)}`;
     this.articleHref = `${this.docsOrigin}${this.docPath}`;
@@ -182,17 +183,33 @@ const store = new (class {
     this.additionalBooks = this.allBooks.filter((b) => !b.mainBook);
   }
 
-  getAllBookLinks() {
-    const makeLink = ({ title, href }) => {
-      const a = document.createElement('a');
-      a.href = href;
-      a.textContent = title;
-      return a;
+  async getLocalizationInfo(book, product = this.product, version = this.version) {
+    if (!book) {
+      // eslint-disable-next-line no-param-reassign
+      book = this.bookPath.split('/').pop();
+    }
+    const versionedSheet = version === 'not-applicable' ? product : `${product}--${version}`;
+    const data = await this.fetchJSON('/prisma/prisma-cloud/languages', ['default', versionedSheet]);
+    const langMap = ((data.default || {}).data || []).reduce((prev, row) => ({
+      ...prev,
+      [row.Key]: row.Title,
+    }), {});
+
+    // null for not applicable
+    let languages = null;
+    const langData = (data[versionedSheet] || {}).data;
+    if (langData && langData.length) {
+      // find the applicable book, parse the languages column
+      const bookRow = langData.find((row) => row.Book === book);
+      if (bookRow && bookRow.Languages) {
+        languages = bookRow.Languages.split(',').map((l) => l.trim());
+      }
+    }
+
+    return {
+      langMap,
+      languages,
     };
-    return [
-      makeLink(this.mainBook),
-      ...this.additionalBooks.map(makeLink),
-    ];
   }
 
   /**
