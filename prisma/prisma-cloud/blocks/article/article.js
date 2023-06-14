@@ -137,6 +137,7 @@ export default async function decorate(block) {
   let res;
   let articleFound = true;
   const link = block.querySelector('a');
+  block.innerHTML = '';
 
   if (link) {
     try {
@@ -165,8 +166,6 @@ export default async function decorate(block) {
     const { data, info } = res;
     const template = parseFragment(TEMPLATE);
     const article = parseFragment(data);
-
-    block.innerHTML = '';
 
     // Fixup images src
     for (const image of article.querySelectorAll('img')) {
