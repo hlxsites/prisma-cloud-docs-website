@@ -1,0 +1,114 @@
+/* below the fold CSS goes here */
+
+/*
+    Copyright (C) Hoefler & Co.
+    This software is the property of Hoefler & Co. (H&Co).
+    Your right to access and use this software is subject to the
+    applicable License Agreement, or Terms of Service, that exists
+    between you and H&Co. If no such agreement exists, you may not
+    access or use this software for any purpose.
+    This software may only be hosted at the locations specified in
+    the applicable License Agreement or Terms of Service, and only
+    for the purposes expressly set forth therein. You may not copy,
+    modify, convert, create derivative works from or distribute this
+    software in any way, or make it accessible to any third party,
+    without first obtaining the written permission of H&Co.
+    For more information, please visit us at http://typography.com.
+*/
+
+
+@font-face {
+    font-family: 'HCo Decimal';
+    src: url('/prisma/prisma-cloud/fonts/decimal/Decimal-Book-Pro.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'HCo Decimal';
+    src: url('/prisma/prisma-cloud/fonts/decimal/Decimal-BookItalic-Pro.woff2') format('woff2');
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'HCo Decimal';
+    src: url('/prisma/prisma-cloud/fonts/decimal/Decimal-Medium-Pro_Web.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'HCo Decimal';
+    src: url('/prisma/prisma-cloud/fonts/decimal/Decimal-MediumItalic-Pro.woff2') format('woff2');
+    font-weight: 500;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'HCo Decimal';
+    src: url('/prisma/prisma-cloud/fonts/decimal/Decimal-Semibold-Pro_Web.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'HCo Decimal';
+    src: url('/prisma/prisma-cloud/fonts/decimal/Decimal-SemiboldItalic-Pro.woff2') format('woff2');
+    font-weight: 600;
+    font-style: italic;
+    font-display: swap;
+}
+
+/* @font-face {
+    font-family: 'HCo Decimal';
+    src: url('/prisma/prisma-cloud/fonts/decimal/Decimal-Bold-Pro_Web.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'HCo Decimal';
+    src: url('/prisma/prisma-cloud/fonts/decimal/Decimal-BoldItalic-Pro.woff2') format('woff2');
+    font-weight: 700;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'HCo Decimal';
+    src: url('/prisma/prisma-cloud/fonts/decimal/Decimal-Bold-Pro_Web.woff2') format('woff2');
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'HCo Decimal';
+    src: url('/prisma/prisma-cloud/fonts/decimal/Decimal-BoldItalic-Pro.woff2') format('woff2');
+    font-weight: 800;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'HCo Decimal';
+    src: url('/prisma/prisma-cloud/fonts/decimal/Decimal-Bold-Pro_Web.woff2') format('woff2');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'HCo Decimal';
+    src: url('/prisma/prisma-cloud/fonts/decimal/Decimal-BoldItalic-Pro.woff2') format('woff2');
+    font-weight: 900;
+    font-style: italic;
+    font-display: swap;
+} */

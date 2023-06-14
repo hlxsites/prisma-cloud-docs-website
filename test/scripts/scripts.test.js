@@ -15,8 +15,8 @@ document.head.innerHTML = await readFile({ path: './head.html' });
 
 describe('Core Helix features', () => {
   before(async () => {
-    scripts = await import('../../scripts/scripts.js');
-    lib = await import('../../scripts/lib-franklin.js');
+    scripts = await import('../../prisma/prisma-cloud/scripts/scripts.js');
+    lib = await import('../../prisma/prisma-cloud/scripts/lib-franklin.js');
 
     document.body.innerHTML = await readFile({ path: './body.html' });
   });

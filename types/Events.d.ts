@@ -17,6 +17,7 @@ export interface EventMap {
   'delayed:loaded': void;
   'book:loaded': BookDefinition;
   'article:loaded': ArticleInfo;
+  'header:loaded': void;
 }
 
 export type AnyEventType = keyof EventMap;

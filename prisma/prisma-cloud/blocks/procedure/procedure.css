@@ -1,0 +1,57 @@
+.procedure {
+  line-height: 1.6180;
+}
+
+.procedure ol.steps {
+  padding: 0;
+  list-style-type: none;
+  counter-reset: step-counter;
+}
+
+.procedure ol.steps li.step {
+  margin: 30px 0 30px 80px;
+  position: relative;
+  counter-reset: substep-counter;
+}
+
+.procedure ol.steps li.step::before {
+  font-family: 'HCo Decimal', 'HCo Decimal Fallback', Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif, FontAwesome;
+  counter-increment: step-counter;
+  content: "STEP " counter(step-counter) " \f101";
+  color: #fa582d;
+  font-weight: 500;
+  font-size: 16px;
+  position: absolute;
+  right: 99%;
+  width: 90px;
+  text-align: left;
+  top: -3px;
+}
+
+.procedure ol.steps li.step ol.substeps {
+  padding: 0;
+  list-style-type: none;
+}
+
+.procedure ol.steps li.step ol.substeps li.substep {
+  margin: 20px 0 20px 25px;
+  padding-left: 10px;
+  position: relative;
+}
+
+.procedure ol.steps li.step ol.substeps li.substep::before {
+  content: counter(substep-counter);
+  counter-increment: substep-counter;
+  height: 25px;
+  width: 25px;
+  border: 1px solid #fa582d;
+  border-radius: 50%;
+  color: #fa582d;
+  position: absolute;
+  right: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.15em;
+  top: -3px;
+}
