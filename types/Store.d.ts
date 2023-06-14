@@ -15,6 +15,20 @@ import type { EventHandler, EventMap, OffEventFn } from './Events';
 
 type BookDescriptor = { title: string; href: string; value: JSONData | undefined };
 
+interface LocalizationInfo {
+  /**
+   * language code -> language title
+   * from /prisma/prisma-cloud/languages sheet
+   */
+  langMap: Record<string, string>;
+
+  /**
+   * array of language codes for this book
+   * null if not localized
+   */
+  languages: string[] | null;
+}
+
 type RemoveFn = () => void;
 
 declare class StoreImpl {
@@ -83,6 +97,13 @@ declare class StoreImpl {
   product: string | undefined;
 
   /**
+   * Current page's `version` from metadata
+   * 
+   * @note defined when `pageTemplate` is `book`
+   */
+  version: string | undefined;
+
+  /**
    * Whether the previously visited article redirected to first chapter.
    * If set, avoid redirecting again on this load since it will loop.
    * 
@@ -125,6 +146,15 @@ declare class StoreImpl {
    * Check if event has been emitted yet
    */
   isEmitted: (ev: string) => boolean;
+
+  /**
+   * Get localization info for a book.
+   * 
+   * @param book book's directory name only, not the path, defaults to current book
+   * @param product product name, defaults to `store.product` from metadata
+   * @param version current version, defaults to `store.version` from metadata
+   */
+  getLocalizationInfo(book?: string, product?: string, version?: string): Promise<LocalizationInfo>;
 }
 
 /**
