@@ -178,7 +178,12 @@ const store = new (class {
    * @param {string|string[]} [sheets]
    */
   async fetchJSON(path, sheets) {
-    const url = new URL(`${path}.json`);
+    let url;
+    try {
+      url = new URL(`${path}.json`);
+    } catch (_) {
+      url = new URL(`${window.location.origin}${path}.json`);
+    }
 
     if (sheets) {
       // eslint-disable-next-line no-param-reassign
