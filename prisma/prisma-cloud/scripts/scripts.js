@@ -161,8 +161,7 @@ const store = new (class {
 
     const makeBookHref = (path) => `${this.docsOrigin}${path}/book`;
 
-    let mainBookTitle;
-    this.allBooks = (getMetadata('additional-books') || '').split(';;').map((s) => s.trim()).filter((s) => !!s)
+    this.allBooks = (getMetadata('all-books') || '').split(';;').map((s) => s.trim()).filter((s) => !!s)
       .map((data) => {
         const [path, title] = data.split(';');
 
@@ -172,8 +171,8 @@ const store = new (class {
         };
 
         if (path === this.bookPath) {
-          mainBookTitle = title;
           book.mainBook = true;
+          this.mainBook = book;
         }
 
         return book;
@@ -181,11 +180,6 @@ const store = new (class {
 
     // exclude main book from additionalBooks
     this.additionalBooks = this.allBooks.filter((b) => !b.mainBook);
-
-    this.mainBook = {
-      title: mainBookTitle,
-      href: makeBookHref(this.bookPath),
-    };
   }
 
   getAllBookLinks() {
