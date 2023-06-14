@@ -16,6 +16,7 @@ import {
   decorateBlock,
   loadBlock,
   updateSectionsStatus,
+  toClassName,
 } from './lib-franklin.js';
 
 // eslint-disable-next-line no-use-before-define
@@ -28,8 +29,16 @@ export const PATH_PREFIX = '/prisma/prisma-cloud';
 const LCP_BLOCKS = ['article']; // add your LCP blocks to the list
 window.hlx.RUM_GENERATION = 'prisma-cloud-docs-website'; // add your RUM generation information here
 
-const lang = window.location.pathname.substring(PATH_PREFIX.length).split('/').slice(1)[0] || 'en';
+const lang = getMetadata('lang') || window.location.pathname.substring(PATH_PREFIX.length).split('/').slice(1)[0] || 'en';
 document.documentElement.lang = lang;
+
+export const WEB_ORIGINS = {
+  dev: 'http://localhost:3000',
+  // dev: 'https://main--prisma-cloud-docs-website--hlxsites.hlx.page',
+  preview: 'https://main--prisma-cloud-docs-website--hlxsites.hlx.page',
+  publish: 'https://main--prisma-cloud-docs-website--hlxsites.hlx.live',
+  prod: '',
+};
 
 export const DOCS_ORIGINS = {
   dev: 'http://127.0.0.1:3001',
@@ -54,6 +63,12 @@ function getEnv() {
   if (hostname.endsWith('hlx.live')) return 'publish';
   return 'prod';
 }
+
+const addClasses = (element, classes) => {
+  classes.split(',').forEach((c) => {
+    element.classList.add(toClassName(c.trim()));
+  });
+};
 
 /**
  * Sets the branch search param to a given url
@@ -82,9 +97,18 @@ const store = new (class {
     };
     this._emitted = {};
     this.env = getEnv();
+    this.docsOrigin = DOCS_ORIGINS[this.env];
     this.pageTemplate = getMetadata('template');
+    this.additionalBooks = [];
     if (this.pageTemplate === 'book') {
       this.initBook();
+    }
+
+    // allow setting body class from page metadata
+    // used for simulating templates from documents
+    const style = getMetadata('style');
+    if (style) {
+      addClasses(document.body, style);
     }
   }
 
@@ -122,7 +146,6 @@ const store = new (class {
   }
 
   initBook() {
-    this.docsOrigin = DOCS_ORIGINS[this.env];
     this.bookPath = getMetadata('book');
     this.product = getMetadata('product');
     this.docPath = `${PATH_PREFIX}/docs${window.location.pathname.substring(PATH_PREFIX.length)}`;
@@ -169,7 +192,8 @@ const store = new (class {
       return a;
     };
     return [
-      makeLink(this.boo),
+      makeLink(this.mainBook),
+      ...this.additionalBooks.map(makeLink),
     ];
   }
 
@@ -228,11 +252,32 @@ const store = new (class {
 })();
 window.store = store;
 
-export function assertValidDocsURL(url) {
+function isValidURL(url, origins) {
   if (url.startsWith('/')) return true;
   const { origin } = new URL(url);
-  if (Object.values(DOCS_ORIGINS).includes(origin)) return true;
-  throw Error('invalid origin');
+  if (window.location.origin === origin) return true;
+  if (Object.values(origins).includes(origin)) return true;
+  return false;
+}
+
+export function assertValidDocsURL(url) {
+  if (!isValidURL(url, DOCS_ORIGINS)) {
+    throw Error('invalid origin');
+  }
+}
+
+export function assertValidWebURL(url) {
+  if (!isValidURL(url, WEB_ORIGINS)) {
+    throw Error('invalid origin');
+  }
+}
+
+export function isValidWebURL(url) {
+  return isValidURL(url, WEB_ORIGINS);
+}
+
+export function isValidDocsURL(url) {
+  return isValidURL(url, DOCS_ORIGINS);
 }
 
 /**
@@ -378,6 +423,7 @@ export function renderSidenav(contentBlock) {
 function buildArticleBlock(articleHref) {
   const link = document.createElement('a');
   link.href = articleHref;
+  link.textContent = articleHref;
   return buildBlock('article', { elems: [link] });
 }
 

@@ -337,7 +337,7 @@
     display: block;
 }
 
-.pan-sidenav .toc-books li[data-key] > ul > li:first-child {
+.pan-sidenav .toc-books > ul > li li[data-key] > ul > li:first-child {
     display: none;
 }
 
