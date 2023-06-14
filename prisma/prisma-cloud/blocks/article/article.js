@@ -15,6 +15,7 @@ import {
 import {
   getMetadata,
   loadBlocks,
+  updateSectionsStatus,
 } from '../../scripts/lib-franklin.js';
 
 const TEMPLATE = /* html */`
@@ -252,7 +253,9 @@ export default async function decorate(block) {
     const bookContent = block.querySelector('.book-content div[slot="content"]');
     if (bookContent) {
       decorateMain(bookContent);
-      loadBlocks(bookContent);
+      loadBlocks(bookContent).then(() => {
+        updateSectionsStatus(document.querySelector('main'));
+      });
     }
   }
 }
