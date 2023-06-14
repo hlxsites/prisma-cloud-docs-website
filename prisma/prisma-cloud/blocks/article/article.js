@@ -97,10 +97,10 @@ async function loadArticle(href) {
 function localize(block) {
   queueMicrotask(async () => {
     const ph = await getPlaceholders();
-    block.querySelector('.locale-article-previous').textContent = ph.articlePrevious;
-    block.querySelector('.locale-article-next').textContent = ph.articleNext;
-    block.querySelector('.locale-article-edit-github').textContent = ph.articleEditGithub;
-    block.querySelector('.locale-article-document').textContent = ph.articleDocument;
+    block.querySelector('.locale-article-previous').textContent = ph.previous;
+    block.querySelector('.locale-article-next').textContent = ph.next;
+    block.querySelector('.locale-article-edit-github').textContent = ph.editOnGithub;
+    block.querySelector('.locale-article-document').textContent = ph.document;
   });
 }
 

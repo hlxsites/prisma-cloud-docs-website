@@ -9,42 +9,63 @@ const TEMPLATE = /* html */`
           <i class="icon-arrow-right"></i>
       </div>
       <div class="banner">
-          <div class="banner-inner">
-              <span class="banner-inner-mobile">
-                <h2>
-                    <span class="locale-article-document">Document:</span>
-                    <slot name="document"></slot>
-                </h2>
-                <hr>
-                <span class="title">
-                  <h1><slot name="title"></slot></h1>
-                </span>
-              </span>
-              <div class="book-detail-banner-info">
-                  <div class="banner-info-label locale-book-last-updated"></div>
-                  <slot name="date">-</slot>
-              </div>
-              <div class="versions">
-                  <div class="book-detail-banner-info">
-                      <div class="banner-info-label locale-book-current-version"></div>
-                      <div class="version-dropdown">
-                          <a>
-                              <span slot="version"></span>
-                              <i class="icon-arrow-down"></i>
-                          </a>
-                          <div class="version-dropdown-menu">
-                              <ul>
-                                  <li class="active">
-                                      <a href="#" slot="version"></a>
-                                  </li>
-                              </ul>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </div>
+        <div class="banner-inner">
+          <span class="banner-inner-mobile">
+            <h2>
+                <span class="locale-article-document">Document:</span>
+                <slot name="document"></slot>
+            </h2>
+            <hr>
+            <span class="title">
+              <h1><slot name="title"></slot></h1>
+            </span>
+          </span>
 
+          <div class="book-detail-banner-info">
+              <div class="banner-info-label locale-book-last-updated"></div>
+              <slot name="date">-</slot>
+          </div>
+
+          <div class="versions">
+            <div class="book-detail-banner-info">
+              <div class="banner-info-label locale-book-current-version"></div>
+                <div class="banner-dropdown version-dropdown">
+                  <a>
+                      <span slot="version"></span>
+                      <i class="icon-arrow-down"></i>
+                  </a>
+                  <div class="banner-dropdown-menu version-dropdown-menu">
+                    <ul>
+                      <li class="active">
+                        <a href="#" slot="version"></a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          <div class="languages">
+            <div class="book-detail-banner-info">
+              <div class="banner-info-label locale-book-current-language"></div>
+                <div class="banner-dropdown language-dropdown">
+                  <a>
+                      <span slot="language"></span>
+                      <i class="icon-arrow-down"></i>
+                  </a>
+                  <div class="banner-dropdown-menu language-dropdown-menu">
+                    <ul>
+                      <li class="active">
+                        <a href="#" slot="language"></a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="content">
           <div class="toggle-aside">
               <i class="icon-arrow-${isMobile() ? 'down' : 'left'}"></i>
@@ -105,10 +126,6 @@ function initVersionDropdown(wrapper) {
     }
     const unversionedPath = segments.join('/');
 
-    // TODO: This still doesn't quite work since the book directory names also change
-    //        eg. `admin-guide-pcee` -> `<version>/admin-guide-pcce`
-    // Possible workaround is to specify the entire folder path inside versions.json,
-    // but first will figure out whether paths can be normalized to match across versions.
     const makeHref = (folder) => `${PATH_PREFIX}/${lang}/${store.product}/${folder ? `${folder}/` : ''}${unversionedPath}`;
 
     const newVersions = json.data.map((row) => {
@@ -128,6 +145,58 @@ function initVersionDropdown(wrapper) {
     }).filter((item) => !!item);
 
     versionsDropdownMenu.append(...newVersions);
+  }, { once: true });
+}
+
+/**
+ * Add version dropdown
+ * @param {Element} wrapper
+ */
+async function initLanguagesDropdown(wrapper) {
+  const langsContainer = wrapper.querySelector('.sidenav .banner .languages');
+  const langsDropdown = langsContainer.querySelector('.language-dropdown');
+  const curLangKey = document.documentElement.lang;
+
+  if (!store.product || curLangKey === 'not-applicable') {
+    langsContainer.remove();
+    return;
+  }
+
+  const { languages, langMap } = await store.getLocalizationInfo();
+  if (!languages) {
+    langsContainer.remove();
+    return;
+  }
+
+  const langDropdownMenu = langsDropdown.querySelector('.language-dropdown-menu ul');
+  const curLang = document.documentElement.lang;
+
+  langsDropdown.addEventListener('mouseenter', async () => {
+    const { pathname } = window.location;
+    // rm leading slash, lang
+    const segments = pathname.substring(PATH_PREFIX.length).split('/').slice(2);
+    const unlocalizedPath = segments.join('/');
+
+    const makeHref = (lang) => `${PATH_PREFIX}/${lang}/${unlocalizedPath}`;
+
+    const makeEntry = (lang, title) => {
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      li.append(a);
+
+      a.href = makeHref(lang);
+      a.textContent = title;
+      return li;
+    };
+
+    const otherLangItems = languages.map((lang) => {
+      if (lang === curLang) {
+        return undefined;
+      }
+      return makeEntry(lang, langMap[lang]);
+    }).filter((item) => !!item);
+
+    langDropdownMenu.append(...otherLangItems);
   }, { once: true });
 }
 
@@ -223,13 +292,17 @@ function localize(block) {
   queueMicrotask(async () => {
     const ph = await getPlaceholders();
     block.querySelector('.locale-toc-form-input').placeholder = ph.tocFormInput;
-    block.querySelector('.locale-book-last-updated').textContent = ph.bookLastUpdated;
+    block.querySelector('.locale-book-last-updated').textContent = ph.lastUpdated;
     const curVersion = block.querySelector('.locale-book-current-version');
     if (curVersion) {
-      curVersion.textContent = ph.bookCurrentVersion;
+      curVersion.textContent = ph.currentVersion;
     }
-    block.querySelector('.locale-toc-title').textContent = ph.tocTitle;
-    block.querySelector('.locale-toc-filter').textContent = ph.tocFilter;
+    const curLang = block.querySelector('.locale-book-current-language');
+    if (curLang) {
+      curLang.textContent = ph.currentLanguage;
+    }
+    block.querySelector('.locale-toc-title').textContent = ph.tableOfContents;
+    block.querySelector('.locale-toc-filter').textContent = ph.filter;
 
     block.querySelector('.locale-article-document').textContent = ph.articleDocument;
   });
@@ -450,6 +523,11 @@ export default async function decorate(block) {
     curVersionBtn.textContent = getMetadata('version-title');
   }
 
+  const curLangBtn = block.querySelector('[slot="language"]');
+  if (curLangBtn) {
+    curLangBtn.textContent = getMetadata('language-title');
+  }
+
   const toc = block.querySelector('.content-inner .toc-books');
   if (isMobile()) {
     wrapper.parentElement.classList.add('aside-close');
@@ -471,5 +549,6 @@ export default async function decorate(block) {
 
     addEventListeners(wrapper);
     initVersionDropdown(wrapper);
+    initLanguagesDropdown(wrapper);
   });
 }
