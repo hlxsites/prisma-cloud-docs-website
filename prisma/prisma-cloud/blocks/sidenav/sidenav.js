@@ -78,11 +78,12 @@ const TEMPLATE = /* html */`
  * @param {Element} wrapper
  */
 function initVersionDropdown(wrapper) {
-  const versionsDropdown = wrapper.querySelector('.version-dropdown');
+  const versionsContainer = wrapper.querySelector('.sidenav .banner .versions');
+  const versionsDropdown = versionsContainer.querySelector('.version-dropdown');
   const curVersionKey = getMetadata('version');
 
   if (!store.product || curVersionKey === 'not-applicable') {
-    versionsDropdown.remove();
+    versionsContainer.remove();
     return;
   }
 
@@ -223,7 +224,10 @@ function localize(block) {
     const ph = await getPlaceholders();
     block.querySelector('.locale-toc-form-input').placeholder = ph.tocFormInput;
     block.querySelector('.locale-book-last-updated').textContent = ph.bookLastUpdated;
-    block.querySelector('.locale-book-current-version').textContent = ph.bookCurrentVersion;
+    const curVersion = block.querySelector('.locale-book-current-version');
+    if (curVersion) {
+      curVersion.textContent = ph.bookCurrentVersion;
+    }
     block.querySelector('.locale-toc-title').textContent = ph.tocTitle;
     block.querySelector('.locale-toc-filter').textContent = ph.tocFilter;
 
