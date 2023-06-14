@@ -55,6 +55,25 @@ function getEnv() {
   return 'prod';
 }
 
+/**
+ * Sets the branch search param to a given url
+ *
+ * @param {URL} url
+ */
+export function setBranch(url) {
+  const env = getEnv();
+
+  if (env === 'dev' || env === 'preview') {
+    const branch = new URLSearchParams(window.location.search).get('branch');
+    if (branch) {
+      url.searchParams.append('branch', branch);
+      url.protocol = 'https:';
+      url.port = '';
+      url.host = 'prisma-cloud-docs-production.adobeaem.workers.dev';
+    }
+  }
+}
+
 /** @type {Store} */
 const store = new (class {
   constructor() {
@@ -159,17 +178,27 @@ const store = new (class {
    * @param {string|string[]} [sheets]
    */
   async fetchJSON(path, sheets) {
-    const qps = new URLSearchParams();
+    let url;
+    try {
+      url = new URL(`${path}.json`);
+    } catch (_) {
+      url = new URL(`${window.location.origin}${path}.json`);
+    }
+
     if (sheets) {
       // eslint-disable-next-line no-param-reassign
       sheets = Array.isArray(sheets) ? [...sheets] : [sheets];
       sheets.sort().forEach((sheet) => {
-        qps.append('sheet', sheet);
+        url.searchParams.append('sheet', sheet);
       });
     }
 
+    if (path.endsWith('book')) {
+      setBranch(url);
+    }
+
     const j = this._json;
-    const p = `${path}.json${sheets ? `?${qps.toString()}` : ''}`;
+    const p = url.toString();
 
     const loaded = j[p];
     if (loaded) {

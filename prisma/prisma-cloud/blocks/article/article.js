@@ -8,6 +8,7 @@ import {
   render,
   REDIRECTED_ARTICLE_KEY,
   decorateMain,
+  setBranch,
 } from '../../scripts/scripts.js';
 
 import {
@@ -64,14 +65,18 @@ const TEMPLATE = /* html */`
 async function loadArticle(href) {
   assertValidDocsURL(href);
 
-  const resp = await fetch(`${href}.plain.html`);
+  const url = new URL(`${href}.plain.html`);
+  setBranch(url);
+
+  const resp = await fetch(url.toString());
   if (!resp.ok) return resp;
   try {
+    const lastModified = resp.headers.get('last-modified') !== 'null' ? new Date(resp.headers.get('last-modified')) : new Date();
     return {
       ok: true,
       status: resp.status,
       info: {
-        lastModified: new Date(resp.headers.get('last-modified')),
+        lastModified,
       },
       data: await resp.text(),
     };
@@ -200,7 +205,7 @@ export default async function decorate(block) {
     const docSlot = block.querySelector('a[slot="document"]');
     docSlot.textContent = book.default.data[0].title;
 
-    const href = window.location.href.split('/');
+    const href = window.location.href.split('?')[0].split('/');
     const subPath = href.pop();
     const topicIndex = book.topics.data.findIndex(({ key }) => key === subPath);
     const currentTopic = book.topics.data[topicIndex];
