@@ -448,6 +448,11 @@ function addEventListeners(block) {
             Coveo.state(searchBoxRoot, 'hq', dropdownSelectedValue);
             // eslint-disable-next-line no-undef
             Coveo.state(searchBoxRoot, 'hd', block.querySelector('.coveo-dropdown-item.selected').getAttribute('data-label').trim());
+          } else {
+            // eslint-disable-next-line no-undef
+            Coveo.state(searchBoxRoot, 'hq', '');
+            // eslint-disable-next-line no-undef
+            Coveo.state(searchBoxRoot, 'hd', '');
           }
         } catch (error) {
           console.log(error);
