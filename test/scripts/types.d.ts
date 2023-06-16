@@ -1,5 +1,5 @@
-import type * as ScriptsModule from '../../scripts/scripts';
-import type * as LibModule from '../../scripts/lib-franklin';
+import type * as ScriptsModule from '../../prisma/prisma-cloud/scripts/scripts';
+import type * as LibModule from '../../prisma/prisma-cloud/scripts/lib-franklin';
 
 export type Scripts = typeof ScriptsModule;
 export type LibFranklin = typeof LibModule;

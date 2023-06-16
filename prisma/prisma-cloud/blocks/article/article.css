@@ -1,0 +1,224 @@
+.pan-article .title {
+    padding: 0;
+}
+
+.pan-article .title h1 {
+    color: black;
+    font-size: 40px;
+    padding: 0;
+}
+
+.pan-article .title h1 + hr {
+    display: none;
+}
+
+.pan-article .banner-inner {
+    position: relative;
+    z-index: 0;
+    padding-left: 15px;
+}
+
+.pan-article .banner-inner::before {
+    background-image: url("/prisma/prisma-cloud/assets/sase-cns-pattern.webp");
+    display: block;
+    content: '';
+    pointer-events: none;
+    position: absolute;
+    width: 367.5px;
+    height: 502px;
+    background-size: contain;
+    top: -210px;
+    right: 30px;
+    background-repeat: no-repeat;
+    background-position: 30px center;
+    z-index: -1;
+    opacity: 0.5;
+}
+
+.pan-article .banner-inner h2 {
+    color: black;
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.pan-article .banner-inner a {
+    color: black;
+    padding-left: 15px;
+    font-weight: 300;
+    text-decoration: none;
+}
+
+.pan-article .banner-inner a:hover {
+    font-weight: 700;
+}
+
+.pan-article .banner-inner hr {
+    border-top: 3px solid #00C0E8;
+    margin: 25px auto 25px 0;
+    width: 75px;
+}
+
+.pan-article .book-detail-pagination {
+    text-transform: uppercase;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pan-article .edit-github {
+    display: flex;
+    justify-content: flex-end;
+    margin: 25px 0;
+}
+
+.pan-article .edit-github a {
+    text-align: center;
+    border: 1px solid #FA582C;
+    border-radius: 15px;
+    padding: 8px 15px;
+    font-size: .75em;
+    color: #fa582d;
+    font-weight: 700;
+    position: relative;
+    z-index: 1;
+    text-decoration: none;
+}
+
+.pan-article .edit-github a:hover {
+    text-decoration: none;
+    color: white;
+    background: #fa582c;
+}
+
+.pan-article .edit-github a i {
+    margin-left: 4px;
+    font-weight: 700;
+}
+
+.pan-article .book-detail-pagination a {
+    color: #a5a09d;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    font-size: 12px;
+}
+
+.pan-article .book-detail-pagination a:hover {
+    color: #fa582d;
+}
+
+.pan-article .book-detail-pagination a i {
+    font-size: 18px;
+    color: #fa582d;
+}
+
+.pan-article .book-detail-pagination a div {
+    padding: 7.5px;
+}
+
+.pan-article .content-inner {
+    padding-top: 20px;
+    border-left: 1px solid #f4f4f2;
+    min-height: 200px;
+    padding-left: 15px;
+    padding-right: 15px;
+    background: white;
+    overflow: hidden;
+    width: 100%;
+}
+
+.pan-article .book-content .section {
+    padding: 0;
+}
+
+.pan-article .book-content p {
+    font-size: 12px;
+    color: black;
+}
+
+.pan-article .book-content h2 {
+    color: #36424b;
+    font-weight: 400;
+    font-size: 22px;
+    margin-top: 50px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #c8c2be;
+}
+
+.pan-article .book-content h3 {
+    margin-top: 30px;
+    font-weight: 400;
+    color: #141414;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.pan-article .book-content h4,
+.pan-article .book-content h5,
+.pan-article .book-content h6 {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    color: #36424b;
+}
+
+.pan-article .book-content h4,
+.pan-article .book-content h5 {
+    font-size: 14px;
+}
+
+.pan-article .book-content h6 {
+    font-size: 12px;
+}
+
+.pan-article .book-content img {
+    margin: 15px auto;
+    display: block;
+}
+
+.pan-article .book-content pre {
+    margin: 0 0 20px;
+    white-space: pre-wrap;
+    padding: 20px;
+    word-wrap: break-word;
+    border-radius: 25px;
+    background: #F8F8F8;
+    display: block;
+    line-height: 1.4;
+    word-break: break-all;
+}
+
+.pan-article .book-content code {
+    font-size: 13px;
+    color: #36424b;
+}
+
+@media (min-width: 768px) {
+    .pan-article {
+        margin-top: 50px;
+    }
+
+    .pan-article .content {
+        display: flex;
+        justify-content: flex-start;
+        padding: 25px 0;
+        flex-grow: 1;
+        border-left: 1px solid #f4f4f2;
+    }
+}
+
+@media (max-width: 768px) {
+    .book .article-wrapper {
+        width: 100%;
+        max-width: none;
+    }
+
+    .pan-article .content {
+        padding-right: 0;
+    }
+
+    .pan-article .banner-inner .banner-inner-desktop {
+        display: none;
+    }
+}
+
