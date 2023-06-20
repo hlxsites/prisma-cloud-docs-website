@@ -22,13 +22,32 @@
 }
 
 .sidenav-wrapper i.icon {
-    font-size: 9px;
     line-height: 0;
+    width: 11px;
+    height: 11px;
+}
+
+.sidenav-wrapper i.icon img {
+    width: 11px;
+    height: 11px;
+}
+
+.sidenav-wrapper .banner i.icon {
+    width: 14px;
+    height: 14px;
+}
+
+.sidenav-wrapper .banner i.icon img {
+    width: 14px;
+    height: 14px;
+}
+
+.sidenav-wrapper .toggle-aside i.icon {
     width: 9px;
     height: 9px;
 }
 
-.sidenav-wrapper i.icon img {
+.sidenav-wrapper .toggle-aside i.icon img {
     width: 9px;
     height: 9px;
 }
