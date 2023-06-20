@@ -421,7 +421,10 @@ function expandTOCByPath(rootList, path) {
 }
 
 function scrollTOC(container, currentLink) {
+  if (!currentLink) return;
   const currentLi = currentLink.closest('li');
+  if (!currentLi) return;
+
   const doScroll = (count = 0) => {
     if (container.clientHeight) {
       container.scrollTop = currentLi.offsetTop;
