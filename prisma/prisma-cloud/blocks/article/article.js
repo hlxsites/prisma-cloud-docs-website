@@ -70,7 +70,7 @@ async function loadArticle(href) {
   const url = new URL(`${href}.plain.html`);
   setBranch(url);
 
-  const resp = await fetch(url.toString());
+  const resp = await fetch(url.toString(), store.branch ? { cache: 'reload' } : undefined);
   if (!resp.ok) return resp;
   try {
     const lastModified = resp.headers.get('last-modified') !== 'null' ? new Date(resp.headers.get('last-modified')) : new Date();
@@ -122,6 +122,9 @@ async function redirectToFirstChapter() {
   const version = getMetadata('version');
   const bookKey = book.default.data[0].path.split('/').pop();
   let redirect = `${PATH_PREFIX}/${document.documentElement.lang}/${store.product}/${version ? `${version}/` : ''}${bookKey}/${chapter.key}/${chapter.key}`;
+  if (store.branch) {
+    redirect += `?branch=${store.branch}`;
+  }
 
   // set flag to avoid infinite loops on books with bad first chapter/topics
   try {
