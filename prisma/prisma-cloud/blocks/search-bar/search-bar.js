@@ -118,6 +118,11 @@ export class SearchBar extends HTMLElement {
           if (dropdownSelectedValue !== 'all') {
             Coveo.state(searchBoxRoot, 'hq', dropdownSelectedValue);
             Coveo.state(searchBoxRoot, 'hd', this.querySelector('.coveo-dropdown-item.selected').getAttribute('data-label').trim());
+          } else {
+            // eslint-disable-next-line no-undef
+            Coveo.state(searchBoxRoot, 'hq', '');
+            // eslint-disable-next-line no-undef
+            Coveo.state(searchBoxRoot, 'hd', '');
           }
         } catch (error) {
           console.log(error);
