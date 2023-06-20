@@ -106,7 +106,7 @@ export function setBranch(url, branch = getBranch(), searchParamOnly = false) {
 /**
  * Propagates the branch search param to all links in the document
  *
- * @param {HTMLDocument} doc
+ * @param {Document} doc
  */
 function updateLinksWithBranch(doc) {
   const branch = getBranch();
@@ -171,6 +171,7 @@ const store = new (class {
       _l: {},
     };
     this._emitted = {};
+    this.branch = getBranch();
     this.env = getEnv();
     this.docsOrigin = DOCS_ORIGINS[this.env];
     this.pageTemplate = getMetadata('template');
