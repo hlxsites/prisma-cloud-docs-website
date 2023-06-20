@@ -260,6 +260,10 @@
     cursor: pointer;
 }
 
+.pan-sidenav .toc-books {
+    position: relative;
+}
+
 .pan-sidenav .toc-books ul {
     list-style: none;
     padding: 0;

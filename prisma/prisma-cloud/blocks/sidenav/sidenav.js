@@ -420,6 +420,18 @@ function expandTOCByPath(rootList, path) {
   }
 }
 
+function scrollTOC(container, currentLink) {
+  const currentLi = currentLink.closest('li');
+  const doScroll = (count = 0) => {
+    if (container.clientHeight) {
+      container.scrollTop = currentLi.offsetTop;
+    } else if (count < 100) {
+      setTimeout(() => doScroll(count + 1), 5);
+    }
+  };
+  doScroll();
+}
+
 /**
  * @param {HTMLDivElement} container
  * @param {any} book
@@ -459,6 +471,7 @@ function renderTOC(container, book, expand, replace) {
   // to: /install/getting-started
   const docPath = window.location.pathname.split('/').slice(7).join('/');
   expandTOCByPath(rootList, docPath);
+  scrollTOC(container, current);
 }
 
 /**
