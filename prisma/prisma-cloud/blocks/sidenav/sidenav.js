@@ -416,7 +416,7 @@ function expandTOCByPath(rootList, path) {
   while (currentItem && segments.length) {
     currentItem.ariaExpanded = 'true';
     const nextKey = segments.shift();
-    currentItem = nextItem(currentItem, nextKey);
+    currentItem = nextItem(currentItem.querySelector('ul'), nextKey);
   }
 }
 
