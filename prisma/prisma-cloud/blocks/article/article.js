@@ -34,7 +34,7 @@ const TEMPLATE = /* html */`
             </span>
           </div>
       </div>
-      <div class="content">
+      <div class="content hidden-not-found">
           <div class="content-inner">
               <div class="book-detail-pagination">
                   <a class="prev" href="#">
@@ -163,11 +163,20 @@ export default async function decorate(block) {
       await redirectToFirstChapter();
     }
     articleFound = false;
+    block.classList.add('not-found');
   }
+
+  const template = parseFragment(TEMPLATE);
+  const fragment = document.createElement('div');
+
+  const docTitle = document.createElement('a');
+  docTitle.setAttribute('slot', 'document');
+  docTitle.href = window.location.href.split('/').slice(0, -2).join('/');
+  docTitle.textContent = store.mainBook.title;
+  fragment.append(docTitle);
 
   if (articleFound) {
     const { data, info } = res;
-    const template = parseFragment(TEMPLATE);
     const article = parseFragment(data);
 
     // Fixup images src
@@ -184,13 +193,6 @@ export default async function decorate(block) {
       }
     }
 
-    // "Slotify"
-    const div = document.createElement('div');
-    const docTitle = document.createElement('a');
-    docTitle.setAttribute('slot', 'document');
-    docTitle.href = window.location.href.split('/').slice(0, -2).join('/');
-    div.append(docTitle);
-
     const articleTitle = article.querySelector('h1, h2');
     if (articleTitle) {
       info.title = articleTitle.textContent;
@@ -199,24 +201,24 @@ export default async function decorate(block) {
       span.setAttribute('slot', 'title');
       span.textContent = info.title;
       articleTitle.remove();
-      div.append(span);
+      fragment.append(span);
     }
 
     const content = document.createElement('div');
     content.setAttribute('slot', 'content');
     content.append(article);
 
-    div.append(content);
-
-    // Render with slots
-    render(template, div);
-    block.append(template);
-    localize(block);
+    fragment.append(content);
     store.emit('article:loaded', info);
-
-    // Post render
-    block.querySelector('.edit-github a').href = `https://github.com/hlxsites/prisma-cloud-docs/blob/main/${window.location.pathname.replace(PATH_PREFIX, 'docs')}.adoc`;
   }
+
+  // Render with slots
+  render(template, fragment);
+  block.append(template);
+  localize(block);
+
+  // Post render
+  block.querySelector('.edit-github a').href = `https://github.com/hlxsites/prisma-cloud-docs/blob/main/${window.location.pathname.replace(PATH_PREFIX, 'docs')}.adoc`;
 
   if (store.mainBook) {
     loadBook(store.mainBook.href).then((book) => {
@@ -224,8 +226,9 @@ export default async function decorate(block) {
 
       if (!articleFound) return;
 
-      const docSlot = block.querySelector('a[slot="document"]');
-      docSlot.textContent = book.default.data[0].title;
+      // to use the title from the book definition instead of metadata
+      // const docSlot = block.querySelector('slot[name="document"]');
+      // docSlot.textContent = book.default.data[0].title;
 
       const href = window.location.href.split('?')[0].split('/');
       const subPath = href.pop();
