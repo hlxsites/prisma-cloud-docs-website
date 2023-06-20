@@ -71,21 +71,96 @@ const addClasses = (element, classes) => {
 };
 
 /**
- * Sets the branch search param to a given url
+ * Returns branch search param
  *
- * @param {URL} url
+ * @returns {(string|null)}
  */
-export function setBranch(url) {
+function getBranch() {
   const env = getEnv();
 
   if (env === 'dev' || env === 'preview') {
-    const branch = new URLSearchParams(window.location.search).get('branch');
-    if (branch) {
-      url.searchParams.append('branch', branch);
+    return new URLSearchParams(window.location.search).get('branch');
+  }
+
+  return null;
+}
+
+/**
+ * Sets the branch search param to a given url
+ *
+ * @param {URL} url
+ * @param {(string | null)} [branch]
+ * @searchParamOnly {boolean} [searchParamOnly]
+ */
+export function setBranch(url, branch = getBranch(), searchParamOnly = false) {
+  if (branch) {
+    url.searchParams.append('branch', branch);
+    if (!searchParamOnly) {
       url.protocol = 'https:';
       url.port = '';
       url.host = 'prisma-cloud-docs-production.adobeaem.workers.dev';
     }
+  }
+}
+
+/**
+ * Propagates the branch search param to all links in the document
+ *
+ * @param {HTMLDocument} doc
+ */
+function updateLinksWithBranch(doc) {
+  const branch = getBranch();
+  if (branch) {
+    const linkSelector = 'a[href]';
+    // Adds the branch search param to the link href
+    const updateLink = (link) => {
+      try {
+        const url = new URL(link.href);
+        setBranch(url, branch, true);
+
+        link.href = url.toString();
+      } catch (e) {
+        // noop
+      }
+    };
+
+    // Watches for section and block status loaded to update all links with the branch search param
+    const statusObserver = new MutationObserver(() => {
+      const ready = [...doc.body.querySelectorAll('[data-section-status]')].every((element) => element.dataset.sectionStatus === 'loaded')
+      && [...doc.body.querySelectorAll('[data-block-status]')].every((element) => element.dataset.blockStatus === 'loaded');
+
+      if (ready) {
+        doc.body.querySelectorAll(linkSelector).forEach((link) => {
+          updateLink(link);
+        });
+
+        // Watches for added nodes (e.g. lazy loaded book links)
+        // to update with the branch search param
+        new MutationObserver((entries) => {
+          entries.forEach((entry) => {
+            [...entry.addedNodes]
+              .filter((addedNode) => addedNode.nodeType === Node.ELEMENT_NODE)
+              .forEach((addedNode) => {
+                if (addedNode.matches(linkSelector)) {
+                  updateLink(addedNode);
+                } else {
+                  addedNode.querySelectorAll(linkSelector).forEach((link) => {
+                    updateLink(link);
+                  });
+                }
+              });
+          });
+        }).observe(doc.body, { subtree: true, childList: true });
+
+        statusObserver.disconnect();
+      }
+    });
+
+    statusObserver.observe(doc.body, {
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['data-section-status', 'data-block-status'],
+    });
   }
 }
 
@@ -596,6 +671,8 @@ async function loadLazy(doc) {
 
   loadHeader(doc.querySelector('header'));
   loadFooter(doc.querySelector('footer'));
+
+  updateLinksWithBranch(doc);
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   addFavIcon(`${window.hlx.codeBasePath}/styles/favicon.svg`);
