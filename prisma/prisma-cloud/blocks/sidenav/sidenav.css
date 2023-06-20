@@ -21,8 +21,16 @@
     transition: background 0.2s ease-in-out;
 }
 
-.sidenav-wrapper .toggle-aside i {
+.sidenav-wrapper i.icon {
     font-size: 9px;
+    line-height: 0;
+    width: 9px;
+    height: 9px;
+}
+
+.sidenav-wrapper i.icon img {
+    width: 9px;
+    height: 9px;
 }
 
 .sidenav-wrapper .toggle-aside:hover {
@@ -323,7 +331,7 @@
     color: #f4f4f2;
 }
 
-.pan-sidenav .toc-books li .icon-toggle {
+.pan-sidenav .toc-books li .icon {
     cursor: pointer;
     font-size: 11px;
     margin-right: 4px;
@@ -333,7 +341,12 @@
     display: none;
 }
 
-.pan-sidenav .toc-books li[aria-expanded="true"] > div > .icon-toggle {
+.pan-sidenav .toc-books li > div > span {
+    cursor: pointer;
+    padding-left: 6px;
+}
+
+.pan-sidenav .toc-books li[aria-expanded="true"] > div > span > i.icon {
     transform: rotate(90deg);
 }
 
