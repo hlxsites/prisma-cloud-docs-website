@@ -2,6 +2,7 @@ version: 1
 indices:
   en: &default
     include:
+      - '/prisma/prisma-cloud/en'
       - '/prisma/prisma-cloud/en/**'
     exclude:
       - '**/Document.*'
@@ -26,6 +27,7 @@ indices:
           parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
   jp: &default
     include:
+      - '/prisma/prisma-cloud/jp'
       - '/prisma/prisma-cloud/jp/**'
     exclude:
       - '**/Document.*'

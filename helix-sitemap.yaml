@@ -6,6 +6,7 @@ sitemaps:
         source: /prisma/prisma-cloud/en/query-index.json
         destination: /prisma/prisma-cloud/en/sitemap.xml
         hreflang: en
+        
       jp:
         source: /prisma/prisma-cloud/jp/query-index.json
         destination: /prisma/prisma-cloud/jp/sitemap.xml
