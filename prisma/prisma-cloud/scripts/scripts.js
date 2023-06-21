@@ -75,7 +75,7 @@ const addClasses = (element, classes) => {
  *
  * @returns {(string|null)}
  */
-function getBranch() {
+export function getBranch() {
   const env = getEnv();
 
   if (env === 'dev' || env === 'preview') {
@@ -90,11 +90,19 @@ function getBranch() {
  *
  * @param {URL} url
  * @param {(string | null)} [branch]
- * @searchParamOnly {boolean} [searchParamOnly]
+ * @param {boolean} [searchParamOnly]
+ * @param {boolean} [ignoreSearchParam]
  */
-export function setBranch(url, branch = getBranch(), searchParamOnly = false) {
+export function setBranch(
+  url,
+  branch = getBranch(),
+  searchParamOnly = false,
+  ignoreSearchParam = false,
+) {
   if (branch) {
-    url.searchParams.append('branch', branch);
+    if (!ignoreSearchParam) {
+      url.searchParams.append('branch', branch);
+    }
     if (!searchParamOnly) {
       url.protocol = 'https:';
       url.port = '';
