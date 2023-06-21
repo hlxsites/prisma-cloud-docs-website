@@ -485,12 +485,14 @@ function initAdditionalBooks(container) {
   const mainBook = container.querySelector('ul');
 
   let afterMainBook = false;
+  let neighbor;
   store.allBooks.forEach((book) => {
     if (book.mainBook) {
       afterMainBook = true;
     } else {
       // insert books in order defined in metadata
       const position = afterMainBook ? 'afterend' : 'beforebegin';
+      neighbor = afterMainBook ? neighbor || mainBook : mainBook;
       const list = html`
         <ul>
           <li data-key="" aria-expanded="false">
@@ -504,7 +506,9 @@ function initAdditionalBooks(container) {
             </div>
           </li>
         </ul>`;
-      mainBook.insertAdjacentElement(position, list);
+
+      neighbor.insertAdjacentElement(position, list);
+      neighbor = list;
 
       // load additional book data on hover, replace toc list once loaded
       list.addEventListener('mouseenter', async () => {
