@@ -9,7 +9,7 @@ import {
   REDIRECTED_ARTICLE_KEY,
   decorateMain,
   DOCS_ORIGINS,
-  setBranch,
+  setBranch, getBranch,
 } from '../../scripts/scripts.js';
 
 import {
@@ -178,11 +178,18 @@ export default async function decorate(block) {
   if (articleFound) {
     const { data, info } = res;
     const article = parseFragment(data);
+    const branch = getBranch();
 
     // Fixup images src
     for (const image of article.querySelectorAll('img')) {
-      const { pathname } = new URL(image.src);
-      image.src = `${store.docsOrigin}${pathname}`;
+      const imageURL = new URL(image.src);
+
+      if (branch) {
+        setBranch(imageURL, branch, false, true);
+        image.src = imageURL.toString();
+      } else {
+        image.src = `${store.docsOrigin}${imageURL.pathname}`;
+      }
 
       const picture = image.parentElement;
       if (picture.tagName === 'PICTURE') {
