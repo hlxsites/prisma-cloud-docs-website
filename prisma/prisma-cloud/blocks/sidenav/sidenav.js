@@ -1,12 +1,12 @@
 import { getMetadata } from '../../scripts/lib-franklin.js';
 import {
-  PATH_PREFIX, getPlaceholders, html, isMobile, parseFragment, render,
+  PATH_PREFIX, getIcon, getPlaceholders, html, isMobile, parseFragment, render,
 } from '../../scripts/scripts.js';
 
 const TEMPLATE = /* html */`
   <aside class="pan-sidenav">
       <div class="toggle-aside">
-          <i class="icon-arrow-right"></i>
+          <i class="icon">${getIcon('chevron-right')}</i>
       </div>
       <div class="banner">
         <div class="banner-inner">
@@ -32,7 +32,7 @@ const TEMPLATE = /* html */`
                 <div class="banner-dropdown version-dropdown">
                   <a>
                       <span slot="version"></span>
-                      <i class="icon-arrow-down"></i>
+                      <i class="icon">${getIcon('chevron-down')}</i>
                   </a>
                   <div class="banner-dropdown-menu version-dropdown-menu">
                     <ul>
@@ -51,7 +51,7 @@ const TEMPLATE = /* html */`
                 <div class="banner-dropdown language-dropdown">
                   <a>
                       <span slot="language"></span>
-                      <i class="icon-arrow-down"></i>
+                      <i class="icon">${getIcon('chevron-down')}</i>
                   </a>
                   <div class="banner-dropdown-menu language-dropdown-menu">
                     <ul>
@@ -68,7 +68,7 @@ const TEMPLATE = /* html */`
       </div>
       <div class="content">
           <div class="toggle-aside">
-              <i class="icon-arrow-${isMobile() ? 'down' : 'left'}"></i>
+            <i class="icon">${getIcon(`chevron-${isMobile() ? 'down' : 'left'}`)}</i>
           </div>
           <h2 class="locale-toc-title"></h2>
           <hr>
@@ -76,7 +76,7 @@ const TEMPLATE = /* html */`
               <div class="search-toc">
                   <div class="search-toc-label">
                       <div class="filter-icon">
-                          <img src="${window.hlx.codeBasePath}/icons/filter.svg" alt="" loading="lazy">
+                          ${getIcon('filter')}
                       </div>
                       <span class="locale-toc-filter"></span>
                   </div>
@@ -213,7 +213,7 @@ function addEventListeners(wrapper) {
     const next = !wrapper.parentElement.classList.contains('aside-close');
     wrapper.parentElement.classList.toggle('aside-close', next);
     if (isMobile()) {
-      toggle.querySelector('i').className = `icon-arrow-${next ? 'down' : 'up'}`;
+      toggle.querySelector('i').style.rotate = `${next ? '0' : '180'}deg`;
     }
   });
 
@@ -344,7 +344,8 @@ function bookToList(book) {
     div.append(link);
 
     const expander = document.createElement('span');
-    expander.classList.add('icon-arrow-right', 'icon-toggle');
+    expander.append(html`<i class="icon">${getIcon('chevron-right')}</i>`);
+    // expander.classList.add('icon-arrow-right', 'icon-toggle');
     div.append(expander);
 
     item.append(div);
@@ -495,7 +496,11 @@ function initAdditionalBooks(container) {
           <li data-key="" aria-expanded="false">
             <div>
               <a>${book.title}</a>
-              <span class="icon-arrow-right icon-toggle"></span>
+              <span>
+                <i class="icon">
+                  ${getIcon('chevron-right')}
+                </i>
+              </span>
             </div>
           </li>
         </ul>`;

@@ -383,6 +383,34 @@ export function el(str) {
   return tmp.firstElementChild;
 }
 
+export function getIcon(icons, alt, minBp) {
+  // eslint-disable-next-line no-param-reassign
+  icons = Array.isArray(icons) ? icons : [icons];
+  const [defaultIcon, mobileIcon] = icons;
+  const ogIcon = (mobileIcon && window.innerWidth < 600) ? mobileIcon : defaultIcon;
+  let icon = ogIcon;
+
+  let rotation;
+  if (icon.startsWith('chevron-')) {
+    const direction = icon.substring('chevron-'.length);
+    icon = 'chevron';
+    if (direction === 'left') {
+      rotation = 90;
+    } else if (direction === 'up') {
+      rotation = 180;
+    } else if (direction === 'right') {
+      rotation = 270;
+    }
+  }
+  return (`<img class="icon icon-${icon} icon-${ogIcon} ${minBp ? `v-${minBp}` : ''}" ${rotation
+    ? `style="transform:rotate(${rotation}deg);"`
+    : ''} src="${window.hlx.codeBasePath}/icons/${icon}.svg" alt="${alt || icon}">`);
+}
+
+export function getIconEl(...args) {
+  return el(getIcon(...args));
+}
+
 /**
  * HTML string template tag
  * @param {string[]} strs
