@@ -12,7 +12,7 @@ import {
 } from '../../scripts/scripts.js';
 
 import {
-  loadBlocks,
+  loadBlocks, updateSectionsStatus,
 } from '../../scripts/lib-franklin.js';
 
 /**
@@ -72,6 +72,7 @@ async function loadFragment(path, fromDocs) {
 
   decorateMain(main);
   await loadBlocks(main);
+  updateSectionsStatus(main);
   return main;
 }
 

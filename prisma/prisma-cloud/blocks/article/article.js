@@ -269,7 +269,7 @@ export default async function decorate(block) {
     if (bookContent) {
       decorateMain(bookContent);
       loadBlocks(bookContent).then(() => {
-        updateSectionsStatus(document.querySelector('main'));
+        updateSectionsStatus(bookContent);
       });
     }
   }
