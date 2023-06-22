@@ -24,6 +24,7 @@ polyfill();
 
 const range = document.createRange();
 
+export const SPA_NAVIGATION = true;
 export const REDIRECTED_ARTICLE_KEY = 'redirected-article';
 export const PATH_PREFIX = '/prisma/prisma-cloud';
 const LCP_BLOCKS = ['article']; // add your LCP blocks to the list
@@ -473,6 +474,44 @@ export function render(template, fragment) {
 export async function loadBook(href) {
   assertValidDocsURL(href);
   return store.fetchJSON(href, ['default', 'chapters', 'topics']);
+}
+
+/**
+ * Load article as HTML
+ * @param {string} href
+ * @returns {Promise<{ok:boolean;data?:string;status:number;}>}
+ */
+export async function loadArticle(href) {
+  assertValidDocsURL(href);
+
+  // change href to point to docs origin on lower envs
+  if (store.env !== 'prod' && href.startsWith('/')) {
+    // eslint-disable-next-line no-param-reassign
+    href = `${DOCS_ORIGINS[store.env]}${href}`;
+  }
+
+  const url = new URL(`${href}.plain.html`);
+  setBranch(url);
+
+  const resp = await fetch(url.toString(), store.branch ? { cache: 'reload' } : undefined);
+  if (!resp.ok) return resp;
+  try {
+    const lastModified = resp.headers.get('last-modified') !== 'null' ? new Date(resp.headers.get('last-modified')) : new Date();
+    return {
+      ok: true,
+      status: resp.status,
+      info: {
+        lastModified,
+      },
+      data: await resp.text(),
+    };
+  } catch (e) {
+    console.error('failed to parse article: ', e);
+    return {
+      ...resp,
+      ok: false,
+    };
+  }
 }
 
 /**

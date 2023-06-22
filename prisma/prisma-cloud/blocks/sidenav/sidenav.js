@@ -1,6 +1,13 @@
 import { getMetadata } from '../../scripts/lib-franklin.js';
 import {
-  PATH_PREFIX, getIcon, getPlaceholders, html, isMobile, parseFragment, render,
+  PATH_PREFIX,
+  SPA_NAVIGATION,
+  getIcon,
+  getPlaceholders,
+  html,
+  isMobile,
+  parseFragment,
+  render,
 } from '../../scripts/scripts.js';
 
 const TEMPLATE = /* html */`
@@ -93,6 +100,37 @@ const TEMPLATE = /* html */`
           </div>
       </div>
   </aside>`;
+
+function navigateArticleSPA(ev) {
+  if (!SPA_NAVIGATION) return;
+
+  const siteHref = ev.target.getAttribute('href');
+  if (!siteHref) return;
+
+  // convert website path to docs path
+  const docHref = `${PATH_PREFIX}/docs${siteHref.substring(PATH_PREFIX.length)}`;
+
+  // navigate normally to different books, only SPA within the same book
+  if (!docHref.startsWith(store.bookPath)) return;
+
+  ev.preventDefault();
+  console.debug('[sidenav] navigateArticleSPA: ', docHref, siteHref);
+  store.emit('spa:navigate:article', { docHref, siteHref });
+
+  // change current sidenav item
+  const toc = ev.target.closest('div.toc-books');
+  const prev = toc.querySelector('li.current');
+  if (prev) {
+    prev.classList.remove('current');
+  }
+
+  const next = toc.querySelector(`a[href="${siteHref}"]`);
+  if (next) {
+    next.closest('li').classList.add('current');
+  }
+
+  // TODO: update sidenav banner info: modified date, version/language dropdown links
+}
 
 /**
  * Add version dropdown
@@ -341,6 +379,8 @@ function bookToList(book) {
     const link = document.createElement('a');
     link.innerText = title;
     link.href = href || '';
+    link.addEventListener('click', navigateArticleSPA);
+
     div.append(link);
 
     const expander = document.createElement('span');
@@ -380,6 +420,8 @@ function bookToList(book) {
       const link = document.createElement('a');
       link.innerText = topic.name;
       link.href = makeHref(topic, parentKey);
+      link.addEventListener('click', navigateArticleSPA);
+
       const div = document.createElement('div');
       div.append(link);
       li.append(div);

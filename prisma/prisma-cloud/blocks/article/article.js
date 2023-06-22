@@ -6,6 +6,7 @@ import {
   parseFragment,
   PATH_PREFIX,
   render,
+  SPA_NAVIGATION,
   REDIRECTED_ARTICLE_KEY,
   decorateMain,
   DOCS_ORIGINS,
@@ -66,6 +67,12 @@ const TEMPLATE = /* html */`
  */
 async function loadArticle(href) {
   assertValidDocsURL(href);
+
+  // change href to point to docs origin on lower envs
+  if (store.env !== 'prod' && href.startsWith('/')) {
+    // eslint-disable-next-line no-param-reassign
+    href = `${DOCS_ORIGINS[store.env]}${href}`;
+  }
 
   const url = new URL(`${href}.plain.html`);
   setBranch(url);
@@ -135,28 +142,11 @@ async function redirectToFirstChapter() {
   window.location.href = redirect;
 }
 
-/** @param {HTMLDivElement} block */
-export default async function decorate(block) {
-  let res;
+async function renderContent(block, href, rerender = false) {
   let articleFound = true;
-  const link = block.querySelector('a');
   block.innerHTML = '';
 
-  if (link) {
-    try {
-      let href = link.getAttribute('href') || link.innerText;
-      if (href) {
-        // change href to point to docs origin on lower envs
-        if (store.env !== 'prod' && href.startsWith('/')) {
-          href = `${DOCS_ORIGINS[store.env]}${href}`;
-        }
-        res = await loadArticle(href);
-      }
-    } catch (e) {
-      console.error(e);
-    }
-  }
-
+  const res = await loadArticle(href);
   if (!res || !res.ok) {
     console.error(`failed to load article (${res.status}): `, res);
     if (res.status === 404 && shouldRedirectMissing()) {
@@ -236,8 +226,8 @@ export default async function decorate(block) {
       // const docSlot = block.querySelector('slot[name="document"]');
       // docSlot.textContent = book.default.data[0].title;
 
-      const href = window.location.href.split('?')[0].split('/');
-      const subPath = href.pop();
+      const hrefParts = window.location.href.split('?')[0].split('/');
+      const subPath = hrefParts.pop();
       const topicIndex = book.topics.data.findIndex(({ key }) => key === subPath);
       const currentTopic = book.topics.data[topicIndex];
       const prevTopic = book.topics.data[topicIndex - 1];
@@ -245,24 +235,26 @@ export default async function decorate(block) {
 
       if (prevTopic) {
         if (prevTopic.chapter === currentTopic.chapter) {
-          block.querySelector('.prev').href = `${href.join('/')}/${prevTopic.key.replaceAll('_', '-')}`;
+          block.querySelector('.prev').href = `${hrefParts.join('/')}/${prevTopic.key.replaceAll('_', '-')}`;
         } else {
-          block.querySelector('.prev').href = `${href.slice(0, -1).join('/')}/${prevTopic.chapter}/${prevTopic.key.replaceAll('_', '-')}`;
+          block.querySelector('.prev').href = `${hrefParts.slice(0, -1).join('/')}/${prevTopic.chapter}/${prevTopic.key.replaceAll('_', '-')}`;
         }
       }
 
       if (nextTopic) {
         if (nextTopic.chapter === currentTopic.chapter) {
-          block.querySelector('.next').href = `${href.join('/')}/${nextTopic.key.replaceAll('_', '-')}`;
+          block.querySelector('.next').href = `${hrefParts.join('/')}/${nextTopic.key.replaceAll('_', '-')}`;
         } else {
-          block.querySelector('.next').href = `${href.slice(0, -1).join('/')}/${nextTopic.chapter}/${nextTopic.key.replaceAll('_', '-')}`;
+          block.querySelector('.next').href = `${hrefParts.slice(0, -1).join('/')}/${nextTopic.chapter}/${nextTopic.key.replaceAll('_', '-')}`;
         }
       }
     });
   }
 
-  // Load sidenav
-  renderSidenav(block);
+  // Load sidenav, once
+  if (!rerender) {
+    renderSidenav(block);
+  }
 
   if (articleFound) {
     const bookContent = block.querySelector('.book-content div[slot="content"]');
@@ -272,5 +264,32 @@ export default async function decorate(block) {
         updateSectionsStatus(bookContent);
       });
     }
+  }
+}
+
+/** @param {HTMLDivElement} block */
+export default async function decorate(block) {
+  const link = block.querySelector('a');
+  if (link) {
+    try {
+      const href = link.getAttribute('href') || link.innerText;
+      if (href) {
+        await renderContent(block, href);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  if (SPA_NAVIGATION) {
+    store.on('spa:navigate:article', ({ docHref, siteHref }) => {
+      window.history.pushState({ href: store.docPath }, '', siteHref);
+      renderContent(block, docHref, true);
+    });
+
+    window.onpopstate = ({ state }) => {
+      if (!state || !state.href) return;
+      renderContent(block, state.href, true);
+    };
   }
 }

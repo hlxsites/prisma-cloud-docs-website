@@ -18,6 +18,7 @@ export interface EventMap {
   'book:loaded': BookDefinition;
   'article:loaded': ArticleInfo;
   'header:loaded': void;
+  'spa:navigate:article': { docHref: string; siteHref: string; };
 }
 
 export type AnyEventType = keyof EventMap;
