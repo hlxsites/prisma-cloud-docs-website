@@ -8,18 +8,20 @@ import {
   decorateMain,
   isValidDocsURL,
   isValidWebURL,
+  setBranch,
 } from '../../scripts/scripts.js';
 
 import {
-  loadBlocks,
+  loadBlocks, updateSectionsStatus,
 } from '../../scripts/lib-franklin.js';
 
 /**
  * Loads a fragment.
  * @param {string} path The path to the fragment
+ * @param {boolean} fromDocs whether the fragment exists in docs repo
  * @returns {Promise<HTMLElement>} The root element of the fragment
  */
-async function loadFragment(path) {
+async function loadFragment(path, fromDocs) {
   let href = path;
   if (!href) return null;
   if (!href.startsWith('/') && !href.startsWith('.')) {
@@ -32,24 +34,57 @@ async function loadFragment(path) {
     } else if (!isValidDocsURL(href)) {
       return null;
     }
+  } else if (fromDocs) {
+    href = `${store.docsOrigin}${href}`;
   }
 
   const resp = await fetch(`${href}.plain.html`);
-  if (resp.ok) {
-    const main = document.createElement('main');
-    main.innerHTML = await resp.text();
-    decorateMain(main);
-    await loadBlocks(main);
-    return main;
+  if (!resp.ok) {
+    console.warn(`failed to fetch fragment (${resp.status})`, resp);
+    return null;
   }
 
-  return null;
+  const text = await resp.text();
+  const main = document.createElement('main');
+  main.innerHTML = text;
+
+  if (fromDocs) {
+    // adjust image urls to point to docs origin
+    for (const image of main.querySelectorAll('img')) {
+      const imageURL = new URL(image.src);
+
+      if (store.branch) {
+        setBranch(imageURL, store.branch);
+        image.src = imageURL.toString();
+      } else {
+        image.src = `${store.docsOrigin}${imageURL.pathname}`;
+      }
+
+      const picture = image.parentElement;
+      if (picture.tagName === 'PICTURE') {
+        for (const source of picture.querySelectorAll('source')) {
+          const search = source.srcset.split('?')[1];
+          source.srcset = `${image.src}?${search}`;
+        }
+      }
+    }
+  }
+
+  decorateMain(main);
+  await loadBlocks(main);
+  updateSectionsStatus(main);
+  return main;
 }
 
+/**
+ * @param {HTMLDivElement} block
+ */
 export default async function decorate(block) {
   const link = block.querySelector('a');
   const path = link ? link.getAttribute('href') : block.textContent.trim();
-  const fragment = await loadFragment(path);
+  const fromDocs = block.classList.contains('docs');
+  const fragment = await loadFragment(path, fromDocs);
+
   if (fragment) {
     const fragmentSection = fragment.querySelector(':scope .section');
     if (fragmentSection) {

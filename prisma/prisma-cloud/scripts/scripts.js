@@ -348,7 +348,7 @@ const store = new (class {
 window.store = store;
 
 function isValidURL(url, origins) {
-  if (url.startsWith('/')) return true;
+  if (url.startsWith('/') || url.startsWith('./')) return true;
   const { origin } = new URL(url);
   if (window.location.origin === origin) return true;
   if (Object.values(origins).includes(origin)) return true;
