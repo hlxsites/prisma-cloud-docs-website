@@ -345,7 +345,6 @@ function bookToList(book) {
 
     const expander = document.createElement('span');
     expander.append(html`<i class="icon">${getIcon('chevron-right')}</i>`);
-    // expander.classList.add('icon-arrow-right', 'icon-toggle');
     div.append(expander);
 
     item.append(div);
@@ -370,12 +369,17 @@ function bookToList(book) {
     current = bookUl;
 
     // add the chapter
-    addSubList(chapter.name, `${book.path}/${chapter.key}/${chapter.key}`, chapter.key);
+    const chapterUl = addSubList(chapter.name, `${book.path}/${chapter.key}/${chapter.key}`, chapter.key);
 
     const makeHref = (topic, parentKey) => `${book.path}/${chapter.key}/${parentKey ? `${parentKey}/` : ''}${topic.key}`;
 
     // then the topics recursively
     const processTopic = (topic, parentKey) => {
+      if (!parentKey) {
+        // reset back to the chapter list for each new topic
+        current = chapterUl;
+      }
+
       const li = document.createElement('li');
       const link = document.createElement('a');
       link.innerText = topic.name;
@@ -450,6 +454,19 @@ function renderTOC(container, book, expand, replace) {
     const prev = li.previousElementSibling;
     if (prev && prev.querySelector('a').textContent.trim() === li.querySelector('a').textContent.trim()) {
       prev.remove();
+    }
+  });
+
+  // remove all first list entries that are identical to their parent
+  rootList.querySelectorAll(':scope li[data-key] > ul > li:first-child').forEach((li) => {
+    const parent = li.parentElement.closest('li');
+    if (!parent) return;
+
+    const parentLink = parent.querySelector(':scope > div > a');
+    if (!parentLink) return;
+
+    if (parentLink.textContent === li.textContent) {
+      li.remove();
     }
   });
 

@@ -373,10 +373,6 @@
     display: block;
 }
 
-.pan-sidenav .toc-books > ul > li li[data-key] > ul > li:first-child {
-    display: none;
-}
-
 @media (min-width: 768px) {
     .sidenav-container.aside-close .sidenav-wrapper {
         min-width: 30px;
