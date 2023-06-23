@@ -697,14 +697,13 @@ export function addFavIcon(href) {
 async function loadLazy(doc) {
   const main = doc.querySelector('main');
 
-  loadHeader(doc.querySelector('header'));
-
   await loadBlocks(main);
 
   const { hash } = window.location;
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
   if (hash && element) element.scrollIntoView();
 
+  loadHeader(doc.querySelector('header'));
   loadFooter(doc.querySelector('footer'));
 
   updateLinksWithBranch(doc);
