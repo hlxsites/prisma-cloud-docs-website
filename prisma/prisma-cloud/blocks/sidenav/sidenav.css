@@ -346,8 +346,12 @@
     border-radius: 4px;
 }
 
-.pan-sidenav .toc-books li.current > div > a:visited {
+.pan-sidenav .toc-books li.current > div > a {
     color: #f4f4f2;
+}
+
+.pan-sidenav .toc-books li.current > div i.icon img {
+    filter: invert(0.9);
 }
 
 .pan-sidenav .toc-books li .icon {
@@ -371,10 +375,6 @@
 
 .pan-sidenav .toc-books li[aria-expanded="true"] > ul {
     display: block;
-}
-
-.pan-sidenav .toc-books > ul > li li[data-key] > ul > li:first-child {
-    display: none;
 }
 
 @media (min-width: 768px) {
