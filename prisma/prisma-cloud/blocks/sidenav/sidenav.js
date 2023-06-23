@@ -248,6 +248,7 @@ function addEventListeners(wrapper) {
         if (!find(link)) {
           const { textContent } = link;
           link.textContent = textContent;
+          link.textContent = link.innerHTML.replaceAll('&nbsp;', ' ');
 
           toggleExpanded(link, false);
         }
@@ -267,6 +268,7 @@ function addEventListeners(wrapper) {
         const { textContent } = link;
 
         link.textContent = textContent;
+        link.textContent = link.innerHTML.replaceAll('&nbsp;', ' ');
         link.closest('li[data-key]').hidden = false;
 
         toggleExpanded(link, 'false');
@@ -510,12 +512,11 @@ function initAdditionalBooks(container) {
       neighbor.insertAdjacentElement(position, list);
       neighbor = list;
 
-      // load additional book data on hover, replace toc list once loaded
-      list.addEventListener('mouseenter', async () => {
-        const data = await store.fetchJSON(book.href, ['default', 'chapters', 'topics']);
+      // load additional book data
+      store.fetchJSON(book.href, ['default', 'chapters', 'topics']).then((data) => {
         const sorted = sortBook(data);
         renderTOC(container, sorted, false, list);
-      }, { once: true });
+      });
     }
   });
 }
@@ -570,10 +571,13 @@ export default async function decorate(block) {
 
     const sorted = sortBook(book);
     renderTOC(toc, sorted, true);
-    initAdditionalBooks(toc);
 
     addEventListeners(wrapper);
     initVersionDropdown(wrapper);
     initLanguagesDropdown(wrapper);
+  });
+
+  store.once('delayed:loaded', () => {
+    initAdditionalBooks(toc);
   });
 }
