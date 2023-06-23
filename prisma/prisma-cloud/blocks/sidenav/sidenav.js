@@ -330,6 +330,13 @@ function sortBook(book) {
   return data;
 }
 
+function hasSubtopics(topic) {
+  return topic.children && (
+    topic.children.length > 1
+    || topic.children.some((sub) => sub.name !== topic.name && sub.key !== topic.key)
+  );
+}
+
 function bookToList(book) {
   const root = document.createElement('ul');
 
@@ -389,7 +396,7 @@ function bookToList(book) {
       li.append(div);
       current.append(li);
 
-      if (topic.children) {
+      if (hasSubtopics(topic)) {
         addSubList(topic.name, `${book.path}/${chapter.key}/${parentKey ? `${parentKey}/` : ''}${topic.key}/${topic.key}`, topic.key);
         topic.children.forEach((subtopic) => {
           processTopic(subtopic, `${parentKey ? `${parentKey}/` : ''}${topic.key}${subtopic.parent ? `/${subtopic.parent}` : ''}`);
