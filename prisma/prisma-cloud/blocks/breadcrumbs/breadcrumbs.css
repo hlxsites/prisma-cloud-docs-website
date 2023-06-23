@@ -2,6 +2,11 @@ main .breadcrumbs-container {
     padding: 0;
     position: relative;
     width: 100vw;
+    visibility: hidden;
+}
+
+main .breadcrumbs-container[data-section-status="loaded"] {
+    visibility: visible;
 }
 
 .landing-product .breadcrumbs-container {
