@@ -350,6 +350,10 @@
     color: #f4f4f2;
 }
 
+.pan-sidenav .toc-books li.current i.icon img {
+    filter: invert(0.9);
+}
+
 .pan-sidenav .toc-books li .icon {
     cursor: pointer;
     font-size: 11px;
