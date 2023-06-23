@@ -350,7 +350,7 @@
     color: #f4f4f2;
 }
 
-.pan-sidenav .toc-books li.current i.icon img {
+.pan-sidenav .toc-books li.current > div i.icon img {
     filter: invert(0.9);
 }
 
