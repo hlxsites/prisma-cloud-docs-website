@@ -6,6 +6,7 @@ import {
   getPlaceholders,
   html,
   isMobile,
+  loadArticle,
   parseFragment,
   render,
 } from '../../scripts/scripts.js';
@@ -101,7 +102,12 @@ const TEMPLATE = /* html */`
       </div>
   </aside>`;
 
-function navigateArticleSPA(ev) {
+function formatDate(date) {
+  const [month, day, year] = date.toString().split(' ').slice(1);
+  return `${month} ${day}, ${year}`;
+}
+
+async function navigateArticleSPA(ev) {
   if (!SPA_NAVIGATION) return;
 
   const siteHref = ev.target.getAttribute('href');
@@ -114,11 +120,23 @@ function navigateArticleSPA(ev) {
   if (!docHref.startsWith(store.bookPath)) return;
 
   ev.preventDefault();
+
+  const res = await loadArticle(docHref);
+  if (!res.ok) {
+    // also navigate normally if article fetch fails
+    console.error('failed to load article: ', docHref, res);
+    window.location.href = siteHref;
+    return;
+  }
+
   console.debug('[sidenav] navigateArticleSPA: ', docHref, siteHref);
-  store.emit('spa:navigate:article', { docHref, siteHref });
+  store.emit('spa:navigate:article', { docHref, siteHref, ...res });
+
+  const sidenav = ev.target.closest('.pan-sidenav');
+  const banner = sidenav.querySelector('div.banner');
+  const toc = sidenav.querySelector('div.toc-books');
 
   // change current sidenav item
-  const toc = ev.target.closest('div.toc-books');
   const prev = toc.querySelector('li.current');
   if (prev) {
     prev.classList.remove('current');
@@ -129,7 +147,13 @@ function navigateArticleSPA(ev) {
     next.closest('li').classList.add('current');
   }
 
-  // TODO: update sidenav banner info: modified date, version/language dropdown links
+  // update modified date
+  const dateEl = banner.querySelector('.book-detail-banner-info slot[name="date"]');
+  if (dateEl) {
+    dateEl.textContent = formatDate(res.info.lastModified);
+  }
+
+  // TODO: update version/language dropdown links
 }
 
 /**
@@ -626,9 +650,7 @@ export default async function decorate(block) {
 
   store.once('article:loaded', (info) => {
     block.querySelector('slot[name="title"]').textContent = info.title;
-
-    const [month, day, year] = info.lastModified.toString().split(' ').slice(1);
-    block.querySelector('slot[name="date"]').textContent = `${month} ${day}, ${year}`;
+    block.querySelector('slot[name="date"]').textContent = formatDate(info.lastModified);
   });
 
   store.once('book:loaded', (book) => {

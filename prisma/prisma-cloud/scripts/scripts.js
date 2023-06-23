@@ -580,6 +580,44 @@ function buildAutoBlocks(main) {
   }
 }
 
+/**
+ * Load article as HTML string
+ * @param {string} href
+ * @returns {Promise<{ok:boolean;html?:string;status:number;info:{lastModified:Date}}>}
+ */
+export async function loadArticle(href) {
+  assertValidDocsURL(href);
+
+  // change href to point to docs origin on lower envs
+  if (store.env !== 'prod' && href.startsWith('/')) {
+    // eslint-disable-next-line no-param-reassign
+    href = `${DOCS_ORIGINS[store.env]}${href}`;
+  }
+
+  const url = new URL(`${href}.plain.html`);
+  setBranch(url);
+
+  const resp = await fetch(url.toString(), store.branch ? { cache: 'reload' } : undefined);
+  if (!resp.ok) return resp;
+  try {
+    const lastModified = resp.headers.get('last-modified') !== 'null' ? new Date(resp.headers.get('last-modified')) : new Date();
+    return {
+      ok: true,
+      status: resp.status,
+      info: {
+        lastModified,
+      },
+      html: await resp.text(),
+    };
+  } catch (e) {
+    console.error('failed to parse article: ', e);
+    return {
+      ...resp,
+      ok: false,
+    };
+  }
+}
+
 function decorateLandingSections(main) {
   if (getMetadata('template') === 'landing-product') {
     const h1 = main.querySelector('h1');

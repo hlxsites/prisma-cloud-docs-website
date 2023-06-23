@@ -9,3 +9,10 @@ export interface ArticleInfo {
    */
   title: string;
 }
+
+export interface ArticleResponse {
+  ok: boolean;
+  status: number;
+  html: string;
+  info: ArticleInfo;
+}
