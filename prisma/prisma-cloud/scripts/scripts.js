@@ -696,6 +696,7 @@ export function addFavIcon(href) {
  */
 async function loadLazy(doc) {
   const main = doc.querySelector('main');
+
   await loadBlocks(main);
 
   const { hash } = window.location;
@@ -728,6 +729,26 @@ async function loadPage() {
   await loadEager(document);
   await loadLazy(document);
   loadDelayed();
+
+  // TODO refactor with updateLinksWithBranch function
+  if (document.body.classList.contains('book')) {
+    // Watches for section and block status loaded
+    const statusObserver = new MutationObserver(() => {
+      const ready = [...document.body.querySelectorAll('[data-section-status]')].every((element) => element.dataset.sectionStatus === 'loaded')
+        && [...document.body.querySelectorAll('[data-block-status]')].every((element) => element.dataset.blockStatus === 'loaded');
+
+      if (ready) {
+        document.querySelector('footer').classList.add('appear');
+        statusObserver.disconnect();
+      }
+    });
+
+    statusObserver.observe(document.body, {
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['data-section-status', 'data-block-status'],
+    });
+  }
 }
 
 loadPage();

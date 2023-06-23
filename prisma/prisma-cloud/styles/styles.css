@@ -112,6 +112,14 @@ body main {
   max-width: var(--max-width);
 }
 
+.book footer {
+  display: none;
+}
+
+.book footer.appear {
+  display: block;
+}
+
 header.loaded {
   background: transparent;
 }
@@ -340,6 +348,15 @@ main .section.full-width > div {
   .container {
     width: 1200px;
   }
+}
+
+/* breadcrumbs */
+main .breadcrumbs-container {
+  visibility: hidden;
+}
+
+main .breadcrumbs-container[data-section-status="loaded"] {
+  visibility: visible;
 }
 
 /* book template */
