@@ -1,14 +1,14 @@
 import {
-  assertValidDocsURL,
   renderSidenav,
   getPlaceholders,
   loadBook,
   parseFragment,
   PATH_PREFIX,
   render,
+  SPA_NAVIGATION,
   REDIRECTED_ARTICLE_KEY,
   decorateMain,
-  DOCS_ORIGINS,
+  loadArticle,
   setBranch,
 } from '../../scripts/scripts.js';
 
@@ -60,38 +60,6 @@ const TEMPLATE = /* html */`
   </article>`;
 
 /**
- * Load article as HTML
- * @param {string} href
- * @returns {Promise<{ok:boolean;data?:string;status:number;}>}
- */
-async function loadArticle(href) {
-  assertValidDocsURL(href);
-
-  const url = new URL(`${href}.plain.html`);
-  setBranch(url);
-
-  const resp = await fetch(url.toString(), store.branch ? { cache: 'reload' } : undefined);
-  if (!resp.ok) return resp;
-  try {
-    const lastModified = resp.headers.get('last-modified') !== 'null' ? new Date(resp.headers.get('last-modified')) : new Date();
-    return {
-      ok: true,
-      status: resp.status,
-      info: {
-        lastModified,
-      },
-      data: await resp.text(),
-    };
-  } catch (e) {
-    console.error('failed to parse article: ', e);
-    return {
-      ...resp,
-      ok: false,
-    };
-  }
-}
-
-/**
  * @param {HTMLDivElement} block
  */
 function localize(block) {
@@ -135,35 +103,26 @@ async function redirectToFirstChapter() {
   window.location.href = redirect;
 }
 
-/** @param {HTMLDivElement} block */
-export default async function decorate(block) {
-  let res;
+/**
+ * @param {HTMLElement} block the container element
+ * @param {string} hrefOrRes href on render, html string on rerender
+ * @param {*} rerender whether this is a rerender
+ */
+async function renderContent(block, hrefOrRes, rerender = false) {
   let articleFound = true;
-  const link = block.querySelector('a');
   block.innerHTML = '';
 
-  if (link) {
-    try {
-      let href = link.getAttribute('href') || link.innerText;
-      if (href) {
-        // change href to point to docs origin on lower envs
-        if (store.env !== 'prod' && href.startsWith('/')) {
-          href = `${DOCS_ORIGINS[store.env]}${href}`;
-        }
-        res = await loadArticle(href);
+  let res = hrefOrRes;
+  if (!rerender) {
+    res = await loadArticle(hrefOrRes);
+    if (!res || !res.ok) {
+      console.error(`failed to load article (${res.status}): `, res);
+      if (res.status === 404 && shouldRedirectMissing()) {
+        await redirectToFirstChapter();
       }
-    } catch (e) {
-      console.error(e);
+      articleFound = false;
+      block.classList.add('not-found');
     }
-  }
-
-  if (!res || !res.ok) {
-    console.error(`failed to load article (${res.status}): `, res);
-    if (res.status === 404 && shouldRedirectMissing()) {
-      await redirectToFirstChapter();
-    }
-    articleFound = false;
-    block.classList.add('not-found');
   }
 
   const template = parseFragment(TEMPLATE);
@@ -176,8 +135,8 @@ export default async function decorate(block) {
   fragment.append(docTitle);
 
   if (articleFound) {
-    const { data, info } = res;
-    const article = parseFragment(data);
+    const { html, info } = res;
+    const article = parseFragment(html);
 
     // Fixup images src
     for (const image of article.querySelectorAll('img')) {
@@ -236,8 +195,8 @@ export default async function decorate(block) {
       // const docSlot = block.querySelector('slot[name="document"]');
       // docSlot.textContent = book.default.data[0].title;
 
-      const href = window.location.href.split('?')[0].split('/');
-      const subPath = href.pop();
+      const hrefParts = window.location.href.split('?')[0].split('/');
+      const subPath = hrefParts.pop();
       const topicIndex = book.topics.data.findIndex(({ key }) => key === subPath);
       const currentTopic = book.topics.data[topicIndex];
       const prevTopic = book.topics.data[topicIndex - 1];
@@ -245,24 +204,26 @@ export default async function decorate(block) {
 
       if (prevTopic) {
         if (prevTopic.chapter === currentTopic.chapter) {
-          block.querySelector('.prev').href = `${href.join('/')}/${prevTopic.key.replaceAll('_', '-')}`;
+          block.querySelector('.prev').href = `${hrefParts.join('/')}/${prevTopic.key.replaceAll('_', '-')}`;
         } else {
-          block.querySelector('.prev').href = `${href.slice(0, -1).join('/')}/${prevTopic.chapter}/${prevTopic.key.replaceAll('_', '-')}`;
+          block.querySelector('.prev').href = `${hrefParts.slice(0, -1).join('/')}/${prevTopic.chapter}/${prevTopic.key.replaceAll('_', '-')}`;
         }
       }
 
       if (nextTopic) {
         if (nextTopic.chapter === currentTopic.chapter) {
-          block.querySelector('.next').href = `${href.join('/')}/${nextTopic.key.replaceAll('_', '-')}`;
+          block.querySelector('.next').href = `${hrefParts.join('/')}/${nextTopic.key.replaceAll('_', '-')}`;
         } else {
-          block.querySelector('.next').href = `${href.slice(0, -1).join('/')}/${nextTopic.chapter}/${nextTopic.key.replaceAll('_', '-')}`;
+          block.querySelector('.next').href = `${hrefParts.slice(0, -1).join('/')}/${nextTopic.chapter}/${nextTopic.key.replaceAll('_', '-')}`;
         }
       }
     });
   }
 
-  // Load sidenav
-  renderSidenav(block);
+  // Load sidenav, once
+  if (!rerender) {
+    renderSidenav(block);
+  }
 
   if (articleFound) {
     const bookContent = block.querySelector('.book-content div[slot="content"]');
@@ -272,5 +233,26 @@ export default async function decorate(block) {
         updateSectionsStatus(bookContent);
       });
     }
+  }
+}
+
+/** @param {HTMLDivElement} block */
+export default async function decorate(block) {
+  const link = block.querySelector('a');
+  if (link) {
+    try {
+      const href = link.getAttribute('href') || link.innerText;
+      if (href) {
+        await renderContent(block, href);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  if (SPA_NAVIGATION) {
+    store.on('spa:navigate:article', (res) => {
+      renderContent(block, res, true);
+    });
   }
 }

@@ -1,6 +1,14 @@
 import { getMetadata } from '../../scripts/lib-franklin.js';
 import {
-  PATH_PREFIX, getIcon, getPlaceholders, html, isMobile, parseFragment, render,
+  PATH_PREFIX,
+  SPA_NAVIGATION,
+  getIcon,
+  getPlaceholders,
+  html,
+  isMobile,
+  loadArticle,
+  parseFragment,
+  render,
 } from '../../scripts/scripts.js';
 
 const TEMPLATE = /* html */`
@@ -94,6 +102,80 @@ const TEMPLATE = /* html */`
       </div>
   </aside>`;
 
+function formatDate(date) {
+  const [month, day, year] = date.toString().split(' ').slice(1);
+  return `${month} ${day}, ${year}`;
+}
+
+async function navigateArticleSPA(ev) {
+  if (!SPA_NAVIGATION) return;
+
+  const siteHref = ev.target.getAttribute('href');
+  if (!siteHref) return;
+
+  // convert website path to docs path
+  const docHref = `${PATH_PREFIX}/docs${siteHref.substring(PATH_PREFIX.length)}`;
+
+  // navigate normally to different books, only SPA within the same book
+  if (!docHref.startsWith(store.bookPath)) return;
+
+  ev.preventDefault();
+
+  const res = await loadArticle(docHref);
+  if (!res.ok) {
+    // also navigate normally if article fetch fails
+    console.error('failed to load article: ', docHref, res);
+    window.location.href = siteHref;
+    return;
+  }
+
+  store.emit('spa:navigate:article', { docHref, siteHref, ...res });
+
+  const sidenav = ev.target.closest('.pan-sidenav');
+  const banner = sidenav.querySelector('div.banner');
+  const toc = sidenav.querySelector('div.toc-books');
+
+  // change current sidenav item
+  const prev = toc.querySelector('li.current');
+  if (prev) {
+    prev.classList.remove('current');
+  }
+
+  const next = toc.querySelector(`a[href="${siteHref}"]`);
+  if (next) {
+    next.closest('li').classList.add('current');
+  }
+
+  // update modified date
+  const dateEl = banner.querySelector('.book-detail-banner-info slot[name="date"]');
+  if (dateEl) {
+    dateEl.textContent = formatDate(res.info.lastModified);
+  }
+
+  // update dropdown links
+  const versionMenu = banner.querySelector('.version-dropdown-menu');
+  if (versionMenu) {
+    const curVers = store.version;
+    versionMenu.querySelectorAll('li:not(.active) a').forEach((a) => {
+      const nextVers = a.dataset.version;
+      const [prefix] = a.href.split(`/${nextVers}/`);
+      const suffix = siteHref.split(`/${curVers}/`).slice(1).join(`/${curVers}/`);
+      a.href = `${prefix}/${nextVers}/${suffix}`;
+    });
+  }
+
+  const langMenu = banner.querySelector('.language-dropdown-menu');
+  if (langMenu) {
+    const { lang: curLang } = document.documentElement;
+    langMenu.querySelectorAll('li:not(.active) a').forEach((a) => {
+      const nextLang = a.dataset.lang;
+      const [prefix] = a.href.split(`/${nextLang}/`);
+      const suffix = siteHref.split(`/${curLang}/`).slice(1).join(`/${curLang}/`);
+      a.href = `${prefix}/${nextLang}/${suffix}`;
+    });
+  }
+}
+
 /**
  * Add version dropdown
  * @param {Element} wrapper
@@ -140,6 +222,7 @@ function initVersionDropdown(wrapper) {
 
       a.href = makeHref(row.Folder);
       a.textContent = row.Title;
+      a.dataset.version = row.Folder;
 
       return li;
     }).filter((item) => !!item);
@@ -186,6 +269,7 @@ async function initLanguagesDropdown(wrapper) {
 
       a.href = makeHref(lang);
       a.textContent = title;
+      a.dataset.lang = lang;
       return li;
     };
 
@@ -348,6 +432,8 @@ function bookToList(book) {
     const link = document.createElement('a');
     link.innerText = title;
     link.href = href || '';
+    link.addEventListener('click', navigateArticleSPA);
+
     div.append(link);
 
     const expander = document.createElement('span');
@@ -391,6 +477,8 @@ function bookToList(book) {
       const link = document.createElement('a');
       link.innerText = topic.name;
       link.href = makeHref(topic, parentKey);
+      link.addEventListener('click', navigateArticleSPA);
+
       const div = document.createElement('div');
       div.append(link);
       li.append(div);
@@ -584,9 +672,7 @@ export default async function decorate(block) {
 
   store.once('article:loaded', (info) => {
     block.querySelector('slot[name="title"]').textContent = info.title;
-
-    const [month, day, year] = info.lastModified.toString().split(' ').slice(1);
-    block.querySelector('slot[name="date"]').textContent = `${month} ${day}, ${year}`;
+    block.querySelector('slot[name="date"]').textContent = formatDate(info.lastModified);
   });
 
   store.once('book:loaded', (book) => {

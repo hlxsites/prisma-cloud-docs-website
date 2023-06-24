@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  */
 
-import { ArticleInfo } from "./Article";
+import { ArticleInfo, ArticleResponse } from "./Article";
 import { BookDefinition } from "./Book";
 
 export interface EventMap {
@@ -18,6 +18,10 @@ export interface EventMap {
   'book:loaded': BookDefinition;
   'article:loaded': ArticleInfo;
   'header:loaded': void;
+  'spa:navigate:article': ArticleResponse & {
+    docHref: string;
+    siteHref: string;
+  };
 }
 
 export type AnyEventType = keyof EventMap;
