@@ -153,7 +153,28 @@ async function navigateArticleSPA(ev) {
     dateEl.textContent = formatDate(res.info.lastModified);
   }
 
-  // TODO: update version/language dropdown links
+  // update dropdown links
+  const versionMenu = banner.querySelector('.version-dropdown-menu');
+  if (versionMenu) {
+    const curVers = store.version;
+    versionMenu.querySelectorAll('li:not(.active) a').forEach((a) => {
+      const nextVers = a.dataset.version;
+      const [prefix] = a.href.split(`/${nextVers}/`);
+      const suffix = siteHref.split(`/${curVers}/`).slice(1).join(`/${curVers}/`);
+      a.href = `${prefix}/${nextVers}/${suffix}`;
+    });
+  }
+
+  const langMenu = banner.querySelector('.language-dropdown-menu');
+  if (langMenu) {
+    const { lang: curLang } = document.documentElement;
+    langMenu.querySelectorAll('li:not(.active) a').forEach((a) => {
+      const nextLang = a.dataset.lang;
+      const [prefix] = a.href.split(`/${nextLang}/`);
+      const suffix = siteHref.split(`/${curLang}/`).slice(1).join(`/${curLang}/`);
+      a.href = `${prefix}/${nextLang}/${suffix}`;
+    });
+  }
 }
 
 /**
@@ -202,6 +223,7 @@ function initVersionDropdown(wrapper) {
 
       a.href = makeHref(row.Folder);
       a.textContent = row.Title;
+      a.dataset.version = row.Folder;
 
       return li;
     }).filter((item) => !!item);
@@ -248,6 +270,7 @@ async function initLanguagesDropdown(wrapper) {
 
       a.href = makeHref(lang);
       a.textContent = title;
+      a.dataset.lang = lang;
       return li;
     };
 
