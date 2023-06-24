@@ -129,7 +129,6 @@ async function navigateArticleSPA(ev) {
     return;
   }
 
-  console.debug('[sidenav] navigateArticleSPA: ', docHref, siteHref);
   store.emit('spa:navigate:article', { docHref, siteHref, ...res });
 
   const sidenav = ev.target.closest('.pan-sidenav');
