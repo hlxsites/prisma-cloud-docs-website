@@ -183,6 +183,7 @@ const store = new (class {
     this.additionalBooks = [];
     if (this.pageTemplate === 'book') {
       this.initBook();
+      this.initSPANavigation();
     }
 
     // allow setting body class from page metadata
@@ -262,6 +263,19 @@ const store = new (class {
 
     // exclude main book from additionalBooks
     this.additionalBooks = this.allBooks.filter((b) => !b.mainBook);
+  }
+
+  initSPANavigation() {
+    if (!SPA_NAVIGATION) return;
+
+    this.on('spa:navigate:article', (res) => {
+      window.history.pushState(res, '', res.siteHref);
+    });
+
+    window.onpopstate = ({ state }) => {
+      if (!state) return;
+      this.emit('spa:navigate:article', state);
+    };
   }
 
   async getLocalizationInfo(book, product = this.product, version = this.version) {

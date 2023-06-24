@@ -251,14 +251,8 @@ export default async function decorate(block) {
   }
 
   if (SPA_NAVIGATION) {
-    store.on('spa:navigate:article', ({ siteHref, ...res }) => {
-      window.history.pushState({ res }, '', siteHref);
+    store.on('spa:navigate:article', (res) => {
       renderContent(block, res, true);
     });
-
-    window.onpopstate = ({ state }) => {
-      if (!state || !state.res) return;
-      renderContent(block, state.res, true);
-    };
   }
 }
