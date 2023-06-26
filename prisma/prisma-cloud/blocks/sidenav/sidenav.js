@@ -486,11 +486,18 @@ function bookToList(book) {
       li.append(div);
       current.append(li);
 
-      if (hasSubtopics(topic)) {
-        addSubList(topic.name, `${book.path}/${chapter.key}/${parentKey ? `${parentKey}/` : ''}${topic.key}/${topic.key}`, topic.key);
-        topic.children.forEach((subtopic) => {
-          processTopic(subtopic, `${parentKey ? `${parentKey}/` : ''}${topic.key}${subtopic.parent ? `/${subtopic.parent}` : ''}`);
-        });
+      if (topic.children && topic.children.length) {
+        if (hasSubtopics(topic)) {
+          addSubList(topic.name, `${book.path}/${chapter.key}/${parentKey ? `${parentKey}/` : ''}${topic.key}/${topic.key}`, topic.key);
+          topic.children.forEach((subtopic) => {
+            processTopic(subtopic, `${parentKey ? `${parentKey}/` : ''}${topic.key}${subtopic.parent ? `/${subtopic.parent}` : ''}`);
+          });
+        } else {
+        // has children, but not subtopics to render
+        // this means the link on the parent is actually the child's link
+          const [first] = topic.children;
+          link.href = `${link.href}/${first.key}`;
+        }
       }
     };
     chapter.children.forEach((topic) => processTopic(topic));

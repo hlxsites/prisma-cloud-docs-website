@@ -89,7 +89,8 @@ async function redirectToFirstChapter() {
   const chapter = book.chapters.data[0];
   const version = getMetadata('version');
   const bookKey = book.default.data[0].path.split('/').pop();
-  let redirect = `${PATH_PREFIX}/${document.documentElement.lang}/${store.product}/${version ? `${version}/` : ''}${bookKey}/${chapter.key}/${chapter.key}`;
+  let redirect = `${PATH_PREFIX}/${document.documentElement.lang}/${store.product}/${version && version !== 'not-applicable' ? `${version}/` : ''}${bookKey}/${chapter.key}/${chapter.key}`;
+
   if (store.branch) {
     redirect += `?branch=${store.branch}`;
   }
