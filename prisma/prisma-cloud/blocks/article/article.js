@@ -255,8 +255,9 @@ export default async function decorate(block) {
   }
 
   if (SPA_NAVIGATION) {
-    store.on('spa:navigate:article', (res) => {
-      renderContent(block, res, true);
+    store.on('spa:navigate:article', async (res) => {
+      await renderContent(block, res, true);
+      block.querySelector('article').scrollIntoView();
     });
   }
 }
