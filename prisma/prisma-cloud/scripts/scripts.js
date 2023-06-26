@@ -108,67 +108,6 @@ export function setBranch(
   }
 }
 
-/**
- * Propagates the branch search param to all links in the document
- *
- * @param {Document} doc
- */
-function updateLinksWithBranch(doc) {
-  const branch = getBranch();
-  if (branch) {
-    const linkSelector = 'a[href]';
-    // Adds the branch search param to the link href
-    const updateLink = (link) => {
-      try {
-        const url = new URL(link.href);
-        setBranch(url, branch, true);
-
-        link.href = url.toString();
-      } catch (e) {
-        // noop
-      }
-    };
-
-    // Watches for section and block status loaded to update all links with the branch search param
-    const statusObserver = new MutationObserver(() => {
-      const ready = [...doc.body.querySelectorAll('[data-section-status]')].every((element) => element.dataset.sectionStatus === 'loaded')
-      && [...doc.body.querySelectorAll('[data-block-status]')].every((element) => element.dataset.blockStatus === 'loaded');
-
-      if (ready) {
-        doc.body.querySelectorAll(linkSelector).forEach((link) => {
-          updateLink(link);
-        });
-
-        // Watches for added nodes (e.g. lazy loaded book links)
-        // to update with the branch search param
-        new MutationObserver((entries) => {
-          entries.forEach((entry) => {
-            [...entry.addedNodes]
-              .filter((addedNode) => addedNode.nodeType === Node.ELEMENT_NODE)
-              .forEach((addedNode) => {
-                if (addedNode.matches(linkSelector)) {
-                  updateLink(addedNode);
-                } else {
-                  addedNode.querySelectorAll(linkSelector).forEach((link) => {
-                    updateLink(link);
-                  });
-                }
-              });
-          });
-        }).observe(doc.body, { subtree: true, childList: true });
-
-        statusObserver.disconnect();
-      }
-    });
-
-    statusObserver.observe(doc.body, {
-      subtree: true,
-      attributes: true,
-      attributeFilter: ['data-section-status', 'data-block-status'],
-    });
-  }
-}
-
 /** @type {Store} */
 const store = new (class {
   constructor() {
@@ -361,6 +300,53 @@ const store = new (class {
   }
 })();
 window.store = store;
+
+/**
+ * Propagates the branch search param to all links in the document
+ *
+ * @param {Document} doc
+ */
+function updateLinksWithBranch(doc) {
+  const branch = getBranch();
+  if (branch) {
+    const linkSelector = 'a[href]';
+    // Adds the branch search param to the link href
+    const updateLink = (link) => {
+      try {
+        const url = new URL(link.href);
+        setBranch(url, branch, true);
+
+        link.href = url.toString();
+      } catch (e) {
+        // noop
+      }
+    };
+
+    store.on('blocks:loaded', () => {
+      doc.body.querySelectorAll(linkSelector).forEach((link) => {
+        updateLink(link);
+      });
+
+      // Watches for added nodes (e.g. lazy loaded book links)
+      // to update with the branch search param
+      new MutationObserver((entries) => {
+        entries.forEach((entry) => {
+          [...entry.addedNodes]
+            .filter((addedNode) => addedNode.nodeType === Node.ELEMENT_NODE)
+            .forEach((addedNode) => {
+              if (addedNode.matches(linkSelector)) {
+                updateLink(addedNode);
+              } else {
+                addedNode.querySelectorAll(linkSelector).forEach((link) => {
+                  updateLink(link);
+                });
+              }
+            });
+        });
+      }).observe(doc.body, { subtree: true, childList: true });
+    });
+  }
+}
 
 function isValidURL(url, origins) {
   if (url.startsWith('/') || url.startsWith('./')) return true;
@@ -759,6 +745,12 @@ async function loadLazy(doc) {
   loadHeader(doc.querySelector('header'));
   loadFooter(doc.querySelector('footer'));
 
+  if (doc.body.classList.contains('book')) {
+    store.on('blocks:loaded', () => {
+      doc.querySelector('footer').classList.add('appear');
+    });
+  }
+
   updateLinksWithBranch(doc);
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
@@ -778,30 +770,32 @@ function loadDelayed() {
   // load anything that can be postponed to the latest here
 }
 
+/**
+ * Watches for section and block status loaded
+ */
+function onBlocksLoaded() {
+  const statusObserver = new MutationObserver(() => {
+    const ready = [...document.body.querySelectorAll('[data-section-status]')].every((element) => element.dataset.sectionStatus === 'loaded')
+      && [...document.body.querySelectorAll('[data-block-status]')].every((element) => element.dataset.blockStatus === 'loaded');
+
+    if (ready) {
+      store.emit('blocks:loaded');
+      statusObserver.disconnect();
+    }
+  });
+
+  statusObserver.observe(document.body, {
+    subtree: true,
+    attributes: true,
+    attributeFilter: ['data-section-status', 'data-block-status'],
+  });
+}
+
 async function loadPage() {
   await loadEager(document);
   await loadLazy(document);
   loadDelayed();
-
-  // TODO refactor with updateLinksWithBranch function
-  if (document.body.classList.contains('book')) {
-    // Watches for section and block status loaded
-    const statusObserver = new MutationObserver(() => {
-      const ready = [...document.body.querySelectorAll('[data-section-status]')].every((element) => element.dataset.sectionStatus === 'loaded')
-        && [...document.body.querySelectorAll('[data-block-status]')].every((element) => element.dataset.blockStatus === 'loaded');
-
-      if (ready) {
-        document.querySelector('footer').classList.add('appear');
-        statusObserver.disconnect();
-      }
-    });
-
-    statusObserver.observe(document.body, {
-      subtree: true,
-      attributes: true,
-      attributeFilter: ['data-section-status', 'data-block-status'],
-    });
-  }
+  onBlocksLoaded();
 }
 
 loadPage();
