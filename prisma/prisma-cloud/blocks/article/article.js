@@ -174,6 +174,10 @@ async function renderContent(block, hrefOrRes, rerender = false) {
     content.append(article);
 
     fragment.append(content);
+
+    // Remove class if coming from first chapter
+    block.classList.remove('not-found');
+
     store.emit('article:loaded', info);
   }
 
