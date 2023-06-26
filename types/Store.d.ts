@@ -91,14 +91,14 @@ declare class StoreImpl {
 
   /**
    * Current page's `product` name from metadata
-   * 
+   *
    * @note defined when `pageTemplate` is `book`
    */
   product: string | undefined;
 
   /**
    * Current page's `version` from metadata
-   * 
+   *
    * @note defined when `pageTemplate` is `book`
    */
   version: string | undefined;
@@ -106,7 +106,7 @@ declare class StoreImpl {
   /**
    * Whether the previously visited article redirected to first chapter.
    * If set, avoid redirecting again on this load since it will loop.
-   * 
+   *
    * @note defined when `pageTemplate` is `book`
    */
   redirectedArticle: boolean | undefined;
@@ -129,7 +129,7 @@ declare class StoreImpl {
    * Emit event via document
    * Mark event as emitted
    */
-  emit: <T extends keyof EventMap>(ev: T, data: EventMap[T]) => void;
+  emit: <T extends keyof EventMap>(ev: T, data?: EventMap[T]) => void;
 
   /**
    * Trigger handler once.
@@ -149,7 +149,7 @@ declare class StoreImpl {
 
   /**
    * Get localization info for a book.
-   * 
+   *
    * @param book book's directory name only, not the path, defaults to current book
    * @param product product name, defaults to `store.product` from metadata
    * @param version current version, defaults to `store.version` from metadata
