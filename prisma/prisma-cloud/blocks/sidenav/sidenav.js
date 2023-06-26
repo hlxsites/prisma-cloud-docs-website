@@ -332,6 +332,7 @@ function addEventListeners(wrapper) {
         if (!find(link)) {
           const { textContent } = link;
           link.textContent = textContent;
+          link.textContent = link.innerHTML.replaceAll('&nbsp;', ' ');
 
           toggleExpanded(link, false);
         }
@@ -351,6 +352,7 @@ function addEventListeners(wrapper) {
         const { textContent } = link;
 
         link.textContent = textContent;
+        link.textContent = link.innerHTML.replaceAll('&nbsp;', ' ');
         link.closest('li[data-key]').hidden = false;
 
         toggleExpanded(link, 'false');
@@ -591,9 +593,10 @@ function renderTOC(container, book, expand, replace) {
 }
 
 /**
+ * @param {HTMLElement} block
  * @param {HTMLElement} container
  */
-function initAdditionalBooks(container) {
+function initAdditionalBooks(block, container) {
   const mainBook = container.querySelector('ul');
 
   let afterMainBook = false;
@@ -606,7 +609,7 @@ function initAdditionalBooks(container) {
       const position = afterMainBook ? 'afterend' : 'beforebegin';
       neighbor = afterMainBook ? neighbor || mainBook : mainBook;
       const list = html`
-        <ul>
+        <ul data-additional-book-href="${book.href}">
           <li data-key="" aria-expanded="false">
             <div>
               <a>${book.title}</a>
@@ -621,15 +624,18 @@ function initAdditionalBooks(container) {
 
       neighbor.insertAdjacentElement(position, list);
       neighbor = list;
-
-      // load additional book data on hover, replace toc list once loaded
-      list.addEventListener('mouseenter', async () => {
-        const data = await store.fetchJSON(book.href, ['default', 'chapters', 'topics']);
-        const sorted = sortBook(data);
-        renderTOC(container, sorted, false, list);
-      }, { once: true });
     }
   });
+
+  // load additional book data on block hover, replace toc list once loaded
+  block.addEventListener('mouseenter', async () => {
+    container.querySelectorAll('[data-additional-book-href]').forEach((list) => {
+      store.fetchJSON(list.dataset.additionalBookHref, ['default', 'chapters', 'topics']).then((data) => {
+        const sorted = sortBook(data);
+        renderTOC(container, sorted, false, list);
+      });
+    });
+  }, { once: true });
 }
 
 /**
@@ -680,7 +686,7 @@ export default async function decorate(block) {
 
     const sorted = sortBook(book);
     renderTOC(toc, sorted, true);
-    initAdditionalBooks(toc);
+    initAdditionalBooks(block, toc);
 
     addEventListeners(wrapper);
     initVersionDropdown(wrapper);
