@@ -499,44 +499,6 @@ function bookToList(book) {
   return root;
 }
 
-function expandTOCByPath(rootList, path) {
-  let rootPath;
-  const nextItem = (list, key) => [...list.querySelectorAll(':scope > li')].find((li) => {
-    if (!key.startsWith(li.dataset.key)) {
-      return false;
-    }
-    if (!rootPath) {
-      rootPath = li.dataset.key;
-    }
-    return true;
-  });
-
-  let currentItem = nextItem(rootList, path);
-  if (!currentItem) return;
-
-  const segments = path.substring(rootPath.length).split('/').slice(1);
-  while (currentItem && segments.length) {
-    currentItem.ariaExpanded = 'true';
-    const nextKey = segments.shift();
-    currentItem = nextItem(currentItem.querySelector('ul'), nextKey);
-  }
-}
-
-function scrollTOC(container, currentLink) {
-  if (!currentLink) return;
-  const currentLi = currentLink.closest('li');
-  if (!currentLi) return;
-
-  const doScroll = (count = 0) => {
-    if (container.clientHeight) {
-      container.scrollTop = currentLi.offsetTop;
-    } else if (count < 100) {
-      setTimeout(() => doScroll(count + 1), 5);
-    }
-  };
-  doScroll();
-}
-
 /**
  * @param {HTMLDivElement} container
  * @param {any} book
@@ -567,12 +529,6 @@ function renderTOC(container, book, expand, replace) {
     }
   });
 
-  // Set current
-  const current = rootList.querySelector(`a[href="${window.location.pathname}"]`);
-  if (current) {
-    current.closest('li').classList.add('current');
-  }
-
   // replace or append
   if (replace) {
     container.replaceChild(list, replace);
@@ -580,16 +536,26 @@ function renderTOC(container, book, expand, replace) {
     container.append(list);
   }
 
-  if (expand) {
-    list.querySelector('li').ariaExpanded = 'true';
-  }
+  // Set current
+  const current = rootList.querySelector(`a[href="${window.location.pathname}"]`);
+  if (current) {
+    const currentLi = current.closest('li');
+    currentLi.classList.add('current');
 
-  // path to current doc inside book
-  // from: /prisma/prisma-cloud/en/compute/pcee/admin-guide/install/getting-started
-  // to: /install/getting-started
-  const docPath = window.location.pathname.split('/').slice(7).join('/');
-  expandTOCByPath(rootList, docPath);
-  scrollTOC(container, current);
+    // Expand from current leaf to root
+    if (expand) {
+      let closestListItem = currentLi;
+      while (closestListItem) {
+        closestListItem.ariaExpanded = 'true';
+        closestListItem = closestListItem.parentElement.closest('li');
+      }
+    }
+
+    // Scroll to current
+    requestAnimationFrame(() => {
+      container.scrollTop = currentLi.offsetTop;
+    });
+  }
 }
 
 /**
