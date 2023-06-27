@@ -572,32 +572,21 @@ function renderTOC(container, book, expand, replace) {
 function initAdditionalBooks(block, container) {
   const mainBook = container.querySelector('ul');
 
-  let afterMainBook = false;
-  let neighbor;
+  // insert books in order defined in metadata
   store.allBooks.forEach((book) => {
-    if (book.mainBook) {
-      afterMainBook = true;
-    } else {
-      // insert books in order defined in metadata
-      const position = afterMainBook ? 'afterend' : 'beforebegin';
-      neighbor = afterMainBook ? neighbor || mainBook : mainBook;
-      const list = html`
-        <ul data-additional-book-href="${book.href}">
-          <li data-key="" aria-expanded="false">
-            <div>
-              <a>${book.title}</a>
-              <span>
-                <i class="icon">
-                  ${getIcon('chevron-right')}
-                </i>
-              </span>
-            </div>
-          </li>
-        </ul>`;
-
-      neighbor.insertAdjacentElement(position, list);
-      neighbor = list;
-    }
+    container.append(book.mainBook ? mainBook : html`
+      <ul data-additional-book-href="${book.href}">
+        <li data-key="" aria-expanded="false">
+          <div>
+            <a>${book.title}</a>
+            <span>
+              <i class="icon">
+                ${getIcon('chevron-right')}
+              </i>
+            </span>
+          </div>
+        </li>
+      </ul>`);
   });
 
   // load additional book data on block hover, replace toc list once loaded
