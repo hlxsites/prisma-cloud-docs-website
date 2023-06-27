@@ -1,5 +1,23 @@
+:root {
+  --step-background-color: var(--color-blue--100);
+  --step-text-color: var(--color-blue-dark--600);
+
+  --substep-background-color: var(--step-text-color);
+  --substep-text-color: var(--color-neutral-white);
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --step-background-color: var(--color-blue-dark--500);
+    --step-text-color: var(--color-neutral-200);
+
+    --substep-text-color: var(--color-blue-dark--900);
+  }
+}
+
 .procedure {
-  line-height: 1.6180;
+  line-height: 1.618;
 }
 
 .procedure ol.steps {
@@ -9,23 +27,27 @@
 }
 
 .procedure ol.steps li.step {
-  margin: 30px 0 30px 80px;
+  margin: 46px 0;
+  padding-left: 103px;
   position: relative;
   counter-reset: substep-counter;
 }
 
 .procedure ol.steps li.step::before {
-  font-family: 'HCo Decimal', 'HCo Decimal Fallback', Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif, FontAwesome;
+  background: var(--step-background-color);
+  border-radius: 38px;
   counter-increment: step-counter;
-  content: "STEP " counter(step-counter) " \f101";
-  color: #fa582d;
-  font-weight: 500;
-  font-size: 16px;
+  content: "STEP " counter(step-counter) "";
+  color: var(--step-text-color);
+  left: 0;
+  line-height: 18px;
+  padding: 5px 0 5px var(--spacing--4);
   position: absolute;
-  right: 99%;
-  width: 90px;
+  text-align: center;
+  /* transform: translateX(-100%); */
+  width: 72px;
   text-align: left;
-  top: -3px;
+  top: -5px;
 }
 
 .procedure ol.steps li.step ol.substeps {
@@ -34,24 +56,24 @@
 }
 
 .procedure ol.steps li.step ol.substeps li.substep {
-  margin: 20px 0 20px 25px;
+  margin: var(--article-block-spacing) 0 var(--article-block-spacing) 25px;
   padding-left: 10px;
   position: relative;
 }
 
 .procedure ol.steps li.step ol.substeps li.substep::before {
+  align-items: center;
+  background-color: var(--substep-background-color);
+  border-radius: 50%;
+  color: var(--substep-text-color);
   content: counter(substep-counter);
   counter-increment: substep-counter;
-  height: 25px;
-  width: 25px;
-  border: 1px solid #fa582d;
-  border-radius: 50%;
-  color: #fa582d;
+  display: flex;
+  font-size: var(--body-font-size--xs);
+  height: 20px;
+  justify-content: center;
+  line-height: var(--body-font-size--xs);
   position: absolute;
   right: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1.15em;
-  top: -3px;
+  width: 20px;
 }

@@ -1,12 +1,80 @@
+:root {
+  --table-even-background: var(--color-neutral-100);
+  --table-border-color: var(--color-neutral-300);
+  --table-border-radius: var(--spacing--4);
+  --cell-horizontal-padding: var(--spacing--6);
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --table-even-background: var(--color-blue-dark--550);
+    --table-border-color: var(--color-blue-dark--400);
+  }
+}
+
 .table table {
+  border-spacing: 0;
+  font-size: var(--body-font-size--xs);
+  line-height: var(--line-height--m);
+  margin-top: var(--spacing--10);
+  margin-bottom: var(--spacing--16);
   width: 100%;
 }
 
 .table thead th {
   color: #fff;
-  background-color: #000;
+  background-color: var(--table-even-background);
+  border-bottom: 1px solid var(--table-border-color);
+  border-top: 1px solid var(--table-border-color);
+  padding: 20px var(--cell-horizontal-padding);
+  text-align: left;
 }
 
-.table tbody tr:nth-of-type(odd) {
-  background-color: #f4f4f2;
+.table thead th:first-child {
+  border-top-left-radius: var(--table-border-radius);
+  border-left: 1px solid var(--table-border-color);
+}
+
+.table thead th:last-child {
+  border-top-right-radius: var(--table-border-radius);
+  border-right: 1px solid var(--table-border-color);
+}
+
+.table tbody tr:nth-of-type(even) td {
+  background-color: var(--table-even-background);
+}
+
+.table tbody tr td {
+  border-bottom: 1px solid var(--table-border-color);
+  padding: var(--spacing--4) var(--cell-horizontal-padding);
+  vertical-align: top;
+}
+
+.table tbody tr td ul,
+.table tbody tr td ol {
+  padding-left: var(--spacing--4);
+}
+
+/* Allow for content to be vertically aligned top */
+.table tbody tr td *:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.table tbody tr td:first-child {
+  border-left: 1px solid var(--table-border-color);
+}
+
+.table tbody tr td:last-child {
+  border-right: 1px solid var(--table-border-color);
+}
+
+.table tbody tr:last-child td:first-child {
+  border-bottom-left-radius: var(--table-border-radius);
+}
+
+.table tbody tr:last-child td:last-child {
+  border-right: 1px solid var(--table-border-color);
+  border-bottom-right-radius: var(--table-border-radius);
 }

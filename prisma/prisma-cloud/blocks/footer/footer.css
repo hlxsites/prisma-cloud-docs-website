@@ -1,3 +1,7 @@
+/* :root {
+  --footer-background: var(--header-background)
+} */
+
 footer {
   padding: 4rem 0 0;
   background-color: var(--footer-background-color);
@@ -38,7 +42,7 @@ footer .footer .footer-links > ul > li > ul {
 }
 
 footer .footer .footer-links > ul > li > ul::before {
-  content: '';
+  content: "";
   width: 40px;
   height: 2px;
   top: 0;
