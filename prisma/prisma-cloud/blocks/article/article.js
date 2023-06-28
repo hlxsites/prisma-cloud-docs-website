@@ -248,7 +248,14 @@ export default async function decorate(block) {
     try {
       const href = link.getAttribute('href') || link.innerText;
       if (href) {
-        await renderContent(block, href);
+        if (store.branch) {
+          const url = new URL(href);
+          setBranch(url, store.branch);
+
+          await renderContent(block, url.toString());
+        } else {
+          await renderContent(block, href);
+        }
       }
     } catch (e) {
       console.error(e);
