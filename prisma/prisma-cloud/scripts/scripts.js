@@ -49,6 +49,8 @@ export const DOCS_ORIGINS = {
   prod: '',
 };
 
+export const BRANCH_ORIGIN = 'https://prisma-cloud-docs-production.adobeaem.workers.dev';
+
 export function getPlaceholders() {
   return fetchPlaceholders(`${PATH_PREFIX}/${lang}`);
 }
@@ -101,9 +103,10 @@ export function setBranch(
   if (branch) {
     url.searchParams.append('branch', branch);
     if (!searchParamOnly) {
-      url.protocol = 'https:';
+      const branchURL = new URL(BRANCH_ORIGIN);
+      url.protocol = branchURL.protocol;
       url.port = '';
-      url.host = 'prisma-cloud-docs-production.adobeaem.workers.dev';
+      url.host = branchURL.host;
     }
   }
 }
@@ -307,14 +310,13 @@ window.store = store;
  * @param {Document} doc
  */
 function updateLinksWithBranch(doc) {
-  const branch = getBranch();
-  if (branch) {
+  if (store.branch) {
     const linkSelector = 'a[href]';
     // Adds the branch search param to the link href
     const updateLink = (link) => {
       try {
         const url = new URL(link.href);
-        setBranch(url, branch, true);
+        setBranch(url, store.branch, true);
 
         link.href = url.toString();
       } catch (e) {
@@ -350,9 +352,12 @@ function updateLinksWithBranch(doc) {
 
 function isValidURL(url, origins) {
   if (url.startsWith('/') || url.startsWith('./')) return true;
-  const { origin } = new URL(url);
+
+  const { origin, searchParams } = new URL(url);
   if (window.location.origin === origin) return true;
   if (Object.values(origins).includes(origin)) return true;
+  if (searchParams.has('branch') && origin === BRANCH_ORIGIN) return true;
+
   return false;
 }
 
@@ -594,7 +599,8 @@ export async function loadArticle(href) {
     href = `${DOCS_ORIGINS[store.env]}${href}`;
   }
 
-  const url = new URL(`${href}.plain.html`);
+  const url = new URL(href);
+  url.pathname += '.plain.html';
   setBranch(url);
 
   const resp = await fetch(url.toString(), store.branch ? { cache: 'reload' } : undefined);
