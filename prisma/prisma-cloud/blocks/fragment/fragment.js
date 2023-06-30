@@ -98,10 +98,14 @@ export default async function decorate(block) {
   const fragment = await loadFragment(href, fromDocs);
 
   if (fragment) {
-    const fragmentSection = fragment.querySelector(':scope .section');
-    if (fragmentSection) {
-      block.closest('.section').classList.add(...fragmentSection.classList);
-      block.closest('.fragment-wrapper').replaceWith(...fragmentSection.childNodes);
-    }
+    let classes = [];
+    let children = [];
+    fragment.querySelectorAll(':scope .section').forEach((fragmentSection) => {
+      classes = [...classes, ...fragmentSection.classList];
+      children = [...children, ...fragmentSection.childNodes];
+    });
+
+    block.closest('.section').classList.add(...classes);
+    block.closest('.fragment-wrapper').replaceWith(...children);
   }
 }
