@@ -314,6 +314,11 @@ function updateLinksWithBranch(doc) {
     const linkSelector = 'a[href]';
     // Adds the branch search param to the link href
     const updateLink = (link) => {
+      // Ignore anchor links
+      if (link.getAttribute('href').startsWith('#')) {
+        return;
+      }
+
       try {
         const url = new URL(link.href);
         setBranch(url, store.branch, true);
