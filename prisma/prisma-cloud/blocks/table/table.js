@@ -56,7 +56,9 @@ export default async function decorate(block) {
     const link = cell.querySelector('a');
     if (link && cell.childElementCount === 1) {
       const divTable = await sheetToDivTable(link.href || link.innerText);
-      rows = [...divTable.querySelectorAll(':scope > div')];
+      if (divTable) {
+        rows = [...divTable.querySelectorAll(':scope > div')];
+      }
     }
   }
 
