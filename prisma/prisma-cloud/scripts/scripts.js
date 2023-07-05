@@ -24,6 +24,7 @@ polyfill();
 
 const range = document.createRange();
 
+export const SPA_NAVIGATION = true;
 export const REDIRECTED_ARTICLE_KEY = 'redirected-article';
 export const PATH_PREFIX = '/prisma/prisma-cloud';
 const LCP_BLOCKS = ['article']; // add your LCP blocks to the list
@@ -71,17 +72,35 @@ const addClasses = (element, classes) => {
 };
 
 /**
- * Sets the branch search param to a given url
+ * Returns branch search param
  *
- * @param {URL} url
+ * @returns {(string|null)}
  */
-export function setBranch(url) {
+function getBranch() {
   const env = getEnv();
 
   if (env === 'dev' || env === 'preview') {
-    const branch = new URLSearchParams(window.location.search).get('branch');
-    if (branch) {
-      url.searchParams.append('branch', branch);
+    return new URLSearchParams(window.location.search).get('branch');
+  }
+
+  return null;
+}
+
+/**
+ * Sets the branch search param to a given url
+ *
+ * @param {URL} url
+ * @param {(string | null)} [branch]
+ * @param {boolean} [searchParamOnly]
+ */
+export function setBranch(
+  url,
+  branch = getBranch(),
+  searchParamOnly = false,
+) {
+  if (branch) {
+    url.searchParams.append('branch', branch);
+    if (!searchParamOnly) {
       url.protocol = 'https:';
       url.port = '';
       url.host = 'prisma-cloud-docs-production.adobeaem.workers.dev';
@@ -96,12 +115,14 @@ const store = new (class {
       _l: {},
     };
     this._emitted = {};
+    this.branch = getBranch();
     this.env = getEnv();
     this.docsOrigin = DOCS_ORIGINS[this.env];
     this.pageTemplate = getMetadata('template');
     this.additionalBooks = [];
     if (this.pageTemplate === 'book') {
       this.initBook();
+      this.initSPANavigation();
     }
 
     // allow setting body class from page metadata
@@ -181,6 +202,19 @@ const store = new (class {
 
     // exclude main book from additionalBooks
     this.additionalBooks = this.allBooks.filter((b) => !b.mainBook);
+  }
+
+  initSPANavigation() {
+    if (!SPA_NAVIGATION) return;
+
+    this.on('spa:navigate:article', (res) => {
+      window.history.pushState(res, '', res.siteHref);
+    });
+
+    window.onpopstate = ({ state }) => {
+      if (!state) return;
+      this.emit('spa:navigate:article', state);
+    };
   }
 
   async getLocalizationInfo(book, product = this.product, version = this.version) {
@@ -267,8 +301,55 @@ const store = new (class {
 })();
 window.store = store;
 
+/**
+ * Propagates the branch search param to all links in the document
+ *
+ * @param {Document} doc
+ */
+function updateLinksWithBranch(doc) {
+  const branch = getBranch();
+  if (branch) {
+    const linkSelector = 'a[href]';
+    // Adds the branch search param to the link href
+    const updateLink = (link) => {
+      try {
+        const url = new URL(link.href);
+        setBranch(url, branch, true);
+
+        link.href = url.toString();
+      } catch (e) {
+        // noop
+      }
+    };
+
+    store.on('blocks:loaded', () => {
+      doc.body.querySelectorAll(linkSelector).forEach((link) => {
+        updateLink(link);
+      });
+
+      // Watches for added nodes (e.g. lazy loaded book links)
+      // to update with the branch search param
+      new MutationObserver((entries) => {
+        entries.forEach((entry) => {
+          [...entry.addedNodes]
+            .filter((addedNode) => addedNode.nodeType === Node.ELEMENT_NODE)
+            .forEach((addedNode) => {
+              if (addedNode.matches(linkSelector)) {
+                updateLink(addedNode);
+              } else {
+                addedNode.querySelectorAll(linkSelector).forEach((link) => {
+                  updateLink(link);
+                });
+              }
+            });
+        });
+      }).observe(doc.body, { subtree: true, childList: true });
+    });
+  }
+}
+
 function isValidURL(url, origins) {
-  if (url.startsWith('/')) return true;
+  if (url.startsWith('/') || url.startsWith('./')) return true;
   const { origin } = new URL(url);
   if (window.location.origin === origin) return true;
   if (Object.values(origins).includes(origin)) return true;
@@ -305,6 +386,34 @@ export function el(str) {
   const tmp = document.createElement('div');
   tmp.innerHTML = content;
   return tmp.firstElementChild;
+}
+
+export function getIcon(icons, alt, minBp) {
+  // eslint-disable-next-line no-param-reassign
+  icons = Array.isArray(icons) ? icons : [icons];
+  const [defaultIcon, mobileIcon] = icons;
+  const ogIcon = (mobileIcon && window.innerWidth < 600) ? mobileIcon : defaultIcon;
+  let icon = ogIcon;
+
+  let rotation;
+  if (icon.startsWith('chevron-')) {
+    const direction = icon.substring('chevron-'.length);
+    icon = 'chevron';
+    if (direction === 'left') {
+      rotation = 90;
+    } else if (direction === 'up') {
+      rotation = 180;
+    } else if (direction === 'right') {
+      rotation = 270;
+    }
+  }
+  return (`<img class="icon icon-${icon} icon-${ogIcon} ${minBp ? `v-${minBp}` : ''}" ${rotation
+    ? `style="transform:rotate(${rotation}deg);"`
+    : ''} src="${window.hlx.codeBasePath}/icons/${icon}.svg" alt="${alt || icon}">`);
+}
+
+export function getIconEl(...args) {
+  return el(getIcon(...args));
 }
 
 /**
@@ -471,6 +580,44 @@ function buildAutoBlocks(main) {
   }
 }
 
+/**
+ * Load article as HTML string
+ * @param {string} href
+ * @returns {Promise<{ok:boolean;html?:string;status:number;info:{lastModified:Date}}>}
+ */
+export async function loadArticle(href) {
+  assertValidDocsURL(href);
+
+  // change href to point to docs origin on lower envs
+  if (store.env !== 'prod' && href.startsWith('/')) {
+    // eslint-disable-next-line no-param-reassign
+    href = `${DOCS_ORIGINS[store.env]}${href}`;
+  }
+
+  const url = new URL(`${href}.plain.html`);
+  setBranch(url);
+
+  const resp = await fetch(url.toString(), store.branch ? { cache: 'reload' } : undefined);
+  if (!resp.ok) return resp;
+  try {
+    const lastModified = resp.headers.get('last-modified') !== 'null' ? new Date(resp.headers.get('last-modified')) : new Date();
+    return {
+      ok: true,
+      status: resp.status,
+      info: {
+        lastModified,
+      },
+      html: await resp.text(),
+    };
+  } catch (e) {
+    console.error('failed to parse article: ', e);
+    return {
+      ...resp,
+      ok: false,
+    };
+  }
+}
+
 function decorateLandingSections(main) {
   if (getMetadata('template') === 'landing-product') {
     const h1 = main.querySelector('h1');
@@ -588,6 +735,7 @@ export function addFavIcon(href) {
  */
 async function loadLazy(doc) {
   const main = doc.querySelector('main');
+
   await loadBlocks(main);
 
   const { hash } = window.location;
@@ -596,6 +744,14 @@ async function loadLazy(doc) {
 
   loadHeader(doc.querySelector('header'));
   loadFooter(doc.querySelector('footer'));
+
+  if (doc.body.classList.contains('book')) {
+    store.on('blocks:loaded', () => {
+      doc.querySelector('footer').classList.add('appear');
+    });
+  }
+
+  updateLinksWithBranch(doc);
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   addFavIcon(`${window.hlx.codeBasePath}/styles/favicon.svg`);
@@ -614,10 +770,32 @@ function loadDelayed() {
   // load anything that can be postponed to the latest here
 }
 
+/**
+ * Watches for section and block status loaded
+ */
+function onBlocksLoaded() {
+  const statusObserver = new MutationObserver(() => {
+    const ready = [...document.body.querySelectorAll('[data-section-status]')].every((element) => element.dataset.sectionStatus === 'loaded')
+      && [...document.body.querySelectorAll('[data-block-status]')].every((element) => element.dataset.blockStatus === 'loaded');
+
+    if (ready) {
+      store.emit('blocks:loaded');
+      statusObserver.disconnect();
+    }
+  });
+
+  statusObserver.observe(document.body, {
+    subtree: true,
+    attributes: true,
+    attributeFilter: ['data-section-status', 'data-block-status'],
+  });
+}
+
 async function loadPage() {
   await loadEager(document);
   await loadLazy(document);
   loadDelayed();
+  onBlocksLoaded();
 }
 
 loadPage();

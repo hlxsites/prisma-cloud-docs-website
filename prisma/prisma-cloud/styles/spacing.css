@@ -1,0 +1,20 @@
+:root {
+  --spacing--0: 0px;
+  --spacing--1: 4px;
+  --spacing--2: 8px;
+  --spacing--3: 12px;
+  --spacing--4: 16px;
+  --spacing--5: 20px;
+  --spacing--6: 24px;
+  --spacing--8: 32px;
+  --spacing--10: 40px;
+  --spacing--12: 48px;
+  --spacing--14: 56px;
+  --spacing--16: 64px;
+  --spacing--18: 72px;
+  --spacing--20: 80px;
+  --spacing--22: 88px;
+  --spacing--24: 96px;
+
+  --padding--mobile: var(--spacing--4);
+}

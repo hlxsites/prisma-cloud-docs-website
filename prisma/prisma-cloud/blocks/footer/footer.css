@@ -4,7 +4,7 @@
 
 footer {
   padding: 4rem 0 0;
-  background-color: var(--footer-background-color);
+  background-color: var(--color-footer-background);
   color: var(--footer-text-color);
   font-size: var(--body-font-size-s);
 }
@@ -70,7 +70,7 @@ footer .footer .footer-socials a:hover svg {
 
 footer .footer .footer-legal {
   color: #a5a09d;
-  background-color: #1b262f;
+  background-color: #252525;
   min-width: 100vw;
   font-size: 12px;
   margin-top: 20px;

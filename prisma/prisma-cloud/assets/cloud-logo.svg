@@ -1,28 +1,4 @@
-import { html } from "../../scripts/scripts.js";
-import "../search-bar/search-bar.js";
-
-/**
- * @param {HTMLDivElement} block
- */
-export default function decorate(block) {
-  block.append(html`
-    <div>
-      <div class="search-bar-container">
-        <search-bar></search-bar>
-      </div>
-      <div class="search-bar-actions">
-        <a href="/" class="button-primary button-primary--blue"
-          >Operationalization</a
-        >
-        <a href="/" class="button-primary button-primary--blue"
-          >Enterprise Documentation</a
-        >
-      </div>
-    </div>
-  `);
-
-  const ICON = `
-  <svg class="icon-cloud-logo" width="120" height="31" viewBox="0 0 120 31" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="120" height="31" viewBox="0 0 120 31" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g id="Cloud Logo 2" clip-path="url(#clip0_18_346)">
 <path id="Vector" d="M35.419 20.4926C37.653 20.4926 39.3594 19.7498 40.2214 19.0955V16.3368H40.2038C38.9196 17.3094 37.53 18.0168 35.6125 18.0168C32.8859 18.0168 31.5138 16.2838 31.5138 14.0733C31.5138 11.7566 32.9915 10.0236 35.6301 10.0236C37.5827 10.0236 38.8845 10.8901 40.2038 11.7743H40.2214V9.01562C39.3242 8.30826 37.7058 7.54785 35.6829 7.54785C31.074 7.54785 28.7344 10.6602 28.7344 14.0909C28.7344 17.4509 30.687 20.4926 35.419 20.4926Z" fill="#333333"/>
 <path id="Vector_2" d="M48.4609 20.2089H58.1009L58.1888 17.6978H51.1699V7.83008H48.4609V20.2089Z" fill="#333333"/>
@@ -56,48 +32,3 @@ export default function decorate(block) {
 </clipPath>
 </defs>
 </svg>
-
-  `;
-
-  const section = block.closest("div.section");
-  const wrapper = section.querySelector(".hero-search-wrapper");
-
-  wrapper.append(html`<div class="hero-search-background"></div>`);
-  wrapper.prepend(html`${ICON}`);
-  // section.classList.add('full-width');
-  // block.classList.add("container");
-
-  const init = (breadcrumbSect) => {
-    section.remove();
-    breadcrumbSect.insertAdjacentElement("beforebegin", section);
-  };
-
-  const prevSib = section.previousElementSibling;
-  if (prevSib && prevSib.classList.contains("breadcrumbs-container")) {
-    // rearrange now
-    init(prevSib);
-  } else {
-    // wait for breadcrumbs, rearrange when loaded
-    const main = document.querySelector("main");
-    const observer = new MutationObserver((entries) => {
-      const ready = entries.find((entry) =>
-        [...entry.addedNodes].find((added) =>
-          added.classList.contains("breadcrumbs-container")
-        )
-      );
-      if (ready) {
-        init(section.previousElementSibling);
-        observer.disconnect();
-      }
-    });
-    observer.observe(main, { childList: true });
-  }
-
-  // hide header search trigger
-  // store.once("header:loaded", () => {
-  //   const hSearchBtn = document.querySelector("header .nav-search-button");
-  //   if (hSearchBtn) {
-  //     hSearchBtn.style.display = "none";
-  //   }
-  // });
-}

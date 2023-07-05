@@ -1,12 +1,20 @@
 import { getMetadata } from '../../scripts/lib-franklin.js';
 import {
-  PATH_PREFIX, getPlaceholders, html, isMobile, parseFragment, render,
+  PATH_PREFIX,
+  SPA_NAVIGATION,
+  getIcon,
+  getPlaceholders,
+  html,
+  isMobile,
+  loadArticle,
+  parseFragment,
+  render,
 } from '../../scripts/scripts.js';
 
 const TEMPLATE = /* html */`
   <aside class="pan-sidenav">
       <div class="toggle-aside">
-          <i class="icon-arrow-right"></i>
+          <i class="icon">${getIcon('chevron-right')}</i>
       </div>
       <div class="banner">
         <div class="banner-inner">
@@ -32,7 +40,7 @@ const TEMPLATE = /* html */`
                 <div class="banner-dropdown version-dropdown">
                   <a>
                       <span slot="version"></span>
-                      <i class="icon-arrow-down"></i>
+                      <i class="icon">${getIcon('chevron-down')}</i>
                   </a>
                   <div class="banner-dropdown-menu version-dropdown-menu">
                     <ul>
@@ -51,7 +59,7 @@ const TEMPLATE = /* html */`
                 <div class="banner-dropdown language-dropdown">
                   <a>
                       <span slot="language"></span>
-                      <i class="icon-arrow-down"></i>
+                      <i class="icon">${getIcon('chevron-down')}</i>
                   </a>
                   <div class="banner-dropdown-menu language-dropdown-menu">
                     <ul>
@@ -68,7 +76,7 @@ const TEMPLATE = /* html */`
       </div>
       <div class="content">
           <div class="toggle-aside">
-              <i class="icon-arrow-${isMobile() ? 'down' : 'left'}"></i>
+            <i class="icon">${getIcon(`chevron-${isMobile() ? 'down' : 'left'}`)}</i>
           </div>
           <h2 class="locale-toc-title"></h2>
           <hr>
@@ -76,7 +84,7 @@ const TEMPLATE = /* html */`
               <div class="search-toc">
                   <div class="search-toc-label">
                       <div class="filter-icon">
-                          <img src="${window.hlx.codeBasePath}/icons/filter.svg" alt="" loading="lazy">
+                          ${getIcon('filter')}
                       </div>
                       <span class="locale-toc-filter"></span>
                   </div>
@@ -93,6 +101,80 @@ const TEMPLATE = /* html */`
           </div>
       </div>
   </aside>`;
+
+function formatDate(date) {
+  const [month, day, year] = date.toString().split(' ').slice(1);
+  return `${month} ${day}, ${year}`;
+}
+
+async function navigateArticleSPA(ev) {
+  if (!SPA_NAVIGATION) return;
+
+  const siteHref = ev.target.getAttribute('href');
+  if (!siteHref) return;
+
+  // convert website path to docs path
+  const docHref = `${PATH_PREFIX}/docs${siteHref.substring(PATH_PREFIX.length)}`;
+
+  // navigate normally to different books, only SPA within the same book
+  if (!docHref.startsWith(store.bookPath)) return;
+
+  ev.preventDefault();
+
+  const res = await loadArticle(docHref);
+  if (!res.ok) {
+    // also navigate normally if article fetch fails
+    console.error('failed to load article: ', docHref, res);
+    window.location.href = siteHref;
+    return;
+  }
+
+  store.emit('spa:navigate:article', { docHref, siteHref, ...res });
+
+  const sidenav = ev.target.closest('.pan-sidenav');
+  const banner = sidenav.querySelector('div.banner');
+  const toc = sidenav.querySelector('div.toc-books');
+
+  // change current sidenav item
+  const prev = toc.querySelector('li.current');
+  if (prev) {
+    prev.classList.remove('current');
+  }
+
+  const next = toc.querySelector(`a[href="${siteHref}"]`);
+  if (next) {
+    next.closest('li').classList.add('current');
+  }
+
+  // update modified date
+  const dateEl = banner.querySelector('.book-detail-banner-info slot[name="date"]');
+  if (dateEl) {
+    dateEl.textContent = formatDate(res.info.lastModified);
+  }
+
+  // update dropdown links
+  const versionMenu = banner.querySelector('.version-dropdown-menu');
+  if (versionMenu) {
+    const curVers = store.version;
+    versionMenu.querySelectorAll('li:not(.active) a').forEach((a) => {
+      const nextVers = a.dataset.version;
+      const [prefix] = a.href.split(`/${nextVers}/`);
+      const suffix = siteHref.split(`/${curVers}/`).slice(1).join(`/${curVers}/`);
+      a.href = `${prefix}/${nextVers}/${suffix}`;
+    });
+  }
+
+  const langMenu = banner.querySelector('.language-dropdown-menu');
+  if (langMenu) {
+    const { lang: curLang } = document.documentElement;
+    langMenu.querySelectorAll('li:not(.active) a').forEach((a) => {
+      const nextLang = a.dataset.lang;
+      const [prefix] = a.href.split(`/${nextLang}/`);
+      const suffix = siteHref.split(`/${curLang}/`).slice(1).join(`/${curLang}/`);
+      a.href = `${prefix}/${nextLang}/${suffix}`;
+    });
+  }
+}
 
 /**
  * Add version dropdown
@@ -140,6 +222,7 @@ function initVersionDropdown(wrapper) {
 
       a.href = makeHref(row.Folder);
       a.textContent = row.Title;
+      a.dataset.version = row.Folder;
 
       return li;
     }).filter((item) => !!item);
@@ -186,6 +269,7 @@ async function initLanguagesDropdown(wrapper) {
 
       a.href = makeHref(lang);
       a.textContent = title;
+      a.dataset.lang = lang;
       return li;
     };
 
@@ -213,7 +297,7 @@ function addEventListeners(wrapper) {
     const next = !wrapper.parentElement.classList.contains('aside-close');
     wrapper.parentElement.classList.toggle('aside-close', next);
     if (isMobile()) {
-      toggle.querySelector('i').className = `icon-arrow-${next ? 'down' : 'up'}`;
+      toggle.querySelector('i').style.rotate = `${next ? '0' : '180'}deg`;
     }
   });
 
@@ -248,6 +332,7 @@ function addEventListeners(wrapper) {
         if (!find(link)) {
           const { textContent } = link;
           link.textContent = textContent;
+          link.textContent = link.innerHTML.replaceAll('&nbsp;', ' ');
 
           toggleExpanded(link, false);
         }
@@ -267,6 +352,7 @@ function addEventListeners(wrapper) {
         const { textContent } = link;
 
         link.textContent = textContent;
+        link.textContent = link.innerHTML.replaceAll('&nbsp;', ' ');
         link.closest('li[data-key]').hidden = false;
 
         toggleExpanded(link, 'false');
@@ -330,6 +416,13 @@ function sortBook(book) {
   return data;
 }
 
+function hasSubtopics(topic) {
+  return topic.children && (
+    topic.children.length > 1
+    || topic.children.some((sub) => sub.name !== topic.name && sub.key !== topic.key)
+  );
+}
+
 function bookToList(book) {
   const root = document.createElement('ul');
 
@@ -341,10 +434,12 @@ function bookToList(book) {
     const link = document.createElement('a');
     link.innerText = title;
     link.href = href || '';
+    link.addEventListener('click', navigateArticleSPA);
+
     div.append(link);
 
     const expander = document.createElement('span');
-    expander.classList.add('icon-arrow-right', 'icon-toggle');
+    expander.append(html`<i class="icon">${getIcon('chevron-right')}</i>`);
     div.append(expander);
 
     item.append(div);
@@ -369,55 +464,46 @@ function bookToList(book) {
     current = bookUl;
 
     // add the chapter
-    addSubList(chapter.name, `${book.path}/${chapter.key}/${chapter.key}`, chapter.key);
+    const chapterUl = addSubList(chapter.name, `${book.path}/${chapter.key}/${chapter.key}`, chapter.key);
 
     const makeHref = (topic, parentKey) => `${book.path}/${chapter.key}/${parentKey ? `${parentKey}/` : ''}${topic.key}`;
 
     // then the topics recursively
     const processTopic = (topic, parentKey) => {
+      if (!parentKey) {
+        // reset back to the chapter list for each new topic
+        current = chapterUl;
+      }
+
       const li = document.createElement('li');
       const link = document.createElement('a');
       link.innerText = topic.name;
       link.href = makeHref(topic, parentKey);
+      link.addEventListener('click', navigateArticleSPA);
+
       const div = document.createElement('div');
       div.append(link);
       li.append(div);
       current.append(li);
 
-      if (topic.children) {
-        addSubList(topic.name, `${book.path}/${chapter.key}/${parentKey ? `${parentKey}/` : ''}${topic.key}/${topic.key}`, topic.key);
-        topic.children.forEach((subtopic) => {
-          processTopic(subtopic, `${parentKey ? `${parentKey}/` : ''}${topic.key}${subtopic.parent ? `/${subtopic.parent}` : ''}`);
-        });
+      if (topic.children && topic.children.length) {
+        if (hasSubtopics(topic)) {
+          addSubList(topic.name, `${book.path}/${chapter.key}/${parentKey ? `${parentKey}/` : ''}${topic.key}/${topic.key}`, topic.key);
+          topic.children.forEach((subtopic) => {
+            processTopic(subtopic, `${parentKey ? `${parentKey}/` : ''}${topic.key}${subtopic.parent ? `/${subtopic.parent}` : ''}`);
+          });
+        } else {
+        // has children, but not subtopics to render
+        // this means the link on the parent is actually the child's link
+          const [first] = topic.children;
+          link.href = `${link.href}/${first.key}`;
+        }
       }
     };
     chapter.children.forEach((topic) => processTopic(topic));
   });
 
   return root;
-}
-
-function expandTOCByPath(rootList, path) {
-  let rootPath;
-  const nextItem = (list, key) => [...list.querySelectorAll(':scope > li')].find((li) => {
-    if (!key.startsWith(li.dataset.key)) {
-      return false;
-    }
-    if (!rootPath) {
-      rootPath = li.dataset.key;
-    }
-    return true;
-  });
-
-  let currentItem = nextItem(rootList, path);
-  if (!currentItem) return;
-
-  const segments = path.substring(rootPath.length).split('/').slice(1);
-  while (currentItem && segments.length) {
-    currentItem.ariaExpanded = 'true';
-    const nextKey = segments.shift();
-    currentItem = nextItem(currentItem, nextKey);
-  }
 }
 
 /**
@@ -437,11 +523,18 @@ function renderTOC(container, book, expand, replace) {
     }
   });
 
-  // Set current
-  const current = rootList.querySelector(`a[href="${window.location.pathname}"]`);
-  if (current) {
-    current.closest('li').classList.add('current');
-  }
+  // remove all first list entries that are identical to their parent
+  rootList.querySelectorAll(':scope li[data-key] > ul > li:first-child').forEach((li) => {
+    const parent = li.parentElement.closest('li');
+    if (!parent) return;
+
+    const parentLink = parent.querySelector(':scope > div > a');
+    if (!parentLink) return;
+
+    if (parentLink.textContent === li.textContent) {
+      li.remove();
+    }
+  });
 
   // replace or append
   if (replace) {
@@ -450,49 +543,61 @@ function renderTOC(container, book, expand, replace) {
     container.append(list);
   }
 
-  if (expand) {
-    list.querySelector('li').ariaExpanded = 'true';
-  }
+  // Set current
+  const current = rootList.querySelector(`a[href="${window.location.pathname}"]`);
+  if (current) {
+    const currentLi = current.closest('li');
+    currentLi.classList.add('current');
 
-  // path to current doc inside book
-  // from: /prisma/prisma-cloud/en/compute/pcee/admin-guide/install/getting-started
-  // to: /install/getting-started
-  const docPath = window.location.pathname.split('/').slice(7).join('/');
-  expandTOCByPath(rootList, docPath);
+    // Expand from current leaf to root
+    if (expand) {
+      let closestListItem = currentLi;
+      while (closestListItem) {
+        closestListItem.ariaExpanded = 'true';
+        closestListItem = closestListItem.parentElement.closest('li');
+      }
+    }
+
+    // Scroll to current
+    requestAnimationFrame(() => {
+      container.scrollTop = currentLi.offsetTop;
+    });
+  }
 }
 
 /**
+ * @param {HTMLElement} block
  * @param {HTMLElement} container
  */
-function initAdditionalBooks(container) {
+function initAdditionalBooks(block, container) {
   const mainBook = container.querySelector('ul');
 
-  let afterMainBook = false;
+  // insert books in order defined in metadata
   store.allBooks.forEach((book) => {
-    if (book.mainBook) {
-      afterMainBook = true;
-    } else {
-      // insert books in order defined in metadata
-      const position = afterMainBook ? 'afterend' : 'beforebegin';
-      const list = html`
-        <ul>
-          <li data-key="" aria-expanded="false">
-            <div>
-              <a>${book.title}</a>
-              <span class="icon-arrow-right icon-toggle"></span>
-            </div>
-          </li>
-        </ul>`;
-      mainBook.insertAdjacentElement(position, list);
+    container.append(book.mainBook ? mainBook : html`
+      <ul data-additional-book-href="${book.href}">
+        <li data-key="" aria-expanded="false">
+          <div>
+            <a>${book.title}</a>
+            <span>
+              <i class="icon">
+                ${getIcon('chevron-right')}
+              </i>
+            </span>
+          </div>
+        </li>
+      </ul>`);
+  });
 
-      // load additional book data on hover, replace toc list once loaded
-      list.addEventListener('mouseenter', async () => {
-        const data = await store.fetchJSON(book.href, ['default', 'chapters', 'topics']);
+  // load additional book data on block hover, replace toc list once loaded
+  block.addEventListener('mouseenter', async () => {
+    container.querySelectorAll('[data-additional-book-href]').forEach((list) => {
+      store.fetchJSON(list.dataset.additionalBookHref, ['default', 'chapters', 'topics']).then((data) => {
         const sorted = sortBook(data);
         renderTOC(container, sorted, false, list);
-      }, { once: true });
-    }
-  });
+      });
+    });
+  }, { once: true });
 }
 
 /**
@@ -535,9 +640,7 @@ export default async function decorate(block) {
 
   store.once('article:loaded', (info) => {
     block.querySelector('slot[name="title"]').textContent = info.title;
-
-    const [month, day, year] = info.lastModified.toString().split(' ').slice(1);
-    block.querySelector('slot[name="date"]').textContent = `${month} ${day}, ${year}`;
+    block.querySelector('slot[name="date"]').textContent = formatDate(info.lastModified);
   });
 
   store.once('book:loaded', (book) => {
@@ -545,7 +648,7 @@ export default async function decorate(block) {
 
     const sorted = sortBook(book);
     renderTOC(toc, sorted, true);
-    initAdditionalBooks(toc);
+    initAdditionalBooks(block, toc);
 
     addEventListeners(wrapper);
     initVersionDropdown(wrapper);

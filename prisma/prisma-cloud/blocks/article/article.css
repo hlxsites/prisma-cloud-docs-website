@@ -6,6 +6,10 @@
   padding: var(--spacing--12);
   position: relative;
 }
+.article.block.not-found .hidden-not-found {
+  display: none;
+}
+
 .pan-article .title {
   padding: 0;
 }

@@ -2,16 +2,19 @@
 // TODO a11y
 // TODO i18n
 
+import { decorateIcons, getMetadata } from "../../scripts/lib-franklin.js";
 import {
-  getMetadata, decorateIcons,
-} from '../../scripts/lib-franklin.js';
-import {
-  render, parseFragment, PATH_PREFIX, renderBreadCrumbs, getPlaceholders, isMobile,
-} from '../../scripts/scripts.js';
+  PATH_PREFIX,
+  getPlaceholders,
+  isMobile,
+  parseFragment,
+  render,
+  renderBreadCrumbs,
+} from "../../scripts/scripts.js";
 
-const TEMPLATE = /* html */`    
+const TEMPLATE = /* html */ `    
   <!-- Mobile -->
-  <section class="pan-mobile-nav hidden-md hidden-lg">
+  <section class="pan-mobile-nav">
       <div class="nav-header">
           <div class="nav-header-top">
               <button class="btn-close-nav">
@@ -87,19 +90,22 @@ const TEMPLATE = /* html */`
 
   <!-- Search -->
   <div class="pan-search-panel">
-    <div class="search-panel-container container">
+    <div class="search-panel-container">
       <!-- Start: Coveo Search Box Implementation -->
-      <search-bar></search-bar>
+      <search-bar data-default-option="all"></search-bar>
 
       <!-- Start: Coveo Search Box Implementation -->
       <button class="search-panel-close locale-search-panel-close">
-        <i class="ion-ios-close-outline"></i>
+        <svg class="icon search-panel-close-icon" version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+          <title>Close</title>
+          <path d="M5.056 25.057c-0.521 0.521-0.521 1.365 0 1.886s1.365 0.521 1.886 0l9.057-9.057 9.057 9.057c0.521 0.521 1.365 0.521 1.886 0s0.521-1.365 0-1.886l-9.057-9.057 9.057-9.057c0.521-0.521 0.521-1.365 0-1.886s-1.365-0.521-1.886 0l-9.057 9.057-9.057-9.057c-0.521-0.521-1.365-0.521-1.886 0s-0.521 1.365 0 1.886l9.057 9.057-9.057 9.057z"></path>
+        </svg>
       </button>
     </div>
   </div>
 
   <!-- Desktop -->
-  <div class="pan-desktop-nav container">
+  <div class="pan-desktop-nav">
       <!-- Logo -->
       <section class="nav-logo-section dropdown">
           <div class="nav-logo">
@@ -112,7 +118,7 @@ const TEMPLATE = /* html */`
 
       <!-- Menu -->
       <section class="nav-menu-section">
-          <nav class="nav visible-lg visible-md">
+          <nav class="nav">
               <section class="nav-list">
                   <slot name="menu"></slot>
                   <img src="/prisma/prisma-cloud/assets/tdlogo-2020-white.webp" alt/>
@@ -125,13 +131,22 @@ const TEMPLATE = /* html */`
 
           <section class="nav-right">
               <button class="nav-search-button locale-search-panel-open">
-                  <svg x="0px" y="0px" viewBox="0 0 128 128">
-                  <path d="M125.9,115.5L94.5,84.1c0,0,0,0-0.1,0C101,75.3,105,64.4,105,52.6c0-29-23.5-52.5-52.5-52.5S0,23.6,0,52.6 s23.5,52.5,52.5,52.5c12,0,22.9-4,31.8-10.8c0,0,0,0,0,0l31.4,31.4c2.8,2.8,7.4,2.8,10.2,0C128.7,122.9,128.7,118.3,125.9,115.5z M52.5,90.6c-21,0-38-17-38-38c0-21,17-38,38-38s38,17,38,38C90.5,73.6,73.5,90.6,52.5,90.6z"></path>
-              </svg>
+                <svg focusable="false" class="icon icon-search" version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+                  <title>Search</title>
+                  <path d="M6 14c0-4.418 3.582-8 8-8s8 3.582 8 8c0 4.418-3.582 8-8 8s-8-3.582-8-8zM14 2c-6.627 0-12 5.373-12 12s5.373 12 12 12c2.592 0 4.991-0.822 6.953-2.219l5.633 5.633c0.781 0.781 2.047 0.781 2.828 0s0.781-2.047 0-2.828l-5.633-5.633c1.397-1.962 2.219-4.361 2.219-6.953 0-6.627-5.373-12-12-12z"></path>
+                </svg>
+                <span class="nav-search-title">Search All Documentation</span>
+                <div class="nav-search-key">/</div>
               </button>
 
-              <button type="button" class="hidden-lg hidden-md nav-open-sidemenu">
-                  <span class="locale-menu"></span>
+              <button type="button" class="nav-open-sidemenu">
+                  <!-- <span class="locale-menu"></span> -->
+                  <svg focusable="false" class="icon icon-hamburger" version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+                    <title>Menu</title>
+                    <path d="M7.5 7h17c0.828 0 1.5 0.672 1.5 1.5s-0.672 1.5-1.5 1.5h-17c-0.828 0-1.5-0.672-1.5-1.5s0.672-1.5 1.5-1.5z"></path>
+                    <path d="M7.5 21h17c0.828 0 1.5 0.672 1.5 1.5s-0.672 1.5-1.5 1.5h-17c-0.828 0-1.5-0.672-1.5-1.5s0.672-1.5 1.5-1.5z"></path>
+                    <path d="M7.5 14h17c0.828 0 1.5 0.672 1.5 1.5s-0.672 1.5-1.5 1.5h-17c-0.828 0-1.5-0.672-1.5-1.5s0.672-1.5 1.5-1.5z"></path>
+                  </svg>
               </button>
           </section>
       </section>
@@ -145,9 +160,11 @@ const TEMPLATE = /* html */`
  */
 async function load() {
   // fetch nav content & template
-  const navMeta = getMetadata('nav');
+  const navMeta = getMetadata("nav");
   const { lang } = document.documentElement;
-  const navPath = `${navMeta ? new URL(navMeta).pathname : `${PATH_PREFIX}/${lang}/nav`}.plain.html`;
+  const navPath = `${
+    navMeta ? new URL(navMeta).pathname : `${PATH_PREFIX}/${lang}/nav`
+  }.plain.html`;
 
   try {
     const res = await fetch(navPath);
@@ -167,11 +184,13 @@ async function load() {
 function localize(block) {
   queueMicrotask(async () => {
     const ph = await getPlaceholders();
-    block.querySelector('.locale-home').textContent = ph.home;
-    block.querySelector('.locale-location').textContent = ph.location;
-    block.querySelector('.locale-menu').textContent = ph.menu;
-    block.querySelector('.locale-search-panel-close').ariaLabel = ph.searchPanelClose;
-    block.querySelector('.locale-search-panel-open').ariaLabel = ph.searchPanelOpen;
+    block.querySelector(".locale-home").textContent = ph.home;
+    block.querySelector(".locale-location").textContent = ph.location;
+    block.querySelector(".locale-menu").textContent = ph.menu;
+    block.querySelector(".locale-search-panel-close").ariaLabel =
+      ph.searchPanelClose;
+    block.querySelector(".locale-search-panel-open").ariaLabel =
+      ph.searchPanelOpen;
   });
 }
 
@@ -180,31 +199,43 @@ function localize(block) {
  * @param {Element} block The header block element
  */
 function addEventListeners(block) {
-  const mobileNav = block.querySelector('.pan-mobile-nav');
-  const desktopNav = block.querySelector('.pan-desktop-nav');
-  const searchPanel = block.querySelector('.pan-search-panel');
+  const mobileNav = block.querySelector(".pan-mobile-nav");
+  const desktopNav = block.querySelector(".pan-desktop-nav");
+  const searchPanel = block.querySelector(".pan-search-panel");
 
   /* Mobile */
-  const mobileNavCloseButton = mobileNav.querySelector('.pan-mobile-nav .btn-close-nav');
-  const mobileNavRootMenu = mobileNav.querySelector('.pan-mobile-nav .root-menu');
-  const mobileNavMenuExpanded = mobileNav.querySelectorAll('.pan-mobile-nav .nav-menu-expanded');
-  const mobileNavMenuDetails = mobileNav.querySelector('.pan-mobile-nav .nav-menu-details');
-  const mobileNavMenuDetailsItems = mobileNavMenuDetails.querySelectorAll(':scope > div > ul');
-  const mobileNavBreadcrumb = mobileNav.querySelector('.pan-mobile-nav .nav-breadcrumbs');
-  const mobileBreadcrumb = mobileNavBreadcrumb.querySelector('.breadcrumb');
-  const mobileBreadcrumbBackButton = mobileNavBreadcrumb.querySelector('.btn-back');
-  const mobileMenuButton = desktopNav.querySelector('.nav-open-sidemenu');
+  const mobileNavCloseButton = mobileNav.querySelector(
+    ".pan-mobile-nav .btn-close-nav"
+  );
+  const mobileNavRootMenu = mobileNav.querySelector(
+    ".pan-mobile-nav .root-menu"
+  );
+  const mobileNavMenuExpanded = mobileNav.querySelectorAll(
+    ".pan-mobile-nav .nav-menu-expanded"
+  );
+  const mobileNavMenuDetails = mobileNav.querySelector(
+    ".pan-mobile-nav .nav-menu-details"
+  );
+  const mobileNavMenuDetailsItems =
+    mobileNavMenuDetails.querySelectorAll(":scope > div > ul");
+  const mobileNavBreadcrumb = mobileNav.querySelector(
+    ".pan-mobile-nav .nav-breadcrumbs"
+  );
+  const mobileBreadcrumb = mobileNavBreadcrumb.querySelector(".breadcrumb");
+  const mobileBreadcrumbBackButton =
+    mobileNavBreadcrumb.querySelector(".btn-back");
+  const mobileMenuButton = desktopNav.querySelector(".nav-open-sidemenu");
 
   const toggleActiveMenu = (currentActive, currentInactive) => {
-    currentInactive.classList.add('active');
-    currentInactive.classList.remove('inactive');
-    currentActive.classList.remove('active');
-    currentActive.classList.add('inactive');
+    currentInactive.classList.add("active");
+    currentInactive.classList.remove("inactive");
+    currentActive.classList.remove("active");
+    currentActive.classList.add("inactive");
   };
 
   const renderMenuItem = (item) => {
     const clone = item.cloneNode(true);
-    const ul = clone.querySelector('ul');
+    const ul = clone.querySelector("ul");
     if (ul) {
       ul.remove();
     }
@@ -212,22 +243,24 @@ function addEventListeners(block) {
     return clone;
   };
 
-  mobileMenuButton.addEventListener('click', () => {
-    document.body.classList.add('no-body-scroll');
-    mobileNav.classList.add('active');
+  mobileMenuButton.addEventListener("click", () => {
+    document.body.classList.add("no-body-scroll");
+    mobileNav.classList.add("active");
   });
 
-  mobileNavCloseButton.addEventListener('click', () => {
-    document.body.classList.remove('no-body-scroll');
-    mobileNav.classList.remove('active');
+  mobileNavCloseButton.addEventListener("click", () => {
+    document.body.classList.remove("no-body-scroll");
+    mobileNav.classList.remove("active");
   });
 
-  mobileNavRootMenu.addEventListener('click', ({ target }) => {
-    if (target.matches('span')) {
-      const selectedMenuIndex = [...mobileNavRootMenu.children].indexOf(target.parentElement);
+  mobileNavRootMenu.addEventListener("click", ({ target }) => {
+    if (target.matches("span")) {
+      const selectedMenuIndex = [...mobileNavRootMenu.children].indexOf(
+        target.parentElement
+      );
       const selectedMenuDetails = mobileNavMenuDetailsItems[selectedMenuIndex];
 
-      mobileNavMenuExpanded[0].innerHTML = '';
+      mobileNavMenuExpanded[0].innerHTML = "";
       for (const item of selectedMenuDetails.children) {
         const clone = renderMenuItem(item);
         mobileNavMenuExpanded[0].append(clone);
@@ -237,154 +270,182 @@ function addEventListeners(block) {
 
       const breadcrumbItemHome = mobileBreadcrumb.children[0];
       const newBreadcrumbItem = breadcrumbItemHome.cloneNode(true);
-      newBreadcrumbItem.classList.add('active');
+      newBreadcrumbItem.classList.add("active");
 
-      const newBreadcrumbItemLink = newBreadcrumbItem.querySelector('a');
+      const newBreadcrumbItemLink = newBreadcrumbItem.querySelector("a");
       newBreadcrumbItemLink.textContent = target.textContent;
-      newBreadcrumbItemLink.href = `#${target.textContent.trim().replace(/\s/g, '-')}`;
-      breadcrumbItemHome.classList.remove('active');
+      newBreadcrumbItemLink.href = `#${target.textContent
+        .trim()
+        .replace(/\s/g, "-")}`;
+      breadcrumbItemHome.classList.remove("active");
       mobileBreadcrumb.append(newBreadcrumbItem);
-      mobileNavBreadcrumb.classList.add('has-back-btn');
+      mobileNavBreadcrumb.classList.add("has-back-btn");
     }
   });
 
   for (const mobileNavMenuExpandedItem of mobileNavMenuExpanded) {
-    mobileNavMenuExpandedItem.addEventListener('click', (event) => {
-      if (event.target.querySelector('.nav-expand')) {
+    mobileNavMenuExpandedItem.addEventListener("click", (event) => {
+      if (event.target.querySelector(".nav-expand")) {
         event.preventDefault();
 
         let details;
-        for (const link of mobileNavMenuDetails.querySelectorAll('a')) {
+        for (const link of mobileNavMenuDetails.querySelectorAll("a")) {
           if (link.textContent === event.target.textContent) {
-            details = link.closest('li').querySelectorAll(':scope > ul > li');
+            details = link.closest("li").querySelectorAll(":scope > ul > li");
             break;
           }
         }
 
         if (details) {
-          const active = block.querySelector('.pan-mobile-nav .nav-menu-expanded.active');
-          const inactive = block.querySelector('.pan-mobile-nav .nav-menu-expanded.inactive');
+          const active = block.querySelector(
+            ".pan-mobile-nav .nav-menu-expanded.active"
+          );
+          const inactive = block.querySelector(
+            ".pan-mobile-nav .nav-menu-expanded.inactive"
+          );
 
-          inactive.innerHTML = '';
+          inactive.innerHTML = "";
           inactive.append(...[...details].map((li) => renderMenuItem(li)));
 
           toggleActiveMenu(active, inactive);
 
           const breadcrumbItemHome = mobileBreadcrumb.children[0];
           const newBreadcrumbItem = breadcrumbItemHome.cloneNode(true);
-          newBreadcrumbItem.classList.add('active');
+          newBreadcrumbItem.classList.add("active");
 
-          const newBreadcrumbItemLink = newBreadcrumbItem.querySelector('a');
+          const newBreadcrumbItemLink = newBreadcrumbItem.querySelector("a");
           newBreadcrumbItemLink.textContent = event.target.textContent;
-          newBreadcrumbItemLink.href = `#${event.target.getAttribute('href')}`;
+          newBreadcrumbItemLink.href = `#${event.target.getAttribute("href")}`;
 
-          mobileBreadcrumb.querySelector('.active').classList.remove('active');
+          mobileBreadcrumb.querySelector(".active").classList.remove("active");
           mobileBreadcrumb.append(newBreadcrumbItem);
         }
       }
     });
   }
 
-  mobileBreadcrumbBackButton.addEventListener('click', () => {
-    const active = mobileBreadcrumb.querySelector('.active');
-    active.previousElementSibling.querySelector('a').click();
+  mobileBreadcrumbBackButton.addEventListener("click", () => {
+    const active = mobileBreadcrumb.querySelector(".active");
+    active.previousElementSibling.querySelector("a").click();
   });
 
-  mobileBreadcrumb.addEventListener('click', (event) => {
-    event.preventDefault();
+  mobileBreadcrumb.addEventListener(
+    "click",
+    (event) => {
+      event.preventDefault();
 
-    const li = event.target.closest('li');
-    if (li.classList.contains('active')) {
-      return;
-    }
+      const li = event.target.closest("li");
+      if (li.classList.contains("active")) {
+        return;
+      }
 
-    const active = block.querySelector('.pan-mobile-nav .nav-menu-expanded.active');
-    const inactive = block.querySelector('.pan-mobile-nav .nav-menu-expanded.inactive');
+      const active = block.querySelector(
+        ".pan-mobile-nav .nav-menu-expanded.active"
+      );
+      const inactive = block.querySelector(
+        ".pan-mobile-nav .nav-menu-expanded.inactive"
+      );
 
-    // Home
-    if (li.querySelector('a[href="#home"]')) {
-      mobileBreadcrumb.innerHTML = '';
-      mobileBreadcrumb.append(li);
-      mobileNavBreadcrumb.classList.remove('has-back-btn');
+      // Home
+      if (li.querySelector('a[href="#home"]')) {
+        mobileBreadcrumb.innerHTML = "";
+        mobileBreadcrumb.append(li);
+        mobileNavBreadcrumb.classList.remove("has-back-btn");
 
-      toggleActiveMenu(active, mobileNavRootMenu);
-    } else {
-      for (const el of [...mobileNavMenuDetails.querySelectorAll('a'), ...mobileNavRootMenu.querySelectorAll(':scope > li > span')]) {
-        if (el.textContent === event.target.textContent) {
-          if (mobileBreadcrumb.querySelector('li:nth-child(2)') === li) {
-            const selectedMenuIndex = [...mobileNavRootMenu.children].indexOf(el.closest('li'));
-            const selectedMenuDetails = mobileNavMenuDetailsItems[selectedMenuIndex];
+        toggleActiveMenu(active, mobileNavRootMenu);
+      } else {
+        for (const el of [
+          ...mobileNavMenuDetails.querySelectorAll("a"),
+          ...mobileNavRootMenu.querySelectorAll(":scope > li > span"),
+        ]) {
+          if (el.textContent === event.target.textContent) {
+            if (mobileBreadcrumb.querySelector("li:nth-child(2)") === li) {
+              const selectedMenuIndex = [...mobileNavRootMenu.children].indexOf(
+                el.closest("li")
+              );
+              const selectedMenuDetails =
+                mobileNavMenuDetailsItems[selectedMenuIndex];
 
-            inactive.innerHTML = '';
-            for (const item of selectedMenuDetails.children) {
-              const clone = renderMenuItem(item);
-              inactive.append(clone);
+              inactive.innerHTML = "";
+              for (const item of selectedMenuDetails.children) {
+                const clone = renderMenuItem(item);
+                inactive.append(clone);
+              }
+            } else {
+              const details = el
+                .closest("li")
+                .querySelectorAll(":scope > ul > li");
+
+              inactive.innerHTML = "";
+              inactive.append(
+                ...[...details].map((item) => renderMenuItem(item))
+              );
             }
-          } else {
-            const details = el.closest('li').querySelectorAll(':scope > ul > li');
 
-            inactive.innerHTML = '';
-            inactive.append(...[...details].map((item) => renderMenuItem(item)));
+            toggleActiveMenu(active, inactive);
+
+            const newActiveBreadcrumb = event.target.closest("li");
+
+            while (newActiveBreadcrumb.nextElementSibling) {
+              newActiveBreadcrumb.nextElementSibling.remove();
+            }
+            newActiveBreadcrumb.classList.add("active");
+
+            break;
           }
-
-          toggleActiveMenu(active, inactive);
-
-          const newActiveBreadcrumb = event.target.closest('li');
-
-          while (newActiveBreadcrumb.nextElementSibling) {
-            newActiveBreadcrumb.nextElementSibling.remove();
-          }
-          newActiveBreadcrumb.classList.add('active');
-
-          break;
         }
       }
-    }
-  }, true);
+    },
+    true
+  );
 
   /* Search */
-  const searchButtonOpen = desktopNav.querySelector('.nav-search-button');
-  const searchButtonClose = searchPanel.querySelector('.search-panel-close');
+  const searchButtonOpen = desktopNav.querySelector(".nav-search-button");
+  const searchButtonClose = searchPanel.querySelector(".search-panel-close");
 
-  searchButtonOpen.addEventListener('mouseenter', () => {
-    import('../search-bar/search-bar.js');
-  }, { once: true });
+  searchButtonOpen.addEventListener(
+    "mouseenter",
+    () => {
+      import("../search-bar/search-bar.js");
+    },
+    { once: true }
+  );
 
-  searchButtonOpen.addEventListener('click', () => {
-    searchPanel.classList.add('active');
+  searchButtonOpen.addEventListener("click", () => {
+    searchPanel.classList.add("active");
   });
 
-  searchButtonClose.addEventListener('click', () => {
-    searchPanel.classList.remove('active');
+  searchButtonClose.addEventListener("click", () => {
+    searchPanel.classList.remove("active");
   });
 
   /* Desktop */
-  const desktopNavLogo = desktopNav.querySelector('.nav-logo');
-  const desktopNavList = desktopNav.querySelector('.nav-list');
-  const desktopNavListItems = desktopNavList.querySelectorAll('span');
-  const desktopDropdown = desktopNav.querySelector('.nav-menu-dropdown');
-  const desktopMenus = desktopDropdown.querySelectorAll('div > ul');
+  const desktopNavLogo = desktopNav.querySelector(".nav-logo");
+  const desktopNavList = desktopNav.querySelector(".nav-list");
+  const desktopNavListItems = desktopNavList.querySelectorAll("span");
+  const desktopDropdown = desktopNav.querySelector(".nav-menu-dropdown");
+  const desktopMenus = desktopDropdown.querySelectorAll("div > ul");
 
   const clearActive = () => {
     for (const item of desktopNavListItems) {
-      item.classList.remove('active');
+      item.classList.remove("active");
     }
-    const activeMenu = desktopDropdown.querySelector('div > ul.showmenu');
+    const activeMenu = desktopDropdown.querySelector("div > ul.showmenu");
     if (activeMenu) {
-      activeMenu.classList.remove('showmenu');
+      activeMenu.classList.remove("showmenu");
     }
   };
 
   const showMenu = (target) => {
     clearActive();
-    target.classList.add('active');
-    desktopDropdown.classList.add('showdropdown');
+    target.classList.add("active");
+    desktopDropdown.classList.add("showdropdown");
 
     const index = [...target.parentElement.children].indexOf(target);
     const activeMenu = desktopMenus[index];
-    activeMenu.classList.add('showmenu');
+    activeMenu.classList.add("showmenu");
 
-    const panNavDropdown = document.querySelector('.nav-menu-dropdown');
+    const panNavDropdown = document.querySelector(".nav-menu-dropdown");
     const linkCenter = target.offsetLeft + target.offsetWidth / 2;
     const dropDownWidth = activeMenu.getBoundingClientRect().width;
 
@@ -395,32 +456,33 @@ function addEventListeners(block) {
     if (dropDownLeft < 0) dropDownLeft = 0;
 
     const panNavDropdownLeft = panNavDropdown.getBoundingClientRect().left;
-    const marginRight = window.screen.width - (panNavDropdownLeft + dropDownWidth);
+    const marginRight =
+      window.screen.width - (panNavDropdownLeft + dropDownWidth);
 
     if (marginRight < panNavDropdownLeft) {
       dropDownLeft = (marginRight - panNavDropdownLeft) / 2;
     }
 
     // Set the computed left position
-    activeMenu.setAttribute('style', `left: ${dropDownLeft}px`);
+    activeMenu.setAttribute("style", `left: ${dropDownLeft}px`);
   };
 
   const hideMenu = () => {
     clearActive();
-    desktopDropdown.classList.remove('showdropdown');
+    desktopDropdown.classList.remove("showdropdown");
   };
 
-  desktopNavList.addEventListener('mouseover', ({ target }) => {
-    if (target.matches('span')) {
+  desktopNavList.addEventListener("mouseover", ({ target }) => {
+    if (target.matches("span")) {
       showMenu(target);
     }
   });
 
-  block.addEventListener('mouseleave', () => {
+  block.addEventListener("mouseleave", () => {
     hideMenu();
   });
 
-  desktopNavLogo.addEventListener('mouseover', () => {
+  desktopNavLogo.addEventListener("mouseover", () => {
     hideMenu();
   });
 }
@@ -437,24 +499,24 @@ export default async function decorate(block) {
   const { nav, template } = res;
 
   // "Slotify"
-  nav.querySelector('a').setAttribute('slot', 'logo');
-  nav.querySelector('ul').setAttribute('slot', 'logo-menu');
+  nav.querySelector("a").setAttribute("slot", "logo");
+  nav.querySelector("ul").setAttribute("slot", "logo-menu");
 
-  const menu = document.createElement('div');
-  menu.setAttribute('slot', 'menu');
+  const menu = document.createElement("div");
+  menu.setAttribute("slot", "menu");
   nav.append(menu);
 
-  const menuDropdown = document.createElement('div');
-  menuDropdown.setAttribute('slot', 'menu-dropdown');
+  const menuDropdown = document.createElement("div");
+  menuDropdown.setAttribute("slot", "menu-dropdown");
   nav.append(menuDropdown);
 
-  for (const menuItem of nav.querySelectorAll('div:nth-child(2) > ul > li')) {
+  for (const menuItem of nav.querySelectorAll("div:nth-child(2) > ul > li")) {
     // Move the text node inside a span
-    const span = document.createElement('span');
+    const span = document.createElement("span");
     span.append(menuItem.firstChild);
     menu.append(span);
 
-    const links = menuItem.querySelector('ul');
+    const links = menuItem.querySelector("ul");
     menuDropdown.append(links);
   }
 
@@ -462,75 +524,86 @@ export default async function decorate(block) {
   render(template, nav);
 
   // Post render
-  const desktopNav = template.querySelector('.pan-desktop-nav');
-  const navList = desktopNav.querySelector('.nav-list');
-  const navListItems = navList.querySelectorAll('span');
-  const backgroundImage = navList.querySelector('img');
+  const desktopNav = template.querySelector(".pan-desktop-nav");
+  const navList = desktopNav.querySelector(".nav-list");
+  const navListItems = navList.querySelectorAll("span");
+  const backgroundImage = navList.querySelector("img");
   navListItems.forEach((item) => item.append(backgroundImage.cloneNode(true)));
 
-  const navMenuDropdown = desktopNav.querySelector('.nav-menu-dropdown');
-  for (const menuWithIcon of [...navMenuDropdown.querySelectorAll('li')].filter((el) => el.querySelector(':scope > .icon + ul'))) {
-    const div = document.createElement('div');
-    div.classList.add('has-icon');
-    div.append(menuWithIcon.querySelector('.icon'));
+  const navMenuDropdown = desktopNav.querySelector(".nav-menu-dropdown");
+  for (const menuWithIcon of [...navMenuDropdown.querySelectorAll("li")].filter(
+    (el) => el.querySelector(":scope > .icon + ul")
+  )) {
+    const div = document.createElement("div");
+    div.classList.add("has-icon");
+    div.append(menuWithIcon.querySelector(".icon"));
     // text child
     div.append(menuWithIcon.firstChild);
     menuWithIcon.prepend(div);
   }
-  for (const menuWithoutLink of navMenuDropdown.querySelectorAll('div > ul > li')) {
-    if (!menuWithoutLink.querySelector(':scope > a')) {
-      const div = document.createElement('div');
+  for (const menuWithoutLink of navMenuDropdown.querySelectorAll(
+    "div > ul > li"
+  )) {
+    if (!menuWithoutLink.querySelector(":scope > a")) {
+      const div = document.createElement("div");
       // text child
       div.append(menuWithoutLink.firstChild);
       menuWithoutLink.prepend(div);
     }
   }
 
-  for (const ul of [...navMenuDropdown.querySelectorAll(':scope > div > ul')].filter((el) => el.querySelectorAll(':scope > ul').length === 0)) {
-    ul.classList.add('has-not-ul');
+  for (const ul of [
+    ...navMenuDropdown.querySelectorAll(":scope > div > ul"),
+  ].filter((el) => el.querySelectorAll(":scope > ul").length === 0)) {
+    ul.classList.add("has-not-ul");
   }
 
-  const mobileNav = template.querySelector('.pan-mobile-nav');
-  const navMobileRootMenu = mobileNav.querySelector('.root-menu');
-  const navMobileRootMenuItems = navMobileRootMenu.querySelectorAll('span:not(:empty)');
-  const navMobileMenuDetails = mobileNav.querySelector('.nav-menu-details');
-  const navMobileMenuDetailsItems = navMobileMenuDetails.querySelectorAll('li');
-  const navMobileMenuExpand = mobileNav.querySelector('.nav-expand');
+  const mobileNav = template.querySelector(".pan-mobile-nav");
+  const navMobileRootMenu = mobileNav.querySelector(".root-menu");
+  const navMobileRootMenuItems =
+    navMobileRootMenu.querySelectorAll("span:not(:empty)");
+  const navMobileMenuDetails = mobileNav.querySelector(".nav-menu-details");
+  const navMobileMenuDetailsItems = navMobileMenuDetails.querySelectorAll("li");
+  const navMobileMenuExpand = mobileNav.querySelector(".nav-expand");
 
   for (const navMobileRootMenuItem of navMobileRootMenuItems) {
     navMobileRootMenuItem.append(navMobileMenuExpand.cloneNode(true));
-    const li = document.createElement('li');
+    const li = document.createElement("li");
     li.append(navMobileRootMenuItem);
     navMobileRootMenu.append(li);
   }
 
   for (const navMobileMenuDetailsItem of navMobileMenuDetailsItems) {
     // Has icon
-    const icon = navMobileMenuDetailsItem.querySelector('.icon');
+    const icon = navMobileMenuDetailsItem.querySelector(".icon");
     if (icon) {
-      const a = document.createElement('a');
-      a.href = '#';
+      const a = document.createElement("a");
+      a.href = "#";
       a.append(icon);
-      a.append([...navMobileMenuDetailsItem.childNodes].find((child) => !child.tagName));
+      a.append(
+        [...navMobileMenuDetailsItem.childNodes].find((child) => !child.tagName)
+      );
 
       navMobileMenuDetailsItem.prepend(a);
     }
 
     // Text node only
-    if (!navMobileMenuDetailsItem.querySelector(':scope > *:not(ul)')) {
-      const a = document.createElement('a');
-      a.href = '#';
+    if (!navMobileMenuDetailsItem.querySelector(":scope > *:not(ul)")) {
+      const a = document.createElement("a");
+      a.href = "#";
       a.append(navMobileMenuDetailsItem.firstChild);
 
       navMobileMenuDetailsItem.prepend(a);
     }
 
     // Has sub nav items
-    if (navMobileMenuDetailsItem.querySelector('ul')) {
-      navMobileMenuDetailsItem.querySelector('a, div').append(navMobileMenuExpand.cloneNode(true));
+    if (navMobileMenuDetailsItem.querySelector("ul")) {
+      navMobileMenuDetailsItem
+        .querySelector("a, div")
+        .append(navMobileMenuExpand.cloneNode(true));
     }
   }
-  navMobileRootMenu.querySelector('[slot]').remove();
+  navMobileRootMenu.querySelector("[slot]").remove();
   navMobileMenuExpand.remove();
 
   block.firstElementChild.replaceWith(...template.children);
@@ -538,12 +611,12 @@ export default async function decorate(block) {
   addEventListeners(block);
   decorateIcons(block);
 
-  document.body.querySelector('header').classList.add('loaded');
-  store.emit('header:loaded');
+  document.body.querySelector("header").classList.add("loaded");
+  store.emit("header:loaded");
 
   if (!isMobile()) {
     renderBreadCrumbs();
   } else {
-    store.once('delayed:loaded', renderBreadCrumbs);
+    store.once("delayed:loaded", renderBreadCrumbs);
   }
 }

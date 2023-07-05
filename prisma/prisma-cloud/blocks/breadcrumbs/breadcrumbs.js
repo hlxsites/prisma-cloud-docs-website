@@ -1,5 +1,5 @@
 import {
-  PATH_PREFIX, getPlaceholders, loadBook, parseFragment,
+  PATH_PREFIX, SPA_NAVIGATION, getPlaceholders, loadBook, parseFragment,
 } from '../../scripts/scripts.js';
 import { getMetadata } from '../../scripts/lib-franklin.js';
 
@@ -32,15 +32,7 @@ function localize(block) {
   });
 }
 
-/** @param {HTMLDivElement} block */
-export default async function decorate(block) {
-  const bookHref = block.querySelector('a').href;
-  const book = bookHref ? await loadBook(bookHref) : undefined;
-  const section = block.closest('.breadcrumbs-container');
-  if (section) {
-    section.classList.add('section', 'full-width');
-  }
-
+function renderContent(block, book) {
   block.innerHTML = '';
 
   const fragment = parseFragment(TEMPLATE);
@@ -101,8 +93,24 @@ export default async function decorate(block) {
 
   block.append(fragment);
   localize(block);
+}
+
+/** @param {HTMLDivElement} block */
+export default async function decorate(block) {
+  const bookHref = block.querySelector('a').href;
+  const book = bookHref ? await loadBook(bookHref) : undefined;
+  const section = block.closest('.breadcrumbs-container');
+  if (section) {
+    section.classList.add('section', 'full-width');
+  }
+
+  renderContent(block, book);
 
   if (getMetadata('template').startsWith('landing')) {
     block.classList.add('container');
+  } else if (SPA_NAVIGATION) {
+    store.on('spa:navigate:article', () => {
+      renderContent(block, book);
+    });
   }
 }

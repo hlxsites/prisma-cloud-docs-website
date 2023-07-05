@@ -1,11 +1,35 @@
 :root {
-  --header-primary-text-color: var(--color-blue-dark--200);
+  --header-primary-text-color: var(--color-neutral-700);
+  --header-search-text-color: var(--color-neutral-400);
+  --header-search-key-background-color: var(--color-neutral-050);
+  --header-search-close-background-color: var(--color-neutral-white);
+  --header-search-close-border-color: var(--color-neutral-100);
+
+  --global-search-background-color: var(--color-neutral-050);
+  --global-search-border-color: var(--color-neutral-050);
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --header-primary-text-color: var(--color-neutral-500);
+  .book .header {
+    --header-primary-text-color: var(--color-neutral-dark-200);
+    --header-search-text-color: var(--color-neutral-200);
+    --header-search-key-background-color: var(--color-neutral-dark-500);
+    --header-search-close-background-color: var(--color-neutral-black);
+    --header-search-close-border-color: var(--color-neutral-600);
+
+    --global-search-background-color: #0a0c0f;
+    --global-search-border-color: var(--color-neutral-dark-600);
+
+    --search-background-color: var(--color-neutral-black);
+    --search-border-color: var(--color-neutral-dark-600);
+    --search-text-color: var(--color-neutral-white);
   }
+}
+
+.header {
+  align-items: center;
+  display: flex;
+  height: 100%;
 }
 
 /* Mobile */
@@ -571,17 +595,25 @@
 
 /* Search */
 .pan-search-panel .search-panel-close {
-  font-size: 30px;
-  color: white;
-  justify-content: center;
   align-items: center;
-  background: transparent;
-  border: none;
+  background: var(--header-search-close-background-color);
+  border: 1px solid var(--header-search-close-border-color);
+  border-radius: 50%;
+  color: var(--search-text-color);
+  display: flex;
+  height: 40px;
+  font-size: 24px;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  right: var(--spacing--10);
+  width: 40px;
 }
 
 .pan-search-panel .search-panel-close:hover {
   cursor: pointer;
-  color: white;
+  /* color: white; */
 }
 
 .pan-search-panel {
@@ -595,24 +627,32 @@
   transition: height 0.2s;
   perspective: 900px;
   visibility: hidden;
+
+  background: var(--global-search-background-color);
+  backdrop-filter: blur(12px);
+  display: flex;
+  justify-content: center;
 }
 
 .pan-search-panel.active {
   visibility: visible;
   height: 120px;
   overflow: visible;
-  margin-left: calc(0px - max(0px, (100vw - var(--max-width)) / 2));
+  /* margin-left: calc(0px - max(0px, (100vw - var(--max-width)) / 2)); */
 }
 
 .pan-search-panel .search-panel-container {
-  height: 100%;
-  display: flex;
   align-items: center;
+  display: flex;
+  height: 100%;
+  max-width: 880px;
+  padding: var(--spacing--10);
+  width: 100%;
 }
 
-.pan-search-panel .search-panel-container > * {
+/* .pan-search-panel .search-panel-container > * {
   margin: 0 10px;
-}
+} */
 
 .show {
   display: block;
@@ -635,20 +675,23 @@
 
 /* Desktop */
 .pan-desktop-nav {
-  align-items: flex-end;
+  align-items: center;
   display: flex;
-  padding-top: 14px;
+  margin-left: var(--spacing--10);
+  margin-right: var(--spacing--10);
+  padding-top: var(--spacing--3);
+  padding-bottom: var(--spacing--3);
+  width: 100%;
 }
 
 .pan-desktop-nav .nav-menu-section {
-  align-items: flex-end;
+  align-items: center;
   position: relative;
   z-index: 10;
   flex-grow: 1;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  align-items: baseline;
 }
 
 @media (max-width: 992px) {
@@ -666,49 +709,68 @@
   align-self: stretch;
 }
 
-@media (max-width: 1200px) {
+/* @media (max-width: 1200px) {
   .pan-desktop-nav .nav-menu-section .nav-right * {
     font-size: 14px;
   }
-}
+} */
 
 .pan-desktop-nav .nav-menu-section .nav-search-button {
-  cursor: pointer;
+  -webkit-appearance: none;
+  align-items: center;
+  background: var(--search-background-color);
+  display: flex;
+  border: 1px solid var(--search-border-color);
+  border-radius: var(--search-border-radius);
+  color: var(--header-search-text-color);
+  font-family: var(--body-font-family);
+  font-size: var(--control-font-size--xs);
+  line-height: var(--control-line-height--xs);
+  padding: 9px var(--spacing--4);
+  /* cursor: pointer;
   transition: width 0.2s, margin-right 0.2s;
   width: 50px;
   border: none;
   text-align: center;
-  background-color: transparent;
+  background-color: transparent; */
+}
+
+.pan-desktop-nav .nav-search-title {
+  padding: 0 var(--spacing--4) 0 var(--spacing--2);
+}
+
+.pan-desktop-nav .nav-search-key {
+  align-items: center;
+  background: var(--header-search-key-background-color);
+  border-radius: var(--spacing--1);
+  display: flex;
+  justify-content: center;
+  height: 20px;
+  width: 20px;
 }
 
 .pan-desktop-nav .nav-menu-section .nav-search-button > svg {
+  color: var(--header-primary-text-color);
   width: 18px;
   height: 18px;
 }
 
 .pan-desktop-nav .nav-menu-section .nav-open-sidemenu {
-  font-family: var(--body-font-family);
-  text-transform: uppercase;
-  overflow: hidden;
-  width: 80px;
-  display: flex;
   align-items: center;
-  border-radius: 10px;
-  justify-content: center;
-  transition: background 0.2s;
-  margin-bottom: 4px;
-  font-weight: normal;
-  text-align: center;
-  vertical-align: middle;
-  touch-action: manipulation;
+  background: var(--header-search-close-background-color);
+  border: 1px solid var(--header-search-close-border-color);
+  border-radius: 50%;
+  color: var(--search-text-color);
   cursor: pointer;
-  white-space: nowrap;
-  line-height: 1.4;
+  display: none;
+  height: 40px;
+  font-size: 16px;
+  justify-content: center;
+  text-align: center;
+  touch-action: manipulation;
   user-select: none;
-  background-image: linear-gradient(to right, #fff 0, #fff 100%);
-  border: 2px solid #fa582c;
-  color: #fff;
-  padding: 0 50px;
+  vertical-align: middle;
+  width: 40px;
 }
 
 .pan-desktop-nav .nav-menu-section .nav-open-sidemenu span {
@@ -723,7 +785,6 @@
   position: relative;
   z-index: 10;
   margin-right: 40px;
-  margin-top: -10px;
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
@@ -779,12 +840,13 @@
 }
 
 .pan-desktop-nav .nav-logo-section .nav-logo {
-  display: flex;
   align-items: center;
+  display: flex;
+  height: 32px;
 }
 
 .pan-desktop-nav .nav-logo img {
-  width: 200px;
+  width: 146px;
   max-width: 100%;
   height: auto;
   vertical-align: middle;
@@ -887,12 +949,15 @@
 .pan-desktop-nav .nav-list span {
   cursor: pointer;
   color: var(--header-primary-text-color);
-  font-size: var(--body-font-size--s);
-  padding-top: 7.5px;
+  font-size: var(--control-font-size--sm);
+  line-height: var(--control-line-height--sm);
+  padding-top: 9px;
+  padding-right: 8px;
+  padding-bottom: 9px;
+  padding-left: 8px;
   position: relative;
-  margin-right: 40px;
+  margin-right: var(--spacing--6);
   /* margin-bottom: 20px; */
-  letter-spacing: 0.02em;
 }
 
 @media (max-width: 1200px) {
@@ -1080,16 +1145,33 @@
 .pan-banner {
   position: relative;
   z-index: -1;
-  background: #00c0e8;
   padding-top: 160px;
   margin-top: -160px;
   color: #fff;
+
+  display: none;
 }
 
-.pan-banner::before,
+/* .pan-banner::before,
 .pan-banner::after {
   pointer-events: none;
   background-image: url("/prisma/prisma-cloud/assets/sase-cns-pattern.webp");
+} */
+
+.pan-banner::before,
+.pan-banner::after {
+  content: "";
+  position: absolute;
+}
+
+.pan-banner::after {
+  pointer-events: none;
+  background: url("/prisma/prisma-cloud/assets/landing-right-graphic.webp") 0 0
+    no-repeat;
+  right: 0;
+  top: 0;
+  height: 756px;
+  width: 406px;
 }
 
 .pan-banner::before {
@@ -1188,11 +1270,8 @@
 }
 
 /* Books */
-.book .pan-desktop-nav {
-  margin-left: 15px;
-  margin-right: 15px;
-  width: auto;
-}
+/* .book .pan-desktop-nav {
+} */
 
 .book .pan-banner {
   background: transparent;
@@ -1201,4 +1280,21 @@
 .book .pan-banner::before,
 .book .pan-banner::after {
   display: none;
+}
+
+@media only screen and (min-width: 1200px) {
+  .pan-mobile-nav {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  .pan-desktop-nav .nav-menu-section .nav-search-button,
+  .pan-desktop-nav .nav {
+    display: none;
+  }
+
+  .pan-desktop-nav .nav-menu-section .nav-open-sidemenu {
+    display: flex;
+  }
 }

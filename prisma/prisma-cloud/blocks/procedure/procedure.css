@@ -69,10 +69,11 @@
   content: counter(substep-counter);
   counter-increment: substep-counter;
   display: flex;
-  font-size: var(--body-font-size--xs);
+  font-size: var(--body-font-size--p3);
   height: 20px;
   justify-content: center;
-  line-height: var(--body-font-size--xs);
+  letter-spacing: var(--letter-spacing-neg--s);
+  line-height: var(--body-line-height--p3);
   position: absolute;
   right: 100%;
   width: 20px;

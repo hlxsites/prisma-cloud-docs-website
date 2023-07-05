@@ -15,8 +15,9 @@
 
 .table table {
   border-spacing: 0;
-  font-size: var(--body-font-size--xs);
-  line-height: var(--line-height--m);
+  font-size: var(--body-font-size--p3);
+  letter-spacing: var(--letter-spacing-neg--s);
+  line-height: var(--body-line-height--p3);
   margin-top: var(--spacing--10);
   margin-bottom: var(--spacing--16);
   width: 100%;

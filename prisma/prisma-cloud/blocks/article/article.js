@@ -1,14 +1,14 @@
 import {
-  assertValidDocsURL,
   renderSidenav,
   getPlaceholders,
   loadBook,
   parseFragment,
   PATH_PREFIX,
   render,
+  SPA_NAVIGATION,
   REDIRECTED_ARTICLE_KEY,
   decorateMain,
-  DOCS_ORIGINS,
+  loadArticle,
   setBranch,
 } from '../../scripts/scripts.js';
 
@@ -34,7 +34,7 @@ const TEMPLATE = /* html */`
             </span>
           </div>
       </div>
-      <div class="content">
+      <div class="content hidden-not-found">
           <div class="content-inner">
               <div class="book-detail-pagination">
                   <a class="prev" href="#">
@@ -58,38 +58,6 @@ const TEMPLATE = /* html */`
           </div>
       </div>
   </article>`;
-
-/**
- * Load article as HTML
- * @param {string} href
- * @returns {Promise<{ok:boolean;data?:string;status:number;}>}
- */
-async function loadArticle(href) {
-  assertValidDocsURL(href);
-
-  const url = new URL(`${href}.plain.html`);
-  setBranch(url);
-
-  const resp = await fetch(url.toString());
-  if (!resp.ok) return resp;
-  try {
-    const lastModified = resp.headers.get('last-modified') !== 'null' ? new Date(resp.headers.get('last-modified')) : new Date();
-    return {
-      ok: true,
-      status: resp.status,
-      info: {
-        lastModified,
-      },
-      data: await resp.text(),
-    };
-  } catch (e) {
-    console.error('failed to parse article: ', e);
-    return {
-      ...resp,
-      ok: false,
-    };
-  }
-}
 
 /**
  * @param {HTMLDivElement} block
@@ -121,7 +89,11 @@ async function redirectToFirstChapter() {
   const chapter = book.chapters.data[0];
   const version = getMetadata('version');
   const bookKey = book.default.data[0].path.split('/').pop();
-  let redirect = `${PATH_PREFIX}/${document.documentElement.lang}/${store.product}/${version ? `${version}/` : ''}${bookKey}/${chapter.key}/${chapter.key}`;
+  let redirect = `${PATH_PREFIX}/${document.documentElement.lang}/${store.product}/${version && version !== 'not-applicable' ? `${version}/` : ''}${bookKey}/${chapter.key}/${chapter.key}`;
+
+  if (store.branch) {
+    redirect += `?branch=${store.branch}`;
+  }
 
   // set flag to avoid infinite loops on books with bad first chapter/topics
   try {
@@ -132,45 +104,51 @@ async function redirectToFirstChapter() {
   window.location.href = redirect;
 }
 
-/** @param {HTMLDivElement} block */
-export default async function decorate(block) {
-  let res;
+/**
+ * @param {HTMLElement} block the container element
+ * @param {string} hrefOrRes href on render, html string on rerender
+ * @param {*} rerender whether this is a rerender
+ */
+async function renderContent(block, hrefOrRes, rerender = false) {
   let articleFound = true;
-  const link = block.querySelector('a');
   block.innerHTML = '';
 
-  if (link) {
-    try {
-      let href = link.getAttribute('href') || link.innerText;
-      if (href) {
-        // change href to point to docs origin on lower envs
-        if (store.env !== 'prod' && href.startsWith('/')) {
-          href = `${DOCS_ORIGINS[store.env]}${href}`;
-        }
-        res = await loadArticle(href);
+  let res = hrefOrRes;
+  if (!rerender) {
+    res = await loadArticle(hrefOrRes);
+    if (!res || !res.ok) {
+      console.error(`failed to load article (${res.status}): `, res);
+      if (res.status === 404 && shouldRedirectMissing()) {
+        await redirectToFirstChapter();
       }
-    } catch (e) {
-      console.error(e);
+      articleFound = false;
+      block.classList.add('not-found');
     }
   }
 
-  if (!res || !res.ok) {
-    console.error(`failed to load article (${res.status}): `, res);
-    if (res.status === 404 && shouldRedirectMissing()) {
-      await redirectToFirstChapter();
-    }
-    articleFound = false;
-  }
+  const template = parseFragment(TEMPLATE);
+  const fragment = document.createElement('div');
+
+  const docTitle = document.createElement('a');
+  docTitle.setAttribute('slot', 'document');
+  docTitle.href = window.location.href.split('/').slice(0, -2).join('/');
+  docTitle.textContent = store.mainBook.title;
+  fragment.append(docTitle);
 
   if (articleFound) {
-    const { data, info } = res;
-    const template = parseFragment(TEMPLATE);
-    const article = parseFragment(data);
+    const { html, info } = res;
+    const article = parseFragment(html);
 
     // Fixup images src
     for (const image of article.querySelectorAll('img')) {
-      const { pathname } = new URL(image.src);
-      image.src = `${store.docsOrigin}${pathname}`;
+      const imageURL = new URL(image.src);
+
+      if (store.branch) {
+        setBranch(imageURL, store.branch);
+        image.src = imageURL.toString();
+      } else {
+        image.src = `${store.docsOrigin}${imageURL.pathname}`;
+      }
 
       const picture = image.parentElement;
       if (picture.tagName === 'PICTURE') {
@@ -181,13 +159,6 @@ export default async function decorate(block) {
       }
     }
 
-    // "Slotify"
-    const div = document.createElement('div');
-    const docTitle = document.createElement('a');
-    docTitle.setAttribute('slot', 'document');
-    docTitle.href = window.location.href.split('/').slice(0, -2).join('/');
-    div.append(docTitle);
-
     const articleTitle = article.querySelector('h1, h2');
     if (articleTitle) {
       info.title = articleTitle.textContent;
@@ -196,24 +167,28 @@ export default async function decorate(block) {
       span.setAttribute('slot', 'title');
       span.textContent = info.title;
       articleTitle.remove();
-      div.append(span);
+      fragment.append(span);
     }
 
     const content = document.createElement('div');
     content.setAttribute('slot', 'content');
     content.append(article);
 
-    div.append(content);
+    fragment.append(content);
 
-    // Render with slots
-    render(template, div);
-    block.append(template);
-    localize(block);
+    // Remove class if coming from first chapter
+    block.classList.remove('not-found');
+
     store.emit('article:loaded', info);
-
-    // Post render
-    block.querySelector('.edit-github a').href = `https://github.com/hlxsites/prisma-cloud-docs/blob/main/${window.location.pathname.replace(PATH_PREFIX, 'docs')}.adoc`;
   }
+
+  // Render with slots
+  render(template, fragment);
+  block.append(template);
+  localize(block);
+
+  // Post render
+  block.querySelector('.edit-github a').href = `https://github.com/hlxsites/prisma-cloud-docs/blob/main/${window.location.pathname.replace(PATH_PREFIX, 'docs')}.adoc`;
 
   if (store.mainBook) {
     loadBook(store.mainBook.href).then((book) => {
@@ -221,11 +196,12 @@ export default async function decorate(block) {
 
       if (!articleFound) return;
 
-      const docSlot = block.querySelector('a[slot="document"]');
-      docSlot.textContent = book.default.data[0].title;
+      // to use the title from the book definition instead of metadata
+      // const docSlot = block.querySelector('slot[name="document"]');
+      // docSlot.textContent = book.default.data[0].title;
 
-      const href = window.location.href.split('?')[0].split('/');
-      const subPath = href.pop();
+      const hrefParts = window.location.href.split('?')[0].split('/');
+      const subPath = hrefParts.pop();
       const topicIndex = book.topics.data.findIndex(({ key }) => key === subPath);
       const currentTopic = book.topics.data[topicIndex];
       const prevTopic = book.topics.data[topicIndex - 1];
@@ -233,32 +209,56 @@ export default async function decorate(block) {
 
       if (prevTopic) {
         if (prevTopic.chapter === currentTopic.chapter) {
-          block.querySelector('.prev').href = `${href.join('/')}/${prevTopic.key.replaceAll('_', '-')}`;
+          block.querySelector('.prev').href = `${hrefParts.join('/')}/${prevTopic.key.replaceAll('_', '-')}`;
         } else {
-          block.querySelector('.prev').href = `${href.slice(0, -1).join('/')}/${prevTopic.chapter}/${prevTopic.key.replaceAll('_', '-')}`;
+          block.querySelector('.prev').href = `${hrefParts.slice(0, -1).join('/')}/${prevTopic.chapter}/${prevTopic.key.replaceAll('_', '-')}`;
         }
       }
 
       if (nextTopic) {
         if (nextTopic.chapter === currentTopic.chapter) {
-          block.querySelector('.next').href = `${href.join('/')}/${nextTopic.key.replaceAll('_', '-')}`;
+          block.querySelector('.next').href = `${hrefParts.join('/')}/${nextTopic.key.replaceAll('_', '-')}`;
         } else {
-          block.querySelector('.next').href = `${href.slice(0, -1).join('/')}/${nextTopic.chapter}/${nextTopic.key.replaceAll('_', '-')}`;
+          block.querySelector('.next').href = `${hrefParts.slice(0, -1).join('/')}/${nextTopic.chapter}/${nextTopic.key.replaceAll('_', '-')}`;
         }
       }
     });
   }
 
-  // Load sidenav
-  renderSidenav(block);
+  // Load sidenav, once
+  if (!rerender) {
+    renderSidenav(block);
+  }
 
   if (articleFound) {
     const bookContent = block.querySelector('.book-content div[slot="content"]');
     if (bookContent) {
       decorateMain(bookContent);
       loadBlocks(bookContent).then(() => {
-        updateSectionsStatus(document.querySelector('main'));
+        updateSectionsStatus(bookContent);
       });
     }
+  }
+}
+
+/** @param {HTMLDivElement} block */
+export default async function decorate(block) {
+  const link = block.querySelector('a');
+  if (link) {
+    try {
+      const href = link.getAttribute('href') || link.innerText;
+      if (href) {
+        await renderContent(block, href);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  if (SPA_NAVIGATION) {
+    store.on('spa:navigate:article', async (res) => {
+      await renderContent(block, res, true);
+      block.querySelector('article').scrollIntoView();
+    });
   }
 }
