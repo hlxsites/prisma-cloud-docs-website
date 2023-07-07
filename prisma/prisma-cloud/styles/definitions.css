@@ -55,7 +55,7 @@
   --color-neutral-900: #272727;
   --color-neutral-black: black;
 
-  --color-blue--050: #5c6077;
+  --color-blue--050: #f5faff;
   --color-blue--100: #dbefff;
   --color-blue--200: #99d0ff;
   --color-blue--400: #008bff;
@@ -110,9 +110,10 @@
   --primary-action-border-radius: 50px;
 
   --primary-action-outline-border-color: var(--color-neutral-800);
-  --primary-action-outline-text-color: var(--color-neutral-700);
+  --primary-action-outline-text-color: var(--color-neutral-900);
 
   --primary-action-outline-active-border-color: var(--color-neutral-600);
+  --primary-action-outline-active-text-color: var(--color-neutral-700);
 
   --secondary-action-background-color: var(--color-neutral-black);
   --secondary-action-text-color: var(--color-neutral-white);
@@ -120,10 +121,27 @@
   --secondary-action-active-text-color: var(--color-neutral-black);
   --secondary-action-border-radius: 50px;
 
+  --small-action-border-radius: var(--spacing--8);
+  --small-action-font-size: var(--control-font-size--sm);
+  --small-action-line-height: var(--control-line-height--sm);
+  --small-action-padding-hz: var(--spacing--6);
+  --small-action-padding-vert: var(--spacing--3);
+
   --tertiary-action-text-color: var(--color-neutral-700);
   --tertiary-action-active-background-color: var(--color-blue--100);
   --tertiary-action-active-text-color: var(--color-neutral-black);
   --tertiary-action-padding: var(--spacing--4);
+
+  --icon-action--text-color: var(--color-neutral-black);
+  --icon-action--background-color: var(--color-neutral-white);
+  --icon-action--border-color: var(--color-neutral-100);
+
+  --icon-action--active-text-color: var(--color-neutral-black);
+  --icon-action--active-background-color: var(--color-neutral-white);
+  --icon-action--active-border-color: var(--color-neutral-100);
+
+  --icon-action--disabled-text-color: var(--color-neutral-300);
+  --icon-action--disabled-border-color: var(--color-neutral-050);
 
   --inline-link-text-color: var(--color-blue--500);
 
@@ -156,7 +174,7 @@
   );
   --sidebar-link-active-text-color: var(--tertiary-action-active-text-color);
   --sidebar-book-spacing: var(--spacing--2);
-  --sidebar-aside-toggle-background-color: var(--primary-background);
+  /* --sidebar-aside-toggle-background-color: var(--primary-background); */
   --sidebar-book-toggle-background-color: var(--inline-link-text-color);
 
   --scrollbar-thumb-background-color: var(--color-neutral-700);
@@ -166,8 +184,8 @@
 @media (prefers-color-scheme: dark) {
   .book {
     /* Tier 2 variables (High-level variables) */
-    --code-background: var(--color-blue-dark--550);
-    --code-text-color: var(--color-neutral-300);
+    --code-background: var(--color-neutral-dark-800);
+    --code-text-color: var(--color-neutral-white);
 
     --color-body-background: var(--color-neutral-dark-800);
     --color-body-text: var(--color-neutral-100);
@@ -175,7 +193,7 @@
     --header-background: rgba(0, 0, 0, 0.5);
     --header-border: var(--color-neutral-dark-600);
 
-    --inline-link-text-color: var(--color-blue--600);
+    --inline-link-text-color: var(--color-blue-dark--500);
 
     --primary-action-background-color: var(--color-neutral-white);
     --primary-action-text-color: var(--color-neutral-black);
@@ -184,6 +202,16 @@
     --primary-background: var(--color-blue-dark--800);
 
     --tertiary-action-text-color: var(--color-neutral-300);
+
+    --icon-action--text-color: var(--color-neutral-white);
+    --icon-action--background-color: var(--color-neutral-black);
+    --icon-action--border-color: var(--color-neutral-600);
+
+    /* 
+    Tier 3 variables (Component specific)
+     - Only add variables here if it will be used in styles.css, all others should reside in component specific css file
+   */
+    --article-background: var(--color-neutral-dark-600);
   }
 
   html {

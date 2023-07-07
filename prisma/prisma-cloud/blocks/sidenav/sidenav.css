@@ -8,7 +8,7 @@
 
 .sidenav-wrapper .toggle-aside {
   align-items: center;
-  background-color: var(--sidebar-aside-toggle-background-color);
+  background-color: var(--article-background);
   border-bottom-left-radius: 50px;
   border-top-left-radius: 50px;
   cursor: pointer;
@@ -35,13 +35,13 @@
 .sidenav-wrapper .toggle-aside:before {
   bottom: -20px;
   border-top-right-radius: 10px;
-  box-shadow: 0 -10px 0 0 var(--sidebar-aside-toggle-background-color);
+  box-shadow: 0 -10px 0 0 var(--article-background);
 }
 
 .sidenav-wrapper .toggle-aside:after {
   top: -20px;
   border-bottom-right-radius: 10px;
-  box-shadow: 0 10px 0 0 var(--sidebar-aside-toggle-background-color);
+  box-shadow: 0 10px 0 0 var(--article-background);
 }
 
 .sidenav-wrapper .toggle-aside i {

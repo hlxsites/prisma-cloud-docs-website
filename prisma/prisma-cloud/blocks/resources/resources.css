@@ -1,0 +1,13 @@
+.resources-container {
+  position: relative;
+}
+
+.resources-container .default-content-wrapper {
+  margin: var(--spacing--20) auto 0;
+  max-width: calc(1032px + var(--padding--mobile) + var(--padding--mobile));
+  padding: 0 var(--padding--mobile);
+}
+
+.resources-container .default-content-wrapper h4 {
+  color: var(--landing-heading-color);
+}

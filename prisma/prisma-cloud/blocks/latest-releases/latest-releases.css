@@ -90,6 +90,7 @@
 
 .latest-releases .button-container .button:hover {
   border-color: var(--primary-action-outline-active-border-color);
+  color: var(--primary-action-outline-active-text-color);
 }
 
 .latest-releases p {

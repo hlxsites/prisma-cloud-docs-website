@@ -1,22 +1,18 @@
 :root {
-  --admonition-bar-color: var(--color-blue--650);
-  --admonition-text-color: var(--color-blue-dark--100);
+  --admonition-bar-color: var(--inline-link-text-color);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --admonition-text-color: var(--color-neutral-300);
   }
 }
 
 .pan-admonition {
-  color: var(--admonition-text-color);
   display: flex;
   flex-direction: column;
   hyphens: auto;
-  line-height: var(--line-height--l);
-  margin: 20px 0 40px;
-  padding-left: 20px;
+  margin: var(--spacing--8) 0;
+  padding-left: var(--spacing--5);
   position: relative;
   word-wrap: break-word;
   word-break: break-word;

@@ -1,0 +1,824 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+    xmlns:content="http://purl.org/rss/1.0/modules/content/"
+    xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:atom="http://www.w3.org/2005/Atom"
+    xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+    xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+    
+	xmlns:georss="http://www.georss.org/georss"
+	xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#"
+	    >
+
+<channel>
+    <title>Cloud Native Security - Palo Alto Networks Blog</title>
+    <atom:link href="https://www.paloaltonetworks.com/blog/prisma-cloud/feed/" rel="self" type="application/rss+xml" />
+    <link>https://www.paloaltonetworks.com/blog/prisma-cloud/</link>
+    <description>Palo Alto Networks Blog</description>
+    <lastBuildDate>Thu, 06 Jul 2023 16:54:23 +0000</lastBuildDate>
+    <language>en-US</language>
+    <sy:updatePeriod>
+	hourly    </sy:updatePeriod>
+    <sy:updateFrequency>
+	1    </sy:updateFrequency>
+    <generator>https://wordpress.org/?v=6.1.1</generator>
+    <item>
+	<title>Mitigate Cloud Breaches With a Holistic Approach to Cloud Identity and Access</title>
+	<link>https://www.paloaltonetworks.com/blog/prisma-cloud/defense-in-depth-cloud-identity-security/</link>
+	    
+	<dc:creator><![CDATA[John Chavanne]]></dc:creator>
+	<pubDate>Mon, 03 Jul 2023 12:00:02 +0000</pubDate>
+	<readTime>10</readTime>
+	<featuredImage>https://www.paloaltonetworks.com/blog/wp-content/uploads/2023/06/Hi-Tech-Work.jpg</featuredImage>
+	    		<category><![CDATA[Cloud Security]]></category>
+		<category><![CDATA[defense in depth]]></category>
+		<category><![CDATA[IAM]]></category>
+		<category><![CDATA[Secrets]]></category>
+		<category><![CDATA[threat research]]></category>
+	<guid isPermaLink="false">https://www.paloaltonetworks.com/blog/?post_type=cloud_sec_post&#038;p=297038</guid>
+
+	    		<description><![CDATA[<p>Take a defense in depth approach to protect your cloud identities, credentials and secrets, and secure your cloud environment from breaches.</p>
+<p>The post <a rel="nofollow" href="https://www.paloaltonetworks.com/blog/prisma-cloud/defense-in-depth-cloud-identity-security/">Mitigate Cloud Breaches With a Holistic Approach to Cloud Identity and Access</a> appeared first on <a rel="nofollow" href="https://www.paloaltonetworks.com/blog">Palo Alto Networks Blog</a>.</p>
+]]></description>
+						<content:encoded><![CDATA[<p>There’s no hiding from it. Cloud data breaches are on the rise. Threat actors are more prevalent and sophisticated. And the stakes for organizations across all industries remain high.</p>
+<p>In this post I’ll walk you through recent cloud threat data from Unit 42’s <a href="https://start.paloaltonetworks.com/unit-42-cloud-threat-report-volume-7.html">Cloud Threat Report, Volume 7: Navigating the Expanding Attack Surface</a>. With a focus on identities and access management (IAM), I’ll build on that info to demonstrate how identity-based attacks happen. I’ll then show you how to establish a defense-in-depth approach to help your organization stop breaches before they happen.</p>
+<h2>Cloud Breaches and Oversights in the Cloud</h2>
+<p>Let’s look at two breaches analyzed in the Unit 42 report as they break down the <a href="https://attack.mitre.org/matrices/enterprise/cloud/" rel="nofollow,noopener" >MITRE ATT&amp;CK Cloud Matrix</a> tactics, techniques and procedures (TTPs). The order of tactics corresponds to the paths of each attack.</p>
+<h4>Incident #1: Sim-Swap Scam</h4>
+<figure id="attachment_297039" aria-describedby="caption-attachment-297039" style="width: 1816px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-297039" src="/blog/wp-content/uploads/2023/06/word-image-297038-1.png" alt="" width="1816" height="675" /><figcaption id="caption-attachment-297039" class="wp-caption-text">Figure 1: SIM swap incident</figcaption></figure>
+<h4>Incident #2: Cryptojacking Attack</h4>
+<figure id="attachment_297053" aria-describedby="caption-attachment-297053" style="width: 1822px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-297053" src="/blog/wp-content/uploads/2023/06/word-image-297038-2.png" alt="" width="1822" height="526" /><figcaption id="caption-attachment-297053" class="wp-caption-text">Figure 2: Cryptojacking botnet incident</figcaption></figure>
+<p>When evaluating these incidents, we see common identity and access issues. Below, you’ll find more details on the incidents, as well as key findings from the 1,300 organizations mapped to these security issues in the Unit 42 report.</p>
+<h3>Issue 1: Hard-Coded Credentials</h3>
+<p><strong>Incident #1: </strong>Credential leak in source control management (SCM) — Attacker uncovered 10 access keys belonging to four different cloud accounts.</p>
+<p><strong>Incident #2</strong>: Credential leak in virtual machine (VM) — Attacker exfiltrated temporary credentials associated with the VM instance. The threat actor also enumerated and viewed all the VM instances’ user data. A hard-coded GitHub credential in one VM instance’s user data allowed the threat actor to access the source code repositories for the entire company.</p>
+<p><strong>Key Findings</strong>:</p>
+<ul>
+<li>83% of organizations have hard-coded credentials in their source control management systems</li>
+<li>85% of organizations have hard-coded credentials in virtual machines’ user data</li>
+</ul>
+<h3>Issue 2: Weak Authentication and Unauthorized Access</h3>
+<p><strong>Incident #1:</strong> Two new users were created to impersonate valid employees.</p>
+<p><strong>Incident #2:</strong> Threat actor created a backdoor IAM role that allowed access from an attacker-controlled account.</p>
+<p><strong>Key Findings:</strong></p>
+<ul>
+<li>76% of organizations don’t require multifactor authorization (MFA) for console users.</li>
+<li>58% of organizations don’t enforce symbols in passwords.</li>
+</ul>
+<h3>Issue 3: Overly Permissive Access Leading to Lateral Movement and Privilege Escalation</h3>
+<p><strong>Incident #1:</strong> One access key with the AWS IAMFullAccess role allowed the threat actor to create new users in the compromised account. This allowed attackers to perform reconnaissance and move laterally with ease.</p>
+<p><strong>Incident #2:</strong> The threat actor cloned all the repositories and scanned for more credentials. A cloud access key hard-coded in a continuous integration, continuous delivery (CI/CD) automation script granted the attacker administrator permissions.</p>
+<p><strong>Key Findings</strong> (<a href="/resources/research/unit-42-cloud-threat-report-volume-6">Cloud Threat Report Volume 6</a>)</p>
+<ul>
+<li>66% of organizations use access keys for more than 90 days.</li>
+<li>99% of permissions granted are inactive.</li>
+</ul>
+<p>Organizations commonly exhibit the vulnerabilities observed in the two cloud breaches, indicating a likelihood that they remain vulnerable to these and similar security incidents.</p>
+<p>Let’s look at recommendations for mitigation and how Prisma Cloud can help you take a defense-in-depth approach to effectively eliminate these attack paths.</p>
+<h2>Mitigation Steps for Hard-Coded Credentials</h2>
+<p><strong>Step 1: Enable secrets scanning across the development lifecycle, especially as far left as possible.</strong></p>
+<p>Strong risk prevention demands secret scanning. Why? Because once code is committed into a repository, it’s immutable and part of git history. Even if you make a new commit that removes the hard-coded secret, it’s still searchable. Threat actors have tools that automatically search for this info.</p>
+<p>Additionally, if you only scan at runtime, you only temporarily remove the risk. The same secret stored in an image or code can repeatedly get pushed into running workloads. To ensure you properly mitigate these risks, Prisma Cloud gives you end-to-end <a class="c-link" href="https://docs.paloaltonetworks.com/prisma/prisma-cloud/prisma-cloud-admin-code-security/scan-monitor/secrets-scanning" target="_blank" rel="noopener noreferrer" data-stringify-link="https://docs.paloaltonetworks.com/prisma/prisma-cloud/prisma-cloud-admin-code-security/scan-monitor/secrets-scanning" data-sk="tooltip_parent">secrets scanning</a>. By scanning for and even blocking (i.e., block merge at the pull request level), you can address exposed secrets and credentials across the development lifecycle, including:</p>
+<ol>
+<li>Developer’s IDE (integrated development environment)</li>
+<li>Source control management systems (both pre-merge and in repo)</li>
+<li>CI/CD pipelines</li>
+<li>Image repositories</li>
+<li>Running compute resources such as VMs, containers, and functions</li>
+</ol>
+<figure id="attachment_297067" aria-describedby="caption-attachment-297067" style="width: 1924px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-297067" src="/blog/wp-content/uploads/2023/06/word-image-297038-3.png" alt="" width="1924" height="440" /><figcaption id="caption-attachment-297067" class="wp-caption-text">Figure 3: Example of Prisma Cloud secrets scanning surfacing exposure at IDE, in a pull request, and findings sent to Prisma Cloud console</figcaption></figure>
+<p><strong>Step 2: Scan cloud data stores for exposed secrets and credentials.</strong></p>
+<p>Developers and practitioners often save information in cloud storage buckets. This practice creates an additional target for threat actors to find and gain access to secrets and other sensitive data. You can scan and surface this info, however, with Prisma Cloud’s DLP <a href="https://docs.paloaltonetworks.com/prisma/prisma-cloud/prisma-cloud-admin/prisma-cloud-data-security">cloud data security</a> capabilities.</p>
+<p><strong>Step 3: Alert on anomalous credential usage.</strong></p>
+<p>If an attacker successfully exfiltrates cloud credentials from the VM — a common step once an attacker has gained access to a machine — Prisma Cloud can alert on the use of those credentials outside the VM.</p>
+<h2>Mitigation Steps for Weak Authentication and Unauthorized Access</h2>
+<p><strong>Step 1: Enable MFA for all console logins and APIs.</strong></p>
+<p>It should go without saying — enabling MFA for all console logins and APIs is a critical best practice. If you haven’t already implemented, you should do so immediately for all your Identities.</p>
+<p><strong>Step 2: Scan runtime and IaC configurations to enforce MFA and password policies across organizations.</strong></p>
+<p>Prisma Cloud helps identify MFA misconfigurations across cloud service providers (CSPs). It supports runtime and build time policies when using IaC, such as Terraform or CloudFormation, to configure MFA settings. Prisma Cloud can also equip you to block non-compliant MFA configurations at build time and/or auto-remediate issues at runtime.</p>
+<p><strong>Step 3: Adopt federated authentication with tools such as Okta and Azure Active Directory.</strong></p>
+<p><span style="font-weight: 400;">Prisma Cloud provides direct integration with common identity provider (IdP) services to give you full visibility and control across your cloud providers. What’s more, Prisma Cloud can find users created outside your IdP service so you can remove or migrate them when needed.</span></p>
+<p><strong>Step 4: Alert on anomalous login and other unusual user behaviors.</strong></p>
+<p>Prisma Cloud provides out-of-the-box user and entity behavior analytics (UEBA) anomalous policies for the range of atypical activities — from account hijacking to excessive login failures — and will immediately alert you to suspicious behavior occurring in your cloud environments.</p>
+<figure id="attachment_297081" aria-describedby="caption-attachment-297081" style="width: 1846px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-297081" src="/blog/wp-content/uploads/2023/06/word-image-297038-4.png" alt="" width="1846" height="631" /><figcaption id="caption-attachment-297081" class="wp-caption-text">Figure 4: Example of some of Prisma Cloud’s anomaly policies</figcaption></figure>
+<p><strong>Step 5: Block unauthorized access on public-facing workloads.</strong></p>
+<p><span style="font-weight: 400;">In the case of  AWS, configuring IMDSv2 alone won’t prevent someone from accessing credentials from AWS’s metadata service if the VM is compromised. When utilizing public-facing workloads, the use of an agent becomes critical. Prisma Cloud’s agents can automatically block unauthorized access and secure the credentials from threats both at runtime and at the application layer. Prisma Cloud provides this level of security for any type of workload — including VMs, containers, and serverless functions.</span></p>
+<figure id="attachment_297095" aria-describedby="caption-attachment-297095" style="width: 1291px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-297095" src="/blog/wp-content/uploads/2023/06/word-image-297038-5.png" alt="" width="1291" height="454" /><figcaption id="caption-attachment-297095" class="wp-caption-text">Figure 5: Example of a simple curl command (in this case Azure) to access a CSPs metadata service where credentials are commonly stored and that attackers target (as observed in breach example 2 above). Example Prisma Cloud runtime check that PREVENTs this type of unauthorized access</figcaption></figure>
+<h2>Mitigation Steps for Overly-Permissive Access Leads to Lateral Movement and Privilege Escalation</h2>
+<p><strong>Step 1: Enforce key rotation policies and enable monitoring.</strong></p>
+<p><span style="font-weight: 400;">CSPs have improved their authentication capabilities in the last few years, now offering better temporary credential options, for example. Organizations should use these features when possible. Data tells us, though, that organizations struggle to migrate to and enforce use of these best practices, neglecting to rotate credentials and remove inactive identities — both of which leave doors open to attackers. </span></p>
+<p><span style="font-weight: 400;">Prisma Cloud’s out-of-the-box policies alert on inactive identities and access keys that haven’t been used in 90 days, among other red flags. It also offers the ability to create custom policies to suit your organization’s needs.</span></p>
+<p><strong>Step 2: Adopt cloud infrastructure entitlement management (CIEM) capabilities to calculate risky and unused permissions across your environment.</strong></p>
+<p>Implementing the Zero Trust model goes hand in hand with defense in depth, both ensuring you effectively secure the frontline and backdoors of your application lifecycle. <a href="/prisma/cloud/cloud-infrastructure-entitlement-mgmt">Prisma Cloud’s CIEM</a> capabilities deliver simple, consistent IAM across Amazon Web Services (AWS), Microsoft Azure and Google Cloud Platform (GCP).</p>
+<p>By accurately calculating net-effective permissions, Prisma Cloud helps you understand your multicloud identity risk — including identities managed with IdPs and SSO tools, such as Azure AD and Okta. To help enforce least-privileged access, Prisma Cloud provides you with recommendations to remove unused permissions. Users can also leverage automated remediation to rightsize permissions on an ongoing basis.</p>
+<figure id="attachment_297109" aria-describedby="caption-attachment-297109" style="width: 1055px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-297109" src="/blog/wp-content/uploads/2023/06/word-image-297038-6.png" alt="" width="1055" height="594" /><figcaption id="caption-attachment-297109" class="wp-caption-text">Figure 6: Prisma Cloud IAM permissions graph</figcaption></figure>
+<h2>Findings and Recommendations</h2>
+<p>To avoid areas of weakness that allow threat actors to steal your credentials and gain unauthorized access, consider creating a strategy that works toward end-to-end visibility, risk prevention and runtime protection to secure identity and access issues across all stages and areas of your cloud environments. Prisma Cloud is designed to make that possible.</p>
+<figure id="attachment_297123" aria-describedby="caption-attachment-297123" style="width: 1145px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-297123" src="/blog/wp-content/uploads/2023/06/word-image-297038-7.png" alt="" width="1145" height="351" /><figcaption id="caption-attachment-297123" class="wp-caption-text">Figure 7: A strategic end to end approach to secure identities and access across all stages and areas of your cloud environments.</figcaption></figure>
+<h2>Going Beyond Identity and Access: Context Is King</h2>
+<p>To accurately prioritize risks, you need to evaluate your identity and access issues in context of big-picture details, such as internet exposure, data exposure, critical and high vulnerabilities and anomalous activity. Only with full data context can you analyze your attack paths well enough to understand your risks and immediately mitigate your most crucial issues.</p>
+<p>Prisma Cloud has robust cloud data context through complete visibility across the development lifecycle. This, coupled with powerful threat intelligence, gives organizations extremely accurate anomaly detection, along with network threat and vulnerability data to maximize contextualization of your risks.</p>
+<figure id="attachment_297137" aria-describedby="caption-attachment-297137" style="width: 1532px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-297137" src="/blog/wp-content/uploads/2023/06/word-image-297038-8.png" alt="" width="1532" height="883" /><figcaption id="caption-attachment-297137" class="wp-caption-text">Figure 8: Attack path analysis</figcaption></figure>
+<h2>What Does AI Say About the Defense-in-Depth Approach?</h2>
+<p>Curious to see what AI had to say on the topic of defense in depth, I prompted my tool of choice with several questions. AI responded with good advice and offered some well known best practices.</p>
+<p>Here are three key points I received from the prompt, “Explain why a holistic defense-in-depth approach is so critical to protect your identities and access in the cloud.”</p>
+<p><strong>AI Response</strong>:</p>
+<ul>
+<li>The cloud is a complex environment with a wide range of potential attack vectors. This makes it difficult to protect against all possible threats with a single security control.</li>
+<li>Attackers are constantly evolving their techniques and tactics. This means that security controls that are effective today may not be effective tomorrow.</li>
+<li>Human error is a factor in many security breaches. This is why it is important to have multiple layers of security in place to reduce the risk of a breach caused by human error.</li>
+</ul>
+<p>In short, AI agreed that a defense-in-depth approach helps organizations mitigate risks by layering multiple security controls across the cloud environment to protect against a range of attacks.</p>
+<p>Most notable to me about the feedback I received was AI’s emphasis on the human element. It went as far as to say that employees (humans) are often the weakest link in the security chain.</p>
+<p>Palo Alto Networks research, among other leading research efforts, continue to highlight the risks and difficulties of managing cloud identities and access. There is no getting around the difficulty. It’s really difficult. But, by taking time to understand the risks and how threat actors infiltrate cloud environments, you can build and implement an effective risk-based strategy.</p>
+<h2>Learn More</h2>
+<p>Prisma Cloud’s holistic approach and ongoing innovations in cloud security give you the defense in depth you need to stay ahead of threat actors and keep your cloud assets and data safe.</p>
+<p>If you haven’t checked us out in a while, I encourage you to experience Prisma Cloud firsthand with a free <a href="/prisma/request-a-prisma-cloud-trial">30-day test drive</a>.</p>
+<p>The post <a rel="nofollow" href="https://www.paloaltonetworks.com/blog/prisma-cloud/defense-in-depth-cloud-identity-security/">Mitigate Cloud Breaches With a Holistic Approach to Cloud Identity and Access</a> appeared first on <a rel="nofollow" href="https://www.paloaltonetworks.com/blog">Palo Alto Networks Blog</a>.</p>
+]]></content:encoded>
+			    
+	    
+	    
+	        </item>
+        <item>
+	<title>Subdomain Takeover: Detecting and Mitigating with Prisma Cloud</title>
+	<link>https://www.paloaltonetworks.com/blog/prisma-cloud/subdomain-takeover/</link>
+	    
+	<dc:creator><![CDATA[Kabeer Saxena and Shashi Kiran N]]></dc:creator>
+	<pubDate>Wed, 28 Jun 2023 12:00:23 +0000</pubDate>
+	<readTime>9</readTime>
+	<featuredImage>https://www.paloaltonetworks.com/blog/wp-content/uploads/2022/12/Collaborate-3.jpg</featuredImage>
+	    		<category><![CDATA[Cloud Security Posture Management]]></category>
+		<category><![CDATA[AWS]]></category>
+		<category><![CDATA[Cloud Subdomain Takeover]]></category>
+		<category><![CDATA[Policies]]></category>
+		<category><![CDATA[Subdomain Takeover]]></category>
+	<guid isPermaLink="false">https://www.paloaltonetworks.com/blog/?post_type=cloud_sec_post&#038;p=180978</guid>
+
+	    		<description><![CDATA[<p>Subdomain takeover is a vulnerability that allows an attacker to gain control over a subdomain of a target domain to redirect users for malicious purposes.</p>
+<p>The post <a rel="nofollow" href="https://www.paloaltonetworks.com/blog/prisma-cloud/subdomain-takeover/">Subdomain Takeover: Detecting and Mitigating with Prisma Cloud</a> appeared first on <a rel="nofollow" href="https://www.paloaltonetworks.com/blog">Palo Alto Networks Blog</a>.</p>
+]]></description>
+						<content:encoded><![CDATA[<p>With the adoption of cloud services for hosted content and domain registrations, subdomain takeover exploitations have become a common attack vector in the cloud. Subdomain takeover is a common vulnerability that allows an attacker to gain control over a subdomain of a target domain and redirect users intended for an organization's domain to a website that performs malicious activities, such as phishing campaigns, stealing user cookies, etc.</p>
+<p>In this post, I’ll explain one of the scenarios for subdomain takeover in AWS Route53 that uses a non-existing AWS S3 bucket. I’ll also show you how Prisma Cloud can be used to detect vulnerable subdomain domain entries.</p>
+<h2>Technical Details of Subdomain Takeovers</h2>
+<p>Cloud providers allow organizations to quickly deploy environments and shut them down when unneeded. After a user creates a new cloud service, the cloud provider usually generates a unique domain name, which is used to access the resource created.</p>
+<p>The URL identifying unique cloud resources comes in the format of <em>customer-provided-name.cloudprovider.com</em>, where <em>cloudprovider.com</em> is a base domain owned by the cloud provider.</p>
+<p>If the cloud service registered by an organization is meant to be public (ex: e-commerce store, public web pages), the organization might want to have it present as a part of their domain. This is because of branding and user convenience (e.g., <em>shop.organization.com</em> looks better than <em>organizationshopping.cloudproivider.com). </em>In this case, the organization can follow two approaches.</p>
+<p>&nbsp;</p>
+<p style="padding-left: 40px;">1.<strong> HTTP 301/302 redirects: </strong>301 and 302 are HTTP response codes that redirect the browser from the current URL to another URL. In the context of cloud services, the first request is made to a domain name of an organization (e.g., <em>shop.organization.com</em>) and then a redirect is made to a domain name of cloud providers (e.g., <em>organizationshopping.cloudprovider.com</em>).</p>
+<figure id="attachment_297388" aria-describedby="caption-attachment-297388" style="width: 1586px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-297388" src="/blog/wp-content/uploads/2023/06/word-image-180978-1.png" alt="" width="1586" height="240" /><figcaption id="caption-attachment-297388" class="wp-caption-text">Figure 1: Browser’s URL bar after 301/302 redirect</figcaption></figure>
+<p style="padding-left: 40px;">2.<strong> CNAME record</strong>: CNAME is a record type that is being used by the DNS resolver to resolve the domain names to their respective servers or domains. When a CNAME record is present for a sub-domain, then a call to the sub-domain will be resolved into its CNAME record.</p>
+<p style="padding-left: 40px;">For Example<em> shop.organization.com</em> is a subdomain of <em>organization.com.</em> If the subdomain has <em>organizationshopping.cloudprovider.com</em> as it’s CNAME, then a DNS will ultimately resolve <em>shop.organization.com</em> to address <em>organizationshopping.cloudprovider.com</em></p>
+<figure id="attachment_297402" aria-describedby="caption-attachment-297402" style="width: 1374px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-297402" src="/blog/wp-content/uploads/2023/06/word-image-180978-2.png" alt="" width="1374" height="400" /><figcaption id="caption-attachment-297402" class="wp-caption-text">Figure 2: DNS entry for a subdomain</figcaption></figure>
+<p>As cloud providers realize that customers request such behavior, cloud providers support the CNAME record delegation.</p>
+<p>If the CNAME record method is used, the possibility of subdomain takeovers comes into play. Even though the cloud provider owns the base domain of the canonical domain name, subdomain takeover is still possible.</p>
+<p>When an organization is operating with different cloud providers, the top level domain (TLD) of the cloud resource endpoint URL will be different for different cloud providers. For example:</p>
+<ul>
+<li><strong>Amazon: </strong><em>.cloudfront.net, .s3.amazonaws.com, .awsptr.com, .elasticbeanstalk.com</em></li>
+<li><strong>Azure:</strong> <em>.azurewebsites.net, .cloudapp.net, .azure-api.net, .trafficmanager.net, .azureedge.net, .cloudapp.azure.com</em></li>
+<li><strong>Google: </strong><em>ghs.google.com, ghs.googlehosted.com, .ghs-ssl.googlehosted.com</em></li>
+</ul>
+<p>When the cloud resource has been deleted, but the DNS information has not been updated, the canonical domain name (alias of that cloud resource) attached with the subdomain’s CNAME record entry will still be present, At this point, an attacker or an anonymous cloud user can now create their own endpoint with the same resource name to hijack/exploit the actual subdomain.</p>
+<h2>Detecting Subdomain Takeover Opportunities</h2>
+<p>Detecting possible subdomain takeover opportunities isn't complicated. Consider an example where a company had AWS Route 53 managing the company’s domain DNS entries. If a subdomain is pointing towards a non-existing cloud resource (say an AWS S3 bucket) through its CNAME records, the subdomain will ultimately resolve the S3 bucket endpoint URL and there will be a 404 status code with a generic error message from AWS because the bucket does not exist.</p>
+<figure id="attachment_297416" aria-describedby="caption-attachment-297416" style="width: 1928px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-297416" src="/blog/wp-content/uploads/2023/06/word-image-180978-3.png" alt="" width="1928" height="526" /><figcaption id="caption-attachment-297416" class="wp-caption-text">Figure 3: Non-existing Amazon S3 Bucket</figcaption></figure>
+<p>This is because the DNS entries were not updated when the bucket was deleted and the CNAME record is still present.</p>
+<figure id="attachment_297430" aria-describedby="caption-attachment-297430" style="width: 2048px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-297430" src="/blog/wp-content/uploads/2023/06/word-image-180978-4.png" alt="" width="2048" height="824" /><figcaption id="caption-attachment-297430" class="wp-caption-text">Figure 4: DNS records have CNAME entry for that deleted S3 Bucket in AWS Route 53</figcaption></figure>
+<p>In this situation, a subdomain takeover can be exploited by creating an S3 bucket with the same name and same region. In this way, the “<em>Route Traffic To</em>” value in the CNAME record will be again pointing to an existing s3 bucket. The difference is the bucket is now owned by an anonymous cloud user (attacker) and not the company itself.</p>
+<p>If the anonymous cloud user has malicious intent, they can take over the subdomain until the company realizes the event and remove the CNAME entry pointing to that resource.</p>
+<h2>Exploitation of Subdomain</h2>
+<p>In the event of an AWS S3 Subdomain takeover, the website hosting format for the subdomain identifying the unique cloud resource (bucket) is <em>bucket-name.s3-website.region-name.amazonaws.com</em>. The CNAME record <em>shopping.organization.com</em> (source domain) redirects to <em>shopping.organization.s3-website.ap-south-1.amazonaws.com</em> (resource).</p>
+<p>When <em>shopping.organization.com</em> (bucket name) is already in existence, then AWS will show an error, and exploitation will not be possible.</p>
+<figure id="attachment_297444" aria-describedby="caption-attachment-297444" style="width: 1984px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-297444" src="/blog/wp-content/uploads/2023/06/word-image-180978-5.png" alt="" width="1984" height="968" /><figcaption id="caption-attachment-297444" class="wp-caption-text">Figure 5: Anonymous AWS user recreates the same S3 bucket to takeover the subdomain</figcaption></figure>
+<p>This subdomain takeover is complete if the bucket is successfully created. The attacker can configure the S3 bucket to host a static website and use the vulnerable subdomain to run phishing campaigns and fulfill other malicious intents.</p>
+<figure id="attachment_297458" aria-describedby="caption-attachment-297458" style="width: 2048px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-297458" src="/blog/wp-content/uploads/2023/06/word-image-180978-6.png" alt="" width="2048" height="1000" /><figcaption id="caption-attachment-297458" class="wp-caption-text">Figure 6: Successful subdomain takeover event</figcaption></figure>
+<h2>Misuse &amp; Impact</h2>
+<p>After an attacker takes over a legitimate domain name, it’s almost impossible for a user to tell whether the content on the domain is provided by a legitimate party or an attacker. Users are then unaware of malicious activity. Spam filters and other security measurements are also less likely to trigger the email as spam because it contains trusted domain names. The reputational damage from a breach like this could be significant and result in loss of revenue and expenses from lawsuits.</p>
+<p>Attacker-controlled domain names make a perfect scenario for phishing campaigns because browsers performing the DNS resolution on affected or vulnerable resources will show whatever is received, thinking that it’s legitimate.</p>
+<p>This attack can be enhanced by generating a valid SSL certificate. Certificate authorities, such as Let’s Encrypt, allow automatic verification of domain ownership by content verification. That is, if there is specific content placed on a specific URL path, Let’s Encrypt will approve the issuance of a certificate for a given domain.</p>
+<figure id="attachment_297472" aria-describedby="caption-attachment-297472" style="width: 689px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-297472" src="/blog/wp-content/uploads/2023/06/word-image-180978-7.png" alt="" width="689" height="164" /><figcaption id="caption-attachment-297472" class="wp-caption-text">Figure 7: When an attacker has control over the domain's content, verification can be done in minutes.</figcaption></figure>
+<p>With some takeovers, the attacker can also leverage the attack by stealing cookies. One of those scenarios may occur when the cookies of the primary domain are issued for wildcard domains where the primary domain is using a cookie-based Single Sign On (SSO) system. In this scenario, any user can log onto the domain and use the same session cookie across a wide range of subdomains.</p>
+<p>Suppose, for instance, that a domain is using session cookies for a wildcard domain. If one subdomain is vulnerable to subdomain takeover, the only thing for gathering a user's session cookie is to trick them into visiting the vulnerable subdomain. If this happens, the session cookie is automatically sent with the HTTP request and an attacker can extract the session cookies of the users for that primary domain. Again, this is because the primary domain is using a cookie-based SSO system where cookies are shared across the wildcard domain. The attacker can then return and use those session cookies to log into its primary domain as other users.</p>
+<h2>Mitigations</h2>
+<p>The mitigation strategy for domain names already vulnerable to cloud-based subdomain takeover attacks is straightforward:</p>
+<ul>
+<li>Remove the affected DNS record. To prevent subdomain takeover in the future, organizations should change the process of creating and destructing resources in their cloud infrastructure.</li>
+</ul>
+<p>In the case of resource creation, the DNS record creation has to be the last step in this process. Doing so will prevent DNS records from pointing to a non-existing domain.</p>
+<p>For resource destruction, DNS records need to be removed as the first step in this process.</p>
+<h2>Prisma Cloud Detection Capabilities</h2>
+<p>Prisma Cloud provides visibility and security across cloud environments, helping organizations identify and remediate potential vulnerabilities and threats.</p>
+<p>We can use Prisma Cloud to verify that assets do not have any subdomain misconfigurations for subdomain takeover events. In the image below, we are releasing a policy for discussed AWS events leading to subdomain takeovers.</p>
+<figure id="attachment_297486" aria-describedby="caption-attachment-297486" style="width: 2048px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-297486" src="/blog/wp-content/uploads/2023/06/word-image-180978-8.png" alt="" width="2048" height="1094" /><figcaption id="caption-attachment-297486" class="wp-caption-text">Figure 8: Use case policy in Prisma Cloud dashboard for AWS events leading to subdomain takeovers</figcaption></figure>
+<p><strong>Policy Name: </strong></p>
+<p>AWS Route 53 Hosted Zone having dangling DNS record with subdomain takeover risk</p>
+<p>Prisma Cloud users can find affected subdomains in their Route53 using the RQL investigative query.</p>
+<p>If any of the domain’s DNS records from AWS Route53 are pointing to a non-existing AWS S3 Bucket, Prisma Cloud will detect the event and immediately raise an alert for the domain.</p>
+<figure id="attachment_297500" aria-describedby="caption-attachment-297500" style="width: 2048px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-297500" src="/blog/wp-content/uploads/2023/06/word-image-180978-9.png" alt="" width="2048" height="929" /><figcaption id="caption-attachment-297500" class="wp-caption-text">Figure 9: Alerts getting generated from subdomain takeover policy with the affected resource details</figcaption></figure>
+<p>Testing with Prisma Cloud reduces the risk of leaving dangling pointers behind after the cloud resource has been removed.</p>
+<h2>Learn More</h2>
+<p>Prisma Cloud’s Cloud Security Posture Management (CSPM) solution reduces risk across multicloud environments by proactively identifying and remediating critical threats and misconfigurations. For an independent market review to discover how Prisma Cloud stacks up against other CSPM solutions, read the <a href="/prisma/cloud/cloud-security-posture-management">GigaOm Radar for Cloud Security Posture Management Report</a>.</p>
+<p>The post <a rel="nofollow" href="https://www.paloaltonetworks.com/blog/prisma-cloud/subdomain-takeover/">Subdomain Takeover: Detecting and Mitigating with Prisma Cloud</a> appeared first on <a rel="nofollow" href="https://www.paloaltonetworks.com/blog">Palo Alto Networks Blog</a>.</p>
+]]></content:encoded>
+			    
+	    
+	    
+	        </item>
+        <item>
+	<title>ChatGPT and Checkov: Fix IaC Security Issues Fast</title>
+	<link>https://www.paloaltonetworks.com/blog/prisma-cloud/chatgpt-checkov-iac-security/</link>
+	    
+	<dc:creator><![CDATA[Steve Giguere]]></dc:creator>
+	<pubDate>Tue, 27 Jun 2023 12:00:04 +0000</pubDate>
+	<readTime>5</readTime>
+	<featuredImage>https://www.paloaltonetworks.com/blog/wp-content/uploads/2023/05/Man-working-3.jpg</featuredImage>
+	    		<category><![CDATA[Secure the Cloud]]></category>
+		<category><![CDATA[AI]]></category>
+		<category><![CDATA[Checkov]]></category>
+		<category><![CDATA[IaC security]]></category>
+	<guid isPermaLink="false">https://www.paloaltonetworks.com/blog/?post_type=cloud_sec_post&#038;p=297216</guid>
+
+	    		<description><![CDATA[<p>Discover how Checkov works with ChatGPT to help you quickly identify and remediate IaC security issues with automatically suggested code fixes and rich security context.</p>
+<p>The post <a rel="nofollow" href="https://www.paloaltonetworks.com/blog/prisma-cloud/chatgpt-checkov-iac-security/">ChatGPT and Checkov: Fix IaC Security Issues Fast</a> appeared first on <a rel="nofollow" href="https://www.paloaltonetworks.com/blog">Palo Alto Networks Blog</a>.</p>
+]]></description>
+						<content:encoded><![CDATA[<p>Infrastructure as code (IaC) offers a robust method for managing cloud resources. Developers use IaC to describe their infrastructure in code format, which can then undergo versioning, testing and deployment like any software code.</p>
+<p>While IaC provides <a href="/blog/prisma-cloud/scaling-in-the-cloud/">significant automation advantages</a>, it's still code. Like any software code, IaC can harbor security vulnerabilities or misconfigurations, potentially leading to downtime or data breaches — and making it crucial to use an IaC scanning tool capable of identifying security issues in your IaC code.</p>
+<p>One such open-source IaC scanning tool, <a href="https://www.checkov.io/" rel="nofollow,noopener" >Checkov</a>, has gained popularity due to its ability to scan IaC code written in Terraform, Kubernetes, CloudFormation and other popular IaC languages.</p>
+<p>To take its scanning capabilities a step further, Checkov has incorporated ChatGPT to suggest code fixes for potential issues found in IaC code.</p>
+<h2>Efficient IaC Security with ChatGPT and Checkov</h2>
+<p>ChatGPT, a natural language processing (NLP) tool, understands natural language and provides responses or suggestions based on its advanced language model. In the Checkov context, ChatGPT aids in analyzing potential issues found in IaC code and offers suggestions on how to fix them.</p>
+<p>For example, if Checkov detects an insecure configuration in your IaC code — such as a security group that allows traffic from any IP address — it can provide a suggested code fix using ChatGPT. The suggested fix might involve adding a more restrictive security group rule that limits traffic to a specific IP range.</p>
+<p>Developers can save significant time by using ChatGPT’s suggested code fixes, as it reduces the need to manually review and resolve potential issues. As a bonus, the suggestions from ChatGPT can reinforce optimal coding practices and help developers avoid similar mistakes in the future.</p>
+<h2>Getting Started with Checkov and ChatGPT</h2>
+<p>To start, you need to obtain an API key from the <a href="https://platform.openai.com/" rel="nofollow,noopener" >OpenAI platform</a>. Begin by creating an OpenAI account and retrieving your API key from your settings. Note that only a limited free tier is available for testing this feature. After exceeding that limit, the standard pay-for-what-you-use <a href="https://openai.com/pricing" rel="nofollow,noopener" >pricing model</a> becomes applicable, which we have found inexpensive at the time of writing.</p>
+<p>Once you obtain your API key, you can <a href="https://www.checkov.io/1.Welcome/Quick%20Start.html" rel="nofollow,noopener" >update or install Checkov</a> and run a simple <strong>checkov -h </strong>to see the new command line option.</p>
+<figure id="attachment_297231" aria-describedby="caption-attachment-297231" style="width: 1584px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-297231" src="/blog/wp-content/uploads/2023/06/word-image-297216-2.png" alt="" width="1584" height="744" /><figcaption id="caption-attachment-297231" class="wp-caption-text">Figure 1: Checkov’s new command line option enables you to enter an API key from OpenAI.</figcaption></figure>
+<p>Checkov retrieves AI-generated guidelines for a maximum of five findings by default, to manage costs. You can modify the default behavior by setting the environment variable CKV_OPENAI_MAX_FINDINGS to a specific number, or to 0 to see all findings.</p>
+<p>Keep in mind that modifying the default behavior can extend this process duration, as it takes approximately 5 to 10 seconds to retrieve each finding.</p>
+<p>Now let’s look at a few examples to see how suggested code fixes work in practice.</p>
+<h2>Using ChatGPT and Checkov for Kubernetes Security</h2>
+<p>In this example, we want to check a default Kubernetes deployment manifest that uses NGINX.</p>
+<p>Start by running the following command in the terminal:</p>
+<p>checkov --openai-api-key $OPENAI_KEY -d . --frameworks kubernetes</p>
+<figure id="attachment_297245" aria-describedby="caption-attachment-297245" style="width: 1708px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-297245" src="/blog/wp-content/uploads/2023/06/word-image-297216-3.png" alt="" width="1708" height="708" /><figcaption id="caption-attachment-297245" class="wp-caption-text">Figure 2: After running the command above, the CLI’s output provides information about the number of requested suggested code fixes powered by ChatGPT.</figcaption></figure>
+<p>Of the five enhanced guidelines, one of the examples was for CKV_K8S_43:</p>
+<figure id="attachment_297259" aria-describedby="caption-attachment-297259" style="width: 1708px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-297259" src="/blog/wp-content/uploads/2023/06/word-image-297216-4.png" alt="" width="1708" height="596" /><figcaption id="caption-attachment-297259" class="wp-caption-text">Figure 3: Checkov surfaces a potential issue in the manifest.</figcaption></figure>
+<p>In this example, Checkov surfaces the security issue by providing the relevant code block and links to <a href="https://www.checkov.io/1.Welcome/Quick%20Start.html" rel="nofollow,noopener" >Checkov documentation</a> to help you remediate the issue. But with the new connection to ChatGPT, Checkov provides additional guidance, as seen in figure 4.</p>
+<figure id="attachment_297273" aria-describedby="caption-attachment-297273" style="width: 1762px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-297273" src="/blog/wp-content/uploads/2023/06/word-image-297216-5.png" alt="" width="1762" height="2048" /><figcaption id="caption-attachment-297273" class="wp-caption-text">Figure 4: ChatGPT provides a suggested fix to remediate the security issue identified by Checkov.</figcaption></figure>
+<p>The AI-generated output stands out because it explains that referencing images with sha256 is more secure — plus it delves into the mutability of alternatives, how to determine the sha256 digest and the application method and location.</p>
+<h2>Checking an S3 Bucket Generated by ChatGPT</h2>
+<p>Instead of just using ChatGPT to check code we already wrote, we wanted to test how well ChatGPT could write secure code. In this next example, we use Checkov to identify issues with Terraform code written by ChatGPT.</p>
+<p>When we ran this experiment, ChatGPT did a decent job of generating Terraform for the requested “secure S3 bucket.” The AI-generated code passed seven checks, but it still failed five checks.</p>
+<p>&nbsp;</p>
+<p>Let’s review one of the failed checks: CKV_AWS_145:</p>
+<figure id="attachment_297287" aria-describedby="caption-attachment-297287" style="width: 1826px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-297287" src="/blog/wp-content/uploads/2023/06/word-image-297216-6.png" alt="" width="1826" height="520" /><figcaption id="caption-attachment-297287" class="wp-caption-text">Figure 5: Checkov fails a check on the S3 bucket.</figcaption></figure>
+<p>In addition to Checkov’s usual guidance, ChatGPT’s suggestions included a code fix to remediate a failed check on an S3 bucket, as seen in figure 6.</p>
+<figure id="attachment_297301" aria-describedby="caption-attachment-297301" style="width: 1872px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-297301" src="/blog/wp-content/uploads/2023/06/word-image-297216-7.png" alt="" width="1872" height="2048" /><figcaption id="caption-attachment-297301" class="wp-caption-text">Figure 6: ChatGPT provides a suggested code fix to remediate a failed check on an S3 bucket.</figcaption></figure>
+<p>ChatGPT correctly pointed out that, in addition to server-side encryption, KMS provided additional security features, such as key rotation and access control. ChatGPT then followed its advice by creating a version of the code that included the suggested fixes.</p>
+<p>While these examples show that ChatGPT can help produce a secure version of your code, you need to consider that ChatGPT must consume your code to provide fix suggestions. To protect your intellectual property, take precautions when using this feature on proprietary code.</p>
+<h2>The Future of ChatGPT and IaC Security</h2>
+<p>Checkov's integration with ChatGPT offers a promising step toward making IaC development more efficient and secure. As <a href="/prisma/cloud/infrastructure-as-code-security">IaC scanning</a> tools begin to incorporate NLP and other AI technologies, we can expect further improvements in the speed and accuracy of identifying and fixing issues in IaC code.</p>
+<h2>Level up Your IaC Security</h2>
+<p>Interested in learning more about efficient, simplified IaC security? Download the <a href="https://start.paloaltonetworks.com/devsecguide-to-infrastructure-as-code">DevSecGuide to IaC Security</a> and discover how you can shift your cloud security left.</p>
+<p>The post <a rel="nofollow" href="https://www.paloaltonetworks.com/blog/prisma-cloud/chatgpt-checkov-iac-security/">ChatGPT and Checkov: Fix IaC Security Issues Fast</a> appeared first on <a rel="nofollow" href="https://www.paloaltonetworks.com/blog">Palo Alto Networks Blog</a>.</p>
+]]></content:encoded>
+			    
+	    
+	    
+	        </item>
+        <item>
+	<title>Interview With John Grosshans, SVP, Chief Revenue Officer, Prisma Cloud</title>
+	<link>https://www.paloaltonetworks.com/blog/prisma-cloud/interview-john-grosshans/</link>
+	    
+	<dc:creator><![CDATA[Julia Benson]]></dc:creator>
+	<pubDate>Fri, 23 Jun 2023 16:45:25 +0000</pubDate>
+	<readTime>10</readTime>
+	<featuredImage>https://www.paloaltonetworks.com/blog/wp-content/uploads/2022/12/NetSec-Adhoc-Updated-Blog-Image-Resize-691574517-3.png</featuredImage>
+	    		<category><![CDATA[Company & Culture]]></category>
+		<category><![CDATA[Culture & Diversity]]></category>
+		<category><![CDATA[Leadership]]></category>
+		<category><![CDATA[Leadership: Powering the Modern Organization]]></category>
+	<guid isPermaLink="false">https://www.paloaltonetworks.com/blog/?post_type=cloud_sec_post&#038;p=177053</guid>
+
+	    		<description><![CDATA[<p>Join us as we interview John Grosshans, Prisma Cloud's Chief Revenue Officer, named CRO of the Year Awards by Selling Power and The CRO Collective</p>
+<p>The post <a rel="nofollow" href="https://www.paloaltonetworks.com/blog/prisma-cloud/interview-john-grosshans/">Interview With John Grosshans, SVP, Chief Revenue Officer, Prisma Cloud</a> appeared first on <a rel="nofollow" href="https://www.paloaltonetworks.com/blog">Palo Alto Networks Blog</a>.</p>
+]]></description>
+						<content:encoded><![CDATA[<p>In his role at Palo Alto Networks, John Grosshans is responsible for many things, not least of which is aligning Prisma Cloud solutions to customer needs, developing relationships with executives, providing insight to help customers understand the value of the Prisma Cloud platform ... and the list goes on.</p>
+<p>John, though, is anything but your typical chief revenue officer.</p>
+<p>Let me give you an example of John’s above-and-beyondness. His commitment to training the generations coming up around him led to Prisma Cloud Academy — a full-on, state-of-the-art training platform for sales, solution architects, partner development managers, business development specialists, and renewal specialists. The immersive experience delivers real-life skills through gamified certifications designed to challenge and engage all.</p>
+<p>But John didn’t stop there. He also created Cloud Leadership Academy, a sales leadership program designed to inspire and foster culture across first, second, and third-line leadership worldwide.</p>
+<p>The interesting thing about Cloud Leadership Academy Training is that it homes in on two of John’s passions — <em>customer obsession</em> and <em>extreme ownership</em>. As I’d expect, these topics came up when I sat with John to talk about the things that excite him.</p>
+<h4>Is prioritizing customer satisfaction something you have consciously pursued throughout your career?</h4>
+<p>Yes, every day. It’s everything, right? When I think about the priorities of a great culture, always, at the top of the list, is our customers.</p>
+<p>Our customers are the most important factor in our culture. Focusing on, obsessing on, being centered on our customers is everything. It’s what drives a great ethos. It creates a common theme for teams and individuals to rally around.</p>
+<h4><strong>Customers. Where are they in terms of your vision for your work?</strong></h4>
+<p>Customers are front and center. My vision builds on customer obsession and the priorities of a great culture. What are the priorities of a great culture? First, it’s the customers. Then it’s your partners who help serve the customers. Next, it’s the company. The company has to be successful to have a thriving organization capable of providing its customers with a safe harbor. Finally, it’s you, it’s me, the individual.</p>
+<p>So that servant approach where you prioritize customers, partners, and company — in that order — is how individuals succeed.</p>
+<h4><strong>So how do you bring your vision home in your approach to management?</strong></h4>
+<p>In every organization I’ve led, I’ve always built a mission statement. It starts with a vision and is supported by tenets. The tenets are closely held beliefs that put in place a framework around which the organization will rally and operate.</p>
+<p>At Prisma Cloud, our vision starts with the customer — with a world where each day is safer and more secure in the cloud than the day before.</p>
+<p>Our mission fills in the vision:</p>
+<p>“We are cloud security experts. We work backwards from customers and partners to be the cloud native cybersecurity partner of choice, protecting the digital way of life. We are the voice of the customer for our product teams. We operate as one team across Sales, Product, Systems Engineering, Customer Success, Customer Support, Partner, Professional Services, and Marketing.”</p>
+<p>Now, the vision, mission, and tenets of the Prisma Cloud organization were authored by myself and with the collaboration of the leadership team. Here’s where we bring peers together to drive extreme ownership of the vision, mission, and tenets across the organization.</p>
+<p>What I’ve found to be effective is to revisit the vision, mission, and tenets so that people can be inspired by them. It’s important that you consistently help everyone be grounded and inspired by our core values.</p>
+<h4><strong>Can you tell me about the tenets that you mentioned?</strong></h4>
+<p>Every organization should have tenets. I’ve found them, along with vision and mission, to be incredibly powerful. This is our platform. It drives the culture and rallies people around the common goals we share.</p>
+<p>At Prisma Cloud, our tenets include:</p>
+<ul>
+<li>Operate as one team</li>
+<li>Recommend the right solution</li>
+<li>Own the business</li>
+<li>Embrace inclusion and diversity, think big, act locally</li>
+<li>Escalate quickly, speed matters</li>
+<li>Get leverage</li>
+<li>Communicate</li>
+</ul>
+<h4><strong>Can you elaborate on what the phrase “operate as one team” means to you?</strong></h4>
+<p>It comes down to five things that I’ve found consistently create “one team” interaction.</p>
+<ol>
+<li><strong>It starts with trust. </strong>Do I identify with you? Do you identify with me? Do we trust each other? And you have to earn trust, and trust has to be maintained. You have to constantly serve and maintain that trust to keep it where you need it to be — which is implicit trust. To get there, you need to be authentic. You need to be who you are.</li>
+<li><strong>You need to be empathetic. </strong>That means receiving the other person wherever they might be. If someone tells you they’re not having a great day, you identify with that.</li>
+<li><strong>High standards. </strong>Make it clear that you hold yourself to a very high standard. You expect things to be done right. And you expect things to be done without cutting corners. You expect to deliver excellence in everything you do.</li>
+<li><strong>Deliver results. </strong>When you ask me to do something, it gets done right and to a high standard, with authenticity because I’m highly transparent while I’m doing it. You are made aware that this is what I’m doing, how I’m doing it, this is what you can expect. And then I deliver on that expectation. I deliver results.</li>
+<li><strong>Bias for action. </strong>I have found a bias for action is critical to building “one team”. If you have an expectation for me to do something, your expectation is that it's happening now.</li>
+</ol>
+<p>This is especially true today, especially true for the generations growing up around us. It’s become a part of our social culture to expect things almost in real time.</p>
+<p>Everything that occurs is important and has a high bias for action. It needs to be almost instantaneously delivered. If it’s a process that’s going to take time, the expectations are for transparency. The expectations are about communicating the steps to be taken to deliver.</p>
+<p>Others need to know we have a high bias for action.</p>
+<p>These sum up the things I think about when I consider how to foster the “one team” culture. It’s beyond the day-to-day business. It’s the foundation that supports the day-to-day business.</p>
+<h4><strong><span data-preserver-spaces="true">What does transparency mean in your role, and why is it important to you?</span></strong></h4>
+<p>When speed matters, transparency is imperative. Never let news age. Good news or bad news, be transparent and authentic in near-real time.</p>
+<p>If I have something tough to share with one of my leaders, I share it with them immediately. Then they have an opportunity to respond. This gives them time to react, to take appropriate action, whatever it might be.</p>
+<p>Transparency is simple and direct, easy to understand, no positioning required. People want the truth. It’s the human condition.</p>
+<h4><strong>Can you illuminate the phrase “own the business”?</strong></h4>
+<p>We are committed to accountability and measure it in myriad ways. Because it starts with the customer, we measure ourselves by customer references. Are customers so delighted with their experience that they're willing to be a reference, to put their reputations on the line? And we track everything — logo retention, renewal and expansion, references, and customers willing to do case studies with us.</p>
+<p>I routinely go through our customers one at a time. I want to know the customer story of today. What’s going well? What are our opportunities? What are the threats? What actions need to be taken?</p>
+<p>As a team — customer, success, sales, solution, architecture, professional services, product, renewals, executive — what actions do we need to holistically own to make sure our customer is delighted?</p>
+<p>So we walk every customer, one at a time, with our cross-functional team to ensure we’re doing everything we can to make sure they are successful.</p>
+<p>We hold ourselves accountable to have multiple relationships with the customer — from the practitioners to the CISO and, in many cases, the CEO and CFO — to make sure everyone is informed, that everyone is a part of the process, and we’re working together to make sure we’re successful.</p>
+<h4><strong>Have you experienced failure and, if so, how have you processed that? What are your thoughts on failure?</strong></h4>
+<p>One of the goals for managing loss or failure is learning — listening and learning. We need to listen before we take action. We need to listen deeply to feedback. I believe in harvesting the learnings so we can integrate them into our organization wherever they need to land.</p>
+<p>Failure is part of the continuous improvement mechanism. It isn’t the catalyst — the continuous improvement mechanism is perpetually in motion — but failure is certainly one type of catalyst. We take our learnings and say, <em>Hey, let’s make sure this doesn’t happen again. Let’s use this as a case study and make sure all improvements are deeply heard by every stakeholder</em>.</p>
+<p>From there, it becomes a journey. Where our customers are concerned, we are there for them. We remain present and available even if our customers are deploying a competitor. We believe in operating with respect, earning trust, and being customer obsessed.</p>
+<h4><strong>Let’s go back to your vision. What does it mean to you to make the world safer?</strong></h4>
+<p>From the moment you start your day, you’re using a mobile application that is authenticating you to a cloud platform, and you’re accessing personal information — personal identity information, payment card information, perhaps HIPAA information. You trust that your personal data is secure and, of course, expect privacy. With no compromise, zero exceptions.</p>
+<p>What if you share information about your family, about your child’s education or health? What if your use of a mobile application implies it’s safe for your loved one to use? What if you’ve gone so far as to recommend the app to others? The stakes are bigger than you, so, yes, you absolutely need to be assured of security and privacy.</p>
+<p>I want to be part of providing that assurance. I want to personally work toward ensuring that your use of cloud-based solutions is a safe and secure experience for you.</p>
+<p>&nbsp;</p>
+<p>And on that note, my time with John came to an end. It seemed cut short, if only because I knew we had merely touched the proverbial tip of the iceberg.</p>
+<h3><strong>More About John</strong></h3>
+<p><img decoding="async" loading="lazy" class="dw50 wp-image-177055 alignleft" title="john_grosshans" src="/blog/wp-content/uploads/2022/12/word-image-31.png" alt="John Grosshans, SVP and Chief Revenue Officer of Prisma Cloud" width="600" height="547" /></p>
+<p>John Grosshans is SVP and Chief Revenue Officer of Prisma Cloud at Palo Alto Networks, a role he's held since 2021. In the years prior, he served at Amazon Web Services as Managing Director of SAP on AWS. Before that, John was Group VP of Energy and CPG at Oracle.</p>
+<p>With more than two decades of experience leading global cross-functional teams across business development, marketing, sales, and partnerships, it’s not surprising that John has been a 5x leader of worldwide field operations — nor that he has 3x paved the hypergrowth journey to $1B in annual revenue.</p>
+<p>The post <a rel="nofollow" href="https://www.paloaltonetworks.com/blog/prisma-cloud/interview-john-grosshans/">Interview With John Grosshans, SVP, Chief Revenue Officer, Prisma Cloud</a> appeared first on <a rel="nofollow" href="https://www.paloaltonetworks.com/blog">Palo Alto Networks Blog</a>.</p>
+]]></content:encoded>
+			    
+	    
+	    
+	        </item>
+        <item>
+	<title>Agentless Workload Scanning Gets Supercharged with Malware Scanning</title>
+	<link>https://www.paloaltonetworks.com/blog/2023/06/agentless-malware-scanning/</link>
+	    		<comments>https://www.paloaltonetworks.com/blog/2023/06/agentless-malware-scanning/#respond</comments>
+	    
+	<dc:creator><![CDATA[Mohit Bhasin and Omri Cohen]]></dc:creator>
+	<pubDate>Thu, 22 Jun 2023 13:00:44 +0000</pubDate>
+	<readTime>5</readTime>
+	<featuredImage>https://www.paloaltonetworks.com/blog/wp-content/uploads/2023/06/Looking-Closely.jpg</featuredImage>
+	    		<category><![CDATA[Announcement]]></category>
+		<category><![CDATA[Cloud Workload Protection]]></category>
+		<category><![CDATA[Products and Services]]></category>
+		<category><![CDATA[malware]]></category>
+		<category><![CDATA[Prisma Cloud]]></category>
+		<category><![CDATA[Vulnerabilities]]></category>
+	<guid isPermaLink="false">https://www.paloaltonetworks.com/blog/?p=296468</guid>
+
+	    		<description><![CDATA[<p>Enterprises now have 53% of their cloud workloads hosted on public clouds, according to our recent State of Cloud-Native Security Report 2023.</p>
+<p>The post <a rel="nofollow" href="https://www.paloaltonetworks.com/blog/2023/06/agentless-malware-scanning/">Agentless Workload Scanning Gets Supercharged with Malware Scanning</a> appeared first on <a rel="nofollow" href="https://www.paloaltonetworks.com/blog">Palo Alto Networks Blog</a>.</p>
+]]></description>
+						<content:encoded><![CDATA[<p>Enterprises taking advantage of cloud-native architectures now have 53% of their cloud workloads hosted on public clouds, according to our recent <a href="/state-of-cloud-native-security">State of Cloud-Native Security Report 2023</a>. But, the sheer complexity of cloud technology can dramatically expand an organization’s attack surface.</p>
+<p>Using WildFire in 2021 to analyze malicious files, our threat research team discovered a <a href="https://unit42.paloaltonetworks.com/cobalt-strike-team-server/">73% increase in Cobalt Strike malware</a> samples compared to 2020. The speed, volume and sophistication of modern malware attacks has made them more difficult to detect. This, paired with the agility of the cloud, gives rise to a heightened — and formidable — state of risk.</p>
+<h2><a id="post-296468-_jxqtrrrvu9o9"></a>The Gap Between Risk and Reality</h2>
+<p>Enterprises can’t afford to leave the frontlines and backdoors open to risk while taking weeks to deploy security products. They want better out-of-the-box security from tools, according to the cloud-native security report mentioned above. Efficiency, after all, becomes paramount with a shortage of skilled security professionals. Teams need the ability to set up cloud security in a few clicks. Organizations need actionable insights on day one from the solutions they rely on.</p>
+<h2><a id="post-296468-_t0zd9hnjsagn"></a>Agentless Workload Scanning</h2>
+<p>Today, we’re excited to announce that Prisma Cloud agentless workload scanning is now backed by Palo Alto Networks Advanced WildFire, the industry’s leading malware scanning engine. Advanced WildFire is a cloud-delivered service that uses ​patented machine learning detection engines to identify 99% of known and unknown malware. It allows security teams to leverage advanced malware analysis for containers and hosts in runtime, without having to deploy agents.</p>
+<p>In addition, this release includes other advancements:</p>
+<ul>
+<li><strong>Agentless vulnerability and compliance management</strong> for Windows host machines on all three major cloud providers</li>
+<li><strong>Extension of Cloud Workload Protection capabilities</strong> to five additional compute operating systems</li>
+<li><strong>Continuous examination of API changes and usage</strong> to detect unwanted changes or API risk</li>
+</ul>
+<h2><a id="post-296468-_yuourv9xjv8h"></a>Agentless Workload Malware Scanning</h2>
+<p>Container images, running containers and virtual machines may contain malware, such as cryptominers or viruses. For example, Unit 42 found 30 malicious<a href="https://unit42.paloaltonetworks.com/malicious-cryptojacking-images/"> images</a> in Docker Hub with cryptominers that had been pulled 20 million times. While many organizations turn to sandboxing solutions for malware analysis, these solutions affect user productivity and are slow to predict verdicts.</p>
+<p>Two years ago we started offering a native integration with <a href="/blog/prisma-cloud/prisma-cloud-and-wildfire-integration/">Advanced WildFire for advanced malware analysis</a> for containers and hosts in CI/CD pipelines and in runtime. We’re now extending this functionality to our agentless deployment options for hosts, VMs and container machines.</p>
+<p>Users can scan their workloads for malware with a platform that provides flexible deployment options to fit their environments’ needs. Agentless workload scanning for known malware via Advanced WildFire is widely available. Support for zero-day malware detection is expected later this summer in <a href="/resources/guides/prisma-cloud-pricing-and-editions">SaaS Edition</a>.</p>
+<h2><a id="post-296468-_nih0yi72rpfc"></a>Agentless Workload Scanning Extended to Windows</h2>
+<p>Organizations often just want visibility into their cloud workloads and applications. About 18 months ago, we released <a href="/blog/2021/11/shift-left-with-prisma-cloud-3-0/">agentless scanning</a> to provide visibility into an organization’s cloud estate. This feature complemented existing agent-based protection. At the time, Prisma Cloud was the only code-to-cloud CNAPP with support for the three major cloud providers — Amazon Web Services (AWS), Microsoft Azure and Google Cloud Platform (GCP).</p>
+<p>In this release, we’re extending agentless capabilities to support 2016-2022 Windows Host machines on all three major cloud providers, supplying security teams with greater flexibility on how to engage cloud workload protection. Users can now gain visibility into vulnerabilities and compliance across Linux and Windows-based cloud workloads for AWS, Azure and GCP — without having to deploy agents.</p>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=AcQwFrPLA18&amp;ab_channel=PrismaCloudbyPaloAltoNetworks" rel="nofollow,noopener" >Agentless Scanning Demo</a></li>
+</ul>
+<h2><a id="post-296468-_8ue7cfguxihz"></a>Broader Support for Additional Operating Systems</h2>
+<p>As the number of cloud workload services increases, customers are leveraging platforms that best suit their applications’ needs. But security teams are unable to secure cloud workloads if their existing solution doesn’t support the operating system. This leaves a potentially damaging gap in their cloud security strategy.</p>
+<p>Prisma Cloud offers the broadest coverage for cloud workload protection, supporting over <a href="https://docs.paloaltonetworks.com/prisma/prisma-cloud/prisma-cloud-admin-compute/install/system_requirements">30 different operating systems</a>. We’re now extending our cloud workload protection capabilities to five additional compute platforms: Windows Server 2022, Oracle Linux, RHEL 9, TalOS Linux, CBL-Mariner, and Rocky Linux.</p>
+<h2><a id="post-296468-_z4xga9xbug9y"></a>API Change Detection</h2>
+<p>API attacks and abuse have been top-of-mind for most organizations. Prisma Cloud provides complete API discovery, risk profiling and real-time protection for all APIs as a part of its <a href="/blog/2023/01/api-security-in-a-cloud-native-world/">Cloud-Native Application Protection Platform</a> (CNAPP).</p>
+<p>The State of Cloud Native Security Report showed that <a href="/state-of-cloud-native-security">38% of respondents are committing new code daily</a>. Snapshot-based API scans only provide security teams with point-in-time visibility, leaving them blind to API changes that create unwanted risk. Security teams need an approach that tracks API changes for efficient investigation.</p>
+<p>Prisma Cloud continuously monitors APIs for changes that lead to unwanted risk. As development teams make frequent changes and updates to APIs, security teams now have visibility into these changes and the potential risk they might pose to the application at runtime. They can use this information to add protection to the endpoint or share information with their development team to remediate risk.</p>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=BtPRAsORzOk&amp;ab_channel=PrismaCloudbyPaloAltoNetworks" rel="nofollow,noopener" >API Change Detection Demo</a></li>
+</ul>
+<h2><a id="post-296468-_7oog7smo25rn"></a>Learn More</h2>
+<p>To learn more about the latest enhancements to Prisma Cloud, <a href="/prisma/request-a-prisma-cloud-trial">request a free trial</a>.</p>
+<p>The post <a rel="nofollow" href="https://www.paloaltonetworks.com/blog/2023/06/agentless-malware-scanning/">Agentless Workload Scanning Gets Supercharged with Malware Scanning</a> appeared first on <a rel="nofollow" href="https://www.paloaltonetworks.com/blog">Palo Alto Networks Blog</a>.</p>
+]]></content:encoded>
+			    
+	    		<wfw:commentRss>https://www.paloaltonetworks.com/blog/2023/06/agentless-malware-scanning/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+	    
+	    
+	        </item>
+        <item>
+	<title>Beyond Visibility: Proactive Cloud Workload Security in the Real World</title>
+	<link>https://www.paloaltonetworks.com/blog/prisma-cloud/visibility-cloud-workload-security/</link>
+	    		<comments>https://www.paloaltonetworks.com/blog/prisma-cloud/visibility-cloud-workload-security/#respond</comments>
+	    
+	<dc:creator><![CDATA[Ory Segal]]></dc:creator>
+	<pubDate>Tue, 20 Jun 2023 11:42:30 +0000</pubDate>
+	<readTime>11</readTime>
+	<featuredImage>https://www.paloaltonetworks.com/blog/wp-content/uploads/2023/06/Man-using-Computer.jpg</featuredImage>
+	    		<category><![CDATA[CWPP]]></category>
+		<category><![CDATA[Runtime Protection]]></category>
+		<category><![CDATA[Visibility]]></category>
+	<guid isPermaLink="false">https://www.paloaltonetworks.com/blog/?post_type=cloud_sec_post&#038;p=296674</guid>
+
+	    		<description><![CDATA[<p>Learn how effective cloud workload protection prevents security breaches in cloud environments where threats proliferate swiftly.</p>
+<p>The post <a rel="nofollow" href="https://www.paloaltonetworks.com/blog/prisma-cloud/visibility-cloud-workload-security/">Beyond Visibility: Proactive Cloud Workload Security in the Real World</a> appeared first on <a rel="nofollow" href="https://www.paloaltonetworks.com/blog">Palo Alto Networks Blog</a>.</p>
+]]></description>
+						<content:encoded><![CDATA[<p>Over the last 5 years, our team at Prisma Cloud has witnessed an extraordinary surge in the adoption of cloud-native technologies. One trend that stands out is the ongoing migration to the public cloud. According to the latest findings from Unit 42’s <a href="https://start.paloaltonetworks.com/unit-42-cloud-threat-report-volume-7.html">Cloud Threat Report, Volume 7: Navigating the Expanding Attack Surface</a>, an impressive 53% of cloud workloads now find their home on public clouds. That number speaks for itself, showcasing the increasing reliance on the public cloud as the infrastructure of choice. Moreover, the report shows that this trend will continue its upward trajectory, soaring to an astonishing 64% within the next 24 months.</p>
+<p>Even more interesting is the diversity of these workloads, notably serverless and platform as a service (PaaS) workloads, which account for <a href="/prisma/unit42-cloud-threat-research">36% of cloud-based workloads</a>, signifying their growing importance in modern technology landscapes. Virtual machines (VMs) secure a solid 22% share, while both container as a service (CaaS) and containers contribute equally, each making up 18% of the overall workload ecosystem.</p>
+<p>This transformative era presents incredible opportunities for organizations to unlock their potential and reap the benefits of scalability, flexibility and enhanced security. As the CTO of Prisma Cloud, I'm thrilled to share our insights and the learnings gained from witnessing the rise of cloud-native technologies and the rapid adoption of the public cloud.</p>
+<h2>3 Foundational Takeaways</h2>
+<p>Let's explore three vital learnings that have emerged in this dynamic landscape, shaping the way organizations approach cloud security.</p>
+<p><strong>The Importance of Real-Time Protection</strong></p>
+<p>Organizations now understand that security visibility isn’t enough. Security teams recognize the importance of deploying real-time proactive cloud workload protection. It's no longer sufficient to merely monitor and react to security incidents. Organizations must take a proactive stance, leveraging advanced security measures to safeguard their cloud workloads.</p>
+<p><strong>Not All Applications Are Built the Same</strong></p>
+<p>Real-world applications make use of a diversity of workload types, container runtimes, engines and architectures, which poses a significant challenge to runtime protection solutions. Each workload type comes with its unique traits, complicating security efforts. To address this complexity, organizations are extending active runtime protection across all their workloads, regardless of their environment. It's about ensuring comprehensive security coverage that adapts to the ever-changing cloud landscape.</p>
+<p><strong>Cloud Security Is a Shared Responsibility</strong></p>
+<p>Cloud security is a team sport that involves DevOps teams, cloud security teams and even the security operations center (SOC) engineers. Together, they should work harmoniously to ensure that workloads receive effective runtime protection from the get-go. In the realm of cloud security, the role of security operations center (SOC) engineers shouldn’t be forgotten. Their expertise and diligence are indispensable alongside DevOps and security teams.</p>
+<h2>Importance of Real-Time Protection for Cloud Workloads</h2>
+<p>In fast-paced cloud environments, threats arise and proliferate swiftly. A narrow window exists to address minor security incidents before they become major breaches. Active real-time protection lets you intervene, not just witness unfolding threats.</p>
+<p>So what does real-time protection for cloud workloads entail? It's more than visibility and data collection. Real-time protection requires proactive measures to thwart attacks across workloads, networks and application layers. It empowers you to swiftly detect and preempt exploits like <a href="/blog/prisma-cloud/log-4-shell-vulnerability/">Log4Shell</a> and <a href="https://unit42.paloaltonetworks.com/cve-2022-22965-springshell/">SpringShell</a>. An advanced runtime protection solution should employ a behavioral modeling engine that draws on machine learning to analyze workload behavior and establish positive security models.</p>
+<p>Proactive measures to halt threats before they cause damage is the essence of active, real-time protection. Implementing various protection layers, strict access controls and continuous monitoring of suspicious activities are key to a robust defense, enabling real-time reactions to detected threats.</p>
+<p>Active real-time protection aligns with security by design, incorporating security into all aspects of cloud operations — from workload design and configuration to ongoing cloud environment management. This proactive, holistic security strategy ensures that protection isn’t an afterthought but a core element of your cloud strategy.</p>
+<p>Cloud workloads, part of a larger, often distributed application framework, differ significantly from traditional server or endpoint devices. They use internal APIs to communicate and interact continually with their cloud environment and its services. Their runtime protection, as a result, must be tailored to these specific requirements. The ideal protection agent should understand each workload's purpose and behavior, as well as the overall architecture. This intelligent understanding enables the agent to provide effective runtime protection for cloud-native workloads, ensuring their security and integrity.</p>
+<h2>Not All Applications Are Built the Same</h2>
+<p>If only the cloud-native world consisted of containerized microservices on <a href="https://kubernetes.io/" rel="nofollow,noopener" >Kubernetes</a> clusters. Reality, though, involves a diverse application deployment mix. Applications come in various forms and operate in an array of environments, reflecting cloud flexibility and robustness while posing security challenges.</p>
+<p>New applications often use scalable and cost-effective serverless functions. Containers don't just exist in orchestrated environments like Kubernetes or <a href="https://www.redhat.com/en/technologies/cloud-computing/openshift" rel="nofollow,noopener" >Openshift</a> clusters. They also run on bare metal servers to reap containerization benefits without virtualization layers.</p>
+<p>Virtual machines remain a foundational cloud computing element, offering isolation and control of the underlying infrastructure. Managed containerized environments like <a href="https://aws.amazon.com/fargate/" rel="nofollow,noopener" >AWS Fargate</a>, <a href="https://cloud.google.com/run" rel="nofollow,noopener" >Google Cloud Run</a> or <a href="https://azure.microsoft.com/en-us/products/container-instances" rel="nofollow,noopener" >Azure Container Instances</a> are also gaining traction due to ease-of-use and scalability.</p>
+<p>Organization and team diversity mean technological preferences differ based on distinct needs, workflows and expertise. Docker, a popular container runtime, isn't a one-size-fits-all solution. Some organizations prefer alternatives like <a href="https://containerd.io/" rel="nofollow,noopener" >Containerd</a> or <a href="https://cri-o.io/" rel="nofollow,noopener" >CRI-O</a>. The same applies to container engines. Docker has been a staple, but many organizations with unique requirements and operational considerations are exploring other options, like <a href="https://podman.io/" rel="nofollow,noopener" >Podman</a>.</p>
+<p>This vast mix of workload types, container runtimes, engines and technologies, each with unique traits, complicates security. Organizations are required to extend active runtime protection across all workloads in various environments. This protection must be unified, seamless and nonintrusive to efficiently counter threats. It must also integrate with different workload types, as well as operating systems like Linux or Windows and architectures like x64 or ARM. Solutions must be as adaptive and versatile as the workloads they protect.</p>
+<p>Deploying and managing individual agents for different workloads can be overwhelming. A single, versatile agent that caters to all cloud workloads makes the deployment and maintenance process seamless and easily integrated into the CI/CD workflow.</p>
+<figure id="attachment_296675" aria-describedby="caption-attachment-296675" style="width: 1538px" class="wp-caption alignnone"><img decoding="async" loading="lazy" class="wp-image-296675" src="/blog/wp-content/uploads/2023/06/a-screenshot-of-a-computer-description-automatica.png" alt="Workload protection for the cloud-native landscape" width="1538" height="986" /><figcaption id="caption-attachment-296675" class="wp-caption-text">Figure 1: Just a small fraction of the <a href="https://landscape.cncf.io/" rel="nofollow,noopener" >CNCF Cloud Native Landscape</a></figcaption></figure>
+<h2>Cloud Security Is a Shared Responsibility</h2>
+<p>Cloud security is a group effort with DevOps and cloud security teams at the forefront of securing workload vulnerabilities and misconfiguration throughout the application lifecycle. They also implement runtime protection from the outset. But In the world of<a href="/cyberpedia/cloud-security-glossary-faqs"> cloud security</a>, the role of SOC engineers can’t be overstated. In fact, they’ve become even more indispensable alongside the DevOps and security teams that ensure workloads have effective runtime protection from the get-go.</p>
+<p>Many of our Prisma Cloud customers have already deployed thousands of cloud workloads across numerous applications, public clouds and regions. In this common scenario, vigilantly monitoring, accurately analyzing and effectively responding to security events is no easy task. On the contrary, it’s one that outstrips the capacity of any single DevOps or cloud security team. It’s here where SOC engineers, with their specialized skills, tools and scale, come to the fore.</p>
+<p>SOC engineers not only offer real-time monitoring and response but also contribute significantly to long-term security analysis. Trained for efficient security event management, they excel at separating critical threats from less urgent events. They can prioritize incidents based on severity and act appropriately to mitigate risks, thanks to their advanced tools and playbooks.</p>
+<p>By integrating security event data into an extended detection and response (<a href="/cortex/cortex-xdr">XDR</a>) platform, SOC engineers create a comprehensive view of an organization's cloud security posture over time.</p>
+<h2>The Prisma Cloud Approach</h2>
+<p>Prisma Cloud’s runtime protection agent offers extensive support for a wide range of environments, providing comprehensive, real-time security for diverse architectures and operating systems. Its defenses include advanced threat protection, sophisticated attack prevention, malware analysis and ML-based behavioral modeling. Importantly, its lightweight design ensures the efficient resource use and scalability essential for cloud environments.</p>
+<p>Prisma Cloud delivers a range of protection capabilities, including an advanced threat protection feed maintained by Palo Alto Networks Unit 42 research team. It also delivers prevention of Kubernetes-specific attacks and cloud provider API abuse, as well as malware analysis.</p>
+<p>Additionally, Prisma Cloud’s runtime agent delivers ML-based workload behavioral modeling and real-time protection, including:</p>
+<ul>
+<li>Process monitoring and prevention of unauthorized processes</li>
+<li>Antimalware and exploit prevention ((e.g., cryptominers, reverse shells, lateral movement, etc.)</li>
+<li>Network monitoring and real-time prevention of malicious networking activity, such as port scanning, use of raw sockets, DNS queries and connection to unauthorized endpoints</li>
+<li>File system monitoring that can detect and prevent changes to binaries, detection of suspicious encrypted/packed binaries, file integrity monitoring (e.g., changes to SSH or critical system files) and detection of binaries with suspicious ELF headers.</li>
+</ul>
+<p>Given that the workload is just a means for packaging and running <a href="/cyberpedia/what-are-microservices">microservices</a> and applications, it’s critical that the runtime protection agent will be able to detect and prevent application layer attacks in real time. Prisma Cloud’s runtime protection agent, provides built-in, best-of-breed<a href="/cyberpedia/what-is-web-application-and-api-protection.html" rel="nofollow,noopener" > WAAS</a> (Web Application and API Security) capabilities, tailored specifically for cloud-native applications. These capabilities include:</p>
+<ul>
+<li>Real-time visibility into risks facing web and APIs</li>
+<li>Positive security of API traffic and API risks</li>
+<li>Bot risk management capable of stopping automated processes, such as malicious bots and vulnerability scanning tools</li>
+<li>Application-layer DoS protection through intelligent rate controls</li>
+<li>Automated virtual patching for common high risk vulnerabilities and exploits</li>
+<li>Real-time prevention of<a href="/cyberpedia/what-is-api-security"> OWASP Top 10 types of attack</a></li>
+</ul>
+<p>On top of all these types of protection, Prisma Cloud is robust and versatile. It has earned the trust of Fortune 500 companies, securing their critical applications and demonstrating dependability. It supports a wide array of real-world environments used by Prisma customers and provides protection for manifold environments.</p>
+<p>Diverse OS support includes:</p>
+<ul>
+<li>Popular Linux distributions, such as Amazon Linux, CentOS, RHCOS, Debian, GCOOS, Red Hat Enterprise Linux, Ubuntu, SUSE, Oracle Linux, RockyLinux, VMWare Photon</li>
+<li>Windows server versions 2016, 2019 and 2022</li>
+<li>Support for x64 and ARM operating systems</li>
+</ul>
+<p>Protection for containers on runtimes, such as:</p>
+<ul>
+<li>Docker</li>
+<li>CRI Containerd</li>
+<li>CRI-O</li>
+<li>Podman</li>
+</ul>
+<p>Protect containerized workloads running on orchestrators such as:</p>
+<ul>
+<li>Kubernetes</li>
+<li>Openshift</li>
+<li>VMWare Tanzu</li>
+<li>AWS ECS, EKS, Fargate</li>
+<li>Azure AKS (both Windows and Linux)</li>
+<li>GCP GKE and Autopilot</li>
+<li>Additional support for container-specific OSs, such as Bottlerocket or TalOS</li>
+</ul>
+<p>Real-time protection of serverless functions, such as:</p>
+<ul>
+<li>Azure serverless functions</li>
+<li>AWS Lambda</li>
+</ul>
+<p>Resulting from years of development based on customer requirements, Prisma Cloud's runtime protection support matrix is unmatched.</p>
+<h2><span style="font-weight: 400;">Cloud Workload Runtime Protection Checklist</span></h2>
+<p><span style="font-weight: 400;">When evaluating a cloud workload runtime protection solution, use this checklist to ensure your choice will optimally equip your organization with the complete suite of game-changing capabilities and attributes.</span></p>
+<ul>
+<li><strong>Real-Time Protection</strong>: Ability to actively intervene and stop threats before they cause harm.</li>
+<li><strong>CI/CD Integration</strong>: Seamlessly integrate security into CI/CD pipeline, from the initial design to ongoing monitoring and management.</li>
+<li><strong>Robust</strong>: Capable of working in public, private, hybrid and multicloud environments, protecting workloads running on any operating system and architecture.</li>
+<li><strong>Versatile</strong>: Support various types of workloads, including containerized applications, serverless functions, virtual machines and bare metal servers running a range of operating systems, container runtimes, engines and in different cloud environments</li>
+<li><strong>Comprehensive Protection</strong>: Provide holistic protection across different layers including the cloud networking, application and workload layers, detecting and preventing exploits, malware and sophisticated cloud attacks.</li>
+<li><strong>Behavioral Modeling</strong>: Distinguish legitimate behavior from potential threats by using machine learning to examine workload behavior and apply positive security models.</li>
+<li><strong>Scalable</strong>: Capable of handling large-scale environments with thousands of cloud workloads, effectively monitoring security events and analyzing data without overwhelming cloud security or DevOps teams.</li>
+<li><strong>Lightweight and Efficient</strong>: Minimize resource usage with lightweight runtime agent, ensuring optimal performance and scalability of cloud workloads — and seamlessly update without disruptions.</li>
+<li><strong>Customizable</strong>: Enable users to create custom rules and policies to tailor the protection to their specific requirements.</li>
+<li><strong>Application Layer Protection</strong>: Provide built-in web and API security capabilities, including automated detection, profiling and prevention of common attack types, such as the OWASP Top 10 for web apps and APIs.</li>
+<li><strong>Integrated: </strong>Allow teams to benefit from a more intelligent and unified approach to protecting their applications in the cloud with centralized security integrated in a best-in-breed cloud-native application protection platform (CNAPP).</li>
+</ul>
+<h2>Learn More</h2>
+<p>To learn more about the runtime protection capabilities of Prisma Cloud, check out the <a href="https://www.prismacloud.io/prisma/cloud/cloud-workload-protection-platform" rel="nofollow,noopener" >Cloud Workload Protection</a> or <a href="https://www.prismacloud.io/prisma/cloud/web-application-API-security" rel="nofollow,noopener" >Web App and API Security</a> pages — and take it for a <a href="/prisma/request-a-prisma-cloud-trial">free 30-day test drive</a> to experience the advantages.</p>
+<p>The post <a rel="nofollow" href="https://www.paloaltonetworks.com/blog/prisma-cloud/visibility-cloud-workload-security/">Beyond Visibility: Proactive Cloud Workload Security in the Real World</a> appeared first on <a rel="nofollow" href="https://www.paloaltonetworks.com/blog">Palo Alto Networks Blog</a>.</p>
+]]></content:encoded>
+			    
+	    		<wfw:commentRss>https://www.paloaltonetworks.com/blog/prisma-cloud/visibility-cloud-workload-security/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+	    
+	    
+	        </item>
+        <item>
+	<title>Palo Alto Networks Achieves Cyber Essentials Plus Certification in the UK</title>
+	<link>https://www.paloaltonetworks.com/blog/2023/06/palo-alto-networks-achieves-cyber-essentials-plus-certification-in-the-uk/</link>
+	    		<comments>https://www.paloaltonetworks.com/blog/2023/06/palo-alto-networks-achieves-cyber-essentials-plus-certification-in-the-uk/#respond</comments>
+	    
+	<dc:creator><![CDATA[Carla Baker and Viv Danks]]></dc:creator>
+	<pubDate>Thu, 15 Jun 2023 13:00:59 +0000</pubDate>
+	<readTime>3</readTime>
+	<featuredImage>https://www.paloaltonetworks.com/blog/wp-content/uploads/2023/06/Content.jpg</featuredImage>
+	    		<category><![CDATA[Announcement]]></category>
+		<category><![CDATA[Cloud Security]]></category>
+		<category><![CDATA[cyber essentials plus]]></category>
+		<category><![CDATA[public sector]]></category>
+	<guid isPermaLink="false">https://www.paloaltonetworks.com/blog/?p=295881</guid>
+
+	    		<description><![CDATA[<p>Digital transformation and geopolitical tensions are fuelling a rapid evolution of the threat landscape, particularly impacting critical service providers and businesses. With this, building a resilient and secure digital UK has never &#8230;</p>
+<p>The post <a rel="nofollow" href="https://www.paloaltonetworks.com/blog/2023/06/palo-alto-networks-achieves-cyber-essentials-plus-certification-in-the-uk/">Palo Alto Networks Achieves Cyber Essentials Plus Certification in the UK</a> appeared first on <a rel="nofollow" href="https://www.paloaltonetworks.com/blog">Palo Alto Networks Blog</a>.</p>
+]]></description>
+						<content:encoded><![CDATA[<p>Digital transformation and geopolitical tensions are fuelling a rapid evolution of the threat landscape, particularly impacting critical service providers and businesses. With this, building a resilient and secure digital UK has never been more critical for both the public and private sectors.</p>
+<p>It’s vital that organisations protect themselves from the increasing threats by deploying capabilities to help protect their business-critical data, systems and infrastructure. In order to do this, they must have the utmost confidence in the solution providers and the providers’ supply chain.</p>
+<p>At Palo Alto Networks, we understand that customers want to know that the businesses they work with treat their critical data with as much care as they do, especially when it involves running essential services and national infrastructure.</p>
+<p>In response, we are pleased to have obtained the <a href="/legal-notices/trust-center">Cyber Essentials Plus</a> certification, which is backed by the UK Government and independently validates the strong measures we have in place to defend against cyber attacks. The certification also encompasses our Unit 42 Security Consulting and Professional Services.</p>
+<p>With this certification, customers can be confident that Palo Alto Networks looks after their data with the highest level of protection while keeping their systems secure.</p>
+<p><strong>Why has Palo Alto Networks obtained the Cyber Essentials Plus certification?</strong></p>
+<p>Our achievement of the Cyber Essentials Plus certification is a demonstration of the dedicated and comprehensive approach we take to security and transparency.</p>
+<p>While many government contracts require Cyber Essentials certification, ensuring their customers have a clear picture of their organisation's cybersecurity posture and the steps they have taken to protect their organisation should be the baseline for meeting customers' security expectations and requirements.</p>
+<p>A full list of our certifications, principle conformance statements, and other related documentation can be found in our <a href="/legal-notices/trust-center">Trust Center</a>.</p>
+<p><strong>Enhancing the technology assurance ecosystem</strong></p>
+<p>The Cyber Essentials scheme is designed to protect against the most common cyber threats and demonstrates an organisation’s commitment to cybersecurity. It is one of many initiatives developed by the UK government to help improve our collective resilience.</p>
+<p>As the UK Government evolves its position on <a href="https://www.ncsc.gov.uk/collection/technology-assurance" rel="nofollow,noopener" >Technology Assurance</a>, the NCSC continues to champion and push this agenda by providing advice and guidance from initiatives such as the <a href="/blog/2023/01/conformance-to-the-ncsc-cloud-security-principles/">Cloud Security Principles</a> and Cyber Essentials scheme to the Cyber Assessment Framework (CAF) and telecom Vendor Security Assessment.</p>
+<p>Adherence to these initiatives helps build confidence that the services and technologies the UK relies on are secure and resilient and will reduce the overall cybersecurity risks organisations face.</p>
+<p>At Palo Alto Networks, we are committed to demonstrating to our customers that we adhere to these approaches to assurance. We strive to provide our customers with the highest level of confidence in our platforms and services, whether through programmes like <a href="/resources/whitepapers/trust-360">Trust 360</a> or aligning with the <a href="/blog/2023/01/conformance-to-the-ncsc-cloud-security-principles/">NCSC Cloud Security Principles</a>.</p>
+<p>Supporting and conforming to international standards and accreditations underpins our commitment to being the cybersecurity partner of choice.</p>
+<p>Learn more about how Palo Alto Networks keeps the public sector protected <a href="/industry/public-sector">here</a>.</p>
+<p>The post <a rel="nofollow" href="https://www.paloaltonetworks.com/blog/2023/06/palo-alto-networks-achieves-cyber-essentials-plus-certification-in-the-uk/">Palo Alto Networks Achieves Cyber Essentials Plus Certification in the UK</a> appeared first on <a rel="nofollow" href="https://www.paloaltonetworks.com/blog">Palo Alto Networks Blog</a>.</p>
+]]></content:encoded>
+			    
+	    		<wfw:commentRss>https://www.paloaltonetworks.com/blog/2023/06/palo-alto-networks-achieves-cyber-essentials-plus-certification-in-the-uk/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+	    
+	    
+	        </item>
+        <item>
+	<title>How To Prevent the 5 Most Common Software Supply Chain Weaknesses</title>
+	<link>https://www.paloaltonetworks.com/blog/prisma-cloud/common-software-supply-chain-weaknesses/</link>
+	    
+	<dc:creator><![CDATA[Chris Tozzi]]></dc:creator>
+	<pubDate>Tue, 13 Jun 2023 12:00:59 +0000</pubDate>
+	<readTime>8</readTime>
+	<featuredImage>https://www.paloaltonetworks.com/blog/wp-content/uploads/2023/05/Hive-Mind.jpg</featuredImage>
+	    		<category><![CDATA[Secure the Cloud]]></category>
+		<category><![CDATA[CI/CD]]></category>
+		<category><![CDATA[IaC]]></category>
+		<category><![CDATA[Software Supply Chain Security]]></category>
+		<category><![CDATA[VCS]]></category>
+	<guid isPermaLink="false">https://www.paloaltonetworks.com/blog/?post_type=cloud_sec_post&#038;p=296186</guid>
+
+	    		<description><![CDATA[<p>Learn the basics of software supply chain security and 7 best practices to protect yourself against common software supply chain weaknesses.</p>
+<p>The post <a rel="nofollow" href="https://www.paloaltonetworks.com/blog/prisma-cloud/common-software-supply-chain-weaknesses/">How To Prevent the 5 Most Common Software Supply Chain Weaknesses</a> appeared first on <a rel="nofollow" href="https://www.paloaltonetworks.com/blog">Palo Alto Networks Blog</a>.</p>
+]]></description>
+						<content:encoded><![CDATA[<p>All software supply chain attacks share a core trait: they allow a threat actor to break into an organization’s IT estate by exploiting software vulnerabilities created by entities other than the organization.</p>
+<p>The types of vulnerabilities attackers exploit during supply chain incidents come in many forms, as do the exploitation methods attackers use. Because of this variability, protecting your business against supply chain threats requires you to understand the most common software supply chain attack paths and deploy a multipronged defense against them.</p>
+<p>With that in mind, let’s walk through common supply chain attack paths, compare and contrast the severity of each type of attack, and discuss best practices for mitigating supply chain vulnerabilities.</p>
+<p>First, though, let’s talk about software supply chains.</p>
+<h2>What Is a Software Supply Chain?</h2>
+<p>If you’ve followed news about the <a href="https://www.infosecurity-magazine.com/news/global-supply-chain-attacks-surge/" rel="nofollow,noopener" >surge in supply chain attacks</a>, you probably know that a software supply chain is the collection of third-party software components and the underlying pipelines required to deliver products to market.</p>
+<p>Although every business’s <a href="/cyberpedia/what-is-cloud-software-supply-chain-security">software supply chain</a> is unique, their components typically include:</p>
+<ul>
+<li>Open-source libraries or packages and <a href="/blog/prisma-cloud/what-is-infrastructure-as-code-the-best-way-to-fully-control-your-cloud-configuration/">infrastructure as code (IaC)</a> modules that developers incorporate into their own applications</li>
+<li>Version control systems (VCSs), which are third-party applications where proprietary code is stored, version controlled, and managed</li>
+<li>CI/CD pipelines, commonly built on top of third-party commercial or open-source foundations to integrate, deploy and deliver software</li>
+<li>Infrastructure services, such as a cloud provider’s IaaS platform, that the business relies on to host its applications</li>
+<li>SaaS applications hosted on third-party infrastructure but with access to the business’s data and resources</li>
+</ul>
+<p>You’d be pressed to find a business today that doesn’t rely on third-party software resources like those described above. Every business, in other words, has a software supply chain. What’s more, every business is vulnerable to <a href="/prisma/cloud/software-supply-chain-security">software supply chain attacks</a>.</p>
+<h2>How Supply Chain Attacks Happen</h2>
+<p>When a software supply chain attack occurs, the root cause of the issue lies in a weakness within a pipeline, service, application or software component. Supply chain attacks are unique in that they typically start with weaknesses in third-party code, as opposed to an application or resource your business created. But regardless of the weakness’ origins, your business can take measures to <a href="/blog/2022/03/cloud-software-supply-chain-security/">prevent supply chain attacks</a>. Your business can detect and isolate vulnerable resources before they’re exploited.</p>
+<p>Imagine one of the applications you’ve developed contains a vulnerable open-source library. You’re now at risk of a supply chain attack. The root cause of the threat is the vulnerability in the open-source library, which you inadvertently built into your application. But you can prevent a supply chain attack by identifying the vulnerability and mitigating it.</p>
+<p>By updating to a newer version of the vulnerable open-source library before an attack occurs, you remove the vulnerability and its risk. If an exploit occurs before identifying the vulnerability, you can lock down infrastructure, maintain least-privilege access and have checks along the way to minimize the blast radius of the supply chain attack.</p>
+<p>By taking action to detect and contain threats, you can prevent supply chain risks from impacting your business. But you need a thorough understanding of issues that result in supply chain attacks.</p>
+<figure id="attachment_296187" aria-describedby="caption-attachment-296187" style="width: 1150px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-296187" src="/blog/wp-content/uploads/2023/06/word-image-296186-1.png" alt="" width="1150" height="443" /><figcaption id="caption-attachment-296187" class="wp-caption-text">Each phase of the application lifecycle can introduce new sources of weakness, which you will need to properly secure so that bad actors can’t gain access to your system.</figcaption></figure>
+<h2>5 Common Supply Chain Security Issues</h2>
+<p>Because supply chain threats differ greatly, you need to defend a broad attack surface. Consider the potential weaknesses that can lead to a supply chain attack and ensure you’re equipped to prevent them.</p>
+<h4>1. Insecure Application Components</h4>
+<p>In cases like the <a href="https://unit42.paloaltonetworks.com/apache-log4j-vulnerability-cve-2021-44228/">Log4j vulnerability</a>, vulnerable open-source software components are baked into applications. While open-source components provide plug-and-play functionality to get to market faster, they can bring inherited risk. This challenge has been answered by the giant (and growing) AppSec space.</p>
+<p>Developers should use AppSec tools like <a href="/cyberpedia/what-is-sca">software composition analysis (SCA)</a> to detect vulnerable third-party components within their source code. By embedding an <a href="/prisma/cloud/software-composition-analysis">SCA tool</a> into your VCS, you can easily remove or patch affected components before application deployment.</p>
+<h4>2. Insecure Container Images</h4>
+<p>Another means by which supply chain vulnerabilities propagate across your environment is via insecure container images.</p>
+<p>Most application containers are created using base images. Base images are typically operating systems, like Alpine or Ubuntu Linux, that potentially contain a variety of vulnerabilities. If you create a container using a vulnerable base image and deploy the container to production, the vulnerabilities inside the base image will leak into your production environment.</p>
+<p><a href="/blog/prisma-cloud/secure-vulnerable-images-in-iac-templates-with-prisma-cloud/">Container image scanning</a> is the best way to mitigate this threat. Image scanners automatically detect vulnerabilities in the base image or other layers of a container, then alert developers so they can take action before insecure third-party code becomes an attack vector.</p>
+<h4>3. Insecure IaC Templates</h4>
+<p>IaC is a great way to automate the provisioning of infrastructure resources at scale. But IaC can also propagate a preventable misconfiguration in one template, opening several possible entry points or opportunities for supply chain attacks.</p>
+<p>For instance, if you create an IaC template that provisions all your servers with an operating system containing an insecure library, the risk will exist on every server configured using the template. This is what happened with the <a href="/blog/2014/04/real-world-impact-heartbleed-cve-2014-0160-web-just-start/">version of OpenSSL that triggered the Heartbleed bug</a>. And because IaC configurations are applied automatically, the likelihood of a developer noticing the vulnerability during the provisioning process is low.</p>
+<p>Existing cloud controls can mitigate or amplify the effect insecure application components or containers have on your supply chain security. A vulnerable library hosted on a virtual machine with port 22, for example, could be susceptible to exploit and having a reverse shell opened up. And if you have a vulnerable container in a pod with privileged access, you have a much larger security issue than if that container had no host capabilities.</p>
+<p>The best way to get ahead of misconfigurations is to automatically scan your IaC templates early and throughout the development lifecycle. By automatically validating IaC configurations via IDE plugins, <a href="https://www.checkov.io/" rel="nofollow,noopener" >CLI tools</a>, VCS integrations or as CI/CD build steps, you can detect misconfigurations before they become supply chain risks.</p>
+<h4>4. Insufficient Access Controls</h4>
+<p>In some cases, supply chain vulnerabilities that might otherwise be minor turn into major incidents because of insecure access controls.</p>
+<p>For example, consider the <a href="https://www.techtarget.com/searchsecurity/news/252514659/Container-vulnerability-opens-door-for-supply-chain-attacks" rel="nofollow,noopener" >“Cr8escape” bug</a>, which allows anyone with permission to deploy a Kubernetes pod to escape the pod and execute code as the root user on the pod’s host node. The flaw results from a <a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-0811" rel="nofollow,noopener" >bug in the CRI-O container runtime</a>. Any organization using an insecure version of CRI-O as part of its supply chain is subject to the bug.</p>
+<p>In this case, strong access controls wouldn’t fix the root cause of the risk — that would require updating CRI-O to a secure version — but they would significantly reduce the chances that attackers could exploit the bug. By ensuring that only those users who strictly need permission to create pods have that permissions, organizations would minimize the risk that a malicious user could exploit the CRI-O bug to launch a privilege escalation attack.</p>
+<h4>5. CI/CD and Version Control Weaknesses</h4>
+<p>Version Control Systems (VCSs) and <a href="/cyberpedia/what-is-the-ci-cd-pipeline-and-ci-cd-security">CI/CD pipelines</a> are the lifeblood of software supply chains in that they provide the foundation in which code — including third-party libraries or IaC modules — is stored, compiled and deployed.</p>
+<p>In addition to vulnerabilities and misconfigurations, weaknesses in <a href="/blog/2021/10/anatomy-ci-cd-pipeline-attack/">underlying supply chain pipelines</a> can be used as entry points for attackers. To combat VCS weaknesses, enforcing 2FA and SSO and branch protection rules are a must. CI/CD pipelines present a stiffer challenge in that they require some exposure to the outside world. Use of unsanitized metadata and overly privileged contributors can lead to malicious injections and data leakage.</p>
+<p>Scanning VCS organization and repository settings, as well as CI/CD configuration files, is a great way to reduce the risk that threat actors could exploit security gaps in your workflow configurations.</p>
+<h2>Protecting Your Software Supply Chain</h2>
+<p>The days of software supply chain security are still early, but it’s already clear that the best way to mitigate supply chain risks is by adopting an approach to security that embeds automated security processes into your existing systems to make security as seamless as possible. Protecting your software supply chain requires visibility and coverage across all risks using IaC scanners, SCA software, container image scanners, CI/CD and VCS security. But adopting many different tools to achieve these goals can get complicated. That’s why an integrated and cohesive approach can help you adopt frictionless code security, which will enable you to detect and mitigate threats across all parts of your supply chain.</p>
+<h2>Getting Started with CI/CD Security</h2>
+<p>If you want a deeper dive into CI/CD security, download the <a href="https://start.paloaltonetworks.com/top-10-cicd-security-risks.html">Top 10 CI/CD Security Risks technical guide</a>. It covers key issues to prioritize at the start of your CI/CD security journey and gives practical tips to help you adopt CI/CD security best practices.</p>
+<p>The post <a rel="nofollow" href="https://www.paloaltonetworks.com/blog/prisma-cloud/common-software-supply-chain-weaknesses/">How To Prevent the 5 Most Common Software Supply Chain Weaknesses</a> appeared first on <a rel="nofollow" href="https://www.paloaltonetworks.com/blog">Palo Alto Networks Blog</a>.</p>
+]]></content:encoded>
+			    
+	    
+	    
+	        </item>
+        <item>
+	<title>Information Security Governance</title>
+	<link>https://www.paloaltonetworks.com/blog/prisma-cloud/information-security-governance/</link>
+	    
+	<dc:creator><![CDATA[Bob West]]></dc:creator>
+	<pubDate>Mon, 12 Jun 2023 12:00:48 +0000</pubDate>
+	<readTime>7</readTime>
+	<featuredImage>https://www.paloaltonetworks.com/blog/wp-content/uploads/2021/04/Man-Writing.jpg</featuredImage>
+	    		<category><![CDATA[CIO/CISO]]></category>
+		<category><![CDATA[CSO Perspective]]></category>
+		<category><![CDATA[Secure the Future]]></category>
+		<category><![CDATA[Cloud Security]]></category>
+		<category><![CDATA[cybersecurity]]></category>
+	<guid isPermaLink="false">https://www.paloaltonetworks.com/blog/?post_type=cloud_sec_post&#038;p=295878</guid>
+
+	    		<description><![CDATA[<p>An effective governance framework enables information security leaders to help build a resilient organization positioned to achieve business and tech strategy.</p>
+<p>The post <a rel="nofollow" href="https://www.paloaltonetworks.com/blog/prisma-cloud/information-security-governance/">Information Security Governance</a> appeared first on <a rel="nofollow" href="https://www.paloaltonetworks.com/blog">Palo Alto Networks Blog</a>.</p>
+]]></description>
+						<content:encoded><![CDATA[<p>Protecting information consistently across the enterprise means having the right people at the right level engaged so that the information security program can align with business and technology strategy. Without the participation of the right people, it becomes difficult to maintain the proper information security budget and staffing levels.</p>
+<p>In this post, I’ll cover the basic concept of governance, as well as why it’s important, who should be involved and how a governance framework should be executed and maintained.</p>
+<h2>Engaging the Enterprise in a Strategic Discussion</h2>
+<p>While information security leaders often make decisions based on their experience, it’s equally important to involve the enterprise in strategic discussions. Many information security leaders find this task daunting.</p>
+<p>What does the CEO know about security? How about the general counsel, CFO, head of compliance or board of directors? The short answer is, they probably know little. That’s reasonable, as it falls outside their direct responsibilities. Nonetheless, the executive team and board play pivotal roles as key stakeholders and significantly influence the investment in protecting information.</p>
+<p>More importantly, the CEO is responsible for executing the corporation's strategic plan, while the CFO oversees financial plans, the general counsel provides guidance on legal risks, the head of compliance ensures regulatory compliance and the board of directors oversees the organization's operations.</p>
+<p>To benefit from their positions and perspectives, the CISO needs to engage the executive team and board. By providing oversight and guidance for the information security program, they can effectively protect the enterprise at the right level.</p>
+<h2>The Importance of Technology Infrastructure and Security</h2>
+<p>Although it may seem like a basic concept, most businesses depend on their technology infrastructure to run their business. Without this infrastructure, businesses would come to a halt. At the same time, the technology infrastructure in most companies has systemic security issues that go unaddressed. These security issues create risks that make it easy to disrupt services or facilitate intellectual property theft.</p>
+<h2>Benefits of Information Security Governance</h2>
+<p>Robust information security governance offers enterprises significant advantages. These include:</p>
+<ol>
+<li>Improving trust in customer relationships</li>
+<li>Protecting the organization’s reputation</li>
+<li>Decreasing likelihood of regulatory and privacy violations</li>
+<li>Providing greater confidence when interacting with business partners</li>
+<li>Enabling new and better ways to process electronic transactions</li>
+<li>Reducing operational costs by providing predictable outcomes — mitigating risk factors that may interrupt the process<sup>1</sup></li>
+</ol>
+<p>Information security leaders need to engage boards of directors and executive teams so these stakeholders can understand the issues and provide guidance and support for the information security program.</p>
+<h2>Creating a Governance Program</h2>
+<p>An effective approach to establishing a governance program involves building and maintaining relationships with the executive team through one-on-one conversations. This aspect is often overlooked by information security leaders.</p>
+<p>Ongoing dialogues with the executive team members serve as the foundation for long-term success and optimal alignment with business and technology strategies. In many organizations, security lacks visibility with the executive team and board — but having direct and recurring conversations with these individuals bridges the gap.</p>
+<p><strong>Communicating Security's Impact to Stakeholders</strong></p>
+<p>Many people think that the executive team needs to learn information security’s vocabulary, when the reverse is true. To secure the necessary support, the executive team and board of directors must understand how an investment in security aligns with their areas of responsibility.</p>
+<p>When speaking to a CEO, for example, you need to communicate how security impacts the way they run their business and how it can create strategic advantages. Executed properly, security becomes one ingredient that contributes to creating a resilient technology infrastructure. If the technology infrastructure is resilient, the business can rely on it to support its basic business functions.</p>
+<p>The CFO needs to understand how security impacts the top and bottom-line. When customers perceive an organization as trustworthy, they have the confidence to do business with them. This is particularly important for companies that depend on digital assets for a large percentage of their revenues. A strategic, predictable investment with the proper underlying processes helps to reduce bottom-line costs.</p>
+<p><strong>Integrating Security into Business Processes</strong></p>
+<p>To emphasize the importance of integrating security into basic business processes, consider the following analogy: When an automobile rolls off the assembly line, the manufacturing process doesn't include a separate step for adding quality. Instead, if quality is taken seriously, it becomes an integrated aspect of the manufacturing.</p>
+<p>Failure to achieve the desired level of quality leads to product defects. While recalls can be expensive, the cost of damaging a company's reputation and image is greater. Similarly, security must be integrated into fundamental business processes to ensure proper protection.</p>
+<p>In application development, it’s nearly impossible to use proper hygiene to achieve the same outcome as if security had been applied throughout the process. Security must be integrated into the application development lifecycle and into infrastructure management. This is true for other technology areas and for basic business functions. People need to understand how they need to protect information as part of their daily routines.</p>
+<h2>Managing Security Breaches and Risks</h2>
+<p>Not all security breaches can be prevented.<sup>2 </sup>The executive team and board need to hear this message. Companies and governments are compromised regularly around the globe. It happens.</p>
+<p>Think of the general counsel’s role as a model for information security leadership. The general counsel can’t prevent lawsuits. To say otherwise would be foolish. The general counsel’s first order of business is to create a robust legal framework that minimizes legal risk, settlements, and related costs.</p>
+<p>The general counsel doesn’t accept the risk for the organization — the role of the general counsel and their staff is to coach the organization on the legal risk it’s exposed to and what it should do to minimize its legal risk. The decision lies with the business. The business needs to make the decision because it has responsibility for revenue generation.</p>
+<p>Similarly, information security leadership should assume the responsibility of creating a strong framework and helping the business to understand its security issues and how to address them. The decision on which security risks to accept should lie with the business, not the CISO. This underscores the value of proper information security governance.</p>
+<h2>Establishing a Governance Committee</h2>
+<p>Once the executive team and board grasp the significance of security for the business, it becomes practicable to form a governance committee. The first steps involve securing the participation of senior executives who can make decisions for the organization. This committee typically includes leaders from human resources, legal, compliance, audit, technology, and the business.</p>
+<p>The next step involves creating a charter for the committee so its mission and landmark details — who should be involved, who the committee reports to, how often they should meet — remains clear. The governance committee should approve the information security strategy, policies and be a first decision point for significant issues, such as how to respond to a denial of service attack.</p>
+<p>An integral part of establishing the governance foundation also involves the creation of metrics that enable the organization to evaluate if the information security function is fulfilling its mission.</p>
+<p>Most areas in an organization have defined metrics to help executives understand how they align with their objectives. Questions the governance committee should ask include:</p>
+<ul>
+<li>Do we have the right staffing levels?</li>
+<li>Are policies and standards adequate and updated?</li>
+<li>Have we made a sufficient investment in security technologies?</li>
+<li>Are we addressing privacy issues?</li>
+<li>Are we in compliance with regulatory frameworks, such as PCI, Sarbanes-Oxley, HIPAA, FFIEC and FISMA?</li>
+<li>Are we exposing ourselves to undue risk?</li>
+</ul>
+<p>Using a comprehensive framework, such as ISO 27000 or the NIST Cybersecurity Framework, can help an organization assess their security posture and whether they’ve taken a comprehensive approach to protect itself.</p>
+<h2>The Benefits of a Proper Governance Framework</h2>
+<p>Creating an effective governance framework yields numerous benefits. By involving the right people in the organization, the information security team can accomplish its mission, align itself with both business and technology strategy and contribute to building a resilient organization. With the right leadership, communication and governance, information security can evolve into a strategic asset for the organization.</p>
+<p>&nbsp;</p>
+<p>References</p>
+<p>1. Information Security Governance: Guidance For Boards of Directors and Executive Management, 2nd Edition, IT Governance Institute, ISBN 1-933284-29-3.</p>
+<p>2. Broad New Hacking Attack Detected, Siobhan Gorman, Wall Street Journal, February 18, 2010.</p>
+<p>The post <a rel="nofollow" href="https://www.paloaltonetworks.com/blog/prisma-cloud/information-security-governance/">Information Security Governance</a> appeared first on <a rel="nofollow" href="https://www.paloaltonetworks.com/blog">Palo Alto Networks Blog</a>.</p>
+]]></content:encoded>
+			    
+	    
+	    
+	        </item>
+        <item>
+	<title>Customizing IAM Policies: The Key to Meeting Your Organization’s Unique Needs</title>
+	<link>https://www.paloaltonetworks.com/blog/prisma-cloud/customizing-iam-access-control-policies/</link>
+	    
+	<dc:creator><![CDATA[Izabella Yankelevich]]></dc:creator>
+	<pubDate>Thu, 08 Jun 2023 12:00:10 +0000</pubDate>
+	<readTime>6</readTime>
+	<featuredImage>https://www.paloaltonetworks.com/blog/wp-content/uploads/2022/01/Man-Multitasking.jpg</featuredImage>
+	    		<category><![CDATA[Cloud Infrastructure Entitlement Management]]></category>
+		<category><![CDATA[IAM]]></category>
+		<category><![CDATA[Least Privilege]]></category>
+	<guid isPermaLink="false">https://www.paloaltonetworks.com/blog/?post_type=cloud_sec_post&#038;p=295718</guid>
+
+	    		<description><![CDATA[<p>Customized IAM policies ensure that users have proper access while organizations comply with regulations and reduce the risk of insider threats.</p>
+<p>The post <a rel="nofollow" href="https://www.paloaltonetworks.com/blog/prisma-cloud/customizing-iam-access-control-policies/">Customizing IAM Policies: The Key to Meeting Your Organization’s Unique Needs</a> appeared first on <a rel="nofollow" href="https://www.paloaltonetworks.com/blog">Palo Alto Networks Blog</a>.</p>
+]]></description>
+						<content:encoded><![CDATA[<p>Organizations rely on technology to carry out their operations. As the number of users and systems grows, managing access to resources becomes critical. Here’s where identity and access management (IAM) comes in, allowing organizations to control who has access to what resources and when.</p>
+<p>Using out-of-the-box (OOTB) IAM policies, though, may not meet an organization's needs. Customizing IAM policies, on the other hand, is key to securing your unique environment.</p>
+<p>Customizing IAM policies allows an organization to hone their access control policies to meet their specific requirements. This enables organizations to make sure that users have the appropriate access to resources while ensuring that sensitive information is kept secure.</p>
+<p>With OOTB IAM policies, organizations may find themselves in one of two situations — granting unnecessary access to users or restricting access to necessary resources. Customization provides the flexibility to determine the level of access needed for each user or group, making sure that all users can do their jobs effectively.</p>
+<h2>Custom IAM Policies Help Organizations to Comply with Regulatory Requirements</h2>
+<p>Industries have different regulations, and each organization's interpretation of those regulations can differ. Customizing IAM policies enables organizations to set access control policies that align with their regulatory requirements, avoiding non-compliance penalties and mitigating security risks.</p>
+<h2>Customizing IAM Policies Can Reduce the Risk of Insider Threats</h2>
+<p>Insider threats occur when individuals within an organization misuse their access to resources, intentionally or unintentionally. Customization allows organizations to set up policies that prevent users from having more access than necessary, reducing the risk of insider threats. By limiting access to only what’s required, organizations can reduce the potential damage caused by an insider threat.</p>
+<h2>Customizing IAM Policies Can Help Organizations Simplify Access Management</h2>
+<p>Because OOTB policies aren’t always suitable for the organization's unique requirements, relying on them often leads to a more complex access management process. Customization simplifies this process by enabling organizations to set up policies tailored to specific needs. This simplification can save organizations time and resources, allowing them to focus on their core business functions.</p>
+<h2>Factors to Consider When Creating a Custom Policy</h2>
+<p>When creating a custom IAM policy, consider several factors to ensure the policy aligns with your organization's unique needs while maintaining security and compliance. Key considerations include:</p>
+<ol>
+<li><strong>Granularity</strong>: Determine the appropriate level of granularity for your policy. Avoid creating overly permissive policies that grant broad access, as this increases the risk of unauthorized access and potential data breaches. Instead, follow the principle of least privilege, granting users the minimum necessary permissions to perform their tasks effectively.</li>
+<li><strong>Resource Scope: </strong>Identify the specific resources and services to which the policy should apply. Consider whether the policy should apply globally across all resources or be limited to specific regions, accounts or services. Adjusting the resource scope allows for targeted access control and reduces the risk of inadvertently granting access where it's not needed.</li>
+<li><strong>User and Group Considerations:</strong> Take into account the different roles and responsibilities within your organization. Create policies that align with these roles, granting appropriate permissions based on job functions and responsibilities. Consider using groups to manage permissions more efficiently, allowing for easier policy maintenance and updates.</li>
+<li><strong>Policy Hierarchy:</strong> Understand the hierarchy of IAM policies and how they interact with each other. Policies are evaluated in a specific order, and conflicting permissions can result in unexpected access. Ensure that custom policies are properly prioritized and consider any inherited permissions from higher-level policies to avoid unintended consequences.</li>
+<li><strong>Regular Review and Updates:</strong> IAM policies should not be set in stone. As your organization evolves, roles change and new services are adopted. It's crucial to routinely review and update policies. Conduct regular assessments to ensure that policies still align with business requirements and adhere to security best practices.</li>
+<li><strong>Testing and Validation</strong>: Before deploying a custom IAM policy, thoroughly test it in a controlled environment to verify it works as intended. Validate the policy against different use cases and scenarios to ensure that it provides the desired level of access control without impeding legitimate user activities.</li>
+<li><strong>Audit and Monitoring:</strong> Implement robust auditing and monitoring practices to track policy changes, permissions granted, and user activity. This allows for proactive detection of potential security issues, unauthorized access attempts or policy violations. Regularly review audit logs to identify anomalies or suspicious activities.</li>
+<li><strong>Documentation and Communication:</strong> Document the purpose and rationale behind each custom policy. This documentation serves as a reference for policy administrators, auditors and compliance teams. Communicate policy changes to users and provide them with the necessary guidance on how to comply with new policies.</li>
+</ol>
+<p>By considering these factors when creating custom IAM policies, you can ensure that your policies are well designed, aligned with your organization's unique needs, and provide the necessary level of access control while maintaining security and compliance.</p>
+<h2>How to Create a Custom IAM Policy in Prisma Cloud</h2>
+<p>Now let’s take a look at how you can create a custom IAM policy in Prisma Cloud. You have two approaches you could take.</p>
+<p><strong>Add a New Policy with the “Add Policy” Action on the “Policies” Page</strong></p>
+<figure id="attachment_295719" aria-describedby="caption-attachment-295719" style="width: 1536px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-295719" src="/blog/wp-content/uploads/2023/06/word-image-295718-1.png" alt="Figure 1: Add Policy dashboard in Prisma Cloud" width="1536" height="651" /><figcaption id="caption-attachment-295719" class="wp-caption-text">Figure 1: Add Policy dashboard in Prisma Cloud</figcaption></figure>
+<p>Go to the “Policies” page and click on the “Add Policy” button, then select IAM.</p>
+<p>If you have a specific use case you want to address with Prisma Cloud Alert, you can utilize this option to initiate a clean start.</p>
+<p><strong>Clone an Existing OOTB IAM Policy</strong></p>
+<figure id="attachment_295733" aria-describedby="caption-attachment-295733" style="width: 1530px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-295733" src="/blog/wp-content/uploads/2023/06/word-image-295718-2.png" alt="Figure 2: Clone policy dashboard" width="1530" height="920" /><figcaption id="caption-attachment-295733" class="wp-caption-text">Figure 2: Clone policy dashboard</figcaption></figure>
+<p>Go to the “Policies” page and find an existing IAM OOTB policy that you want to clone. Then click the “Clone” button. It’s that simple.</p>
+<p>If you’d like to exclude specific resources, or if you need to add company-facing conditions to the current IAM OOTB policy, use this option.</p>
+<h2>Learn More</h2>
+<p>With customized IAM policies, organizations can ensure that users have appropriate access, comply with regulatory requirements, reduce the risk of insider threats, and simplify the access management process.</p>
+<p>If you’d like to learn about the CIEM capabilities of <a href="/prisma/cloud/cloud-infrastructure-entitlement-mgmt">Prisma Cloud</a>, take it for a <a href="/prisma/request-a-prisma-cloud-trial">free 30-day test drive</a>.</p>
+<p>The post <a rel="nofollow" href="https://www.paloaltonetworks.com/blog/prisma-cloud/customizing-iam-access-control-policies/">Customizing IAM Policies: The Key to Meeting Your Organization’s Unique Needs</a> appeared first on <a rel="nofollow" href="https://www.paloaltonetworks.com/blog">Palo Alto Networks Blog</a>.</p>
+]]></content:encoded>
+			    
+	    
+	    
+	        </item>
+    </channel>
+</rss>
+
+<!--
+Performance optimized by W3 Total Cache. Learn more: https://www.boldgrid.com/w3-total-cache/
+
+Object Caching 348/353 objects using disk
+Page Caching using disk: enhanced (Requested URI is rejected) 
+Database Caching using disk (Request-wide modification query)
+
+Served from: www.paloaltonetworks.com @ 2023-07-06 11:44:30 by W3 Total Cache
+-->

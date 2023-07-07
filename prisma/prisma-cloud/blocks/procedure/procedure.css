@@ -1,18 +1,19 @@
 :root {
   --step-background-color: var(--color-blue--100);
-  --step-text-color: var(--color-blue-dark--600);
+  --step-text-color: var(--color-neutral-100);
 
-  --substep-background-color: var(--step-text-color);
+  --substep-background-color: var(--color-neutral-black);
   --substep-text-color: var(--color-neutral-white);
 }
 
 /* Dark Mode */
 @media (prefers-color-scheme: dark) {
   :root {
-    --step-background-color: var(--color-blue-dark--500);
-    --step-text-color: var(--color-neutral-200);
+    --step-background-color: var(--color-blue-dark--700);
+    --step-text-color: var(--color-neutral-dark-050);
 
-    --substep-text-color: var(--color-blue-dark--900);
+    --substep-background-color: var(--color-neutral-white);
+    --substep-text-color: var(--color-blue-dark--600);
   }
 }
 
@@ -47,7 +48,7 @@
   /* transform: translateX(-100%); */
   width: 72px;
   text-align: left;
-  top: -5px;
+  top: -3px;
 }
 
 .procedure ol.steps li.step ol.substeps {

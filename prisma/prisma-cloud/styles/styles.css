@@ -117,7 +117,7 @@ header:before {
 
 .book header {
   /* background: rgb(244 244 242 / 50%); */
-  max-width: var(--max-width);
+  /* max-width: var(--max-width); */
 }
 
 /* header.loaded {
@@ -147,7 +147,9 @@ h2 {
   font-size: var(--heading-font-size-xl);
 }
 h3 {
-  font-size: var(--heading-font-size-l);
+  font-size: var(--heading-font-size--h3);
+  line-height: var(--heading-line-height--h3);
+  letter-spacing: var(--letter-spacing-neg--m);
 }
 h4 {
   font-size: var(--heading-font-size-m);
@@ -185,7 +187,8 @@ code,
 pre,
 samp {
   font-family: var(--fixed-font-family);
-  font-size: var(--body-font-size--s);
+  font-size: 13px;
+  line-height: 18px;
 }
 
 code,
@@ -274,6 +277,9 @@ main img {
   align-items: center;
   border-radius: var(--primary-action-border-radius);
   display: inline-flex;
+  font-size: var(--control-font-size--reg);
+  line-height: var(--control-line-height--reg);
+  letter-spacing: var(--letter-spacing-neg--s);
   justify-content: center;
   padding: 20px var(--spacing--6);
   text-decoration: none;

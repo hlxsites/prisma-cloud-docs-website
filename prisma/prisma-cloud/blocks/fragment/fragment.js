@@ -5,6 +5,7 @@
  */
 
 import {
+  BRANCH_ORIGIN,
   decorateMain,
   isValidDocsURL,
   isValidWebURL,
@@ -27,7 +28,9 @@ async function loadFragment(path, fromDocs) {
   if (!href.startsWith('/') && !href.startsWith('.')) {
     if (isValidWebURL(href)) {
       try {
-        href = href.slice(new URL(href).origin.length);
+        const url = new URL(href);
+        url.pathname += '.plain.html';
+        href = url.toString().slice(url.origin.length);
       } catch (_) {
         // noop
       }
@@ -35,10 +38,12 @@ async function loadFragment(path, fromDocs) {
       return null;
     }
   } else if (fromDocs) {
-    href = `${store.docsOrigin}${href}`;
+    const url = new URL(href, store.branch ? BRANCH_ORIGIN : store.docsOrigin);
+    url.pathname += '.plain.html';
+    href = url.toString();
   }
 
-  const resp = await fetch(`${href}.plain.html`);
+  const resp = await fetch(href);
   if (!resp.ok) {
     console.warn(`failed to fetch fragment (${resp.status})`, resp);
     return null;
@@ -81,15 +86,26 @@ async function loadFragment(path, fromDocs) {
  */
 export default async function decorate(block) {
   const link = block.querySelector('a');
-  const path = link ? link.getAttribute('href') : block.textContent.trim();
+  let href = link ? link.getAttribute('href') : block.textContent.trim();
   const fromDocs = block.classList.contains('docs');
-  const fragment = await loadFragment(path, fromDocs);
+
+  if (store.branch) {
+    const url = new URL(href);
+    setBranch(url, store.branch, true);
+    href = url.toString();
+  }
+
+  const fragment = await loadFragment(href, fromDocs);
 
   if (fragment) {
-    const fragmentSection = fragment.querySelector(':scope .section');
-    if (fragmentSection) {
-      block.closest('.section').classList.add(...fragmentSection.classList);
-      block.closest('.fragment-wrapper').replaceWith(...fragmentSection.childNodes);
-    }
+    let classes = [];
+    let children = [];
+    fragment.querySelectorAll(':scope .section').forEach((fragmentSection) => {
+      classes = [...classes, ...fragmentSection.classList];
+      children = [...children, ...fragmentSection.childNodes];
+    });
+
+    block.closest('.section').classList.add(...classes);
+    block.closest('.fragment-wrapper').replaceWith(...children);
   }
 }

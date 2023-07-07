@@ -1,6 +1,6 @@
 :root {
-  --table-even-background: var(--color-neutral-100);
-  --table-border-color: var(--color-neutral-300);
+  --table-even-background: var(--color-neutral-050);
+  --table-border-color: var(--color-neutral-200);
   --table-border-radius: var(--spacing--4);
   --cell-horizontal-padding: var(--spacing--6);
 }
@@ -8,8 +8,8 @@
 /* Dark Mode */
 @media (prefers-color-scheme: dark) {
   :root {
-    --table-even-background: var(--color-blue-dark--550);
-    --table-border-color: var(--color-blue-dark--400);
+    --table-even-background: var(--color-neutral-dark-500);
+    --table-border-color: var(--color-neutral-dark-400);
   }
 }
 

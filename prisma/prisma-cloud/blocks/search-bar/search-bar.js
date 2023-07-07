@@ -28,12 +28,11 @@ const TEMPLATE = /* html */ `
 </span>`;
 
 const TEMPLATE_CLOSE_ICON = `
-<svg focusable="false" aria-label="Clear" class="magic-box-clear-svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+<svg focusable="false" aria-label="Clear" class="magic-box-clear-svg" version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
 <title>Clear</title>
 <path class="ring" fill="none" stroke-linejoin="miter" stroke-linecap="butt" stroke-miterlimit="4" stroke-width="4" d="M30 16c0 7.732-6.268 14-14 14s-14-6.268-14-14c0-7.732 6.268-14 14-14s14 6.268 14 14z"></path>
 <path d="M22.41 22.41c0.787-0.787 0.787-2.062 0-2.849l-3.561-3.561 3.56-3.561c0.787-0.787 0.787-2.062 0-2.849s-2.062-0.787-2.849 0l-3.56 3.561-3.56-3.561c-0.787-0.787-2.062-0.787-2.849 0s-0.787 2.062 0 2.849l3.56 3.561-3.561 3.562c-0.787 0.787-0.787 2.062 0 2.849s2.062 0.787 2.849 0l3.561-3.562 3.561 3.561c0.787 0.787 2.062 0.787 2.849 0z"></path>
 </svg>
-
 `;
 
 function getCoveoConfig() {

@@ -14,12 +14,13 @@ import { ArticleInfo, ArticleResponse } from "./Article";
 import { BookDefinition } from "./Book";
 
 export interface EventMap {
-  'delayed:loaded': void;
-  'book:loaded': BookDefinition;
-  'article:loaded': ArticleInfo;
-  'header:loaded': void;
-  'blocks:loaded': void;
-  'spa:navigate:article': ArticleResponse & {
+  "delayed:loaded": void;
+  "book:loaded": BookDefinition;
+  "article:loaded": ArticleInfo;
+  "header:loaded": void;
+  "blocks:loaded": void;
+  "blog:loaded": void;
+  "spa:navigate:article": ArticleResponse & {
     docHref: string;
     siteHref: string;
   };
@@ -27,6 +28,8 @@ export interface EventMap {
 
 export type AnyEventType = keyof EventMap;
 
-export type EventHandler<T extends AnyEventType> = (data: EventMap[T]) => unknown | Promise<unknown>;
+export type EventHandler<T extends AnyEventType> = (
+  data: EventMap[T]
+) => unknown | Promise<unknown>;
 
 export type OffEventFn = () => void;

@@ -46,9 +46,11 @@ search-bar {
 }
 
 .search-bar #coveo-searchbox .magic-box .magic-box-input {
+  background: var(--search-background-color);
   border-top: 1px solid var(--search-border-color);
   border-bottom: 1px solid var(--search-border-color);
   border-radius: 0;
+  margin-left: -1px;
 }
 
 .search-bar #coveo-searchbox .magic-box .magic-box-input > input {

@@ -31,8 +31,9 @@
   --control-line-height--xs: var(--control-font-size--xs);
 
   /* General - can be used with all typography */
+  --letter-spacing-neg--xs: -0.0175em; /* -0.28px */
   --letter-spacing-neg--s: -0.02em;
-  --letter-spacing-neg--m: -0.04em;
+  --letter-spacing-neg--m: -1.28px;
   --letter-spacing-neg--lg: -0.05em;
 
   /* Depreciated */

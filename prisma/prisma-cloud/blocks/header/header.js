@@ -18,17 +18,19 @@ const TEMPLATE = /* html */ `
       <div class="nav-header">
           <div class="nav-header-top">
               <button class="btn-close-nav">
-                  <svg x="0px" y="0px" viewBox="0 0 128 128">
-                          <path d="M71.5,64l54.9-54.9c2.1-2.1,2.1-5.5,0-7.5c-2.1-2.1-5.5-2.1-7.5,0L64,56.5L9.1,1.6C7-0.5,3.6-0.5,1.6,1.6s-2.1,5.5,0,7.5 L56.5,64L1.6,118.9c-2.1,2.1-2.1,5.5,0,7.5c1,1,2.4,1.6,3.8,1.6s2.7-0.5,3.8-1.6L64,71.5l54.9,54.9c1,1,2.4,1.6,3.8,1.6 c1.4,0,2.7-0.5,3.8-1.6c2.1-2.1,2.1-5.5,0-7.5L71.5,64z"></path>
-                      </svg>
+              <svg class="icon icon-close" version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+                <title>Close</title>
+                <path d="M5.056 25.057c-0.521 0.521-0.521 1.365 0 1.886s1.365 0.521 1.886 0l9.057-9.057 9.057 9.057c0.521 0.521 1.365 0.521 1.886 0s0.521-1.365 0-1.886l-9.057-9.057 9.057-9.057c0.521-0.521 0.521-1.365 0-1.886s-1.365-0.521-1.886 0l-9.057 9.057-9.057-9.057c-0.521-0.521-1.365-0.521-1.886 0s-0.521 1.365 0 1.886l9.057 9.057-9.057 9.057z"></path>
+              </svg>
               </button>
           </div>
 
           <div class="nav-breadcrumbs">
               <button type="button" class="btn-back">
-                  <svg x="0px" y="0px" viewBox="0 0 13 10">
-          <path d="M0.2,5.4l4.3,4.3c0.2,0.3,0.6,0.3,0.9,0c0.3-0.2,0.3-0.7,0-0.9L2.3,5.7h9.8c0.4,0,0.7-0.3,0.7-0.7s-0.3-0.7-0.7-0.7H2.3 l3.1-3.1c0.3-0.2,0.3-0.7,0-0.9C5.2,0,4.8,0,4.6,0.3L0.2,4.5C0.1,4.8,0.1,5.2,0.2,5.4z"></path>
-        </svg>
+              <svg class="icon icon-back" version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+                <title>back</title>
+                <path d="M15.149 24.54c-0.733 0.747-1.921 0.747-2.654 0l-6.42-6.538c-1.167-1.188-1.167-3.116 0-4.304l6.42-6.538c0.733-0.747 1.921-0.747 2.654 0s0.734 1.96 0 2.708l-3.91 3.982h13.211c1.105 0 2 0.895 2 2s-0.895 2-2 2h-13.211l3.91 3.982c0.734 0.748 0.734 1.96 0 2.708z"></path>
+              </svg>
               </button>
               <ol class="breadcrumb">
                   <li class="active">
@@ -41,7 +43,12 @@ const TEMPLATE = /* html */ `
 
       <div class="nav-inner">
           <nav class="nav-menu-section">
-              <div class="nav-expand"><span></span><span></span></div>
+              <div class="nav-expand">
+              <svg class="icon icon-arrow" focusable="false" aria-label="Expand" version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+                <title>Right Arrow</title>
+                <path d="M7.527 0.669c-0.893 0.893-0.893 2.34 0 3.232l11.29 11.29c0.446 0.446 0.446 1.17 0 1.616l-11.29 11.29c-0.893 0.893-0.893 2.34 0 3.232s2.34 0.893 3.232 0l13.714-13.714c0.893-0.893 0.893-2.34 0-3.232l-13.714-13.714c-0.893-0.893-2.34-0.893-3.232 0z"></path>
+              </svg>
+              </div>
               <div class="nav-menu root-menu active">
                   <slot name="menu"></slot>
               </div>
@@ -411,8 +418,35 @@ function addEventListeners(block) {
     { once: true }
   );
 
+  const focusSearchInput = () => {
+    // Check for searchbar
+    const searchInput = searchPanel.querySelector(".magic-box-input input");
+
+    if (searchInput) {
+      // Wait a tick before focusing
+      setTimeout(() => {
+        searchInput.focus();
+      }, 100);
+    }
+  };
+
+  window.addEventListener("keydown", (e) => {
+    const { key } = e;
+    const searchIsActive = searchPanel.classList.contains("active");
+
+    if (key === "/" && !searchIsActive) {
+      searchPanel.classList.add("active");
+
+      // Focus on search input
+      focusSearchInput();
+    }
+  });
+
   searchButtonOpen.addEventListener("click", () => {
     searchPanel.classList.add("active");
+
+    // Focus on search input
+    focusSearchInput();
   });
 
   searchButtonClose.addEventListener("click", () => {
