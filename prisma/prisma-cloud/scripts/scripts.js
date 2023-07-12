@@ -687,6 +687,19 @@ export function debounce(fn, time = 600) {
 }
 
 /**
+ * @param {HTMLElement} main
+ */
+export function convertCodeIconsToText(main) {
+  main.querySelectorAll('code > span.icon').forEach((icon) => {
+    const text = icon.className.split('icon-').slice(1).join('icon-');
+    if (!text) return;
+
+    icon.insertAdjacentText('beforebegin', `:${text}:`);
+    icon.remove();
+  });
+}
+
+/**
  * Decorates the main element.
  * @param {Element} main The main element
  */
@@ -694,6 +707,7 @@ export function debounce(fn, time = 600) {
 export function decorateMain(main) {
   // hopefully forward compatible button decoration
   decorateButtons(main);
+  convertCodeIconsToText(main);
   decorateIcons(main);
   buildAutoBlocks(main);
   decorateSections(main);
