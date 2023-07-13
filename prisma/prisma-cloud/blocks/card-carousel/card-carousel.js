@@ -32,6 +32,7 @@ const SPLIDE_CONFIG = {
   omitEnd: true,
   padding: { right: 48 },
   perPage: 2,
+  perMove: 2,
   breakpoints: {
     768: {
       heightRatio: 0.6,
@@ -40,6 +41,7 @@ const SPLIDE_CONFIG = {
     560: {
       heightRatio: 1,
       perPage: 1,
+      perMove: 1,
     },
   },
 };

@@ -7,6 +7,8 @@ footer {
   background-color: var(--color-footer-background);
   color: var(--footer-text-color);
   font-size: var(--body-font-size-s);
+  position: relative;
+  z-index: var(--z-index-300--footer);
 }
 
 footer .footer > div > div {

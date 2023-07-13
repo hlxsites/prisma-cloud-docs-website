@@ -1,6 +1,6 @@
-:root {
+.procedure {
   --step-background-color: var(--color-blue--100);
-  --step-text-color: var(--color-neutral-100);
+  --step-text-color: var(--color-neutral-800);
 
   --substep-background-color: var(--color-neutral-black);
   --substep-text-color: var(--color-neutral-white);
@@ -8,12 +8,12 @@
 
 /* Dark Mode */
 @media (prefers-color-scheme: dark) {
-  :root {
+  [data-user-theme="dark"] .procedure {
     --step-background-color: var(--color-blue-dark--700);
     --step-text-color: var(--color-neutral-dark-050);
 
     --substep-background-color: var(--color-neutral-white);
-    --substep-text-color: var(--color-blue-dark--600);
+    --substep-text-color: var(--color-neutral-dark-600);
   }
 }
 

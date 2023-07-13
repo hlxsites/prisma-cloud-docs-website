@@ -33,7 +33,6 @@ async function renderXMLAsCards(url) {
       cards += `
     <li class="splide__slide">
         <a href="${link[0].textContent}" class="card">
-            <span class="chip"></span>
             <h5 class="title">
                 <span class="eyebrow"></span>
                 ${title[0].textContent}

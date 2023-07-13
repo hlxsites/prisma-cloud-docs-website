@@ -2,16 +2,11 @@
   --admonition-bar-color: var(--inline-link-text-color);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-  }
-}
-
 .pan-admonition {
   display: flex;
   flex-direction: column;
   hyphens: auto;
-  margin: var(--spacing--8) 0;
+  margin: var(--article-block-spacing) 0;
   padding-left: var(--spacing--5);
   position: relative;
   word-wrap: break-word;

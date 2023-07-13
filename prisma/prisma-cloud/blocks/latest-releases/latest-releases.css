@@ -105,6 +105,7 @@
   color: var(--color-neutral-900);
   display: inline-flex;
   font-size: var(--control-font-size--xs);
+  line-height: var(--control-line-height--xs);
   text-transform: uppercase;
   padding: var(--spacing--2) var(--spacing--4);
 }

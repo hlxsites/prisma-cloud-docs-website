@@ -9,7 +9,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  .book .search-bar {
+  [data-user-theme="dark"] .book .search-bar {
     --search-background-color: var(--color-neutral-black);
     --search-border-color: var(--color-neutral-dark-600);
     --search-text-color: var(--color-neutral-white);
@@ -79,6 +79,7 @@ search-bar {
 
 .search-bar #coveo-searchbox .magic-box .magic-box-clear-svg {
   color: var(--search-text-color);
+  fill: var(--search-text-color);
 }
 
 .search-bar #coveo-searchbox .magic-box .magic-box-clear-svg .ring {
@@ -187,11 +188,12 @@ search-bar {
 .search-bar .dropdown-content {
   display: none;
   position: absolute;
-  min-width: 300px;
   overflow: auto;
   z-index: 1;
   top: 100%;
-  left: 0;
+  max-width: calc(100vw - var(--spacing--8));
+  left: auto;
+  right: 0;
   margin: 0;
   padding: 25px;
 

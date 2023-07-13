@@ -52,6 +52,7 @@ body {
   background-color: var(--color-body-background--light);
   display: none;
   overflow-x: hidden;
+  padding-top: var(--nav-height);
   margin: 0;
 }
 
@@ -71,7 +72,7 @@ body.landing-division {
 
 /* Light Mode / Dark Mode only available on docs */
 body.book {
-  background-color: var(--color-body-background);
+  background-color: var(--color-body-book-background);
   color: var(--color-body-text);
 }
 
@@ -90,7 +91,7 @@ header {
   height: var(--nav-height);
   margin: auto;
   position: relative;
-  z-index: 100;
+  z-index: var(--z-index-500--mobile-nav);
 }
 
 header:before {
@@ -189,12 +190,37 @@ samp {
   font-family: var(--fixed-font-family);
   font-size: 13px;
   line-height: 18px;
+  position: relative;
 }
 
 code,
 samp {
   color: var(--code-text-color);
   padding: 0.125em;
+}
+
+pre:hover button {
+  cursor: pointer;
+  opacity: 1;
+  pointer-events: all;
+}
+
+pre button {
+  background: transparent;
+  border: none;
+  color: var(--code-copy-text-color);
+  display: flex;
+  font-size: var(--spacing--6);
+  right: 0;
+  opacity: 0;
+  padding: var(--spacing--2);
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+}
+
+pre button svg path {
+  stroke: transparent;
 }
 
 pre {
@@ -301,9 +327,44 @@ a.button-primary--blue:hover,
   background-color: var(--primary-action-active-background-color);
 }
 
+.drawer {
+  background: var(--drawer-background-color);
+  border-radius: var(--spacing--4);
+  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, var(--drawer-box-shadow-opacity));
+  display: none;
+  flex-direction: column;
+  padding: var(--spacing--4) var(--spacing--6);
+  position: absolute;
+}
+
+.drawer.is-active {
+  display: flex;
+}
+
+.drawer a,
+.drawer button {
+  align-items: center;
+  background: transparent;
+  border: none;
+  border-radius: var(--spacing--2);
+  color: var(--drawer-action-text-color);
+  display: flex;
+  gap: var(--spacing--2);
+  font-family: var(--body-font-family);
+  min-width: 112px;
+  padding: var(--spacing--2);
+  text-decoration: none;
+}
+
+.drawer a:hover,
+.drawer button:hover {
+  background-color: var(--drawer-hover-background-color);
+  cursor: pointer;
+}
+
 /* Add space just beneath the nav */
 .book main > .section {
-  margin-top: var(--spacing--4);
+  margin-top: var(--article-top-spacing);
 }
 
 /* main .section {
@@ -432,18 +493,31 @@ main .breadcrumbs-container[data-section-status="loaded"] {
 }
 
 /* book template */
-/* .book {
-  background: rgb(244 244 242 / 50%);
-} */
+.book {
+  position: relative;
+}
+
+.book:before {
+  background: url("/prisma/prisma-cloud/assets/article-outline-background.webp")
+    0 0 no-repeat;
+  content: "";
+  opacity: 0.6;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  top: var(--nav-height);
+  height: 240px;
+  width: 120px;
+}
 
 .book .sidenav-container.article-container {
   display: flex;
-  padding: 0;
+  /* padding: 0 var(--article-top-spacing) 0 0; */
   flex-direction: column;
 }
 
 .book .article-wrapper {
-  max-width: calc(min(100vw, 1400px) - 330px);
+  /* max-width: calc(min(100vw, 1400px) - 330px); */
   display: flex;
   flex-direction: column;
   align-self: stretch;
@@ -452,7 +526,8 @@ main .breadcrumbs-container[data-section-status="loaded"] {
 }
 
 .book .sidenav-container.aside-close .article-wrapper {
-  max-width: min(100vw, 1400px);
+  /* max-width: min(100vw, 1400px); */
+  width: 100%;
 }
 
 @media (min-width: 768px) {
@@ -462,9 +537,9 @@ main .breadcrumbs-container[data-section-status="loaded"] {
 
   .book .sidenav-wrapper {
     min-width: 375px;
-    max-width: 375px;
+    /* max-width: 375px; */
     position: sticky;
-    top: 0;
+    top: calc(var(--nav-height) + var(--article-top-spacing));
     display: flex;
     flex-direction: column;
     z-index: 1;

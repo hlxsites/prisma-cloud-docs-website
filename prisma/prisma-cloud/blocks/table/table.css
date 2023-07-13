@@ -1,4 +1,4 @@
-:root {
+.table {
   --table-even-background: var(--color-neutral-050);
   --table-border-color: var(--color-neutral-200);
   --table-border-radius: var(--spacing--4);
@@ -7,7 +7,7 @@
 
 /* Dark Mode */
 @media (prefers-color-scheme: dark) {
-  :root {
+  [data-user-theme="dark"] .table {
     --table-even-background: var(--color-neutral-dark-500);
     --table-border-color: var(--color-neutral-dark-400);
   }

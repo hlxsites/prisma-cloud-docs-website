@@ -17,11 +17,11 @@ const TEMPLATE = /* html */ `
   <section class="pan-mobile-nav">
       <div class="nav-header">
           <div class="nav-header-top">
-              <button class="btn-close-nav">
-              <svg class="icon icon-close" version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-                <title>Close</title>
-                <path d="M5.056 25.057c-0.521 0.521-0.521 1.365 0 1.886s1.365 0.521 1.886 0l9.057-9.057 9.057 9.057c0.521 0.521 1.365 0.521 1.886 0s0.521-1.365 0-1.886l-9.057-9.057 9.057-9.057c0.521-0.521 0.521-1.365 0-1.886s-1.365-0.521-1.886 0l-9.057 9.057-9.057-9.057c-0.521-0.521-1.365-0.521-1.886 0s-0.521 1.365 0 1.886l9.057 9.057-9.057 9.057z"></path>
-              </svg>
+              <button class="btn-close btn-close-nav">
+                <svg class="icon icon-close" version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+                  <title>Close</title>
+                  <path d="M5.056 25.057c-0.521 0.521-0.521 1.365 0 1.886s1.365 0.521 1.886 0l9.057-9.057 9.057 9.057c0.521 0.521 1.365 0.521 1.886 0s0.521-1.365 0-1.886l-9.057-9.057 9.057-9.057c0.521-0.521 0.521-1.365 0-1.886s-1.365-0.521-1.886 0l-9.057 9.057-9.057-9.057c-0.521-0.521-1.365-0.521-1.886 0s-0.521 1.365 0 1.886l9.057 9.057-9.057 9.057z"></path>
+                </svg>
               </button>
           </div>
 
@@ -102,7 +102,7 @@ const TEMPLATE = /* html */ `
       <search-bar data-default-option="all"></search-bar>
 
       <!-- Start: Coveo Search Box Implementation -->
-      <button class="search-panel-close locale-search-panel-close">
+      <button class="btn-close search-panel-close locale-search-panel-close">
         <svg class="icon search-panel-close-icon" version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
           <title>Close</title>
           <path d="M5.056 25.057c-0.521 0.521-0.521 1.365 0 1.886s1.365 0.521 1.886 0l9.057-9.057 9.057 9.057c0.521 0.521 1.365 0.521 1.886 0s0.521-1.365 0-1.886l-9.057-9.057 9.057-9.057c0.521-0.521 0.521-1.365 0-1.886s-1.365-0.521-1.886 0l-9.057 9.057-9.057-9.057c-0.521-0.521-1.365-0.521-1.886 0s-0.521 1.365 0 1.886l9.057 9.057-9.057 9.057z"></path>
@@ -122,6 +122,18 @@ const TEMPLATE = /* html */ `
               <slot name="logo-menu"></slot>
           </div>
       </section>
+
+      <button type="button" class="action-icon nav-open-booksmenu">
+          <svg focusable="false" class="icon icon-books" version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+            <title>Show Docs</title>
+            <path fill="none" stroke-linejoin="miter" stroke-linecap="butt" stroke-miterlimit="4" stroke-width="3" d="M6 3.5h20c1.381 0 2.5 1.119 2.5 2.5v20c0 1.381-1.119 2.5-2.5 2.5h-20c-1.381 0-2.5-1.119-2.5-2.5v-20c0-1.381 1.119-2.5 2.5-2.5z"></path>
+            <path fill="none" stroke-linejoin="miter" stroke-linecap="butt" stroke-miterlimit="4" stroke-width="3"  d="M12.833 2v25.667"></path>          
+          </svg>
+          <svg class="icon icon-close" version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+          <title>Close</title>
+          <path d="M5.056 25.057c-0.521 0.521-0.521 1.365 0 1.886s1.365 0.521 1.886 0l9.057-9.057 9.057 9.057c0.521 0.521 1.365 0.521 1.886 0s0.521-1.365 0-1.886l-9.057-9.057 9.057-9.057c0.521-0.521 0.521-1.365 0-1.886s-1.365-0.521-1.886 0l-9.057 9.057-9.057-9.057c-0.521-0.521-1.365-0.521-1.886 0s-0.521 1.365 0 1.886l9.057 9.057-9.057 9.057z"></path>
+        </svg>
+      </button>
 
       <!-- Menu -->
       <section class="nav-menu-section">
@@ -146,7 +158,7 @@ const TEMPLATE = /* html */ `
                 <div class="nav-search-key">/</div>
               </button>
 
-              <button type="button" class="nav-open-sidemenu">
+              <button type="button" class="action-icon nav-open-sidemenu">
                   <!-- <span class="locale-menu"></span> -->
                   <svg focusable="false" class="icon icon-hamburger" version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
                     <title>Menu</title>
@@ -206,11 +218,13 @@ function localize(block) {
  * @param {Element} block The header block element
  */
 function addEventListeners(block) {
+  const mobileBooksNav = document.querySelector(".sidenav-container");
   const mobileNav = block.querySelector(".pan-mobile-nav");
   const desktopNav = block.querySelector(".pan-desktop-nav");
   const searchPanel = block.querySelector(".pan-search-panel");
 
   /* Mobile */
+  const mobileBooksMenuButton = block.querySelector(".nav-open-booksmenu");
   const mobileNavCloseButton = mobileNav.querySelector(
     ".pan-mobile-nav .btn-close-nav"
   );
@@ -249,6 +263,13 @@ function addEventListeners(block) {
 
     return clone;
   };
+
+  mobileBooksMenuButton.addEventListener("click", () => {
+    document.body.classList.add("no-body-scroll");
+    console.log(" mobileBooksNav: ", mobileBooksNav);
+    mobileBooksMenuButton.classList.toggle("is-active");
+    mobileBooksNav.classList.toggle("aside-close");
+  });
 
   mobileMenuButton.addEventListener("click", () => {
     document.body.classList.add("no-body-scroll");
