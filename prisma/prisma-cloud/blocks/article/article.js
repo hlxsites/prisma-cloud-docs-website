@@ -180,7 +180,7 @@ async function renderContent(block, hrefOrRes, rerender = false) {
   const docTitle = document.createElement("a");
   docTitle.setAttribute("slot", "document");
   docTitle.href = window.location.href.split("/").slice(0, -2).join("/");
-  docTitle.textContent = store.mainBook.title;
+  docTitle.textContent = store?.mainBook?.title;
   fragment.append(docTitle);
 
   if (articleFound) {

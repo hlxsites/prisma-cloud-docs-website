@@ -47,7 +47,8 @@
   display: grid;
   grid-auto-flow: column;
   /* Handle rows where there's only one item */
-  grid-template-columns: fit-content(calc(50% - var(--spacing--8))) auto;
+  /* grid-template-columns: fit-content(calc(50% - var(--spacing--8))) auto; */
+  grid-template-columns: calc(50% - var(--spacing--8));
 }
 
 /* .latest-releases > div:not(:first-child) {

@@ -118,7 +118,6 @@ export class SearchBar extends HTMLElement {
       appendDropdown.prepend(bookOption);
     }
     if (defaultOption) {
-      console.log("defaultOption: ", defaultOption);
       const targetOption = this.querySelector(
         `[data-value="${defaultOption}"]`
       );
@@ -128,7 +127,6 @@ export class SearchBar extends HTMLElement {
           "selected"
         );
         targetOption.classList.add("selected");
-        console.log("targetOption: ", targetOption);
         this.querySelector(".dropbtn").textContent = targetOption.textContent;
       }
     }
@@ -185,9 +183,11 @@ export class SearchBar extends HTMLElement {
         }
       });
       Coveo.initSearchbox(searchBoxRoot, searchPageURL);
-      const dropDownOpen = this.querySelector(".dropbtn");
-      const dropDownLoad = this.querySelector(".dropdown-content");
+      const dropDown = this.querySelector(".dropdown");
+      const dropDownOpen = dropDown.querySelector(".dropbtn");
+      const dropDownLoad = dropDown.querySelector(".dropdown-content");
       dropDownOpen.addEventListener("click", () => {
+        dropDown.classList.toggle("is-active");
         if (dropDownLoad.style.display === "none") {
           dropDownLoad.style.display = "block";
         } else {

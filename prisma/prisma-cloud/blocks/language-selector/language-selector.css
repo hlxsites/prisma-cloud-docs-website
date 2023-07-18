@@ -1,4 +1,4 @@
-.theme-toggle {
+.language-selector {
   --border-color: var(--color-blue--100);
 
   --selected-background-color: var(--color-neutral-white);
@@ -6,7 +6,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  [data-user-theme="dark"] .book .theme-toggle {
+  [data-user-theme="dark"] .book .language-selector {
     --border-color: var(--color-neutral-dark-400);
 
     --selected-border-color: var(--border-color);
@@ -14,22 +14,25 @@
   }
 }
 
-.theme-toggle {
+language-selector.is-disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.language-selector {
   align-items: center;
-  border-top: 1px solid var(--border-color);
   display: flex;
   justify-content: space-between;
-  margin-top: var(--spacing--4);
-  padding: var(--spacing--4) var(--spacing--6);
+  /* padding: var(--spacing--4) var(--spacing--6); */
   position: relative;
   width: 100%;
 }
 
-.theme-toggle button:hover {
+.language-selector button:hover {
   cursor: pointer;
 }
 
-.theme-toggle .selected {
+.language-selector .selected {
   align-items: center;
   background: var(--selected-background-color);
   border-radius: var(--spacing--8);
@@ -43,16 +46,16 @@
   position: relative;
 }
 
-.theme-toggle .icon-down-arrow {
+.language-selector .icon-down-arrow {
   position: absolute;
   right: var(--spacing--4);
 }
 
-.theme-toggle .drawer.is-active + .selected .icon-down-arrow {
+.language-selector .drawer.is-active + .selected .icon-down-arrow {
   transform: scaleY(-1);
 }
 
-.theme-toggle .drawer {
+.language-selector .drawer {
   position: absolute;
   right: 0;
   top: calc(var(--drawer-margin-gap) * -1);

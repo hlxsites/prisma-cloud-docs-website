@@ -33,6 +33,7 @@
 
   /* nav height */
   --nav-height: 64px;
+  --nav-height--book: 122px;
 
   /* max width */
   --max-width: 1400px;
@@ -111,6 +112,11 @@
   --z-index-500--mobile-nav: var(--z-index-500);
 
   /* Tier 2 variables (High-level variables) */
+  --action-ease-duration: 0.2s;
+  --action-ease-function: ease;
+  --theme-transition-ease-duration: 0.2s;
+  --theme-transition-ease-function: ease;
+
   --color-body-background: var(--color-neutral-50);
   --color-body-background--light: var(--color-neutral-50);
   --color-body-book-background: var(--color-blue--050);
@@ -208,6 +214,7 @@
   --mobile-drawer-background-color: var(--color-neutral-white);
 
   --search-background-color: var(--color-neutral-white);
+  --search-hover-background-color: var(--color-neutral-050);
   --search-border-radius: 24px;
   --search-border-color: var(--color-neutral-100);
   --search-text-color: var(--color-neutral-black);
@@ -279,5 +286,11 @@
 
   html {
     color-scheme: dark;
+  }
+}
+
+@media (max-width: 900px) {
+  :root {
+    --nav-height: 72px;
   }
 }

@@ -81,6 +81,7 @@ export default async function decorate(block) {
   if (!headless) {
     const head = rows.shift();
     if (!head) return;
+    console.log("head: ", head);
 
     const cells = [...head.querySelectorAll(":scope > div")];
     const thead = html` <table>

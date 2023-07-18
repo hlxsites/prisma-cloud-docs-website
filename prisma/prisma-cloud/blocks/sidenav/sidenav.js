@@ -369,11 +369,11 @@ function addEventListeners(wrapper) {
   let desktopTriggered = false;
   const handleWindowResize = debounce((event) => {
     ww = window.innerWidth;
-    if (ww < 768 && !mobileTriggered) {
+    if (ww < 900 && !mobileTriggered) {
       mobileTriggered = true;
       desktopTriggered = false;
       wrapper.parentElement.classList.add("aside-close");
-    } else if (ww >= 768 && !desktopTriggered) {
+    } else if (ww >= 900 && !desktopTriggered) {
       mobileTriggered = false;
       desktopTriggered = true;
       wrapper.parentElement.classList.remove("aside-close");
@@ -465,7 +465,6 @@ function addEventListeners(wrapper) {
     const maxWidth = ww / 2;
     const targetSize = e.x;
     const size = `${targetSize}px`;
-    console.log("size: ", size);
     if (targetSize < maxWidth && targetSize >= minWidth) {
       sidebar.style.flexBasis = size;
       resizer.style.transform = `translateX(${size})`;

@@ -13,6 +13,7 @@ import {
   loadCSS,
   loadFooter,
   loadHeader,
+  loadLanguageSelector,
   sampleRUM,
   toClassName,
   updateSectionsStatus,
@@ -63,7 +64,7 @@ export function getPlaceholders() {
 }
 
 export function isMobile() {
-  return window.screen.width < 768;
+  return window.screen.width < 900;
 }
 
 function getEnv() {
@@ -277,6 +278,30 @@ const store = new (class {
         languages = bookRow.Languages.split(",").map((l) => l.trim());
       }
     }
+
+    return {
+      langMap,
+      languages,
+    };
+  }
+
+  async getNonBookLocalizationInfo() {
+    const data = await this.fetchJSON("/prisma/prisma-cloud/languages", [
+      "default",
+    ]);
+
+    const { languages, langMap } = (data.data || []).reduce(
+      (prev, row) => {
+        prev.languages.push(row.Key);
+        prev.langMap[row.Key] = row.Title;
+
+        return prev;
+      },
+      {
+        langMap: {},
+        languages: [],
+      }
+    );
 
     return {
       langMap,
@@ -804,6 +829,7 @@ async function loadLazy(doc) {
   if (hash && element) element.scrollIntoView();
 
   loadHeader(doc.querySelector("header"));
+  loadLanguageSelector(doc.querySelector("footer"));
   loadFooter(doc.querySelector("footer"));
 
   if (doc.body.classList.contains("book")) {

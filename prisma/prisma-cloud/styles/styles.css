@@ -74,6 +74,10 @@ body.landing-division {
 body.book {
   background-color: var(--color-body-book-background);
   color: var(--color-body-text);
+  transition: background-color var(--theme-transition-ease-duration)
+      var(--theme-transition-ease-function),
+    color var(--theme-transition-ease-duration)
+      var(--theme-transition-ease-function);
 }
 
 body.appear {
@@ -107,8 +111,12 @@ header:before {
 
 /* Themed header */
 .book header {
-  background: var(--header-background);
+  background-color: var(--header-background);
   border-bottom: 1px solid var(--header-border);
+  transition: background-color var(--theme-transition-ease-duration)
+      var(--theme-transition-ease-function),
+    border-color var(--theme-transition-ease-duration)
+      var(--theme-transition-ease-function);
 }
 
 /* body main {
@@ -197,6 +205,8 @@ code,
 samp {
   color: var(--code-text-color);
   padding: 0.125em;
+  transition: color var(--theme-transition-ease-duration)
+    var(--theme-transition-ease-function);
 }
 
 pre:hover button {
@@ -232,6 +242,8 @@ main pre {
   border-radius: var(--spacing--4);
   padding: 40px 21px 32px;
   overflow-x: auto;
+  transition: background-color var(--action-ease-duration)
+    var(--action-ease-function);
   white-space: pre;
 }
 
@@ -342,6 +354,7 @@ a.button-primary--blue:hover,
 }
 
 .drawer a,
+.drawer div.has-icon,
 .drawer button {
   align-items: center;
   background: transparent;
@@ -530,7 +543,7 @@ main .breadcrumbs-container[data-section-status="loaded"] {
   width: 100%;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 901px) {
   .book .sidenav-container.article-container {
     flex-direction: row;
   }
@@ -550,6 +563,13 @@ main .breadcrumbs-container[data-section-status="loaded"] {
 
   .book .article-wrapper {
     /* padding-right: 30px; */
+  }
+}
+
+/* Mobile adjustments for TOC nav */
+@media only screen and (max-width: 900px) {
+  body.book {
+    padding-top: var(--nav-height--book);
   }
 }
 

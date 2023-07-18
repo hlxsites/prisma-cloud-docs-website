@@ -125,9 +125,13 @@ class ThemeToggle extends HTMLElement {
   }
 
   applySetting(passedSetting) {
+    const browserSetting = window.matchMedia("(prefers-color-scheme: dark)")
+      .matches
+      ? "dark"
+      : "light";
     // Attempts to load the setting from local storage
     const currentSetting =
-      passedSetting || localStorage.getItem(this.STORAGE_KEY);
+      passedSetting || localStorage.getItem(this.STORAGE_KEY) || browserSetting;
 
     if (currentSetting) {
       this.setToggleSwitchStatus(currentSetting);

@@ -11,6 +11,8 @@ import {
   render,
   renderBreadCrumbs,
 } from "../../scripts/scripts.js";
+import "../language-selector/language-selector.js";
+import "../theme-toggle/theme-toggle.js";
 
 const TEMPLATE = /* html */ `    
   <!-- Mobile -->
@@ -27,10 +29,10 @@ const TEMPLATE = /* html */ `
 
           <div class="nav-breadcrumbs">
               <button type="button" class="btn-back">
-              <svg class="icon icon-back" version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-                <title>back</title>
-                <path d="M15.149 24.54c-0.733 0.747-1.921 0.747-2.654 0l-6.42-6.538c-1.167-1.188-1.167-3.116 0-4.304l6.42-6.538c0.733-0.747 1.921-0.747 2.654 0s0.734 1.96 0 2.708l-3.91 3.982h13.211c1.105 0 2 0.895 2 2s-0.895 2-2 2h-13.211l3.91 3.982c0.734 0.748 0.734 1.96 0 2.708z"></path>
-              </svg>
+                <svg class="icon icon-back" version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+                  <title>back</title>
+                  <path d="M15.149 24.54c-0.733 0.747-1.921 0.747-2.654 0l-6.42-6.538c-1.167-1.188-1.167-3.116 0-4.304l6.42-6.538c0.733-0.747 1.921-0.747 2.654 0s0.734 1.96 0 2.708l-3.91 3.982h13.211c1.105 0 2 0.895 2 2s-0.895 2-2 2h-13.211l3.91 3.982c0.734 0.748 0.734 1.96 0 2.708z"></path>
+                </svg>
               </button>
               <ol class="breadcrumb">
                   <li class="active">
@@ -61,37 +63,8 @@ const TEMPLATE = /* html */ `
       </div>
 
       <div class="nav-bottom">
-          <div class="nav-lang">
-              <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  EN
-                  <svg width="9" height="6" viewBox="0 0 9 6">
-                      <g fill="none">
-                          <g>
-                              <path d="M 0 0L 3.5 3.5L 7 0" transform="translate(1 1)" stroke="white" stroke-width="1.5"
-                                    stroke-linecap="round" stroke-linejoin="round"></path>
-                          </g>
-                      </g>
-                  </svg>
-              </button>
-              <div class="dropdown-menu">
-                  <div>
-                      <span class="locale-location"></span>
-                      <button>
-                          <svg width="12" height="12" viewBox="0 0 12 12">
-                              <g fill="none">
-                                  <g>
-                                      <path d="M 10 0L 0 10" transform="translate(1 1)" stroke="#36424B"
-                                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                      <path d="M 0 0L 10 10" transform="translate(1 1)" stroke="#36424B"
-                                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                  </g>
-                              </g>
-                          </svg>
-                      </button>
-                  </div>
-                  <ul class="language-list"></ul>
-              </div>
-          </div>
+        <theme-toggle></theme-toggle>
+        <language-selector></language-selector>
       </div>
   </section>
 
@@ -113,34 +86,34 @@ const TEMPLATE = /* html */ `
 
   <!-- Desktop -->
   <div class="pan-desktop-nav">
+      <button type="button" class="action-icon nav-open-sidemenu">
+          <!-- <span class="locale-menu"></span> -->
+          <svg focusable="false" class="icon icon-hamburger" version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+            <title>Menu</title>
+            <path d="M7.5 7h17c0.828 0 1.5 0.672 1.5 1.5s-0.672 1.5-1.5 1.5h-17c-0.828 0-1.5-0.672-1.5-1.5s0.672-1.5 1.5-1.5z"></path>
+            <path d="M7.5 21h17c0.828 0 1.5 0.672 1.5 1.5s-0.672 1.5-1.5 1.5h-17c-0.828 0-1.5-0.672-1.5-1.5s0.672-1.5 1.5-1.5z"></path>
+            <path d="M7.5 14h17c0.828 0 1.5 0.672 1.5 1.5s-0.672 1.5-1.5 1.5h-17c-0.828 0-1.5-0.672-1.5-1.5s0.672-1.5 1.5-1.5z"></path>
+          </svg>
+      </button>
       <!-- Logo -->
       <section class="nav-logo-section dropdown">
           <div class="nav-logo">
               <slot name="logo"></slot>
+              <svg class="icon icon-arrow" focusable="false" aria-label="Expand" version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+                <title>Arrow</title>
+                <path d="M7.527 0.669c-0.893 0.893-0.893 2.34 0 3.232l11.29 11.29c0.446 0.446 0.446 1.17 0 1.616l-11.29 11.29c-0.893 0.893-0.893 2.34 0 3.232s2.34 0.893 3.232 0l13.714-13.714c0.893-0.893 0.893-2.34 0-3.232l-13.714-13.714c-0.893-0.893-2.34-0.893-3.232 0z"></path>
+              </svg>
           </div>
-          <div class="nav-logo-menu">
+          <div class="nav-logo-menu drawer">
               <slot name="logo-menu"></slot>
           </div>
       </section>
-
-      <button type="button" class="action-icon nav-open-booksmenu">
-          <svg focusable="false" class="icon icon-books" version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-            <title>Show Docs</title>
-            <path fill="none" stroke-linejoin="miter" stroke-linecap="butt" stroke-miterlimit="4" stroke-width="3" d="M6 3.5h20c1.381 0 2.5 1.119 2.5 2.5v20c0 1.381-1.119 2.5-2.5 2.5h-20c-1.381 0-2.5-1.119-2.5-2.5v-20c0-1.381 1.119-2.5 2.5-2.5z"></path>
-            <path fill="none" stroke-linejoin="miter" stroke-linecap="butt" stroke-miterlimit="4" stroke-width="3"  d="M12.833 2v25.667"></path>          
-          </svg>
-          <svg class="icon icon-close" version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-          <title>Close</title>
-          <path d="M5.056 25.057c-0.521 0.521-0.521 1.365 0 1.886s1.365 0.521 1.886 0l9.057-9.057 9.057 9.057c0.521 0.521 1.365 0.521 1.886 0s0.521-1.365 0-1.886l-9.057-9.057 9.057-9.057c0.521-0.521 0.521-1.365 0-1.886s-1.365-0.521-1.886 0l-9.057 9.057-9.057-9.057c-0.521-0.521-1.365-0.521-1.886 0s-0.521 1.365 0 1.886l9.057 9.057-9.057 9.057z"></path>
-        </svg>
-      </button>
 
       <!-- Menu -->
       <section class="nav-menu-section">
           <nav class="nav">
               <section class="nav-list">
                   <slot name="menu"></slot>
-                  <img src="/prisma/prisma-cloud/assets/tdlogo-2020-white.webp" alt/>
               </section>
 
               <section class="nav-menu-dropdown">
@@ -157,20 +130,24 @@ const TEMPLATE = /* html */ `
                 <span class="nav-search-title">Search All Documentation</span>
                 <div class="nav-search-key">/</div>
               </button>
-
-              <button type="button" class="action-icon nav-open-sidemenu">
-                  <!-- <span class="locale-menu"></span> -->
-                  <svg focusable="false" class="icon icon-hamburger" version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-                    <title>Menu</title>
-                    <path d="M7.5 7h17c0.828 0 1.5 0.672 1.5 1.5s-0.672 1.5-1.5 1.5h-17c-0.828 0-1.5-0.672-1.5-1.5s0.672-1.5 1.5-1.5z"></path>
-                    <path d="M7.5 21h17c0.828 0 1.5 0.672 1.5 1.5s-0.672 1.5-1.5 1.5h-17c-0.828 0-1.5-0.672-1.5-1.5s0.672-1.5 1.5-1.5z"></path>
-                    <path d="M7.5 14h17c0.828 0 1.5 0.672 1.5 1.5s-0.672 1.5-1.5 1.5h-17c-0.828 0-1.5-0.672-1.5-1.5s0.672-1.5 1.5-1.5z"></path>
-                  </svg>
-              </button>
           </section>
       </section>
   </div>
 
+  <div class="nav-mobile-books">
+  <button type="button" class="nav-open-booksmenu">
+    <svg focusable="false" class="icon icon-books" version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+      <title>Show Docs</title>
+      <path fill="none" stroke-linejoin="miter" stroke-linecap="butt" stroke-miterlimit="4" stroke-width="3" d="M6 3.5h20c1.381 0 2.5 1.119 2.5 2.5v20c0 1.381-1.119 2.5-2.5 2.5h-20c-1.381 0-2.5-1.119-2.5-2.5v-20c0-1.381 1.119-2.5 2.5-2.5z"></path>
+      <path fill="none" stroke-linejoin="miter" stroke-linecap="butt" stroke-miterlimit="4" stroke-width="3"  d="M12.833 2v25.667"></path>          
+    </svg>
+    <span class="label">Table of Contents</span>
+    <svg class="icon icon-arrow" focusable="false" aria-label="Expand" version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+      <title>Right Arrow</title>
+      <path d="M7.527 0.669c-0.893 0.893-0.893 2.34 0 3.232l11.29 11.29c0.446 0.446 0.446 1.17 0 1.616l-11.29 11.29c-0.893 0.893-0.893 2.34 0 3.232s2.34 0.893 3.232 0l13.714-13.714c0.893-0.893 0.893-2.34 0-3.232l-13.714-13.714c-0.893-0.893-2.34-0.893-3.232 0z"></path>
+    </svg>
+</button>
+</div>
   <!-- Background themed banner -->
   <div class="pan-banner"></div>`;
 
@@ -203,13 +180,13 @@ async function load() {
 function localize(block) {
   queueMicrotask(async () => {
     const ph = await getPlaceholders();
-    block.querySelector(".locale-home").textContent = ph.home;
-    block.querySelector(".locale-location").textContent = ph.location;
-    block.querySelector(".locale-menu").textContent = ph.menu;
+    block.querySelector(".locale-home").textContent = ph?.home;
+    block.querySelector(".locale-location").textContent = ph?.location;
+    block.querySelector(".locale-menu").textContent = ph?.menu;
     block.querySelector(".locale-search-panel-close").ariaLabel =
-      ph.searchPanelClose;
+      ph?.searchPanelClose;
     block.querySelector(".locale-search-panel-open").ariaLabel =
-      ph.searchPanelOpen;
+      ph?.searchPanelOpen;
   });
 }
 
@@ -265,7 +242,7 @@ function addEventListeners(block) {
   };
 
   mobileBooksMenuButton.addEventListener("click", () => {
-    document.body.classList.add("no-body-scroll");
+    document.body.classList.toggle("no-body-scroll");
     console.log(" mobileBooksNav: ", mobileBooksNav);
     mobileBooksMenuButton.classList.toggle("is-active");
     mobileBooksNav.classList.toggle("aside-close");
@@ -481,6 +458,10 @@ function addEventListeners(block) {
   const desktopDropdown = desktopNav.querySelector(".nav-menu-dropdown");
   const desktopMenus = desktopDropdown.querySelectorAll("div > ul");
 
+  desktopMenus.forEach((menu) => {
+    menu.classList.add("drawer");
+  });
+
   const clearActive = () => {
     for (const item of desktopNavListItems) {
       item.classList.remove("active");
@@ -582,8 +563,6 @@ export default async function decorate(block) {
   const desktopNav = template.querySelector(".pan-desktop-nav");
   const navList = desktopNav.querySelector(".nav-list");
   const navListItems = navList.querySelectorAll("span");
-  const backgroundImage = navList.querySelector("img");
-  navListItems.forEach((item) => item.append(backgroundImage.cloneNode(true)));
 
   const navMenuDropdown = desktopNav.querySelector(".nav-menu-dropdown");
   for (const menuWithIcon of [...navMenuDropdown.querySelectorAll("li")].filter(
@@ -662,7 +641,7 @@ export default async function decorate(block) {
   navMobileMenuExpand.remove();
 
   block.firstElementChild.replaceWith(...template.children);
-  localize(block);
+  // localize(block);
   addEventListeners(block);
   decorateIcons(block);
 

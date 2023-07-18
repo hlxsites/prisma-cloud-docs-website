@@ -2,6 +2,8 @@
   --table-even-background: var(--color-neutral-050);
   --table-border-color: var(--color-neutral-200);
   --table-border-radius: var(--spacing--4);
+  --table-head-text-color: var(--color-neutral-900);
+
   --cell-horizontal-padding: var(--spacing--6);
 }
 
@@ -10,6 +12,7 @@
   [data-user-theme="dark"] .table {
     --table-even-background: var(--color-neutral-dark-500);
     --table-border-color: var(--color-neutral-dark-400);
+    --table-head-text-color: var(--color-neutral-dark-100);
   }
 }
 
@@ -20,16 +23,21 @@
   line-height: var(--body-line-height--p3);
   margin-top: var(--spacing--10);
   margin-bottom: var(--spacing--16);
+  table-layout: fixed;
   width: 100%;
 }
 
 .table thead th {
-  color: #fff;
+  color: var(--table-head-text-color);
   background-color: var(--table-even-background);
   border-bottom: 1px solid var(--table-border-color);
   border-top: 1px solid var(--table-border-color);
   padding: 20px var(--cell-horizontal-padding);
   text-align: left;
+  transition: background-color var(--action-ease-duration)
+      var(--action-ease-function),
+    border-color var(--action-ease-duration) var(--action-ease-function),
+    color var(--action-ease-duration) var(--action-ease-function);
 }
 
 .table thead th:first-child {
@@ -49,6 +57,9 @@
 .table tbody tr td {
   border-bottom: 1px solid var(--table-border-color);
   padding: var(--spacing--4) var(--cell-horizontal-padding);
+  transition: background-color var(--action-ease-duration)
+      var(--action-ease-function),
+    border-color var(--action-ease-duration) var(--action-ease-function);
   vertical-align: top;
 }
 

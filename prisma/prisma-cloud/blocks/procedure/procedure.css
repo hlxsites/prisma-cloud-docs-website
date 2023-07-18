@@ -35,7 +35,7 @@
 }
 
 .procedure ol.steps li.step::before {
-  background: var(--step-background-color);
+  background-color: var(--step-background-color);
   border-radius: 38px;
   counter-increment: step-counter;
   content: "STEP " counter(step-counter) "";
@@ -46,6 +46,9 @@
   position: absolute;
   text-align: center;
   /* transform: translateX(-100%); */
+  transition: background-color var(--action-ease-duration)
+      var(--action-ease-function),
+    color var(--action-ease-duration) var(--action-ease-function);
   width: 72px;
   text-align: left;
   top: -3px;
