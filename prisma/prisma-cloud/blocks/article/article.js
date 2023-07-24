@@ -234,9 +234,8 @@ async function renderContent(block, hrefOrRes, rerender = false) {
     const bookContent = block.querySelector('.book-content div[slot="content"]');
     if (bookContent) {
       decorateMain(bookContent);
-      loadBlocks(bookContent).then(() => {
-        updateSectionsStatus(bookContent);
-      });
+      await loadBlocks(bookContent);
+      updateSectionsStatus(bookContent);
     }
   }
 }
