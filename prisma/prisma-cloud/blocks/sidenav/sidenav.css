@@ -460,7 +460,7 @@
 
 .pan-sidenav .toc-books li[data-key] > div:hover a,
 .pan-sidenav .toc-books li:not([data-key]) > div:hover a {
-  background: var(--book-active-background-color);
+  background-color: var(--tertiary-action-active-background-color);
 }
 
 /* Book Focus */
@@ -643,7 +643,7 @@
     background: var(--mobile-drawer-background-color);
     left: 0;
     height: calc(100% - var(--nav-height--book));
-    top: var(--nav-height--book);
+    top: calc(var(--nav-height--book) - 1px);
     overflow: auto;
     padding-top: var(--spacing--4);
     position: fixed;

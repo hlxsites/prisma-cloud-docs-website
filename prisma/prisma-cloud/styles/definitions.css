@@ -128,8 +128,8 @@
 
   --primary-action-background-color: var(--color-blue--500);
   --primary-action-text-color: var(--color-neutral-white);
-  --primary-action-active-background-color: var(--color-blue--400);
-  --primary-action-active-text-color: var(--color-neutral-black);
+  --primary-action-active-background-color: var(--color-neutral-800);
+  --primary-action-active-text-color: var(--color-neutral-white);
   --primary-action-border-radius: 50px;
 
   --primary-action-outline-border-color: var(--color-neutral-800);
@@ -186,7 +186,7 @@
   --article-top-spacing: var(--spacing--4);
   --article-max-width: 1344px;
 
-  --book-active-background-color: var(--color-neutral-050);
+  --book-active-background-color: var(--color-blue--100);
   --book-active-text-color: var(--color-neutral-800);
   --book-focus-background-color: var(--book-active-background-color);
   --book-focus-border-color: #6492f7;
@@ -245,8 +245,8 @@
 
     --primary-action-background-color: var(--color-neutral-white);
     --primary-action-text-color: var(--color-neutral-black);
-    --primary-action-active-background-color: var(--color-neutral-black);
-    --primary-action-active-text-color: var(--color-neutral-white);
+    --primary-action-active-background-color: var(--color-neutral-dark-200);
+    --primary-action-active-text-color: var(--color-neutral-black);
     --primary-background: var(--color-blue-dark--800);
 
     --tertiary-action-text-color: var(--color-neutral-white);
