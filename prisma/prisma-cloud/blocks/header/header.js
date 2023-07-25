@@ -12,6 +12,7 @@ import {
   renderBreadCrumbs,
 } from "../../scripts/scripts.js";
 import "../language-selector/language-selector.js";
+import "../search-bar/search-bar.js";
 import "../theme-toggle/theme-toggle.js";
 
 const TEMPLATE = /* html */ `    
@@ -408,13 +409,13 @@ function addEventListeners(block) {
   const searchButtonOpen = desktopNav.querySelector(".nav-search-button");
   const searchButtonClose = searchPanel.querySelector(".search-panel-close");
 
-  searchButtonOpen.addEventListener(
-    "mouseenter",
-    () => {
-      import("../search-bar/search-bar.js");
-    },
-    { once: true }
-  );
+  // searchButtonOpen.addEventListener(
+  //   "mouseenter",
+  //   () => {
+  //     import("../search-bar/search-bar.js");
+  //   },
+  //   { once: true }
+  // );
 
   const focusSearchInput = () => {
     // Check for searchbar
@@ -500,7 +501,9 @@ function addEventListeners(block) {
     }
 
     // Set the computed left position
-    activeMenu.setAttribute("style", `left: ${dropDownLeft}px`);
+    if (dropDownLeft > 0) {
+      activeMenu.setAttribute("style", `left: ${dropDownLeft}px`);
+    }
   };
 
   const hideMenu = () => {

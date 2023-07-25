@@ -4,6 +4,7 @@
   --search-border-color: var(--color-neutral-100);
   --search-height: var(--spacing--12);
   --search-text-color: var(--color-neutral-black);
+  --search-placeholder: var(--color-neutral-200);
 
   --search-autosuggest-border-radius: var(--spacing--4);
   --search-autosuggest-background-hover: var(--color-neutral-050);
@@ -14,6 +15,7 @@
     --search-background-color: var(--color-neutral-black);
     --search-border-color: var(--color-neutral-dark-600);
     --search-text-color: var(--color-neutral-white);
+    --search-placeholder: var(--color-neutral-600);
 
     --search-autosuggest-background-hover: var(--color-neutral-dark-900);
   }
@@ -62,8 +64,12 @@ search-bar {
   font-size: var(--control-font-size--sm);
   line-height: var(--control-line-height--sm);
   height: var(--search-height);
-  padding-left: 0;
+  padding-left: 1px; /* Allow browser blinking cursor to show */
   padding-right: var(--spacing--4);
+}
+
+.search-bar #coveo-searchbox .magic-box .magic-box-input > input::placeholder {
+  color: var(--search-placeholder);
 }
 
 .search-bar #coveo-searchbox .magic-box .magic-box-clear {
@@ -125,6 +131,27 @@ search-bar {
 
 .search-bar .searchbox #coveo-searchbox {
   margin-top: 0;
+  position: relative;
+}
+
+.searchbox #coveo-searchbox:before {
+  border: 2px solid transparent;
+  border-top-left-radius: var(--search-border-radius);
+  border-bottom-left-radius: var(--search-border-radius);
+  content: "";
+  left: 0;
+  top: 0;
+  position: absolute;
+  pointer-events: none;
+  transition: border-color var(--action-ease-duration)
+    var(--action-ease-function);
+  height: calc(100% - 4px);
+  width: calc(100% - 4px);
+  z-index: 5;
+}
+
+.searchbox.is-focused #coveo-searchbox:before {
+  border-color: var(--book-focus-border-color);
 }
 
 .search-bar .dropdown {

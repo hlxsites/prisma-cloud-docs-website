@@ -225,6 +225,16 @@ export class SearchBar extends HTMLElement {
         updateClearButton.innerHTML = TEMPLATE_CLOSE_ICON;
       }
 
+      const searchBoxInput = this.querySelector(".magic-box-input input");
+      console.log("searchBoxInput: ", searchBoxInput);
+      searchBoxInput.addEventListener("focus", () => {
+        console.log("focus");
+        searchBoxRoot.classList.add("is-focused");
+      });
+      searchBoxInput.addEventListener("blur", () => {
+        searchBoxRoot.classList.remove("is-focused");
+      });
+
       this.flags.hasInit = true;
     }
   }

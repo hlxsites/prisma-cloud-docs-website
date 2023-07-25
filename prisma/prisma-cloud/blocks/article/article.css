@@ -136,8 +136,7 @@
 
 .pan-article {
   background: var(--article-background);
-  border-top-left-radius: var(--article-border-radius);
-  border-top-right-radius: var(--article-border-radius);
+  border-radius: var(--article-border-radius);
   min-height: 100%;
   padding: var(--spacing--10);
   position: relative;

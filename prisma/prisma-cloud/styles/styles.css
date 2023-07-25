@@ -379,6 +379,7 @@ a.button-primary--blue:hover,
 /* Add space just beneath the nav */
 .book main > .section {
   margin-top: var(--article-top-spacing);
+  margin-bottom: var(--spacing--4);
 }
 
 /* main .section {
