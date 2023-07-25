@@ -178,9 +178,9 @@ export async function decorateIcons(element) {
   const icons = [...element.querySelectorAll("span.icon")];
   await Promise.all(
     icons.map(async (span) => {
-      const iconName = Array.from(span.classList)
-        .find((c) => c.startsWith("icon-"))
-        .substring(5);
+      const iconName = Array?.from(span.classList)
+        ?.find((c) => c?.startsWith("icon-"))
+        ?.substring(5);
       if (!ICONS_CACHE[iconName]) {
         ICONS_CACHE[iconName] = true;
         try {
@@ -220,9 +220,9 @@ export async function decorateIcons(element) {
   svgSprite.innerHTML += symbols;
 
   icons.forEach((span) => {
-    const iconName = Array.from(span.classList)
-      .find((c) => c.startsWith("icon-"))
-      .substring(5);
+    const iconName = Array?.from(span.classList)
+      ?.find((c) => c?.startsWith("icon-"))
+      ?.substring(5);
     const parent =
       span.firstElementChild?.tagName === "A" ? span.firstElementChild : span;
     // Styled icons need to be inlined as-is, while unstyled ones can leverage the sprite

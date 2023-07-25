@@ -692,6 +692,7 @@
   flex-shrink: 0;
   flex-grow: 0;
   letter-spacing: 0.02em;
+  padding: 0;
 }
 
 .pan-desktop-nav .nav-logo-section {
@@ -1329,6 +1330,7 @@
     align-items: flex-start;
     background: var(--global-search-background-color);
     backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     display: flex;
     height: 100% !important;
     position: fixed;

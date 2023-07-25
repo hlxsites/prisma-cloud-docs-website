@@ -765,11 +765,11 @@ export function debounce(fn, time = 600) {
  * @param {HTMLElement} main
  */
 export function convertCodeIconsToText(main) {
-  main.querySelectorAll('code > span.icon').forEach((icon) => {
-    const text = icon.className.split('icon-').slice(1).join('icon-');
+  main.querySelectorAll("code > span.icon").forEach((icon) => {
+    const text = icon.className.split("icon-").slice(1).join("icon-");
     if (!text) return;
 
-    icon.insertAdjacentText('beforebegin', `:${text}:`);
+    icon.insertAdjacentText("beforebegin", `:${text}:`);
     icon.remove();
   });
 }
