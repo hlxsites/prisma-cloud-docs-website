@@ -1195,7 +1195,6 @@
   border-bottom: 1px solid var(--header-border);
   bottom: -1px;
   display: none;
-  padding: var(--spacing--4) var(--spacing--5);
   position: absolute;
   transform: translateY(100%);
   width: 100%;
@@ -1210,6 +1209,7 @@
   font-size: var(--control-font-size--xs);
   line-height: var(--control-line-height--xs);
   justify-content: flex-start;
+  padding: var(--spacing--4) var(--spacing--5);
   position: relative;
   width: 100%;
 }
