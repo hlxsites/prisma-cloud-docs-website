@@ -58,7 +58,7 @@ export class CardCarousel extends HTMLElement {
       splideLoaded: false,
     };
 
-    this.init();
+    // this.init();
     this.loadSplide();
 
     store.once("blog:loaded", () => {
@@ -71,10 +71,6 @@ export class CardCarousel extends HTMLElement {
     await CardCarousel.LoadSplide();
     this.flags.splideLoaded = true;
     this._initSplide();
-  }
-
-  init() {
-    // console.log("card carousel init");
   }
 
   static async LoadSplide() {
@@ -101,6 +97,10 @@ export class CardCarousel extends HTMLElement {
     if (loaded && splideRoot) {
       const splide = new window.Splide(splideRoot, SPLIDE_CONFIG);
       splide.mount();
+      // Wait a tick and then trigger a refresh on the size
+      setTimeout(() => {
+        splide.refresh();
+      }, 100);
     }
   }
 }

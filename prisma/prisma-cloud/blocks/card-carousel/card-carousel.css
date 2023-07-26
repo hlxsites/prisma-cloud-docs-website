@@ -108,6 +108,7 @@
   background-color: var(--color-neutral-200);
   border-radius: var(--spacing--1);
   border: none;
+  padding: 0;
   height: 2px;
   width: var(--spacing--8);
 }

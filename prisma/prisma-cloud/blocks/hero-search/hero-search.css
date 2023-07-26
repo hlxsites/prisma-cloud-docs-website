@@ -57,13 +57,15 @@
   }
 }
 
-@media only screen and (max-width: 480px) {
+@media only screen and (max-width: 560px) {
   .hero-search-wrapper .search-bar-actions {
     flex-direction: column;
     padding: var(--spacing--2) 0 var(--spacing--6) 0;
     row-gap: var(--spacing--4);
   }
+}
 
+@media only screen and (max-width: 480px) {
   .hero-search-wrapper .search-bar-actions a {
     width: 100%;
   }

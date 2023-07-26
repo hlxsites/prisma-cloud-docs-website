@@ -382,7 +382,7 @@
   opacity: 0;
   padding: 0 var(--spacing--6);
   will-change: transform, opacity;
-  transition: transform 0.25s ease-in-out, opacity 0.25s ease-in-out;
+  /* transition: transform 0.25s ease-in-out, opacity 0.25s ease-in-out; */
 }
 
 .pan-mobile-nav .nav-menu-section .nav-menu li {
@@ -450,6 +450,7 @@
   z-index: 1;
   opacity: 1;
   transform: translateX(0);
+  transition: transform 0.25s ease-in-out, opacity 0.25s ease-in-out;
 }
 
 .pan-mobile-nav .nav-menu-section .nav-menu.inactive {
@@ -460,6 +461,7 @@
   left: 0;
   width: 100%;
   transform: translateX(100%);
+  transition: opacity 0.25s ease-in-out;
 }
 
 .pan-mobile-nav .nav-bottom {
@@ -1149,6 +1151,12 @@
     top: -84px;
     right: -130px;
     transform: rotate(-148deg) scale(0.75) scaleX(-1);
+  }
+}
+
+@media (max-width: 1024px) {
+  .pan-search-panel .search-panel-container {
+    max-width: 700px;
   }
 }
 

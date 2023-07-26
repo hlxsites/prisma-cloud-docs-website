@@ -1,14 +1,22 @@
 .promo-wrapper {
-  background: url("/prisma/prisma-cloud/assets/promo-left-graphic.webp") 5% -150%
+  background: url("/prisma/prisma-cloud/assets/promo-left-graphic.webp") 5% -125%
       no-repeat,
     url("/prisma/prisma-cloud/assets/promo-right-graphic.webp") 100% 0 no-repeat,
     #242c38;
   background-size: 256px 256px, 274px 209px, auto;
   color: var(--color-neutral-white);
   margin-top: 130px;
-  padding: var(--spacing--10) var(--padding--mobile) var(--spacing--8)
+  padding: var(--spacing--12) var(--padding--mobile) var(--spacing--8)
     var(--padding--mobile);
   position: relative;
+  width: 100%;
+}
+
+.promo-wrapper:before,
+.promo-wrapper:after {
+  content: "";
+  left: 0;
+  position: absolute;
   width: 100%;
 }
 
@@ -21,9 +29,15 @@
   bottom: 0;
   content: "";
   height: 72%;
-  left: 0;
-  position: absolute;
-  width: 100%;
+}
+
+.promo-wrapper:after {
+  background-color: var(--color-neutral-white);
+  border-bottom-left-radius: var(--spacing--4);
+  border-bottom-right-radius: var(--spacing--4);
+  height: var(--spacing--4);
+  top: 0;
+  z-index: 1;
 }
 
 .promo-wrapper .promo {

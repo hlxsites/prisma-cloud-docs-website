@@ -57,17 +57,34 @@ body {
 }
 
 body.landing-division {
-  background: url("/prisma/prisma-cloud/assets/landing-left-graphic.webp") 0 -50px
-      no-repeat,
-    url("/prisma/prisma-cloud/assets/landing-right-graphic.webp") 100% 150px
-      no-repeat,
-    radial-gradient(
+  background: radial-gradient(
       122.54% 78.81% at 99.38% 0.59%,
       rgba(61, 155, 255, 0.2) 0%,
       rgba(244, 248, 251, 0) 100%
     ),
     #fff;
-  background-size: 198px 378px, 280px 600px, auto;
+  background-size: auto;
+}
+
+body.landing-division .section:not(.parallax-container) {
+  position: relative;
+  z-index: 1;
+}
+
+@media only screen and (max-width: 900px) {
+  body.landing-division {
+    background: url("/prisma/prisma-cloud/assets/landing-left-graphic.webp") 0 -50px
+        no-repeat,
+      url("/prisma/prisma-cloud/assets/landing-right-graphic.webp") 100% 150px
+        no-repeat,
+      radial-gradient(
+        122.54% 78.81% at 99.38% 0.59%,
+        rgba(61, 155, 255, 0.2) 0%,
+        rgba(244, 248, 251, 0) 100%
+      ),
+      #fff;
+    background-size: 198px 378px, 280px 600px, auto;
+  }
 }
 
 /* Light Mode / Dark Mode only available on docs */

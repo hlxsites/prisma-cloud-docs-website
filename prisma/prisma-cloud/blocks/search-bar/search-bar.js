@@ -226,7 +226,6 @@ export class SearchBar extends HTMLElement {
       }
 
       const searchBoxInput = this.querySelector(".magic-box-input input");
-      console.log("searchBoxInput: ", searchBoxInput);
       searchBoxInput.addEventListener("focus", () => {
         console.log("focus");
         searchBoxRoot.classList.add("is-focused");
