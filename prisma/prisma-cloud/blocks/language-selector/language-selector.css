@@ -5,13 +5,11 @@
   --selected-border-color: var(--border-color);
 }
 
-@media (prefers-color-scheme: dark) {
-  [data-user-theme="dark"] .book .language-selector {
-    --border-color: var(--color-neutral-dark-400);
+[data-user-theme="dark"] .book .language-selector {
+  --border-color: var(--color-neutral-dark-400);
 
-    --selected-border-color: var(--border-color);
-    --selected-background-color: var(--color-body-book-background);
-  }
+  --selected-border-color: var(--border-color);
+  --selected-background-color: var(--color-body-book-background);
 }
 
 language-selector.is-disabled {

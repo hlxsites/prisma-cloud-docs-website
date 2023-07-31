@@ -11,18 +11,16 @@
   --small-action-text-color: var(--color-neutral-white);
 }
 
-@media (prefers-color-scheme: dark) {
-  [data-user-theme="dark"] .article {
-    --image-backdrop-color: var(--color-neutral-dark-500);
-    --image-box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.5);
+[data-user-theme="dark"] .article {
+  --image-backdrop-color: var(--color-neutral-dark-500);
+  --image-box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.5);
 
-    --last-updated-text-color: var(--color-neutral-dark-200);
+  --last-updated-text-color: var(--color-neutral-dark-200);
 
-    --outline-text-color: var(--color-neutral-white);
+  --outline-text-color: var(--color-neutral-white);
 
-    --small-action-background-color: var(--color-neutral-white);
-    --small-action-text-color: var(--color-neutral-black);
-  }
+  --small-action-background-color: var(--color-neutral-white);
+  --small-action-text-color: var(--color-neutral-black);
 }
 
 .article {

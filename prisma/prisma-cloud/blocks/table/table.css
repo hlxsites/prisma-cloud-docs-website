@@ -8,12 +8,11 @@
 }
 
 /* Dark Mode */
-@media (prefers-color-scheme: dark) {
-  [data-user-theme="dark"] .table {
-    --table-even-background: var(--color-neutral-dark-500);
-    --table-border-color: var(--color-neutral-dark-400);
-    --table-head-text-color: var(--color-neutral-dark-100);
-  }
+
+[data-user-theme="dark"] .table {
+  --table-even-background: var(--color-neutral-dark-500);
+  --table-border-color: var(--color-neutral-dark-400);
+  --table-head-text-color: var(--color-neutral-dark-100);
 }
 
 .table table {

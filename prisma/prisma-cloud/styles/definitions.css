@@ -227,66 +227,65 @@
 }
 
 /* Dark Mode */
-@media (prefers-color-scheme: dark) {
-  [data-user-theme="dark"] .book {
-    /* Tier 2 variables (High-level variables) */
-    --code-background: var(--color-neutral-dark-800);
-    --code-text-color: var(--color-neutral-white);
-    --code-copy-text-color: var(--color-body-text);
+/* Update this for default light mode */
 
-    --color-body-background: var(--color-neutral-dark-800);
-    --color-body-book-background: var(--color-body-background);
-    --color-body-text: var(--color-neutral-100);
+[data-user-theme="dark"] .book {
+  /* Tier 2 variables (High-level variables) */
+  --code-background: var(--color-neutral-dark-800);
+  --code-text-color: var(--color-neutral-white);
+  --code-copy-text-color: var(--color-body-text);
 
-    --header-background: rgba(0, 0, 0, 0.5);
-    --header-border: var(--color-neutral-dark-600);
+  --color-body-background: var(--color-neutral-dark-800);
+  --color-body-book-background: var(--color-body-background);
+  --color-body-text: var(--color-neutral-100);
 
-    --inline-link-text-color: var(--color-blue-dark--500);
+  --header-background: rgba(0, 0, 0, 0.5);
+  --header-border: var(--color-neutral-dark-600);
 
-    --primary-action-background-color: var(--color-neutral-white);
-    --primary-action-text-color: var(--color-neutral-black);
-    --primary-action-active-background-color: var(--color-neutral-dark-200);
-    --primary-action-active-text-color: var(--color-neutral-black);
-    --primary-background: var(--color-blue-dark--800);
+  --inline-link-text-color: var(--color-blue-dark--500);
 
-    --tertiary-action-text-color: var(--color-neutral-white);
-    --tertiary-action-active-background-color: var(--color-neutral-black);
-    --tertiary-action-active-text-color: var(--color-neutral-white);
-    --tertiary-action-selected-background-color: var(--color-blue-dark--700);
-    --tertiary-action-selected-text-color: var(--color-neutral-white);
+  --primary-action-background-color: var(--color-neutral-white);
+  --primary-action-text-color: var(--color-neutral-black);
+  --primary-action-active-background-color: var(--color-neutral-dark-200);
+  --primary-action-active-text-color: var(--color-neutral-black);
+  --primary-background: var(--color-blue-dark--800);
 
-    --icon-action--text-color: var(--color-neutral-white);
-    --icon-action--background-color: var(--color-neutral-black);
-    --icon-action--border-color: var(--color-neutral-600);
+  --tertiary-action-text-color: var(--color-neutral-white);
+  --tertiary-action-active-background-color: var(--color-neutral-black);
+  --tertiary-action-active-text-color: var(--color-neutral-white);
+  --tertiary-action-selected-background-color: var(--color-blue-dark--700);
+  --tertiary-action-selected-text-color: var(--color-neutral-white);
 
-    /* 
+  --icon-action--text-color: var(--color-neutral-white);
+  --icon-action--background-color: var(--color-neutral-black);
+  --icon-action--border-color: var(--color-neutral-600);
+
+  /* 
     Tier 3 variables (Component specific)
      - Only add variables here if it will be used in styles.css, all others should reside in component specific css file
    */
-    --article-background: var(--color-neutral-dark-600);
+  --article-background: var(--color-neutral-dark-600);
 
-    --book-active-background-color: var(--color-neutral-black);
-    --book-active-text-color: var(--color-neutral-white);
-    --book-focus-background-color: var(--book-active-background-color);
-    --book-focus-border-color: #6492f7;
-    --chapter-selected-background-color: var(--color-blue--200);
-    --chapter-selected-text-color: var(--color-neutral-800);
-    --chapter-focus-background-color: var(--color-blue--100);
-    --chapter-focus-border-color: var(--book-focus-border-color);
+  --book-active-background-color: var(--color-neutral-black);
+  --book-active-text-color: var(--color-neutral-white);
+  --book-focus-background-color: var(--book-active-background-color);
+  --book-focus-border-color: #6492f7;
+  --chapter-selected-background-color: var(--color-blue--200);
+  --chapter-selected-text-color: var(--color-neutral-800);
+  --chapter-focus-background-color: var(--color-blue--100);
+  --chapter-focus-border-color: var(--book-focus-border-color);
 
-    --drawer-background-color: var(--color-neutral-black);
-    --drawer-hover-background-color: var(--color-neutral-dark-900);
-    --drawer-box-shadow-opacity: 0.5;
-    --drawer-action-text-color: var(--color-neutral-white);
+  --drawer-background-color: var(--color-neutral-black);
+  --drawer-hover-background-color: var(--color-neutral-dark-900);
+  --drawer-box-shadow-opacity: 0.5;
+  --drawer-action-text-color: var(--color-neutral-white);
 
-    --mobile-drawer-background-color: var(--color-neutral-dark-900);
+  --mobile-drawer-background-color: var(--color-neutral-dark-900);
 
-    --scrollbar-thumb-background-color: var(--color-neutral-700);
-  }
-
-  html {
-    color-scheme: dark;
-  }
+  --scrollbar-thumb-background-color: var(--color-neutral-700);
+}
+html[data-user-theme="dark"] {
+  color-scheme: dark;
 }
 
 @media (max-width: 900px) {

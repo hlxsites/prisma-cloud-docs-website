@@ -10,15 +10,13 @@
   --search-autosuggest-background-hover: var(--color-neutral-050);
 }
 
-@media (prefers-color-scheme: dark) {
-  [data-user-theme="dark"] .book .search-bar {
-    --search-background-color: var(--color-neutral-black);
-    --search-border-color: var(--color-neutral-dark-600);
-    --search-text-color: var(--color-neutral-white);
-    --search-placeholder: var(--color-neutral-600);
+[data-user-theme="dark"] .book .search-bar {
+  --search-background-color: var(--color-neutral-black);
+  --search-border-color: var(--color-neutral-dark-600);
+  --search-text-color: var(--color-neutral-white);
+  --search-placeholder: var(--color-neutral-600);
 
-    --search-autosuggest-background-hover: var(--color-neutral-dark-900);
-  }
+  --search-autosuggest-background-hover: var(--color-neutral-dark-900);
 }
 
 search-bar {

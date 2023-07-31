@@ -25,36 +25,34 @@
   --search-height: var(--spacing--10);
 }
 
-@media (prefers-color-scheme: dark) {
-  [data-user-theme="dark"] .book .header {
-    --header-primary-text-color: var(--color-neutral-dark-200);
-    --header-search-text-color: var(--color-neutral-200);
-    --header-search-key-background-color: var(--color-neutral-dark-500);
-    --header-search-close-background-color: var(--color-neutral-black);
-    --header-search-close-border-color: var(--color-neutral-600);
+[data-user-theme="dark"] .book .header {
+  --header-primary-text-color: var(--color-neutral-dark-200);
+  --header-search-text-color: var(--color-neutral-200);
+  --header-search-key-background-color: var(--color-neutral-dark-500);
+  --header-search-close-background-color: var(--color-neutral-black);
+  --header-search-close-border-color: var(--color-neutral-600);
 
-    --header-books-background-color: var(--color-neutral-dark-800);
+  --header-books-background-color: var(--color-neutral-dark-800);
 
-    --global-search-background-color: #0a0c0f;
-    --global-search-border-color: var(--color-neutral-dark-600);
+  --global-search-background-color: #0a0c0f;
+  --global-search-border-color: var(--color-neutral-dark-600);
 
-    --mobile-link-active-text-color: var(--color-blue--200);
+  --mobile-link-active-text-color: var(--color-blue--200);
 
-    --search-background-color: var(--color-neutral-black);
-    --search-hover-background-color: var(--color-neutral-dark-800);
-    --search-border-color: var(--color-neutral-dark-600);
-    --search-text-color: var(--color-neutral-white);
-  }
+  --search-background-color: var(--color-neutral-black);
+  --search-hover-background-color: var(--color-neutral-dark-800);
+  --search-border-color: var(--color-neutral-dark-600);
+  --search-text-color: var(--color-neutral-white);
+}
 
-  [data-user-theme="dark"] .book .header .nav-logo picture {
-    opacity: 0;
-  }
+[data-user-theme="dark"] .book .header .nav-logo picture {
+  opacity: 0;
+}
 
-  [data-user-theme="dark"] .book .header .nav-logo a {
-    background: url("/prisma/prisma-cloud/assets/techdocs-logo-dark-mode.webp")
-      0 0 no-repeat;
-    background-size: contain;
-  }
+[data-user-theme="dark"] .book .header .nav-logo a {
+  background: url("/prisma/prisma-cloud/assets/techdocs-logo-dark-mode.webp") 0
+    0 no-repeat;
+  background-size: contain;
 }
 
 .header-wrapper {
@@ -952,7 +950,7 @@
   flex-direction: column;
   gap: var(--spacing--6);
   margin: 0;
-  max-height: 425px;
+  max-height: 500px;
   padding: var(--spacing--10) var(--spacing--8);
   position: absolute;
   opacity: 0;

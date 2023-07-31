@@ -3,11 +3,9 @@ footer .language-selector {
   --selected-border-color: var(--color-neutral-500);
 }
 
-@media (prefers-color-scheme: dark) {
-  [data-user-theme="dark"] .book footer .language-selector {
-    --selected-background-color: var(--color-neutral-800);
-    --selected-border-color: var(--color-neutral-500);
-  }
+[data-user-theme="dark"] .book footer .language-selector {
+  --selected-background-color: var(--color-neutral-800);
+  --selected-border-color: var(--color-neutral-500);
 }
 
 footer {

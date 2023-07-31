@@ -11,13 +11,11 @@
   --sidebar-banner-padding: 50px;
 }
 
-@media (prefers-color-scheme: dark) {
-  [data-user-theme="dark"] .sidenav {
-    --banner-background-color: var(--color-neutral-dark-600);
-    --banner-box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.5);
-    --banner-icon-background-color: var(--color-neutral-dark-800);
-    --banner-text-color: var(--color-blue-dark--200);
-  }
+[data-user-theme="dark"] .sidenav {
+  --banner-background-color: var(--color-neutral-dark-600);
+  --banner-box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.5);
+  --banner-icon-background-color: var(--color-neutral-dark-800);
+  --banner-text-color: var(--color-blue-dark--200);
 }
 
 .sidenav-wrapper {
