@@ -1015,7 +1015,7 @@
 
   font-size: var(--control-font-size--sm);
   font-weight: bold;
-  line-height: var(--control-line-height--sm);
+  line-height: var(--control-line-height--reg);
 }
 
 .pan-desktop-nav .nav-menu-dropdown > div > ul a:hover {
