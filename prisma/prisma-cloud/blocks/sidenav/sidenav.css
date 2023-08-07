@@ -99,7 +99,7 @@
   transform: translate(calc(-100% - 5px), 100%);
 }
 
-.sidenav-container.aside-close .banner {
+.sidenav-container.aside-close .sidenav-wrapper .banner {
   opacity: 0;
   pointer-events: none;
 }
@@ -628,7 +628,7 @@
 
 @media (max-width: 900px) {
   .sidenav-container .toggle-aside,
-  .sidenav-container.aside-close .banner {
+  .sidenav-container.aside-close .sidenav-wrapper .banner {
     display: none;
   }
 

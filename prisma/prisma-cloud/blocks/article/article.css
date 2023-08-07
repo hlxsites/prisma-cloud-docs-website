@@ -448,10 +448,6 @@ article [data-docs-heading] span {
   .pan-article .content {
     padding-right: 0;
   }
-
-  .pan-article .banner-inner .banner-inner-desktop {
-    display: none;
-  }
 }
 
 @media only screen and (max-width: 560px) {
