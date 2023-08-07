@@ -340,6 +340,17 @@ async function renderContent(block, hrefOrRes, rerender = false) {
         </span>
       </a>
     `;
+
+    articleTitle.addEventListener("click", (event) => {
+      const { origin, pathname } = window.location;
+      const toCopy = `${origin}${pathname}#${slug}`;
+      const dummy = document.createElement("textarea");
+      document.body.appendChild(dummy);
+      dummy.value = toCopy;
+      dummy.select();
+      document.execCommand("copy");
+      document.body.removeChild(dummy);
+    });
   }
 
   if (articleTitles?.length > 0) {
