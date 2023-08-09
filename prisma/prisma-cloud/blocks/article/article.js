@@ -438,9 +438,8 @@ async function renderContent(block, hrefOrRes, rerender = false) {
     );
     if (bookContent) {
       decorateMain(bookContent);
-      loadBlocks(bookContent).then(() => {
-        updateSectionsStatus(bookContent);
-      });
+      await loadBlocks(bookContent);
+      updateSectionsStatus(bookContent);
     }
   }
 }
