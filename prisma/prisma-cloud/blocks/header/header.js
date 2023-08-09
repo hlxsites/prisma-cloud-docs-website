@@ -245,7 +245,6 @@ function addEventListeners(block) {
 
   mobileBooksMenuButton.addEventListener("click", () => {
     document.body.classList.toggle("no-body-scroll");
-    console.log(" mobileBooksNav: ", mobileBooksNav);
     mobileBooksMenuButton.classList.toggle("is-active");
     mobileBooksNav.classList.toggle("aside-close");
   });
@@ -574,11 +573,6 @@ export default async function decorate(block) {
 
   //
   const booknameMeta = getMetadata("book-name");
-  console.log("booknameMeta: ", booknameMeta);
-  const productMeta = getMetadata("product");
-  console.log("productMeta: ", productMeta);
-  const docsetMeta = getMetadata("docset-id");
-  console.log("docsetMeta : ", docsetMeta);
   const searchButtonTitle = desktopNav.querySelector(".nav-search-title");
   const searchBar = desktopNav.querySelector("search-bar");
   if (booknameMeta && searchButtonTitle) {

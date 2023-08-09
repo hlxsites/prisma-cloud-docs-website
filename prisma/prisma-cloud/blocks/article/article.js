@@ -415,6 +415,18 @@ async function renderContent(block, hrefOrRes, rerender = false) {
     });
   }
 
+  const hash = window.location?.hash;
+  if (hash) {
+    const target = block.querySelector(`[href="${hash}"]`);
+
+    if (target) {
+      const { top } = target.getBoundingClientRect();
+      window.scrollTo({
+        top,
+      });
+    }
+  }
+
   // Load sidenav, once
   if (!rerender) {
     renderSidenav(block);
