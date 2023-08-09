@@ -535,6 +535,17 @@
   z-index: 1;
 }
 
+/* Expand hitbox */
+.pan-sidenav .toc-books .icon-toggle:before {
+  content: "";
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  height: var(--spacing--12);
+  width: var(--spacing--8);
+}
+
 .pan-sidenav .toc-books .icon-toggle:hover {
   cursor: pointer;
 }
