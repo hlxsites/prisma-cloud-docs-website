@@ -3,7 +3,6 @@ import {
   decorateBlock,
   decorateBlocks,
   decorateButtons,
-  decorateIcons,
   decorateSections,
   decorateTemplateAndTheme,
   fetchPlaceholders,
@@ -783,7 +782,7 @@ export function decorateMain(main) {
   // hopefully forward compatible button decoration
   decorateButtons(main);
   convertCodeIconsToText(main);
-  decorateIcons(main);
+  // decorateIcons(main);
   buildAutoBlocks(main);
   decorateSections(main);
   decorateLandingSections(main);

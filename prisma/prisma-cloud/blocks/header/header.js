@@ -2,7 +2,7 @@
 // TODO a11y
 // TODO i18n
 
-import { decorateIcons, getMetadata } from "../../scripts/lib-franklin.js";
+import { getMetadata } from "../../scripts/lib-franklin.js";
 import {
   PATH_PREFIX,
   getPlaceholders,
@@ -661,7 +661,7 @@ export default async function decorate(block) {
   block.firstElementChild.replaceWith(...template.children);
   // localize(block);
   addEventListeners(block);
-  decorateIcons(block);
+  // decorateIcons(block);
 
   document.body.querySelector("header").classList.add("loaded");
   store.emit("header:loaded");
