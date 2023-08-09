@@ -15,6 +15,7 @@ import "../language-selector/language-selector.js";
 import "../search-bar/search-bar.js";
 import "../theme-toggle/theme-toggle.js";
 
+// <search-bar data-default-option="all"></search-bar>
 const TEMPLATE = /* html */ `    
   <!-- Mobile -->
   <section class="pan-mobile-nav">
@@ -73,7 +74,7 @@ const TEMPLATE = /* html */ `
   <div class="pan-search-panel">
     <div class="search-panel-container">
       <!-- Start: Coveo Search Box Implementation -->
-      <search-bar data-default-option="all"></search-bar>
+      <search-bar></search-bar>
 
       <!-- Start: Coveo Search Box Implementation -->
       <button class="btn-close search-panel-close locale-search-panel-close">
@@ -570,6 +571,22 @@ export default async function decorate(block) {
   const desktopNav = template.querySelector(".pan-desktop-nav");
   const navList = desktopNav.querySelector(".nav-list");
   const navListItems = navList.querySelectorAll("span");
+
+  //
+  const booknameMeta = getMetadata("book-name");
+  console.log("booknameMeta: ", booknameMeta);
+  const productMeta = getMetadata("product");
+  console.log("productMeta: ", productMeta);
+  const docsetMeta = getMetadata("docset-id");
+  console.log("docsetMeta : ", docsetMeta);
+  const searchButtonTitle = desktopNav.querySelector(".nav-search-title");
+  const searchBar = desktopNav.querySelector("search-bar");
+  if (booknameMeta && searchButtonTitle) {
+    searchButtonTitle.innerHTML = booknameMeta;
+  } else if (!booknameMeta && searchBar) {
+    // data-default-option
+    searchBar.setAttribute("data-default-option", "all");
+  }
 
   const navMenuDropdown = desktopNav.querySelector(".nav-menu-dropdown");
   for (const menuWithIcon of [...navMenuDropdown.querySelectorAll("li")].filter(

@@ -8,7 +8,9 @@ export default function decorate(block) {
   block.append(html`
     <div>
       <div class="search-bar-container">
-        <search-bar></search-bar>
+        <search-bar
+          data-default-option="@panproductcategory==('Prisma Cloud')"
+        ></search-bar>
       </div>
       <div class="search-bar-actions">
         <a href="/" class="button-primary button-primary--blue"

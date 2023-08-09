@@ -648,6 +648,10 @@
 
 .pan-desktop-nav .nav-search-title {
   padding: 0 var(--spacing--4) 0 var(--spacing--2);
+  max-width: 250px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .pan-desktop-nav .nav-search-key {

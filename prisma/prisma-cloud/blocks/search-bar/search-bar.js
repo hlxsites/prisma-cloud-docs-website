@@ -9,14 +9,14 @@ const BUNDLE_PATH = (ext) =>
 const TEMPLATE = /* html */ `
 <div class="search-bar">
   <div class="dropdown">
-    <button id="selected-button" class='dropbtn'>All Prisma Cloud Documentation</button>
+    <button id="selected-button" class='dropbtn'>All Documentation</button>
     <svg focusable="false" aria-label="Clear" class="dropdown-arrow icon" version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
       <title>Down Arrow</title>
       <path d="M7.79 9.671c-0.867-0.894-2.276-0.894-3.144 0-0.862 0.889-0.862 2.327 0 3.217l8.717 8.988c1.455 1.5 3.817 1.5 5.272 0l8.717-8.988c0.862-0.889 0.862-2.327 0-3.217-0.867-0.894-2.276-0.894-3.144 0l-7.492 7.724c-0.393 0.405-1.043 0.405-1.436 0l-7.492-7.724z"></path>
     </svg>
     <div class="dropdown-content" style="display: none;">
-      <a class="coveo-dropdown-item selected" data-label="All Prisma Cloud Documentation" data-value="@panproductcategory==('Prisma Cloud')">All Prisma Cloud Documentation</a>
-      <a class="coveo-dropdown-item" data-label="All Documentation" data-value="all">
+      <a class="coveo-dropdown-item" data-label="All Prisma Cloud Documentation" data-value="@panproductcategory==('Prisma Cloud')">All Prisma Cloud Documentation</a>
+      <a class="coveo-dropdown-item selected" data-label="All Documentation" data-value="all">
       All Documentation
       </a>
     </div>
