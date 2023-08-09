@@ -439,6 +439,10 @@ function addEventListeners(block) {
       // Focus on search input
       focusSearchInput();
     }
+
+    if (key === "Escape" && searchIsActive) {
+      searchPanel.classList.remove("active");
+    }
   });
 
   searchButtonOpen.addEventListener("click", () => {
