@@ -574,7 +574,7 @@
   transform: rotate(-90deg);
 } */
 
-.pan-sidenav .toc-books li.current .icon-toggle svg,
+/* .pan-sidenav .toc-books li.current .icon-toggle svg, */
 .pan-sidenav .toc-books li[aria-expanded="true"] > div > .icon-toggle svg {
   transform: rotate(180deg);
 }
