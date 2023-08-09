@@ -423,6 +423,11 @@
   padding-left: var(--sidebar-book-spacing);
 }
 
+/* Reduce sub expanded item padding */
+.pan-sidenav .toc-books > ul > li li li[data-key] {
+  padding-left: 0;
+}
+
 .pan-sidenav .toc-books li:not([data-key]) > div > a {
   padding-left: var(--tertiary-action-padding);
   padding-right: var(--tertiary-action-padding);
