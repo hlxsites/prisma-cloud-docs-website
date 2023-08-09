@@ -35,7 +35,6 @@
 
 .book .sidenav-container.aside-close {
   padding-left: var(--spacing--4);
-  padding-right: var(--spacing--4);
 }
 
 .sidenav-wrapper .toggle-aside {
@@ -575,6 +574,13 @@
 
 .pan-sidenav .toc-books li[data-key] > ul > li:first-child {
   display: none;
+}
+
+@media (max-width: 1248px) {
+  .book .sidenav-container.aside-close {
+    padding-left: var(--spacing--4);
+    padding-right: var(--spacing--4);
+  }
 }
 
 @media (min-width: 901px) {
