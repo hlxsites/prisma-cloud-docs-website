@@ -416,7 +416,7 @@ article [data-docs-heading] span {
 .pan-article .book-content pre {
   display: block;
   margin: var(--spacing--6) 0;
-  overflow: hidden;
+  overflow: visible;
   width: 100%;
   white-space: pre-wrap;
   word-break: break-all;

@@ -314,6 +314,12 @@ async function renderContent(block, hrefOrRes, rerender = false) {
       dummy.select();
       document.execCommand("copy");
       document.body.removeChild(dummy);
+
+      pre.classList.add("active");
+
+      setTimeout(() => {
+        pre.classList.remove("active");
+      }, 2000);
     });
     pre.append(button);
   }

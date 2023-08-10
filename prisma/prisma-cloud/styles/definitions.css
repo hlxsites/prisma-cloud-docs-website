@@ -197,6 +197,9 @@
 
   --code-copy-text-color: var(--color-neutral-500);
 
+  --copy-confirmation-background-color: var(--color-neutral-800);
+  --copy-confirmation-box-shadow: 0px 2px 12px 0px rgba(0, 0, 0, 0.15);
+
   --drawer-border-radius: var(--spacing--4);
   --drawer-background-color: var(--color-neutral-white);
   --drawer-hover-background-color: var(--color-neutral-050);
@@ -238,6 +241,9 @@
   --color-body-background: var(--color-neutral-dark-800);
   --color-body-book-background: var(--color-body-background);
   --color-body-text: var(--color-neutral-100);
+
+  --copy-confirmation-background-color: var(--color-neutral-700);
+  --copy-confirmation-box-shadow: 0px 2px 12px 0px rgba(0, 0, 0, 0.48);
 
   --header-background: rgba(0, 0, 0, 0.5);
   --header-border: var(--color-neutral-dark-600);

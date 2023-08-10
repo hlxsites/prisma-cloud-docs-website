@@ -228,10 +228,15 @@ samp {
     var(--theme-transition-ease-function);
 }
 
+pre.active button,
 pre:hover button {
   cursor: pointer;
   opacity: 1;
   pointer-events: all;
+}
+
+pre.active button:after {
+  opacity: 1;
 }
 
 pre button {
@@ -246,6 +251,25 @@ pre button {
   pointer-events: none;
   position: absolute;
   top: 0;
+}
+
+pre button:after {
+  background: var(--copy-confirmation-background-color);
+  content: "Copied to clipboard";
+  border-radius: var(--spacing--2);
+  color: var(--color-neutral-white);
+  display: flex;
+  font-family: var(--body-font-family);
+  font-size: var(--control-font-size--reg);
+  line-height: var(--heading-line-height--h5);
+  left: 0;
+  opacity: 0;
+  padding: var(--spacing--3) var(--spacing--6);
+  position: absolute;
+  top: 50%;
+  transform: translate(-100%, -50%);
+  transition: opacity var(--action-ease-duration) var(--action-ease-function);
+  white-space: nowrap;
 }
 
 pre button svg path {
