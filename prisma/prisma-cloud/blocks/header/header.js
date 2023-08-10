@@ -667,7 +667,7 @@ export default async function decorate(block) {
   store.emit("header:loaded");
 
   if (!isMobile()) {
-    renderBreadCrumbs();
+    // renderBreadCrumbs();
   } else {
     store.once("delayed:loaded", renderBreadCrumbs);
   }

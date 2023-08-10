@@ -18,14 +18,16 @@
   color: var(--landing-heading-color);
 }
 
-.hero-search-container .actions > div {
+.hero-search-container .default-content-wrapper ul {
   display: flex;
   column-gap: var(--spacing--4);
   justify-content: center;
+  list-style-type: none;
+  margin: 0;
   padding: var(--spacing--10) 0;
 }
 
-.hero-search-container .button-container a {
+.hero-search-container .default-content-wrapper ul a {
   min-width: 270px;
 }
 
@@ -50,7 +52,7 @@
   margin: var(--spacing--10) 0;
 }
 
-.hero-search-container .button.primary {
+.hero-search-container .default-content-wrapper ul a {
   align-items: center;
   border-radius: var(--primary-action-border-radius);
   background-color: var(--primary-action-background-color);
@@ -65,19 +67,19 @@
   text-decoration: none;
 }
 
-.hero-search-container .button.primary:hover {
+.hero-search-container .default-content-wrapper ul a:hover {
   background-color: var(--primary-action-active-background-color);
   text-decoration: none;
 }
 
 @media only screen and (max-width: 640px) {
-  .hero-search-container .button-container a {
+  .hero-search-container .default-content-wrapper ul a {
     min-width: 0;
   }
 }
 
 @media only screen and (max-width: 560px) {
-  .hero-search-container .button-container {
+  .hero-search-container .default-content-wrapper ul {
     flex-direction: column;
     padding: var(--spacing--2) 0 var(--spacing--6) 0;
     row-gap: var(--spacing--4);
@@ -85,7 +87,7 @@
 }
 
 @media only screen and (max-width: 480px) {
-  .hero-search-container .button-container a {
+  .hero-search-container .default-content-wrapper ul a {
     width: 100%;
   }
 

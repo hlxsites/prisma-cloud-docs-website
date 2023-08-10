@@ -579,6 +579,23 @@ function buildBreadcrumbsBlock() {
   return buildBlock("breadcrumbs", { elems: [link] });
 }
 
+export function renderParallax() {
+  const section = document.createElement("div");
+  section.classList.add("parallax-container");
+  const wrapper = document.createElement("div");
+  const parallax = buildBlock("parallax", { elems: [] });
+  wrapper.append(parallax);
+  section.append(wrapper);
+
+  const main = document.querySelector("main");
+  main.prepend(section);
+
+  decorateBlock(parallax);
+  loadBlock(parallax).then(() => {
+    updateSectionsStatus(document.querySelector("main"));
+  });
+}
+
 export function renderBreadCrumbs() {
   const section = document.createElement("div");
   section.classList.add("breadcrumbs-container");
