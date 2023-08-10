@@ -448,7 +448,8 @@ export default async function decorate(block) {
   menuDropdown.setAttribute('slot', 'menu-dropdown');
   nav.append(menuDropdown);
 
-  for (const menuItem of nav.querySelectorAll('div:nth-child(2) > ul > li')) {
+  // NOTE: not using nth-child due to safari not lacking support for elements without a parent
+  nav.querySelectorAll('div > ul:not([slot="logo-menu"]) > li').forEach((menuItem) => {
     // Move the text node inside a span
     const span = document.createElement('span');
     span.append(menuItem.firstChild);
@@ -456,7 +457,7 @@ export default async function decorate(block) {
 
     const links = menuItem.querySelector('ul');
     menuDropdown.append(links);
-  }
+  });
 
   // Render with slots
   render(template, nav);
