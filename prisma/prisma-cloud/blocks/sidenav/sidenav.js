@@ -118,6 +118,60 @@ function formatDate(date) {
   return `${month} ${day}, ${year}`;
 }
 
+function handleSPANavigation(state) {
+  const sidenav = document.querySelector(".block.sidenav .pan-sidenav");
+  const banner = sidenav.querySelector("div.banner");
+  const toc = sidenav.querySelector("div.toc-books");
+
+  // change current sidenav item
+  const prev = toc.querySelector("li.current");
+  if (prev) {
+    prev.classList.remove("current");
+  }
+
+  const next = toc.querySelector(`a[href="${state.siteHref}"]`);
+  if (next) {
+    next.closest("li").classList.add("current");
+  }
+
+  // update modified date
+  const dateEl = banner.querySelector(
+    '.book-detail-banner-info slot[name="date"]'
+  );
+  if (dateEl) {
+    dateEl.textContent = formatDate(state.info.lastModified);
+  }
+
+  // update dropdown links
+  const versionMenu = banner.querySelector(".version-dropdown-menu");
+  if (versionMenu) {
+    const curVers = store.version;
+    versionMenu.querySelectorAll("li:not(.active) a").forEach((a) => {
+      const nextVers = a.dataset.version;
+      const [prefix] = a.href.split(`/${nextVers}/`);
+      const suffix = state.siteHref
+        .split(`/${curVers}/`)
+        .slice(1)
+        .join(`/${curVers}/`);
+      a.href = `${prefix}/${nextVers}/${suffix}`;
+    });
+  }
+
+  const langMenu = banner.querySelector(".language-dropdown-menu");
+  if (langMenu) {
+    const { lang: curLang } = document.documentElement;
+    langMenu.querySelectorAll("li:not(.active) a").forEach((a) => {
+      const nextLang = a.dataset.lang;
+      const [prefix] = a.href.split(`/${nextLang}/`);
+      const suffix = state.siteHref
+        .split(`/${curLang}/`)
+        .slice(1)
+        .join(`/${curLang}/`);
+      a.href = `${prefix}/${nextLang}/${suffix}`;
+    });
+  }
+}
+
 async function navigateArticleSPA(ev) {
   if (!SPA_NAVIGATION) return;
 
@@ -142,59 +196,9 @@ async function navigateArticleSPA(ev) {
     return;
   }
 
-  store.emit("spa:navigate:article", { docHref, siteHref, ...res });
-
-  const sidenav = ev.target.closest(".pan-sidenav");
-  const banner = sidenav.querySelector("div.banner");
-  const toc = sidenav.querySelector("div.toc-books");
-
-  // change current sidenav item
-  const prev = toc.querySelector("li.current");
-  if (prev) {
-    prev.classList.remove("current");
-  }
-
-  const next = toc.querySelector(`a[href="${siteHref}"]`);
-  if (next) {
-    next.closest("li").classList.add("current");
-  }
-
-  // update modified date
-  const dateEl = banner.querySelector(
-    '.book-detail-banner-info slot[name="date"]'
-  );
-  if (dateEl) {
-    dateEl.textContent = formatDate(res.info.lastModified);
-  }
-
-  // update dropdown links
-  const versionMenu = banner.querySelector(".version-dropdown-menu");
-  if (versionMenu) {
-    const curVers = store.version;
-    versionMenu.querySelectorAll("li:not(.active) a").forEach((a) => {
-      const nextVers = a.dataset.version;
-      const [prefix] = a.href.split(`/${nextVers}/`);
-      const suffix = siteHref
-        .split(`/${curVers}/`)
-        .slice(1)
-        .join(`/${curVers}/`);
-      a.href = `${prefix}/${nextVers}/${suffix}`;
-    });
-  }
-
-  const langMenu = banner.querySelector(".language-dropdown-menu");
-  if (langMenu) {
-    const { lang: curLang } = document.documentElement;
-    langMenu.querySelectorAll("li:not(.active) a").forEach((a) => {
-      const nextLang = a.dataset.lang;
-      const [prefix] = a.href.split(`/${nextLang}/`);
-      const suffix = siteHref
-        .split(`/${curLang}/`)
-        .slice(1)
-        .join(`/${curLang}/`);
-      a.href = `${prefix}/${nextLang}/${suffix}`;
-    });
-  }
+  const state = { docHref, siteHref, ...res };
+  store.emit("spa:navigate:article", state);
+  handleSPANavigation(state);
 }
 
 /**
@@ -835,4 +839,8 @@ export default async function decorate(block) {
     initVersionDropdown(wrapper);
     initLanguagesDropdown(wrapper);
   });
+
+  if (SPA_NAVIGATION) {
+    store.on("spa:navigate:article", handleSPANavigation);
+  }
 }

@@ -234,14 +234,21 @@ const store = new (class {
   initSPANavigation() {
     if (!SPA_NAVIGATION) return;
 
-    this.on("spa:navigate:article", (res) => {
-      window.history.pushState(res, "", res.siteHref);
+    let index = 0;
+    this.on("spa:navigate:article", (state) => {
+      if (state.index === index) return; // coming from popstate
+
+      window.history.pushState({ ...state, index }, "", state.siteHref);
+      index += 1;
     });
 
-    window.onpopstate = ({ state }) => {
+    window.addEventListener("popstate", (ev) => {
+      const { state } = ev;
       if (!state) return;
+      index = state.index || 0;
       this.emit("spa:navigate:article", state);
-    };
+      ev.preventDefault();
+    });
   }
 
   async getLocalizationInfo(
