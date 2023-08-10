@@ -787,6 +787,8 @@ export function decorateMain(main) {
   decorateSections(main);
   decorateLandingSections(main);
   decorateBlocks(main);
+
+  window.history.scrollRestoration = "manual";
 }
 
 /**

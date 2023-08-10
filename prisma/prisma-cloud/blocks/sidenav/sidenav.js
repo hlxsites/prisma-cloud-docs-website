@@ -353,6 +353,14 @@ async function initLanguagesDropdown(wrapper) {
 function addEventListeners(wrapper) {
   let ww = window.innerWidth;
   wrapper.addEventListener("click", (event) => {
+    const link = event.target.closest("a");
+    // Reset scroll to top of the page when changing view
+    if (link) {
+      setTimeout(() => {
+        window.scrollTo({ top: 0 });
+      }, 100);
+    }
+
     /** @type {HTMLElement} */
     const toggle = event.target.closest(".toggle-aside");
     if (!toggle) return;

@@ -91,6 +91,7 @@ body.landing-division .section:not(.parallax-container) {
 body.book {
   background-color: var(--color-body-book-background);
   color: var(--color-body-text);
+  min-height: 100vh;
   transition: background-color var(--theme-transition-ease-duration)
       var(--theme-transition-ease-function),
     color var(--theme-transition-ease-duration)
@@ -395,8 +396,18 @@ a.button-primary--blue:hover,
 
 /* Add space just beneath the nav */
 .book main > .section {
-  margin-top: var(--article-top-spacing);
   margin-bottom: var(--spacing--4);
+}
+
+.book {
+  padding-top: 0;
+}
+
+.book:before {
+  content: "";
+  display: flex;
+  height: calc(var(--nav-height) + var(--article-top-spacing));
+  width: 100vw;
 }
 
 /* main .section {
@@ -529,7 +540,7 @@ main .breadcrumbs-container[data-section-status="loaded"] {
   position: relative;
 }
 
-.book:before {
+.book:after {
   background: url("/prisma/prisma-cloud/assets/article-outline-background.webp")
     0 0 no-repeat;
   content: "";
