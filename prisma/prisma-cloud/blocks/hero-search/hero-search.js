@@ -12,14 +12,6 @@ export default function decorate(block) {
           data-default-option="@panproductcategory==('Prisma Cloud')"
         ></search-bar>
       </div>
-      <div class="search-bar-actions">
-        <a href="/" class="button-primary button-primary--blue"
-          >Operationalization</a
-        >
-        <a href="/" class="button-primary button-primary--blue"
-          >Enterprise Documentation</a
-        >
-      </div>
     </div>
   `);
 

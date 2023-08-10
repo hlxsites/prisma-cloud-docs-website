@@ -8,7 +8,6 @@
 
 .hero-search-wrapper {
   position: relative;
-  padding-bottom: 12px;
 }
 
 .hero-search-wrapper .icon-cloud-logo {
@@ -19,14 +18,14 @@
   color: var(--landing-heading-color);
 }
 
-.hero-search-wrapper .search-bar-actions {
+.hero-search-container .actions > div {
   display: flex;
   column-gap: var(--spacing--4);
   justify-content: center;
   padding: var(--spacing--10) 0;
 }
 
-.hero-search-wrapper .search-bar-actions a {
+.hero-search-container .button-container a {
   min-width: 270px;
 }
 
@@ -51,14 +50,34 @@
   margin: var(--spacing--10) 0;
 }
 
+.hero-search-container .button.primary {
+  align-items: center;
+  border-radius: var(--primary-action-border-radius);
+  background-color: var(--primary-action-background-color);
+  border-radius: var(--primary-action-border-radius);
+  color: var(--primary-action-text-color);
+  display: inline-flex;
+  font-size: var(--control-font-size--reg);
+  line-height: var(--control-line-height--reg);
+  letter-spacing: var(--letter-spacing-neg--s);
+  justify-content: center;
+  padding: 20px var(--spacing--6);
+  text-decoration: none;
+}
+
+.hero-search-container .button.primary:hover {
+  background-color: var(--primary-action-active-background-color);
+  text-decoration: none;
+}
+
 @media only screen and (max-width: 640px) {
-  .hero-search-wrapper .search-bar-actions a {
+  .hero-search-container .button-container a {
     min-width: 0;
   }
 }
 
 @media only screen and (max-width: 560px) {
-  .hero-search-wrapper .search-bar-actions {
+  .hero-search-container .button-container {
     flex-direction: column;
     padding: var(--spacing--2) 0 var(--spacing--6) 0;
     row-gap: var(--spacing--4);
@@ -66,7 +85,7 @@
 }
 
 @media only screen and (max-width: 480px) {
-  .hero-search-wrapper .search-bar-actions a {
+  .hero-search-container .button-container a {
     width: 100%;
   }
 

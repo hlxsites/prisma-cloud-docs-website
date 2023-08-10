@@ -113,7 +113,7 @@
   padding: var(--spacing--2) var(--spacing--4);
 }
 
-.latest-releases h3[id^="enhacement"] {
+.latest-releases h3[id^="enhancement"] {
   background-color: var(--color-accent--soft-blue);
 }
 
