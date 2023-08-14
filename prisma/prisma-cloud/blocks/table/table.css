@@ -39,14 +39,21 @@
     color var(--action-ease-duration) var(--action-ease-function);
 }
 
-.table thead th:first-child {
+.table thead th:first-child,
+.table table > tbody:first-child tr:first-child td:first-child {
   border-top-left-radius: var(--table-border-radius);
   border-left: 1px solid var(--table-border-color);
 }
 
-.table thead th:last-child {
+.table thead th:last-child,
+.table table > tbody:first-child tr:first-child td:last-child {
   border-top-right-radius: var(--table-border-radius);
   border-right: 1px solid var(--table-border-color);
+}
+
+/* Handle use case for when there's no actual table header */
+.table table > tbody:first-child tr:first-child td {
+  border-top: 1px solid var(--table-border-color);
 }
 
 .table tbody tr:nth-of-type(even) td {
@@ -60,6 +67,7 @@
       var(--action-ease-function),
     border-color var(--action-ease-duration) var(--action-ease-function);
   vertical-align: top;
+  word-wrap: break-word;
 }
 
 .table tbody tr td ul,

@@ -141,11 +141,12 @@ function handleSPANavigation(state) {
   if (dateEl) {
     dateEl.textContent = formatDate(state.info.lastModified);
   }
-
+  console.log("store: ", store);
   // update dropdown links
   const versionMenu = banner.querySelector(".version-dropdown-menu");
   if (versionMenu) {
     const curVers = store.version;
+
     versionMenu.querySelectorAll("li:not(.active) a").forEach((a) => {
       const nextVers = a.dataset.version;
       const [prefix] = a.href.split(`/${nextVers}/`);
@@ -356,13 +357,20 @@ async function initLanguagesDropdown(wrapper) {
  */
 function addEventListeners(wrapper) {
   let ww = window.innerWidth;
+
   wrapper.addEventListener("click", (event) => {
     const link = event.target.closest("a");
+
     // Reset scroll to top of the page when changing view
     if (link) {
       setTimeout(() => {
         window.scrollTo({ top: 0 });
       }, 100);
+
+      const mobileToggle = document.querySelector(".nav-open-booksmenu");
+      if (mobileToggle.classList.contains("is-active")) {
+        mobileToggle.click();
+      }
     }
 
     /** @type {HTMLElement} */

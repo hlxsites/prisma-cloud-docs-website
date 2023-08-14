@@ -63,7 +63,7 @@ export function getPlaceholders() {
 }
 
 export function isMobile() {
-  return window.screen.width < 900;
+  return window.innerWidth < 900;
 }
 
 function getEnv() {
