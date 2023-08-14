@@ -722,6 +722,7 @@ function renderTOC(container, book, expand, replace) {
   const current = rootList.querySelector(
     `a[href="${window.location.pathname}"]`
   );
+  console.log("current", current);
   if (current) {
     const currentLi = current.closest("li");
     currentLi.classList.add("current");
@@ -735,10 +736,12 @@ function renderTOC(container, book, expand, replace) {
       }
     }
 
-    // Scroll to current
-    requestAnimationFrame(() => {
-      container.scrollTop = currentLi.offsetTop;
-    });
+    // Scroll to current - wait a tick and then scroll
+    setTimeout(() => {
+      requestAnimationFrame(() => {
+        container.scrollTop = currentLi.offsetTop;
+      });
+    }, 100);
   }
 }
 
