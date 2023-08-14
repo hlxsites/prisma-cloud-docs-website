@@ -295,7 +295,8 @@ async function renderContent(block, hrefOrRes, rerender = false) {
   // Wrap images in div
   for (const image of block.querySelectorAll("img")) {
     const imageWrapper = document.createElement("div");
-    imageWrapper.setAttribute("class", "image-wrapper");
+    // Use data selector to prevent franklin from automatically trying to load a block
+    imageWrapper.setAttribute("data-class", "image-wrapper");
     image.insertAdjacentElement("afterend", imageWrapper);
     imageWrapper.append(image);
   }

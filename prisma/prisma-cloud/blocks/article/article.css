@@ -358,7 +358,7 @@ article [data-docs-heading] span {
   font-size: 12px;
 } */
 
-.pan-article .image-wrapper {
+.pan-article [data-class="image-wrapper"] {
   border-radius: var(--spacing--3);
   background-color: var(--image-backdrop-color);
   margin: var(--article-block-spacing) 0;
@@ -367,7 +367,7 @@ article [data-docs-heading] span {
     var(--action-ease-function);
 }
 
-.pan-article .image-wrapper img {
+.pan-article [data-class="image-wrapper"] img {
   box-shadow: var(--image-box-shadow);
   transition: box-shadow var(--action-ease-duration) var(--action-ease-function);
 }
