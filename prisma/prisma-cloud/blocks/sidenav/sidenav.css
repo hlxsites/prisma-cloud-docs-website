@@ -407,7 +407,8 @@
   display: flex;
   font-size: var(--tertiary-action-font-size);
   line-height: var(--tertiary-action-line-height);
-  padding: 8px calc(var(--tertiary-action-padding) + var(--spacing--3)) 0
+  padding: var(--spacing--2)
+    calc(var(--tertiary-action-padding) + var(--spacing--3)) var(--spacing--2)
     var(--tertiary-action-padding);
   text-decoration: none;
   width: 100%;

@@ -29,13 +29,30 @@ async function renderXMLAsCards(url) {
     for (let i = 0; i < items.length; i++) {
       const title = items[i].getElementsByTagName("title");
       const link = items[i].getElementsByTagName("link");
+      const pubDate = items[i].getElementsByTagName("pubDate");
+      const readTime = items[i].getElementsByTagName("readTime");
+      const featuredImage = items[i].getElementsByTagName("featuredImage");
+      const background = featuredImage[0].textContent;
+      const backgroundStyle = background
+        ? `url(${featuredImage[0].textContent}) center center no-repeat`
+        : "url(/prisma/prisma-cloud/assets/card-background.jpg) 0 0 no-repeat";
+      const _pubDate = new Date(pubDate?.[0]?.textContent);
+      const pubDateToLocale = _pubDate.toLocaleString("default", {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+      });
 
       cards += `
     <li class="splide__slide">
-        <a href="${link[0].textContent}" class="card">
+        <a href="${link[0].textContent}" class="card ${
+        background && "has-custom-background"
+      }" style="background: ${backgroundStyle}; background-size: cover;">
+            <span class="chip">${readTime[0].textContent} min. read</span>
             <h5 class="title">
                 <span class="eyebrow"></span>
                 ${title[0].textContent}
+                ${pubDate && `<span class='date'>${pubDateToLocale}</span>`}
             </h5>
         </a>
     </li>
