@@ -66,12 +66,36 @@ const TEMPLATE = /* html */ `
               <span class="title">
                 <h1><slot name="title"></slot></h1>
               </span>
-              <span class="last-updated">
-              Last updated:&nbsp;
-              <slot name="time"></slot>
-              </span>
+              <div class="banner-meta">
+                <span class="last-updated">
+                Last updated:&nbsp;
+                <slot name="time"></slot>
+                </span>
+              
+              <div class="versions">
+                    <div class="book-detail-banner-info">
+                        <div class="banner-dropdown version-dropdown">
+                        <div class="banner-dropdown-menu version-dropdown-menu drawer">
+                            <ul>
+                            </ul>
+                          </div>
+                          <button class="version-button">
+                              <span slot="version"></span>
+                              <div class="icon-container">
+                              <svg class="icon icon-arrow-down" focusable="false" aria-label="Expand" version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+                              <title>down-arrow</title>
+                              <path d="M7.79 9.671c-0.867-0.894-2.276-0.894-3.144 0-0.862 0.889-0.862 2.327 0 3.217l8.717 8.988c1.455 1.5 3.817 1.5 5.272 0l8.717-8.988c0.862-0.889 0.862-2.327 0-3.217-0.867-0.894-2.276-0.894-3.144 0l-7.492 7.724c-0.393 0.405-1.043 0.405-1.436 0l-7.492-7.724z"></path>
+                              </svg>
+                              </div>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+                </div>
             </span>
-          </div>
+
+            
       </div>
       <div class="content hidden-not-found contain">
           <div class="content-inner">
@@ -101,6 +125,92 @@ const TEMPLATE = /* html */ `
     <theme-toggle></theme-toggle>
   </div>
   `;
+
+/**
+ * Add version dropdown
+ * @param {Element} wrapper
+ */
+function initVersionDropdown(wrapper) {
+  const versionsContainer = wrapper.querySelector(".article .banner .versions");
+  const versionsDropdown = versionsContainer.querySelector(".version-dropdown");
+  const versionButton = versionsDropdown.querySelector(".version-button");
+  const versionsDropdownMenuContainer = versionsContainer.querySelector(
+    ".version-dropdown-menu"
+  );
+  const curVersionKey = getMetadata("version");
+
+  if (!store.product || curVersionKey === "not-applicable") {
+    versionsContainer.remove();
+    return;
+  }
+
+  const { lang } = document.documentElement;
+  const versionsDropdownMenu = versionsDropdown.querySelector(
+    ".version-dropdown-menu ul"
+  );
+
+  versionButton.addEventListener("click", () => {
+    versionsDropdownMenuContainer.classList.toggle("is-active");
+  });
+
+  document.addEventListener("click", (event) => {
+    const isClickInside = versionsContainer.contains(event.target);
+
+    if (!isClickInside) {
+      versionsDropdownMenuContainer.classList.remove("is-active");
+    }
+  });
+
+  versionsDropdown.addEventListener(
+    "mouseenter",
+    async () => {
+      const json = await store.fetchJSON(
+        `${window.location.origin}${PATH_PREFIX}/${lang}/versions`,
+        store.product
+      );
+
+      if (!json) return;
+
+      const curVersion = json.data.find((row) => row.Key === curVersionKey);
+
+      const { pathname } = window.location;
+      // rm leading slash, lang, product
+      let segments = pathname.substring(PATH_PREFIX.length).split("/").slice(3);
+      // if current href has version folder, remove it
+      if (curVersion.Folder) {
+        segments = segments.slice(1);
+      }
+      const unversionedPath = segments.join("/");
+
+      const makeHref = (folder) =>
+        `${PATH_PREFIX}/${lang}/${store.product}/${
+          folder ? `${folder}/` : ""
+        }${unversionedPath}`;
+
+      const newVersions = json.data
+        .map((row) => {
+          // exclude current version from dropdown
+          if (row.Key === curVersionKey) {
+            return undefined;
+          }
+
+          const li = document.createElement("li");
+          const a = document.createElement("a");
+          li.append(a);
+
+          a.href = makeHref(row.Folder);
+          a.textContent = row.Title;
+          a.dataset.version = row.Folder;
+
+          return li;
+        })
+        .filter((item) => !!item);
+
+      versionsDropdownMenu.append(...newVersions);
+    },
+    { once: true }
+  );
+}
 
 /**
  * @param {HTMLDivElement} block
@@ -277,6 +387,23 @@ async function renderContent(block, hrefOrRes, rerender = false) {
     "docs"
   )}.adoc`;
 
+  // update dropdown links
+  const versionMenu = block.querySelector(".version-dropdown-menu");
+  if (versionMenu) {
+    const curVers = store.version;
+
+    versionMenu.querySelectorAll("li:not(.active) a").forEach((a) => {
+      const siteHref = window.location.href;
+      const nextVers = a.dataset.version;
+      const [prefix] = a.href.split(`/${nextVers}/`);
+      const suffix = siteHref
+        .split(`/${curVers}/`)
+        .slice(1)
+        .join(`/${curVers}/`);
+      a.href = `${prefix}/${nextVers}/${suffix}`;
+    });
+  }
+
   // Add link to division landing
   const backHomeLink = block.querySelector(".back-home a");
   if (backHomeLink) {
@@ -451,9 +578,17 @@ async function renderContent(block, hrefOrRes, rerender = false) {
   }
 }
 
+const renderCurrentVersion = (block) => {
+  const curVersionBtn = block.querySelector('[slot="version"]');
+  if (curVersionBtn) {
+    curVersionBtn.textContent = getMetadata("version-title");
+  }
+};
+
 /** @param {HTMLDivElement} block */
 export default async function decorate(block) {
   const link = block.querySelector("a");
+
   if (link) {
     try {
       const href = link.getAttribute("href") || link.innerText;
@@ -463,8 +598,12 @@ export default async function decorate(block) {
           setBranch(url, store.branch);
 
           await renderContent(block, url.toString());
+          renderCurrentVersion(block);
+          initVersionDropdown(block);
         } else {
           await renderContent(block, href);
+          renderCurrentVersion(block);
+          initVersionDropdown(block);
         }
       }
     } catch (e) {
@@ -475,7 +614,9 @@ export default async function decorate(block) {
   if (SPA_NAVIGATION) {
     store.on("spa:navigate:article", async (res) => {
       await renderContent(block, res, true);
-      block.querySelector("article").scrollIntoView();
+      // block.querySelector("article").scrollIntoView();
+      renderCurrentVersion(block);
+      initVersionDropdown(block);
     });
   }
 }

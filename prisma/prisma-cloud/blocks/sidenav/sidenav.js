@@ -38,21 +38,26 @@ const TEMPLATE = /* html */ `
               <slot name="date">-</slot>
           </div>
 
-          <div class="versions">
+          <div class="products">
             <div class="book-detail-banner-info">
-              <div class="banner-info-label locale-book-current-version"></div>
-                <div class="banner-dropdown version-dropdown">
-                <div class="banner-dropdown-menu version-dropdown-menu drawer">
+              <div class="banner-info-label locale-book-current-product"></div>
+                <div class="banner-dropdown product-dropdown">
+                <div class="banner-dropdown-menu product-dropdown-menu drawer">
                     <ul>
                     </ul>
                   </div>
-                  <button class="version-button">
-                      <span slot="version"></span>
+                  <button class="product-button">
+                      <div class="product-button__left">  
+                        <svg width="20" height="22" class="icon icon-logo" focusable="false" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd" clip-rule="evenodd" d="M9.55536 0.125406C9.85815 -0.0424573 10.2262 -0.0417582 10.5284 0.127254L19.4882 5.13896C19.8042 5.31575 20 5.64958 20 6.01171V15.9883C20 16.3504 19.8042 16.6843 19.4882 16.861L10.5284 21.8727C10.2262 22.0418 9.85815 22.0425 9.55536 21.8746L0.515143 16.8629C0.197238 16.6866 0 16.3518 0 15.9883V6.01171C0 5.64822 0.197238 5.31336 0.515143 5.13712L9.55536 0.125406ZM2.25757 15.5421C2.09862 15.454 2 15.2865 2 15.1048V12.6996L4.5 14.0885V16.7852L2.25757 15.5421ZM5.98564 12.626L2 10.4117V7.41374L8.86421 11.2269C9.10232 11.3591 9.25 11.6101 9.25 11.8825V19.4185L6.5 17.894V13.5001C6.5 13.137 6.30311 12.8023 5.98564 12.626ZM15.5 16.8002L17.7441 15.545C17.9021 15.4566 18 15.2897 18 15.1086V12.6996L15.5 14.0885V16.8002ZM13.5 17.9189L10.75 19.4572V11.8822C10.75 11.6098 10.8977 11.3589 11.1358 11.2266L18 7.41294V10.4117L14.0144 12.626C13.6969 12.8023 13.5 13.137 13.5 13.5001V17.9189ZM9.63554 9.93943C9.86206 10.0653 10.1375 10.0653 10.364 9.93941L17.1917 6.14605L14.5034 4.64234L10.4859 6.87429C10.1839 7.04208 9.81667 7.04208 9.51465 6.87429L5.51483 4.65217L2.81349 6.14973L9.63554 9.93943ZM7.57614 3.50942L10.0003 4.85617L12.4513 3.49448L10.281 2.28052C10.13 2.19601 9.94592 2.19566 9.79453 2.27959L7.57614 3.50942Z" />
+                        </svg>
+                        <span slot="product"></span>
+                      </div>  
                       <div class="icon-container">
-                      <svg class="icon icon-arrow-down" focusable="false" aria-label="Expand" version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-                      <title>down-arrow</title>
-                      <path d="M7.79 9.671c-0.867-0.894-2.276-0.894-3.144 0-0.862 0.889-0.862 2.327 0 3.217l8.717 8.988c1.455 1.5 3.817 1.5 5.272 0l8.717-8.988c0.862-0.889 0.862-2.327 0-3.217-0.867-0.894-2.276-0.894-3.144 0l-7.492 7.724c-0.393 0.405-1.043 0.405-1.436 0l-7.492-7.724z"></path>
-                      </svg>
+                        <svg class="icon icon-arrow-down" focusable="false" aria-label="Expand" version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+                        <title>down-arrow</title>
+                        <path d="M7.79 9.671c-0.867-0.894-2.276-0.894-3.144 0-0.862 0.889-0.862 2.327 0 3.217l8.717 8.988c1.455 1.5 3.817 1.5 5.272 0l8.717-8.988c0.862-0.889 0.862-2.327 0-3.217-0.867-0.894-2.276-0.894-3.144 0l-7.492 7.724c-0.393 0.405-1.043 0.405-1.436 0l-7.492-7.724z"></path>
+                        </svg>
                       </div>
                   </button>
                 </div>
@@ -141,7 +146,7 @@ function handleSPANavigation(state) {
   if (dateEl) {
     dateEl.textContent = formatDate(state.info.lastModified);
   }
-  console.log("store: ", store);
+
   // update dropdown links
   const versionMenu = banner.querySelector(".version-dropdown-menu");
   if (versionMenu) {
@@ -203,89 +208,76 @@ async function navigateArticleSPA(ev) {
 }
 
 /**
- * Add version dropdown
+ * Add product dropdown
  * @param {Element} wrapper
  */
-function initVersionDropdown(wrapper) {
-  const versionsContainer = wrapper.querySelector(".sidenav .banner .versions");
-  const versionsDropdown = versionsContainer.querySelector(".version-dropdown");
-  const versionButton = versionsDropdown.querySelector(".version-button");
-  const versionsDropdownMenuContainer = versionsContainer.querySelector(
-    ".version-dropdown-menu"
+const initProductDropdown = async (wrapper) => {
+  const productsContainer = wrapper.querySelector(".sidenav .banner .products");
+  const productsDropdown = productsContainer.querySelector(".product-dropdown");
+  const productButton = productsDropdown.querySelector(".product-button");
+  const productsDropdownMenuContainer = productsContainer.querySelector(
+    ".product-dropdown-menu"
   );
-  const curVersionKey = getMetadata("version");
+  const curProductKey = getMetadata("product");
 
-  if (!store.product || curVersionKey === "not-applicable") {
-    versionsContainer.remove();
+  if (!store.product || curProductKey === "not-applicable") {
+    productsContainer.remove();
     return;
   }
 
   const { lang } = document.documentElement;
-  const versionsDropdownMenu = versionsDropdown.querySelector(
-    ".version-dropdown-menu ul"
+  const productsDropdownMenu = productsDropdown.querySelector(
+    ".product-dropdown-menu ul"
   );
 
-  versionButton.addEventListener("click", () => {
-    versionsDropdownMenuContainer.classList.toggle("is-active");
+  productButton.addEventListener("click", () => {
+    productsDropdownMenuContainer.classList.toggle("is-active");
   });
 
   document.addEventListener("click", (event) => {
-    const isClickInside = versionsContainer.contains(event.target);
+    const isClickInside = productsContainer.contains(event.target);
 
     if (!isClickInside) {
-      versionsDropdownMenuContainer.classList.remove("is-active");
+      productsDropdownMenuContainer.classList.remove("is-active");
     }
   });
 
-  versionsDropdown.addEventListener(
-    "mouseenter",
-    async () => {
-      const json = await store.fetchJSON(
-        `${window.location.origin}${PATH_PREFIX}/${lang}/versions`,
-        store.product
-      );
-      if (!json) return;
-
-      const curVersion = json.data.find((row) => row.Key === curVersionKey);
-
-      const { pathname } = window.location;
-      // rm leading slash, lang, product
-      let segments = pathname.substring(PATH_PREFIX.length).split("/").slice(3);
-      // if current href has version folder, remove it
-      if (curVersion.Folder) {
-        segments = segments.slice(1);
-      }
-      const unversionedPath = segments.join("/");
-
-      const makeHref = (folder) =>
-        `${PATH_PREFIX}/${lang}/${store.product}/${
-          folder ? `${folder}/` : ""
-        }${unversionedPath}`;
-
-      const newVersions = json.data
-        .map((row) => {
-          // exclude current version from dropdown
-          if (row.Key === curVersionKey) {
-            return undefined;
-          }
-
-          const li = document.createElement("li");
-          const a = document.createElement("a");
-          li.append(a);
-
-          a.href = makeHref(row.Folder);
-          a.textContent = row.Title;
-          a.dataset.version = row.Folder;
-
-          return li;
-        })
-        .filter((item) => !!item);
-
-      versionsDropdownMenu.append(...newVersions);
-    },
-    { once: true }
+  const json = await store.fetchJSON(
+    `${window.location.origin}${PATH_PREFIX}/products`
   );
-}
+
+  if (!json) return;
+
+  const curProduct = json.data.find((row) => row.Key === curProductKey);
+
+  const curProductBtn = productButton.querySelector('[slot="product"]');
+  if (curProductBtn) {
+    curProductBtn.textContent = curProduct.Product;
+  }
+
+  const makeHref = (url) => `${PATH_PREFIX}/${lang}${url ? `${url}/` : ""}`;
+
+  const newProducts = json.data
+    .map((row) => {
+      // exclude current product from dropdown
+      if (row.Key === curProductKey) {
+        return undefined;
+      }
+
+      const li = document.createElement("li");
+      const a = document.createElement("a");
+      li.append(a);
+
+      a.href = makeHref(row.URL);
+      a.textContent = row.Product;
+      // a.dataset.product = row.Folder;
+
+      return li;
+    })
+    .filter((item) => !!item);
+
+  productsDropdownMenu.append(...newProducts);
+};
 
 /**
  * Add version dropdown
@@ -722,7 +714,7 @@ function renderTOC(container, book, expand, replace) {
   const current = rootList.querySelector(
     `a[href="${window.location.pathname}"]`
   );
-  console.log("current", current);
+
   if (current) {
     const currentLi = current.closest("li");
     currentLi.classList.add("current");
@@ -816,11 +808,6 @@ export default async function decorate(block) {
   block.append(template);
   localize(block);
 
-  const curVersionBtn = block.querySelector('[slot="version"]');
-  if (curVersionBtn) {
-    curVersionBtn.textContent = getMetadata("version-title");
-  }
-
   const curLangBtn = block.querySelector('[slot="language"]');
   if (curLangBtn) {
     curLangBtn.textContent = getMetadata("language-title");
@@ -847,7 +834,7 @@ export default async function decorate(block) {
     initAdditionalBooks(block, toc);
 
     addEventListeners(wrapper);
-    initVersionDropdown(wrapper);
+    initProductDropdown(wrapper);
     initLanguagesDropdown(wrapper);
   });
 
