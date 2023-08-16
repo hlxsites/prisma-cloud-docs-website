@@ -388,7 +388,7 @@
   align-items: center;
   width: 100%;
   position: relative;
-  padding-bottom: 15px;
+  padding-bottom: var(--spacing--2);
 }
 
 .pan-mobile-nav .nav-menu-section .nav-menu li > img {
@@ -401,7 +401,6 @@
 .pan-mobile-nav .nav-menu-section .nav-menu li > span {
   cursor: pointer;
   flex-grow: 1;
-  padding: 0 25px 0 0;
   line-height: 20px;
   font-size: 16px;
   letter-spacing: 0.06em;
@@ -413,8 +412,10 @@
 
   color: var(--search-text-color);
   font-size: var(--body-font-size--p2);
+  font-weight: 600;
   line-height: var(--body-line-height--p3);
   letter-spacing: var(--letter-spacing-neg--xs);
+  padding: var(--spacing--2) var(--spacing--8) var(--spacing--2) 0;
 }
 
 .pan-mobile-nav .nav-menu-section .nav-menu li > a .nav-expand,
