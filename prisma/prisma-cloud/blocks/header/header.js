@@ -525,11 +525,11 @@ function addEventListeners(block) {
   });
 
   block.addEventListener("mouseleave", () => {
-    //hideMenu();
+    hideMenu();
   });
 
   desktopNavLogo.addEventListener("mouseover", () => {
-    //hideMenu();
+    hideMenu();
   });
 }
 
