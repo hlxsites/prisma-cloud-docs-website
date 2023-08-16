@@ -458,11 +458,12 @@ async function renderContent(block, hrefOrRes, rerender = false) {
   for (const articleTitle of articleTitles) {
     const title = articleTitle.textContent;
     const slug = slugify(title);
-    articleTitle.setAttribute("id", slug);
+    articleTitle.setAttribute("id", "");
     articleTitle.setAttribute("data-docs-heading", true);
     // const anchor = document.createElement("a");
     // anchor.setAttribute("href", `#${slug}`);
     articleTitle.innerHTML = `
+        <div id="${slug}" class="anchor"></div>
         ${title}
         <button class="button-copy button-copy-link">
           <span>

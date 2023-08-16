@@ -164,6 +164,14 @@
   position: relative;
 }
 
+.article [data-docs-heading] .anchor {
+  position: absolute;
+  top: calc(-1 * var(--nav-height) - var(--spacing--10));
+  transform: translateY(-100%);
+  height: 50px;
+  width: 50px;
+}
+
 .article [data-docs-heading]:hover button {
   opacity: 1;
 }
@@ -211,6 +219,7 @@ article [data-docs-heading] span {
 .pan-article .title {
   color: var(--banner-text-color);
   padding: 0;
+  position: relative;
 }
 
 .pan-article .title h1 {
