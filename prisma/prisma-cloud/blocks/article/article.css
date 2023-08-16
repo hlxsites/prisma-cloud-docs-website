@@ -240,6 +240,8 @@ article [data-docs-heading] span {
 
 .pan-article .banner {
   margin-bottom: var(--spacing--9);
+  position: relative;
+  z-index: 1;
 }
 
 .pan-article .banner-inner {
