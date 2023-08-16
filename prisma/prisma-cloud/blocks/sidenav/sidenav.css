@@ -432,7 +432,13 @@
 /* Book titles */
 .pan-sidenav .toc-books > ul > li > div > a {
   font-size: var(--body-font-size--p2);
+  font-weight: 600;
   line-height: var(--body-line-height--p3);
+}
+
+/* Chapter titles */
+.pan-sidenav .toc-books > ul > li > ul > li > div > a {
+  font-weight: 500;
 }
 
 .pan-sidenav .toc-books > ul > li li[data-key] {
