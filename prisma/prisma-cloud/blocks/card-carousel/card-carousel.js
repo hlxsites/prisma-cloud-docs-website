@@ -30,12 +30,13 @@ const SPLIDE_CONFIG = {
   gap: 24,
   heightRatio: 0.3,
   omitEnd: true,
-  padding: { right: 48 },
+  padding: { right: 0 },
   perPage: 2,
   perMove: 2,
   breakpoints: {
     768: {
       heightRatio: 0.6,
+      padding: { right: 0 },
       perPage: 2,
     },
     560: {
