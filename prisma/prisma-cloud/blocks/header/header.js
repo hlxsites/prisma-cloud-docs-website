@@ -483,6 +483,9 @@ function addEventListeners(block) {
     desktopDropdown.classList.add("showdropdown");
 
     const index = [...target.parentElement.children].indexOf(target);
+    const root = document.querySelector(".pan-desktop-nav .nav-menu-section");
+    console.log("root: ", root);
+    root.setAttribute("data-active-section", index);
     const activeMenu = desktopMenus[index];
     activeMenu.classList.add("showmenu");
 
@@ -522,11 +525,11 @@ function addEventListeners(block) {
   });
 
   block.addEventListener("mouseleave", () => {
-    hideMenu();
+    //hideMenu();
   });
 
   desktopNavLogo.addEventListener("mouseover", () => {
-    hideMenu();
+    //hideMenu();
   });
 }
 
