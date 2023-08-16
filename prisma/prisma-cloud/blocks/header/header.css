@@ -1216,6 +1216,7 @@
   align-items: center;
   background: transparent;
   border: none;
+  color: var(--color-body-text);
   display: flex;
   font-family: var(--body-font-family);
   font-size: var(--control-font-size--xs);
