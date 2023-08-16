@@ -186,6 +186,7 @@ export class SearchBar extends HTMLElement {
       const dropDown = this.querySelector(".dropdown");
       const dropDownOpen = dropDown.querySelector(".dropbtn");
       const dropDownLoad = dropDown.querySelector(".dropdown-content");
+
       dropDownOpen.addEventListener("click", () => {
         dropDown.classList.toggle("is-active");
         if (dropDownLoad.style.display === "none") {
@@ -212,6 +213,7 @@ export class SearchBar extends HTMLElement {
           event.target.classList.add("selected");
           this.querySelector(".dropbtn").textContent = label;
           dropDownLoad.setAttribute("style", "display : none");
+          dropDown.classList.remove("is-active");
 
           searchInput.setAttribute("placeholder", `Search ${label}`);
         });
