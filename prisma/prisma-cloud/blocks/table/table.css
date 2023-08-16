@@ -97,3 +97,10 @@
   border-right: 1px solid var(--table-border-color);
   border-bottom-right-radius: var(--table-border-radius);
 }
+
+/* Mobile Styles */
+@media only screen and (max-width: 560px) {
+  .table {
+    --cell-horizontal-padding: var(--spacing--4);
+  }
+}

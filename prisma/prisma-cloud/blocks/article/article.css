@@ -570,11 +570,20 @@ article [data-docs-heading] span {
 }
 
 @media only screen and (max-width: 560px) {
+  .pan-article {
+    --horizontal-pading: var(--spacing--5);
+  }
+
   .article-actions {
     align-items: flex-start;
     flex-direction: column;
     gap: var(--spacing--9);
     padding-bottom: var(--spacing--6);
+  }
+
+  .pan-article {
+    border-radius: 0;
+    padding: var(--spacing--10) var(--horizontal-pading);
   }
 
   .pan-article .banner-meta {
@@ -586,5 +595,9 @@ article [data-docs-heading] span {
   .pan-article .version-dropdown-menu {
     left: 0;
     right: auto;
+  }
+
+  .pan-article .section ul {
+    padding-left: var(--horizontal-pading);
   }
 }

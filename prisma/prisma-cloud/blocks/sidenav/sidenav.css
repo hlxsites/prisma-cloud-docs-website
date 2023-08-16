@@ -694,3 +694,9 @@
     z-index: var(--z-index-100--mobile-sidenav);
   }
 }
+
+@media only screen and (max-width: 560px) {
+  .book .sidenav-container.aside-close {
+    padding: 0;
+  }
+}

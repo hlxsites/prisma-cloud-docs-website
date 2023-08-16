@@ -81,3 +81,16 @@
   right: 100%;
   width: 20px;
 }
+
+/* Mobile Styles */
+@media only screen and (max-width: 560px) {
+  .procedure ol.steps li.step {
+    margin: 90px 0;
+    padding-left: 0;
+  }
+
+  .procedure ol.steps li.step::before {
+    transform: translateY(-100%);
+    top: calc(-1 * var(--spacing--5));
+  }
+}

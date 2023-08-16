@@ -781,25 +781,13 @@ main .breadcrumbs-container[data-section-status="loaded"] {
 
 /* Mobile Styles */
 @media only screen and (max-width: 560px) {
+  .book:before {
+    display: none;
+  }
+
   h1 {
     font-size: var(--heading-font-size--h3);
     line-height: var(--heading-line-height--h3);
     letter-spacing: var(--letter-spacing-neg--lg);
   }
-
-  /* h2 {
-    font-size: var(--heading-font-size-xl);
-  }
-  h3 {
-    font-size: var(--heading-font-size-l);
-  }
-  h4 {
-    font-size: var(--heading-font-size-m);
-  }
-  h5 {
-    font-size: var(--heading-font-size-s);
-  }
-  h6 {
-    font-size: var(--heading-font-size-xs);
-  } */
 }
