@@ -686,7 +686,8 @@
     left: 0;
     height: calc(100% - var(--nav-height--book));
     top: calc(var(--nav-height--book) - 1px);
-    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
     padding-top: var(--spacing--4);
     position: fixed;
     width: 100%;
