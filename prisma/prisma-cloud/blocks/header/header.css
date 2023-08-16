@@ -669,6 +669,7 @@
 
 .pan-desktop-nav .nav-menu-section .nav-search-button > svg {
   color: var(--header-primary-text-color);
+  stroke: transparent;
   width: 18px;
   height: 18px;
 }
