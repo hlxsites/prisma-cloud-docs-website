@@ -196,8 +196,9 @@
   --chapter-focus-border-color: var(--book-focus-border-color);
 
   --code-copy-text-color: var(--color-neutral-500);
+  --code-copy-text-color-active: var(--color-neutral-800);
 
-  --copy-confirmation-background-color: var(--color-neutral-800);
+  --copy-confirmation-background-color: var(--color-neutral-600);
   --copy-confirmation-box-shadow: 0px 2px 12px 0px rgba(0, 0, 0, 0.15);
 
   --drawer-border-radius: var(--spacing--4);
@@ -237,12 +238,13 @@
   --code-background: var(--color-neutral-dark-800);
   --code-text-color: var(--color-neutral-white);
   --code-copy-text-color: var(--color-body-text);
+  --code-copy-text-color-active: var(--color-neutral-white);
 
   --color-body-background: var(--color-neutral-dark-800);
   --color-body-book-background: var(--color-body-background);
   --color-body-text: var(--color-neutral-100);
 
-  --copy-confirmation-background-color: var(--color-neutral-700);
+  --copy-confirmation-background-color: var(--color-neutral-dark-500);
   --copy-confirmation-box-shadow: 0px 2px 12px 0px rgba(0, 0, 0, 0.48);
 
   --header-background: rgba(0, 0, 0, 0.5);

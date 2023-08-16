@@ -431,6 +431,7 @@ async function renderContent(block, hrefOrRes, rerender = false) {
   // Add copy code button
   for (const pre of block.querySelectorAll("pre")) {
     const button = document.createElement("button");
+    button.classList.add("button-copy", "button-copy-code");
     button.innerHTML = TEMPLATE_ICON_COPY;
     button.addEventListener("click", (event) => {
       const code = pre.querySelector("code");
@@ -443,10 +444,10 @@ async function renderContent(block, hrefOrRes, rerender = false) {
       document.execCommand("copy");
       document.body.removeChild(dummy);
 
-      pre.classList.add("active");
+      button.classList.add("active");
 
       setTimeout(() => {
-        pre.classList.remove("active");
+        button.classList.remove("active");
       }, 2000);
     });
     pre.append(button);
@@ -462,19 +463,20 @@ async function renderContent(block, hrefOrRes, rerender = false) {
     // const anchor = document.createElement("a");
     // anchor.setAttribute("href", `#${slug}`);
     articleTitle.innerHTML = `
-      <a href="#${slug}">
         ${title}
-        <span>
-          <svg class="icon icon-link" focusable="false" version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-          <title>Link</title>
-          <path d="M8 12c-2.209 0-4 1.791-4 4s1.791 4 4 4h4c1.105 0 2 0.895 2 2s-0.895 2-2 2h-4c-4.418 0-8-3.582-8-8s3.582-8 8-8h4c1.105 0 2 0.895 2 2s-0.895 2-2 2h-4z"></path>
-          <path d="M24 20c2.209 0 4-1.791 4-4s-1.791-4-4-4h-4c-1.105 0-2-0.895-2-2s0.895-2 2-2h4c4.418 0 8 3.582 8 8s-3.582 8-8 8h-4c-1.105 0-2-0.895-2-2s0.895-2 2-2h4z"></path>
-          <path d="M10 16c0-1.105 0.895-2 2-2h8c1.105 0 2 0.895 2 2v0c0 1.105-0.895 2-2 2h-8c-1.105 0-2-0.895-2-2v0z"></path>
-          </svg>
-        </span>
-      </a>
+        <button class="button-copy button-copy-link">
+          <span>
+            <svg class="icon icon-link" focusable="false" version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+            <title>Link</title>
+            <path d="M8 12c-2.209 0-4 1.791-4 4s1.791 4 4 4h4c1.105 0 2 0.895 2 2s-0.895 2-2 2h-4c-4.418 0-8-3.582-8-8s3.582-8 8-8h4c1.105 0 2 0.895 2 2s-0.895 2-2 2h-4z"></path>
+            <path d="M24 20c2.209 0 4-1.791 4-4s-1.791-4-4-4h-4c-1.105 0-2-0.895-2-2s0.895-2 2-2h4c4.418 0 8 3.582 8 8s-3.582 8-8 8h-4c-1.105 0-2-0.895-2-2s0.895-2 2-2h4z"></path>
+            <path d="M10 16c0-1.105 0.895-2 2-2h8c1.105 0 2 0.895 2 2v0c0 1.105-0.895 2-2 2h-8c-1.105 0-2-0.895-2-2v0z"></path>
+            </svg>
+          </span>
+        </button>
     `;
 
+    const button = articleTitle.querySelector(".button-copy");
     articleTitle.addEventListener("click", (event) => {
       const { origin, pathname } = window.location;
       const toCopy = `${origin}${pathname}#${slug}`;
@@ -484,6 +486,12 @@ async function renderContent(block, hrefOrRes, rerender = false) {
       dummy.select();
       document.execCommand("copy");
       document.body.removeChild(dummy);
+
+      button.classList.add("active");
+
+      setTimeout(() => {
+        button.classList.remove("active");
+      }, 2000);
     });
   }
 
