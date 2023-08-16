@@ -1,4 +1,4 @@
-.sidenav {
+.sidenav-wrapper {
   --banner-background-color: var(--color-neutral-white);
   --banner-box-shadow: 0px 2px 4px 0px rgba(0, 55, 102, 0.25);
   --banner-icon-background-color: var(--color-blue--100);
@@ -11,7 +11,7 @@
   --sidebar-banner-padding: 50px;
 }
 
-[data-user-theme="dark"] .sidenav {
+[data-user-theme="dark"] .sidenav-wrapper {
   --banner-background-color: var(--color-neutral-dark-600);
   --banner-box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.5);
   --banner-icon-background-color: var(--color-neutral-dark-800);
@@ -20,6 +20,7 @@
 
 .sidenav-wrapper {
   flex-shrink: 0;
+  z-index: 2;
   width: 375px;
 }
 
@@ -109,7 +110,7 @@
   border-top-left-radius: 0;
   border-bottom-right-radius: var(--toggle-border-radius);
   border-top-right-radius: var(--toggle-border-radius);
-  transform: translateX(100%);
+  transform: translate(100%, -8px);
 }
 
 .sidenav-container.aside-close .toggle-aside:before {

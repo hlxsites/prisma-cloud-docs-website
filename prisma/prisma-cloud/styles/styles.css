@@ -637,7 +637,7 @@ main .breadcrumbs-container[data-section-status="loaded"] {
     top: calc(var(--nav-height) + var(--article-top-spacing));
     display: flex;
     flex-direction: column;
-    z-index: 1;
+    z-index: 2;
     margin-top: 0;
     margin-bottom: auto;
     /* padding-left: 30px; */
