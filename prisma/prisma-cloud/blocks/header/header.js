@@ -484,7 +484,6 @@ function addEventListeners(block) {
 
     const index = [...target.parentElement.children].indexOf(target);
     const root = document.querySelector(".pan-desktop-nav .nav-menu-section");
-    console.log("root: ", root);
     root.setAttribute("data-active-section", index);
     const activeMenu = desktopMenus[index];
     activeMenu.classList.add("showmenu");

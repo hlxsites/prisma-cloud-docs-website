@@ -99,16 +99,6 @@ const TEMPLATE = /* html */ `
       </div>
       <div class="content hidden-not-found contain">
           <div class="content-inner">
-              <div class="book-detail-pagination">
-                  <a class="prev" href="#">
-                      <i class="icon-arrow-left-circle"></i>
-                      <div class="locale-article-previous">Previous</div>
-                  </a>
-                  <a class="next" href="#">
-                      <div class="locale-article-next">Next</div>
-                      <i class="icon-arrow-right-circle"></i>
-                  </a>
-              </div>
               <div class="book-content">
                   <slot name="content"></slot>
               </div>
@@ -218,8 +208,6 @@ function initVersionDropdown(wrapper) {
 function localize(block) {
   queueMicrotask(async () => {
     const ph = await getPlaceholders();
-    block.querySelector(".locale-article-previous").textContent = ph.previous;
-    block.querySelector(".locale-article-next").textContent = ph.next;
     block.querySelector(".locale-article-edit-github").textContent =
       ph.editOnGithub;
     block.querySelector(".locale-article-document").textContent = ph.document;
@@ -516,45 +504,6 @@ async function renderContent(block, hrefOrRes, rerender = false) {
       // to use the title from the book definition instead of metadata
       // const docSlot = block.querySelector('slot[name="document"]');
       // docSlot.textContent = book.default.data[0].title;
-
-      const hrefParts = window.location.href.split("?")[0].split("/");
-      const subPath = hrefParts.pop();
-      const topicIndex = book.topics.data.findIndex(
-        ({ key }) => key === subPath
-      );
-      const currentTopic = book.topics.data[topicIndex];
-      const prevTopic = book.topics.data[topicIndex - 1];
-      const nextTopic = book.topics.data[topicIndex + 1];
-
-      if (prevTopic) {
-        if (prevTopic.chapter === currentTopic.chapter) {
-          block.querySelector(".prev").href = `${hrefParts.join(
-            "/"
-          )}/${prevTopic.key.replaceAll("_", "-")}`;
-        } else {
-          block.querySelector(".prev").href = `${hrefParts
-            .slice(0, -1)
-            .join("/")}/${prevTopic.chapter}/${prevTopic.key.replaceAll(
-            "_",
-            "-"
-          )}`;
-        }
-      }
-
-      if (nextTopic) {
-        if (nextTopic.chapter === currentTopic.chapter) {
-          block.querySelector(".next").href = `${hrefParts.join(
-            "/"
-          )}/${nextTopic.key.replaceAll("_", "-")}`;
-        } else {
-          block.querySelector(".next").href = `${hrefParts
-            .slice(0, -1)
-            .join("/")}/${nextTopic.chapter}/${nextTopic.key.replaceAll(
-            "_",
-            "-"
-          )}`;
-        }
-      }
     });
   }
 

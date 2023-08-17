@@ -1420,4 +1420,8 @@
     fill: var(--search-text-color);
     stroke: var(--search-text-color);
   }
+
+  .nav-mobile-books .icon-arrow {
+    right: var(--spacing--4);
+  }
 }
