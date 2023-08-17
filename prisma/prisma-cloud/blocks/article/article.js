@@ -442,11 +442,12 @@ async function renderContent(block, hrefOrRes, rerender = false) {
   }
 
   // Add quick links
-  const articleTitles = block.querySelectorAll("h3, h4, h5, h6");
+  const articleTitles = block.querySelectorAll("h2, h3, h4, h5, h6");
   for (const articleTitle of articleTitles) {
     const title = articleTitle.textContent;
     const slug = slugify(title);
     articleTitle.setAttribute("id", "");
+    articleTitle.setAttribute("data-id", slug);
     articleTitle.setAttribute("data-docs-heading", true);
     // const anchor = document.createElement("a");
     // anchor.setAttribute("href", `#${slug}`);

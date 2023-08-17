@@ -31,9 +31,9 @@ class ScrollSpy extends HTMLElement {
     }
 
     this.headings = this.articleContent.querySelectorAll(
-      "h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]"
+      "h1[data-id], h2[data-id], h3[data-id], h4[data-id], h5[data-id], h6[data-id]"
     );
-
+    console.log(this.headings);
     this.observer = new IntersectionObserver(this.scrollSpy, {
       rootMargin: "0px 0px -80% 0px",
     });
@@ -49,13 +49,13 @@ class ScrollSpy extends HTMLElement {
       [...this.querySelectorAll("a")].map((l) => [l.getAttribute("href"), l])
     );
     for (const heading of headings) {
-      const href = `#${heading.target.getAttribute("id")}`;
+      const href = `#${heading.target.getAttribute("data-id")}`;
       const link = links.get(href);
 
       if (link) {
         if (heading.intersectionRatio > 0) {
           link.classList.add(this.tocVisibleClass);
-          this.previouslyActiveHeading = heading.target.getAttribute("id");
+          this.previouslyActiveHeading = heading.target.getAttribute("data-id");
         } else {
           link.classList.remove(this.tocVisibleClass);
         }
