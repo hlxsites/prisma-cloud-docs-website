@@ -88,6 +88,10 @@ function getBranch() {
   return null;
 }
 
+export function siteToDocURL(siteUrl) {
+  return `${PATH_PREFIX}/docs${siteUrl.substring(PATH_PREFIX.length)}`;
+}
+
 /**
  * Sets the branch search param to a given url
  *
@@ -210,7 +214,20 @@ const store = new (class {
   initSPANavigation() {
     if (!SPA_NAVIGATION) return;
 
-    let index = 0;
+    // replace first state with the first loaded article
+    this.once('article:fetched', (data) => {
+      const siteHref = window.location.href.substring(window.location.origin.length);
+      const docHref = siteToDocURL(siteHref);
+      window.history.replaceState({
+        ...data,
+        index: 0,
+        siteHref,
+        docHref,
+      }, '', siteHref);
+    });
+
+    // handle state updates, ignore if initiated by store
+    let index = 1;
     this.on('spa:navigate:article', (state) => {
       if (state.index === index) return; // coming from popstate
 
@@ -220,8 +237,7 @@ const store = new (class {
 
     window.addEventListener('popstate', (ev) => {
       const { state } = ev;
-      if (!state) return;
-      index = state.index || 0;
+      index = state.index;
       this.emit('spa:navigate:article', state);
       ev.preventDefault();
     });
@@ -619,7 +635,7 @@ export async function loadArticle(href) {
   if (!resp.ok) return resp;
   try {
     const lastModified = resp.headers.get('last-modified') !== 'null' ? new Date(resp.headers.get('last-modified')) : new Date();
-    return {
+    const data = {
       ok: true,
       status: resp.status,
       info: {
@@ -627,6 +643,8 @@ export async function loadArticle(href) {
       },
       html: await resp.text(),
     };
+    store.emit('article:fetched', data);
+    return data;
   } catch (e) {
     console.error('failed to parse article: ', e);
     return {
