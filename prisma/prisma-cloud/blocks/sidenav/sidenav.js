@@ -728,12 +728,18 @@ function renderTOC(container, book, expand, replace) {
       }
     }
 
-    // Scroll to current - wait a tick and then scroll
-    setTimeout(() => {
+    // wait until list expansion is rendered (up to 1s), then scroll to current
+    (async () => {
+      let count = 0;
+      while (currentLi.clientHeight === 0 && count < 100) {
+        // eslint-disable-next-line no-await-in-loop, no-promise-executor-return
+        await new Promise((r) => setTimeout(r, 10));
+        count += 1;
+      }
       requestAnimationFrame(() => {
         container.scrollTop = currentLi.offsetTop;
       });
-    }, 100);
+    })();
   }
 }
 

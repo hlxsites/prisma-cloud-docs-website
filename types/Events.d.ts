@@ -16,10 +16,10 @@ import { BookDefinition } from "./Book";
 export interface EventMap {
   "delayed:loaded": void;
   "book:loaded": BookDefinition;
+  "article:fetched": ArticleResponse;
   "article:loaded": ArticleInfo;
   "header:loaded": void;
   "blocks:loaded": void;
-  "blog:loaded": void;
   "spa:navigate:article": ArticleResponse & {
     docHref: string;
     siteHref: string;
