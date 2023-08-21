@@ -33,7 +33,7 @@ class ScrollSpy extends HTMLElement {
     this.headings = this.articleContent.querySelectorAll(
       "h1[data-id], h2[data-id], h3[data-id], h4[data-id], h5[data-id], h6[data-id]"
     );
-    console.log(this.headings);
+
     this.observer = new IntersectionObserver(this.scrollSpy, {
       rootMargin: "0px 0px -80% 0px",
     });

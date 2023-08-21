@@ -4,6 +4,9 @@
   --banner-icon-background-color: var(--color-blue--100);
   --banner-text-color: var(--color-blue--600);
 
+  --book-title-icon-background-color: var(--color-blue--100);
+  --book-title-icon-text-color: var(--color-blue--600);
+
   --title-spacing-horz: var(--spacing--2);
 
   --toggle-border-radius: 50px;
@@ -16,6 +19,9 @@
   --banner-box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.5);
   --banner-icon-background-color: var(--color-neutral-dark-800);
   --banner-text-color: var(--color-blue-dark--200);
+
+  --book-title-icon-background-color: var(--color-blue-dark--800);
+  --book-title-icon-text-color: var(--color-blue-dark--500);
 }
 
 .sidenav-wrapper {
@@ -435,6 +441,21 @@
   font-size: var(--body-font-size--p2);
   font-weight: 600;
   line-height: var(--body-line-height--p3);
+}
+
+.pan-sidenav .toc-books > ul > li > div > a + .icon-toggle {
+  align-items: center;
+  background-color: var(--book-title-icon-background-color);
+  border-radius: 50%;
+  color: var(--book-title-icon-text-color);
+  display: flex;
+  justify-content: center;
+  right: var(--spacing--3);
+  transition: background-color var(--theme-transition-ease-duration)
+    var(--theme-transition-ease-function);
+  top: var(--spacing--3);
+  height: var(--spacing--4);
+  width: var(--spacing--4);
 }
 
 /* Chapter titles */
