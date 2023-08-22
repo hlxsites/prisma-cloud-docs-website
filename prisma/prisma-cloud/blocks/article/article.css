@@ -422,6 +422,8 @@ article [data-docs-heading] span {
   transition: box-shadow var(--action-ease-duration) var(--action-ease-function);
 }
 
+.pan-article .book-content h1,
+.pan-article .book-content h2,
 .pan-article .book-content h3,
 .pan-article .book-content h4,
 .pan-article .book-content h5 {
@@ -431,37 +433,17 @@ article [data-docs-heading] span {
   margin-top: var(--article-block-spacing);
 }
 
-/* .pan-article .book-content h2 {
-  color: #36424b;
-  font-weight: 400;
-  font-size: 22px;
-  margin-top: 50px;
-  margin-bottom: 10px;
-  border-bottom: 1px solid #c8c2be;
-}
+.pan-article .book-content a {
+  /* These are technically the same, but use both */
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 
-.pan-article .book-content h3 {
-  margin-top: 30px;
-  font-weight: 400;
-  font-size: 18px;
-  margin-bottom: 10px;
+  -ms-word-break: break-all;
+  /* This is the dangerous one in WebKit, as it breaks things wherever */
+  word-break: break-all;
+  /* Instead use this non-standard one: */
+  word-break: break-word;
 }
-
-.pan-article .book-content h4,
-.pan-article .book-content h5,
-.pan-article .book-content h6 {
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-
-.pan-article .book-content h4,
-.pan-article .book-content h5 {
-  font-size: 14px;
-}
-
-.pan-article .book-content h6 {
-  font-size: 12px;
-} */
 
 .pan-article .book-content pre {
   display: block;

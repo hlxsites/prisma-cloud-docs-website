@@ -363,6 +363,7 @@ main blockquote p::after {
   line-height: 0;
 }
 
+main picture,
 main img {
   max-width: 100%;
   width: auto;

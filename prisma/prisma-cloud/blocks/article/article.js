@@ -210,7 +210,10 @@ function localize(block) {
     const ph = await getPlaceholders();
     block.querySelector(".locale-article-edit-github").textContent =
       ph.editOnGithub;
-    block.querySelector(".locale-article-document").textContent = ph.document;
+    const articleDoc = block.querySelector(".locale-article-document");
+    if (articleDoc) {
+      block.querySelector(".locale-article-document").textContent = ph.document;
+    }
   });
 }
 
@@ -324,17 +327,23 @@ async function renderContent(block, hrefOrRes, rerender = false) {
     // Add page outline
     const pageOutline = document.createElement("ul");
     pageOutline.setAttribute("slot", "outline");
+    let index = 0;
 
-    for (const articleTitle of article.querySelectorAll("h3, h4, h5, h6")) {
-      const listItem = document.createElement("li");
-      const link = document.createElement("a");
+    for (const articleTitle of article.querySelectorAll(
+      "h1, h2, h3, h4, h5, h6"
+    )) {
+      if (index !== 0) {
+        const listItem = document.createElement("li");
+        const link = document.createElement("a");
 
-      const title = articleTitle.textContent;
-      const slug = slugify(title);
-      link.setAttribute("href", `#${slug}`);
-      link.textContent = title;
-      listItem.append(link);
-      pageOutline.append(listItem);
+        const title = articleTitle.textContent;
+        const slug = slugify(title);
+        link.setAttribute("href", `#${slug}`);
+        link.textContent = title;
+        listItem.append(link);
+        pageOutline.append(listItem);
+      }
+      index += 1;
     }
 
     fragment.append(pageOutline);
@@ -442,7 +451,7 @@ async function renderContent(block, hrefOrRes, rerender = false) {
   }
 
   // Add quick links
-  const articleTitles = block.querySelectorAll("h2, h3, h4, h5, h6");
+  const articleTitles = block.querySelectorAll("h1, h2, h3, h4, h5, h6");
   for (const articleTitle of articleTitles) {
     const title = articleTitle.textContent;
     const slug = slugify(title);
@@ -485,7 +494,8 @@ async function renderContent(block, hrefOrRes, rerender = false) {
     });
   }
 
-  if (articleTitles?.length > 0) {
+  // Ignore article and doc title(s)
+  if (articleTitles?.length > 2) {
     const pageOutlineContainer = document.querySelector(".article-outline");
     pageOutlineContainer.classList.add("is-visible");
   }
