@@ -254,23 +254,6 @@ article [data-docs-heading] span {
   display: none;
 }
 
-/* .pan-article .banner-inner::before {
-    background-image: url("/prisma/prisma-cloud/assets/sase-cns-pattern.webp");
-    display: block;
-    content: "";
-    pointer-events: none;
-    position: absolute;
-    width: 367.5px;
-    height: 502px;
-    background-size: contain;
-    top: -210px;
-    right: 30px;
-    background-repeat: no-repeat;
-    background-position: 30px center;
-    z-index: -1;
-    opacity: 0.5;
-  } */
-
 .pan-article .banner-inner h2 {
   color: black;
   margin: 0;
@@ -387,17 +370,17 @@ article [data-docs-heading] span {
   line-height: 28px;
 }
 .book-content h2 {
-  font-size: var(--heading-font-size-m);
-  line-height: var(--heading-font-size-m);
+  font-size: 24px;
+  line-height: 24px;
 }
 .book-content h3 {
-  font-size: var(--heading-font-size-s);
-  line-height: var(--heading-font-size-s);
+  font-size: 20px;
+  line-height: 20px;
 }
 .book-content h4,
 .book-content h5 {
-  font-size: var(--heading-font-size-xs);
-  line-height: var(--heading-font-size-xs);
+  font-size: 18px;
+  line-height: 18px;
 }
 
 .pan-article .book-content .section {

@@ -1,3 +1,7 @@
+.landing-product {
+  --background-color: #fff;
+}
+
 .landing-product .cards {
   display: flex;
   gap: 30px;
@@ -16,10 +20,10 @@
 .landing-product .cards-item {
   max-width: 277px;
   margin-bottom: 10px;
-  border-top: 1px solid #F4F4F2;
-  border-right: 1px solid #F4F4F2;
-  border-left: 1px solid #F4F4F2;
-  border-bottom: 4px solid #00C0E8;
+  border-top: 1px solid #f4f4f2;
+  border-right: 1px solid #f4f4f2;
+  border-left: 1px solid #f4f4f2;
+  border-bottom: 4px solid #00c0e8;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
   padding: 25px 20px;
@@ -47,7 +51,7 @@
 }
 
 .landing-product .cards-item hr {
-  border-top: 4px solid #00C0E8;
+  border-top: 4px solid #00c0e8;
   width: 25px;
   margin-top: 20px;
   margin-bottom: 20px;

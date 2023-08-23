@@ -253,6 +253,119 @@ async function redirectToFirstChapter() {
   window.location.href = redirect;
 }
 
+const decorateCodeBlocks = (block) => {
+  // Add copy code button
+  for (const pre of block.querySelectorAll("pre")) {
+    const button = document.createElement("button");
+    button.classList.add("button-copy", "button-copy-code");
+    button.innerHTML = TEMPLATE_ICON_COPY;
+    button.addEventListener("click", (event) => {
+      const code = pre.querySelector("code");
+      const codeToCopy = code.textContent;
+      // Use textarea to keep multi line formatting
+      const dummy = document.createElement("textarea");
+      document.body.appendChild(dummy);
+      dummy.value = codeToCopy;
+      dummy.select();
+      document.execCommand("copy");
+      document.body.removeChild(dummy);
+
+      button.classList.add("active");
+
+      setTimeout(() => {
+        button.classList.remove("active");
+      }, 2000);
+    });
+    pre.append(button);
+  }
+};
+
+const decorateImages = (block) => {
+  // Wrap images in div
+  for (const image of block.querySelectorAll("img")) {
+    const imageWrapper = document.createElement("div");
+    // Use data selector to prevent franklin from automatically trying to load a block
+    imageWrapper.setAttribute("data-class", "image-wrapper");
+    image.insertAdjacentElement("afterend", imageWrapper);
+    imageWrapper.append(image);
+  }
+};
+
+const decorateTitles = (block) => {
+  // Add page outline
+  const pageOutline = document.createElement("ul");
+  pageOutline.setAttribute("slot", "outline");
+  const outlineSlot = block.querySelector('[name="outline"]');
+  const articleTitles = block.querySelectorAll("h1, h2, h3, h4, h5, h6");
+  let index = 0;
+
+  for (const articleTitle of articleTitles) {
+    if (index !== 0) {
+      const listItem = document.createElement("li");
+      const link = document.createElement("a");
+
+      const title = articleTitle.textContent;
+      const slug = `${slugify(title)}-${index}`;
+      link.setAttribute("href", `#${slug}`);
+      link.textContent = title;
+      listItem.append(link);
+      pageOutline.append(listItem);
+
+      articleTitle.setAttribute("id", "");
+      articleTitle.setAttribute("data-id", slug);
+      articleTitle.setAttribute("data-docs-heading", true);
+
+      articleTitle.innerHTML = `
+          <div id="${slug}" class="anchor"></div>
+          ${title}
+          <button class="button-copy button-copy-link">
+            <span>
+              <svg class="icon icon-link" focusable="false" version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+              <title>Link</title>
+              <path d="M8 12c-2.209 0-4 1.791-4 4s1.791 4 4 4h4c1.105 0 2 0.895 2 2s-0.895 2-2 2h-4c-4.418 0-8-3.582-8-8s3.582-8 8-8h4c1.105 0 2 0.895 2 2s-0.895 2-2 2h-4z"></path>
+              <path d="M24 20c2.209 0 4-1.791 4-4s-1.791-4-4-4h-4c-1.105 0-2-0.895-2-2s0.895-2 2-2h4c4.418 0 8 3.582 8 8s-3.582 8-8 8h-4c-1.105 0-2-0.895-2-2s0.895-2 2-2h4z"></path>
+              <path d="M10 16c0-1.105 0.895-2 2-2h8c1.105 0 2 0.895 2 2v0c0 1.105-0.895 2-2 2h-8c-1.105 0-2-0.895-2-2v0z"></path>
+              </svg>
+            </span>
+          </button>
+      `;
+
+      const button = articleTitle.querySelector(".button-copy");
+      articleTitle.addEventListener("click", (event) => {
+        const { origin, pathname } = window.location;
+        const toCopy = `${origin}${pathname}#${slug}`;
+        const dummy = document.createElement("textarea");
+        document.body.appendChild(dummy);
+        dummy.value = toCopy;
+        dummy.select();
+        document.execCommand("copy");
+        document.body.removeChild(dummy);
+
+        button.classList.add("active");
+
+        setTimeout(() => {
+          button.classList.remove("active");
+        }, 2000);
+      });
+    }
+    index += 1;
+  }
+
+  outlineSlot.append(pageOutline);
+
+  // Ignore article and doc title(s)
+  if (articleTitles?.length > 2) {
+    const pageOutlineContainer = document.querySelector(".article-outline");
+    pageOutlineContainer.classList.add("is-visible");
+  }
+
+  // Start scrollspy
+  const scrollSpy = block.querySelector("web-scroll-spy");
+  if (scrollSpy) {
+    scrollSpy.setAttribute("ready", true);
+  }
+};
+
 /**
  * @param {HTMLElement} block the container element
  * @param {string} hrefOrRes href on render, html string on rerender
@@ -324,30 +437,6 @@ async function renderContent(block, hrefOrRes, rerender = false) {
       }
     }
 
-    // Add page outline
-    const pageOutline = document.createElement("ul");
-    pageOutline.setAttribute("slot", "outline");
-    let index = 0;
-
-    for (const articleTitle of article.querySelectorAll(
-      "h1, h2, h3, h4, h5, h6"
-    )) {
-      if (index !== 0) {
-        const listItem = document.createElement("li");
-        const link = document.createElement("a");
-
-        const title = articleTitle.textContent;
-        const slug = slugify(title);
-        link.setAttribute("href", `#${slug}`);
-        link.textContent = title;
-        listItem.append(link);
-        pageOutline.append(listItem);
-      }
-      index += 1;
-    }
-
-    fragment.append(pageOutline);
-
     const articleTitle = article.querySelector("h1, h2");
     if (articleTitle) {
       info.title = articleTitle.textContent;
@@ -416,96 +505,6 @@ async function renderContent(block, hrefOrRes, rerender = false) {
     lastUpdatedWrapper.classList.add("is-visible");
   }
 
-  // Wrap images in div
-  for (const image of block.querySelectorAll("img")) {
-    const imageWrapper = document.createElement("div");
-    // Use data selector to prevent franklin from automatically trying to load a block
-    imageWrapper.setAttribute("data-class", "image-wrapper");
-    image.insertAdjacentElement("afterend", imageWrapper);
-    imageWrapper.append(image);
-  }
-
-  // Add copy code button
-  for (const pre of block.querySelectorAll("pre")) {
-    const button = document.createElement("button");
-    button.classList.add("button-copy", "button-copy-code");
-    button.innerHTML = TEMPLATE_ICON_COPY;
-    button.addEventListener("click", (event) => {
-      const code = pre.querySelector("code");
-      const codeToCopy = code.textContent;
-      // Use textarea to keep multi line formatting
-      const dummy = document.createElement("textarea");
-      document.body.appendChild(dummy);
-      dummy.value = codeToCopy;
-      dummy.select();
-      document.execCommand("copy");
-      document.body.removeChild(dummy);
-
-      button.classList.add("active");
-
-      setTimeout(() => {
-        button.classList.remove("active");
-      }, 2000);
-    });
-    pre.append(button);
-  }
-
-  // Add quick links
-  const articleTitles = block.querySelectorAll("h1, h2, h3, h4, h5, h6");
-  for (const articleTitle of articleTitles) {
-    const title = articleTitle.textContent;
-    const slug = slugify(title);
-    articleTitle.setAttribute("id", "");
-    articleTitle.setAttribute("data-id", slug);
-    articleTitle.setAttribute("data-docs-heading", true);
-    // const anchor = document.createElement("a");
-    // anchor.setAttribute("href", `#${slug}`);
-    articleTitle.innerHTML = `
-        <div id="${slug}" class="anchor"></div>
-        ${title}
-        <button class="button-copy button-copy-link">
-          <span>
-            <svg class="icon icon-link" focusable="false" version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-            <title>Link</title>
-            <path d="M8 12c-2.209 0-4 1.791-4 4s1.791 4 4 4h4c1.105 0 2 0.895 2 2s-0.895 2-2 2h-4c-4.418 0-8-3.582-8-8s3.582-8 8-8h4c1.105 0 2 0.895 2 2s-0.895 2-2 2h-4z"></path>
-            <path d="M24 20c2.209 0 4-1.791 4-4s-1.791-4-4-4h-4c-1.105 0-2-0.895-2-2s0.895-2 2-2h4c4.418 0 8 3.582 8 8s-3.582 8-8 8h-4c-1.105 0-2-0.895-2-2s0.895-2 2-2h4z"></path>
-            <path d="M10 16c0-1.105 0.895-2 2-2h8c1.105 0 2 0.895 2 2v0c0 1.105-0.895 2-2 2h-8c-1.105 0-2-0.895-2-2v0z"></path>
-            </svg>
-          </span>
-        </button>
-    `;
-
-    const button = articleTitle.querySelector(".button-copy");
-    articleTitle.addEventListener("click", (event) => {
-      const { origin, pathname } = window.location;
-      const toCopy = `${origin}${pathname}#${slug}`;
-      const dummy = document.createElement("textarea");
-      document.body.appendChild(dummy);
-      dummy.value = toCopy;
-      dummy.select();
-      document.execCommand("copy");
-      document.body.removeChild(dummy);
-
-      button.classList.add("active");
-
-      setTimeout(() => {
-        button.classList.remove("active");
-      }, 2000);
-    });
-  }
-
-  // Ignore article and doc title(s)
-  if (articleTitles?.length > 2) {
-    const pageOutlineContainer = document.querySelector(".article-outline");
-    pageOutlineContainer.classList.add("is-visible");
-  }
-
-  // Start scrollspy
-  const scrollSpy = block.querySelector("web-scroll-spy");
-  if (scrollSpy) {
-    scrollSpy.setAttribute("ready", true);
-  }
-
   if (store.mainBook) {
     loadBook(store.mainBook.href).then((book) => {
       store.emit("book:loaded", book);
@@ -543,6 +542,11 @@ async function renderContent(block, hrefOrRes, rerender = false) {
       decorateMain(bookContent);
       await loadBlocks(bookContent);
       updateSectionsStatus(bookContent);
+
+      // Do article modifications after load to avoid gdoc race condition
+      decorateTitles(block);
+      decorateImages(block);
+      decorateCodeBlocks(block);
     }
   }
 }

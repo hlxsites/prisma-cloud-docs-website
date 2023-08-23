@@ -3,9 +3,6 @@
   max-width: calc(1032px + var(--padding--mobile) + var(--padding--mobile));
   padding: var(--padding--mobile);
 }
-/* .latest-releases-wrapper {
-  color: #141414;
-} */
 
 .latest-releases-container .default-content-wrapper {
   align-items: center;

@@ -12,7 +12,7 @@ footer {
   padding: var(--spacing--8) 0 0;
   background-color: var(--color-footer-background);
   color: var(--footer-text-color);
-  font-size: var(--body-font-size-s);
+  font-size: var(--body-line-height--p3);
   position: relative;
   z-index: var(--z-index-300--footer);
 }
