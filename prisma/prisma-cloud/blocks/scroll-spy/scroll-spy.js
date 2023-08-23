@@ -50,7 +50,6 @@ class ScrollSpy extends HTMLElement {
     );
 
     for (const heading of headings) {
-      console.group();
       const href = `#${heading.target.getAttribute("data-id")}`;
       const link = links.get(href);
 
@@ -79,7 +78,6 @@ class ScrollSpy extends HTMLElement {
         );
         last.classList.add(this.tocActiveClass);
       }
-      console.groupEnd();
     }
   }
 }
