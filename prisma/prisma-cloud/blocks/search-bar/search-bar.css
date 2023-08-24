@@ -298,6 +298,10 @@ search-bar {
   margin-bottom: var(--spacing--1);
 }
 
+.search-bar .dropdown-content .coveo-dropdown-hero-search {
+  display: none;
+}
+
 @media (max-width: 560px) {
   .search-bar .dropbtn {
     color: transparent;
@@ -309,35 +313,4 @@ search-bar {
     max-width: 100%;
     margin-right: 0;
   }
-
-  /* .search-bar #coveo-searchbox .magic-box .magic-box-input > input {
-    padding-right: var(--spacing--4);
-  } */
 }
-
-/* @media (max-width: 500px) {
-  .search-bar .dropbtn {
-    font-size: 12px;
-    white-space: break-spaces;
-    border-right: none;
-  }
-
-  .search-bar {
-    display: block;
-  }
-
-  .search-bar .dropdown {
-    width: 100%;
-  }
-
-  .search-bar #coveo-searchbox {
-    max-width: 100%;
-    margin-right: 0;
-  }
-
-  .search-bar .dropdown-content {
-    z-index: 11;
-    width: 100%;
-    min-width: 100%;
-  }
-} */

@@ -19,6 +19,12 @@ const TEMPLATE = /* html */ `
       <a class="coveo-dropdown-item selected" data-label="All Documentation" data-value="all">
       All Documentation
       </a>
+      <a class="coveo-dropdown-item coveo-dropdown-hero-search" data-label="Enterprise Edition" data-value="@td_docsetid==('50f6a03f40793d69545a4286255f64d3')">
+      Enterprise Edition
+      </a>
+      <a class="coveo-dropdown-item coveo-dropdown-hero-search" data-label="Compute Edition" data-value="@td_docsetid==('662a784654b1f7313d35c5af7501870c')">
+      Compute Edition
+      </a>
     </div>
   </div>
   <div class="searchbox">
@@ -67,6 +73,16 @@ export class SearchBar extends HTMLElement {
 
     this.init();
     this.loadCoveo();
+  }
+
+  static get observedAttributes() {
+    return ["data"];
+  }
+
+  attributeChangedCallback(attrName, oldVal, newVal) {
+    if (oldVal !== newVal) {
+      console.log("newVal: ", newVal);
+    }
   }
 
   async loadCoveo() {

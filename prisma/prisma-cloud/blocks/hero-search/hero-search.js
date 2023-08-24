@@ -9,8 +9,9 @@ export default function decorate(block) {
     <div>
       <div class="search-bar-container">
         <search-bar
-          data-default-option="@panproductcategory==('Prisma Cloud')"
-        ></search-bar>
+          data-default-option="@td_docsetid==('50f6a03f40793d69545a4286255f64d3')"
+        >
+        </search-bar>
       </div>
     </div>
   `);

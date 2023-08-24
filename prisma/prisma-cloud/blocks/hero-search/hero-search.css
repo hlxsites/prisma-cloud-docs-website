@@ -72,6 +72,17 @@
   text-decoration: none;
 }
 
+.hero-search-wrapper .search-bar .dropdown-content .coveo-dropdown-hero-search {
+  display: block;
+}
+
+.hero-search-wrapper
+  .search-bar
+  .dropdown-content
+  a:not(.coveo-dropdown-hero-search) {
+  display: none;
+}
+
 @media only screen and (max-width: 640px) {
   .hero-search-container .default-content-wrapper ul a {
     min-width: 0;
