@@ -276,7 +276,7 @@ const decorateCodeBlocks = (block) => {
         button.classList.remove("active");
       }, 2000);
     });
-    pre.append(button);
+    pre.prepend(button);
   }
 };
 
@@ -296,26 +296,26 @@ const decorateTitles = (block) => {
   const pageOutline = document.createElement("ul");
   pageOutline.setAttribute("slot", "outline");
   const outlineSlot = block.querySelector('[name="outline"]');
-  const articleTitles = block.querySelectorAll("h1, h2, h3, h4, h5, h6");
+  const bookContent = block.querySelector(".book-content");
+  const articleTitles = bookContent.querySelectorAll("h1, h2, h3, h4, h5, h6");
   let index = 0;
 
   for (const articleTitle of articleTitles) {
-    if (index !== 0) {
-      const listItem = document.createElement("li");
-      const link = document.createElement("a");
+    const listItem = document.createElement("li");
+    const link = document.createElement("a");
 
-      const title = articleTitle.textContent;
-      const slug = `${slugify(title)}-${index}`;
-      link.setAttribute("href", `#${slug}`);
-      link.textContent = title;
-      listItem.append(link);
-      pageOutline.append(listItem);
+    const title = articleTitle.textContent;
+    const slug = `${slugify(title)}-${index}`;
+    link.setAttribute("href", `#${slug}`);
+    link.textContent = title;
+    listItem.append(link);
+    pageOutline.append(listItem);
 
-      articleTitle.setAttribute("id", "");
-      articleTitle.setAttribute("data-id", slug);
-      articleTitle.setAttribute("data-docs-heading", true);
+    articleTitle.setAttribute("id", "");
+    articleTitle.setAttribute("data-id", slug);
+    articleTitle.setAttribute("data-docs-heading", true);
 
-      articleTitle.innerHTML = `
+    articleTitle.innerHTML = `
           <div id="${slug}" class="anchor"></div>
           ${title}
           <button class="button-copy button-copy-link">
@@ -330,24 +330,23 @@ const decorateTitles = (block) => {
           </button>
       `;
 
-      const button = articleTitle.querySelector(".button-copy");
-      articleTitle.addEventListener("click", (event) => {
-        const { origin, pathname } = window.location;
-        const toCopy = `${origin}${pathname}#${slug}`;
-        const dummy = document.createElement("textarea");
-        document.body.appendChild(dummy);
-        dummy.value = toCopy;
-        dummy.select();
-        document.execCommand("copy");
-        document.body.removeChild(dummy);
+    const button = articleTitle.querySelector(".button-copy");
+    articleTitle.addEventListener("click", (event) => {
+      const { origin, pathname } = window.location;
+      const toCopy = `${origin}${pathname}#${slug}`;
+      const dummy = document.createElement("textarea");
+      document.body.appendChild(dummy);
+      dummy.value = toCopy;
+      dummy.select();
+      document.execCommand("copy");
+      document.body.removeChild(dummy);
 
-        button.classList.add("active");
+      button.classList.add("active");
 
-        setTimeout(() => {
-          button.classList.remove("active");
-        }, 2000);
-      });
-    }
+      setTimeout(() => {
+        button.classList.remove("active");
+      }, 2000);
+    });
     index += 1;
   }
 

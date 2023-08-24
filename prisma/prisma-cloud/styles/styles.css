@@ -537,15 +537,12 @@ samp {
   font-size: 13px;
   line-height: 18px;
   position: relative;
-  white-space: pre-wrap;
-  word-break: break-all;
-  word-wrap: break-word;
 }
 
 code,
 samp {
   color: var(--code-text-color);
-  padding: 0.125em;
+  padding: 0.125em var(--spacing--2) 0.125em 0.125em;
   transition: color var(--theme-transition-ease-duration)
     var(--theme-transition-ease-function);
 }
@@ -567,11 +564,12 @@ pre button {
   color: var(--code-copy-text-color);
   display: flex;
   font-size: var(--spacing--6);
-  right: 0;
+  left: calc(100% - 40px);
   opacity: 1;
   padding: var(--spacing--2);
-  position: absolute;
+  position: sticky;
   top: 0;
+  transform: translateX(var(--spacing--1));
   transition: color var(--action-ease-duration) var(--action-ease-function);
 }
 
@@ -631,11 +629,30 @@ pre {
 main pre {
   background: var(--code-background);
   border-radius: var(--spacing--4);
-  padding: 40px 21px 32px;
+  padding: 0 21px 32px;
   overflow-x: auto;
   transition: background-color var(--action-ease-duration)
     var(--action-ease-function);
   white-space: pre;
+
+  /* Scrollbar styles */
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb-background-color) transparent;
+  scrollbar-gutter: stable;
+}
+
+main pre::-webkit-scrollbar {
+  height: 0.375rem;
+  width: 8px;
+}
+
+main pre::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+main pre::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb-background-color);
+  border-radius: 0.375rem;
 }
 
 a:any-link {
@@ -934,8 +951,9 @@ main .breadcrumbs-container[data-section-status="loaded"] {
   display: flex;
   flex-direction: column;
   align-self: stretch;
-  flex-grow: 1;
+  flex: 1;
   margin: 0;
+  min-width: 0;
 }
 
 .book .sidenav-container.aside-close .article-wrapper {
