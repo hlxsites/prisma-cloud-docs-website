@@ -257,10 +257,12 @@ const decorateCodeBlocks = (block) => {
   // Add copy code button
   for (const pre of block.querySelectorAll("pre")) {
     const button = document.createElement("button");
+    const wrapper = document.createElement("div");
+    wrapper.classList.add("wrapper");
+    const code = pre.querySelector("code");
     button.classList.add("button-copy", "button-copy-code");
     button.innerHTML = TEMPLATE_ICON_COPY;
     button.addEventListener("click", (event) => {
-      const code = pre.querySelector("code");
       const codeToCopy = code.textContent;
       // Use textarea to keep multi line formatting
       const dummy = document.createElement("textarea");
@@ -276,6 +278,8 @@ const decorateCodeBlocks = (block) => {
         button.classList.remove("active");
       }, 2000);
     });
+    wrapper.append(code);
+    pre.append(wrapper);
     pre.prepend(button);
   }
 };
