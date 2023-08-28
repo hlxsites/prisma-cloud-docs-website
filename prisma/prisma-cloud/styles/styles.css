@@ -637,7 +637,7 @@ main .wrapper {
   overflow-x: auto;
   transition: background-color var(--action-ease-duration)
     var(--action-ease-function);
-  padding-bottom: 24px;
+  padding-bottom: 16px;
   white-space: pre;
 
   /* Scrollbar styles */
