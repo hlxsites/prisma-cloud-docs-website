@@ -19,12 +19,6 @@ const TEMPLATE = /* html */ `
       <a class="coveo-dropdown-item selected" data-label="All Documentation" data-value="all">
       All Documentation
       </a>
-      <a class="coveo-dropdown-item coveo-dropdown-hero-search" data-label="Enterprise Edition" data-value="@td_docsetid==('50f6a03f40793d69545a4286255f64d3')">
-      Enterprise Edition
-      </a>
-      <a class="coveo-dropdown-item coveo-dropdown-hero-search" data-label="Compute Edition" data-value="@td_docsetid==('662a784654b1f7313d35c5af7501870c')">
-      Compute Edition
-      </a>
     </div>
   </div>
   <div class="searchbox">
@@ -75,16 +69,6 @@ export class SearchBar extends HTMLElement {
     this.loadCoveo();
   }
 
-  static get observedAttributes() {
-    return ["data"];
-  }
-
-  attributeChangedCallback(attrName, oldVal, newVal) {
-    if (oldVal !== newVal) {
-      console.log("newVal: ", newVal);
-    }
-  }
-
   async loadCoveo() {
     await SearchBar.LoadCoveo();
     this._initCoveo();
@@ -98,7 +82,24 @@ export class SearchBar extends HTMLElement {
     const appendDropdown = this.querySelector(".dropdown-content");
 
     const defaultOption = this.getAttribute("data-default-option");
+    const defaultOptions = this.getAttribute("data-default-options");
+    console.log("defaultOptions: ", JSON.parse(defaultOptions));
+    if (defaultOptions) {
+      let html = "";
+      const options = JSON.parse(defaultOptions);
+      options.forEach((option, i) => {
+        html += `<a class="coveo-dropdown-item coveo-dropdown-custom-option ${
+          i === 0 ? "selected" : ""
+        }" 
+        data-label="${option.label}" 
+        data-value="${option.category}==('${option.value}')">
+        ${option.label}
+        </a>
+        `;
+      });
 
+      appendDropdown.innerHTML = html;
+    }
     if (docsetMeta && productMeta) {
       const docSetOption = document.createElement("a");
       docSetOption.classList.add("coveo-dropdown-item");

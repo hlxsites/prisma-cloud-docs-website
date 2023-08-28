@@ -10,6 +10,7 @@ export default function decorate(block) {
       <div class="search-bar-container">
         <search-bar
           data-default-option="@td_docsetid==('50f6a03f40793d69545a4286255f64d3')"
+          data-default-options='[{"label": "Enterprise Edition", "category": "@td_docsetid", "value": "50f6a03f40793d69545a4286255f64d3"}, {"label": "Compute Edition", "category": "@td_docsetid", "value": "662a784654b1f7313d35c5af7501870c"}]'
         >
         </search-bar>
       </div>
