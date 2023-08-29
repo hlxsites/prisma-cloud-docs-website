@@ -178,6 +178,8 @@
 .pan-article .book-content img {
     margin: 15px auto;
     display: block;
+    width: unset;
+    height: unset;
 }
 
 .pan-article .book-content pre {
