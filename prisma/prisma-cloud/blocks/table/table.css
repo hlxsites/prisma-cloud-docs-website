@@ -76,7 +76,7 @@
 }
 
 /* Allow for content to be vertically aligned top */
-.table tbody tr td *:first-child {
+.table tbody tr td *:first-chil:not(button) {
   margin-top: 0;
   padding-top: 0;
 }
