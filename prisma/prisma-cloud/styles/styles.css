@@ -376,7 +376,6 @@ body {
   background-color: var(--color-body-background--light);
   display: none;
   overflow-x: hidden;
-  padding-top: var(--nav-height);
   margin: 0;
 }
 
@@ -792,6 +791,7 @@ a.button-primary--blue:hover,
 
 /* Add space just beneath the nav */
 .book main > .section {
+  margin-top: var(--article-top-spacing);
   margin-bottom: var(--spacing--4);
 }
 
@@ -799,29 +799,12 @@ a.button-primary--blue:hover,
   padding-top: 0;
 }
 
-.book:before {
+/* .book:before {
   content: "";
   display: flex;
   height: calc(var(--nav-height) + var(--article-top-spacing));
   width: 100vw;
-}
-
-/* main .section {
-  padding: 64px 16px;
 } */
-
-/* @media (min-width: 600px) {
-  main .section {
-    padding: 64px 32px;
-  }
-} */
-
-@media (min-width: 900px) {
-  /* .section > div {
-    max-width: 1200px;
-    margin: auto;
-  } */
-}
 
 /* section metadata */
 

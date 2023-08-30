@@ -320,7 +320,7 @@ const decorateTitles = (block) => {
     articleTitle.setAttribute("data-docs-heading", true);
 
     articleTitle.innerHTML = `
-          <div id="${slug}" class="anchor"></div>
+          <div id="${slug}" style="height: 50px" class="anchor"></div>
           ${title}
           <button class="button-copy button-copy-link">
             <span>
@@ -366,6 +366,22 @@ const decorateTitles = (block) => {
   const scrollSpy = block.querySelector("web-scroll-spy");
   if (scrollSpy) {
     scrollSpy.setAttribute("ready", true);
+  }
+
+  const hash = window.location?.hash;
+  console.log("hash: ", hash);
+  if (hash) {
+    console.log("hash: ", hash);
+    const target = block.querySelector(`${hash}`);
+    console.log("target: ", target);
+
+    if (target) {
+      const { top, height } = target.getBoundingClientRect();
+      console.log("top: ", height);
+      window.scrollTo({
+        top: -500,
+      });
+    }
   }
 };
 
@@ -518,18 +534,6 @@ async function renderContent(block, hrefOrRes, rerender = false) {
       // const docSlot = block.querySelector('slot[name="document"]');
       // docSlot.textContent = book.default.data[0].title;
     });
-  }
-
-  const hash = window.location?.hash;
-  if (hash) {
-    const target = block.querySelector(`[href="${hash}"]`);
-
-    if (target) {
-      const { top } = target.getBoundingClientRect();
-      window.scrollTo({
-        top,
-      });
-    }
   }
 
   // Load sidenav, once
