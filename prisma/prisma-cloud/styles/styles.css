@@ -542,9 +542,13 @@ code,
 samp {
   color: var(--code-text-color);
   display: inline-flex;
-  padding: 0.125em var(--spacing--6) 0.125em 0.125em;
+  padding: 0.125em;
   transition: color var(--theme-transition-ease-duration)
     var(--theme-transition-ease-function);
+}
+
+pre code {
+  padding: 0.125em var(--spacing--6) 0.125em 0.125em;
 }
 
 pre.active button,
@@ -966,13 +970,6 @@ main .breadcrumbs-container[data-section-status="loaded"] {
     margin-top: 0;
     margin-bottom: auto;
     /* padding-left: 30px; */
-  }
-}
-
-/* Mobile adjustments for TOC nav */
-@media only screen and (max-width: 900px) {
-  body.book {
-    padding-top: var(--nav-height--book);
   }
 }
 

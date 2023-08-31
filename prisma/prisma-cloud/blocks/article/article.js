@@ -302,14 +302,13 @@ const decorateTitles = (block) => {
   const outlineSlot = block.querySelector('[name="outline"]');
   const bookContent = block.querySelector(".book-content");
   const articleTitles = bookContent.querySelectorAll("h1, h2, h3, h4, h5, h6");
-  let index = 0;
 
   for (const articleTitle of articleTitles) {
     const listItem = document.createElement("li");
     const link = document.createElement("a");
 
     const title = articleTitle.textContent;
-    const slug = `${slugify(title)}-${index}`;
+    const slug = `${slugify(title)}`;
     link.setAttribute("href", `#${slug}`);
     link.textContent = title;
     listItem.append(link);
@@ -351,13 +350,12 @@ const decorateTitles = (block) => {
         button.classList.remove("active");
       }, 2000);
     });
-    index += 1;
   }
 
-  outlineSlot.append(pageOutline);
+  outlineSlot.replaceWith(pageOutline.cloneNode(true));
 
-  // Ignore article and doc title(s)
-  if (articleTitles?.length > 2) {
+  // Only show outline if there are headings in the article
+  if (articleTitles?.length > 0) {
     const pageOutlineContainer = document.querySelector(".article-outline");
     pageOutlineContainer.classList.add("is-visible");
   }
@@ -369,15 +367,11 @@ const decorateTitles = (block) => {
   }
 
   const hash = window.location?.hash;
-  console.log("hash: ", hash);
   if (hash) {
-    console.log("hash: ", hash);
     const target = block.querySelector(`${hash}`);
-    console.log("target: ", target);
 
     if (target) {
       const { top, height } = target.getBoundingClientRect();
-      console.log("top: ", height);
       window.scrollTo({
         top: -500,
       });

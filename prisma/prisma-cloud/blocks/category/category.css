@@ -1,0 +1,49 @@
+.ops-category {
+  display: flex;
+  gap: 104px;
+}
+
+.ops-category .overview {
+  max-width: 34%;
+}
+
+.ops-accordion {
+  display: flex;
+  flex-direction: column;
+}
+
+.ops-accordion-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.ops-accordion-item .accordion-details {
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  overflow: hidden;
+  transition: height 0.3s ease-out;
+}
+
+.ops-accordion-item[data-collapsed="true"] .accordion-details {
+  height: 0;
+  overflow: hidden;
+}
+
+.ops-accordion .row {
+  position: relative;
+}
+
+.ops-accordion .row a {
+  display: flex;
+}
+
+.ops-accordion .row a:before {
+  border: 1px solid red;
+  content: "";
+  left: 0;
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 100%;
+}

@@ -83,7 +83,7 @@ export class SearchBar extends HTMLElement {
 
     const defaultOption = this.getAttribute("data-default-option");
     const defaultOptions = this.getAttribute("data-default-options");
-    console.log("defaultOptions: ", JSON.parse(defaultOptions));
+
     if (defaultOptions) {
       let html = "";
       const options = JSON.parse(defaultOptions);
