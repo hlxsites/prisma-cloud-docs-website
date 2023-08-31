@@ -65,7 +65,6 @@ export default async function decorate(block) {
   const headless = block.classList.contains('headless');
   const colSpans = extractColSpans(block);
   const colWidths = extractColWidths(block);
-  console.log('colSpans: ', colSpans);
 
   let rows = [...block.querySelectorAll(':scope > div')];
   if (rows.length === 1 && rows[0].children.length === 1) {
