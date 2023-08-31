@@ -10,6 +10,21 @@ function extractColWidths(block) {
   return cols.split('-');
 }
 
+/**
+ * @param {HTMLElement} block
+ */
+function extractColSpans(block) {
+  const firstRow = block.querySelector('div');
+  const firstCol = firstRow.querySelector('div');
+  if (firstCol.innerText !== 'col-spans') {
+    return [];
+  }
+
+  const cols = firstCol.nextElementSibling.textContent.split(',');
+  firstRow.remove();
+  return cols;
+}
+
 async function sheetToDivTable(path) {
   let href = path;
   if (!href) return null;
@@ -48,7 +63,9 @@ async function sheetToDivTable(path) {
  */
 export default async function decorate(block) {
   const headless = block.classList.contains('headless');
+  const colSpans = extractColSpans(block);
   const colWidths = extractColWidths(block);
+  console.log('colSpans: ', colSpans);
 
   let rows = [...block.querySelectorAll(':scope > div')];
   if (rows.length === 1 && rows[0].children.length === 1) {
@@ -85,7 +102,7 @@ export default async function decorate(block) {
     <table>
       <thead>
         <tr>
-          ${cells.map((cell) => `<th>${cell.innerHTML}</th>`).join('\n')}
+          ${cells.map((cell, i) => `<th${colSpans[i] ? ` colspan="${colSpans[i]}"` : ''}>${cell.innerHTML}</th>`).join('\n')}
         </tr>
       </thead>
     </table>`.firstElementChild;
