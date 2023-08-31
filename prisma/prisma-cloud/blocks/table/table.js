@@ -1,13 +1,20 @@
 import { html, isValidDocsURL, isValidWebURL } from '../../scripts/scripts.js';
 
+/**
+ * @param {HTMLElement} block
+ */
 function extractColWidths(block) {
-  const match = /(?:\s|^)colgroup-(?<cols>[^ ]*)/.exec(block.className);
-  if (!match) return [];
+  const firstRow = block.querySelector('div');
+  const firstCol = firstRow.querySelector('div');
+  if (firstCol.innerText !== 'col-widths') {
+    return [];
+  }
 
-  const { cols } = match.groups || {};
-  if (!cols) return [];
-
-  return cols.split('-');
+  const cols = firstCol.nextElementSibling.textContent.split(',');
+  const maxVal = parseInt([...cols].sort().reverse()[0], 10);
+  const widths = cols.map((swid) => Math.round((100 * parseInt(swid, 10)) / maxVal));
+  firstRow.remove();
+  return widths;
 }
 
 /**
@@ -85,10 +92,13 @@ export default async function decorate(block) {
   block.appendChild(table);
 
   if (colWidths.length) {
-    const colgroup = html`
-      <colgroup>
-        ${colWidths.map((col) => `<col style="width: ${col}%">`).join('\n')}
-      </colgroup>`;
+    const colgroup = document.createElement('colgroup');
+    colWidths.forEach((colWidth) => {
+      const col = document.createElement('col');
+      col.style.width = `${colWidth}%`;
+      colgroup.appendChild(col);
+    });
+
     table.appendChild(colgroup);
   }
 
