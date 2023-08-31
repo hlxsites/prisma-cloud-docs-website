@@ -724,6 +724,32 @@ export function convertCodeIconsToText(main) {
   });
 }
 
+export function decoratePills(main) {
+  main.querySelectorAll('p').forEach((p) => {
+    const matches = [...p.innerText.matchAll(/tt:\[([^\]]*)\]/g)];
+    if (!matches.length) return;
+
+    const nodes = [];
+    let text = p.innerText;
+    matches.forEach((match) => {
+      const [left, ...rights] = text.split(match[0]);
+      if (left) {
+        nodes.push(left);
+      }
+      nodes.push(html`<span class="pill">${match[1]}</span>`);
+      text = rights.join(match[0]);
+    });
+    if (text) {
+      nodes.push(text);
+    }
+
+    const parent = p.parentElement;
+    p.remove();
+    console.log('nodes: ', nodes);
+    parent.append(...nodes);
+  });
+}
+
 /**
  * Decorates the main element.
  * @param {Element} main The main element
@@ -734,6 +760,7 @@ export function decorateMain(main) {
   decorateButtons(main);
   convertCodeIconsToText(main);
   decorateIcons(main);
+  decoratePills(main);
   buildAutoBlocks(main);
   decorateSections(main);
   decorateLandingSections(main);
