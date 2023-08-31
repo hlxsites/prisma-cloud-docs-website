@@ -751,6 +751,17 @@ export function decoratePills(main) {
 }
 
 /**
+ * apply section metadata `id` to first heading in the section
+ * @param {HTMLElement} main
+ */
+function decorateSectionIds(main) {
+  main.querySelectorAll('.section[data-id] :is(h1,h2,h3,h4,h5,h6):nth-child(1)').forEach((heading) => {
+    const section = heading.closest('div.section');
+    heading.id = section.dataset.id;
+  });
+}
+
+/**
  * Decorates the main element.
  * @param {Element} main The main element
  */
@@ -763,6 +774,7 @@ export function decorateMain(main) {
   decoratePills(main);
   buildAutoBlocks(main);
   decorateSections(main);
+  decorateSectionIds(main);
   decorateLandingSections(main);
   decorateBlocks(main);
 }
