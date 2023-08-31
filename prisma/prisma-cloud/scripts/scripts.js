@@ -821,6 +821,45 @@ export function convertCodeIconsToText(main) {
   });
 }
 
+export function decoratePills(main) {
+  main.querySelectorAll("p").forEach((p) => {
+    const matches = [...p.innerText.matchAll(/tt:\[([^\]]*)\]/g)];
+    if (!matches.length) return;
+
+    const nodes = [];
+    let text = p.innerText;
+    matches.forEach((match) => {
+      const [left, ...rights] = text.split(match[0]);
+      if (left) {
+        nodes.push(left);
+      }
+      nodes.push(html`<span class="pill">${match[1]}</span>`);
+      text = rights.join(match[0]);
+    });
+    if (text) {
+      nodes.push(text);
+    }
+
+    const parent = p.parentElement;
+    p.remove();
+    console.log("nodes: ", nodes);
+    parent.append(...nodes);
+  });
+}
+
+/**
+ * apply section metadata `id` to first heading in the section
+ * @param {HTMLElement} main
+ */
+function decorateSectionIds(main) {
+  main
+    .querySelectorAll(".section[data-id] :is(h1,h2,h3,h4,h5,h6):nth-child(1)")
+    .forEach((heading) => {
+      const section = heading.closest("div.section");
+      heading.id = section.dataset.id;
+    });
+}
+
 /**
  * Decorates the main element.
  * @param {Element} main The main element
@@ -831,8 +870,10 @@ export function decorateMain(main) {
   decorateButtons(main);
   convertCodeIconsToText(main);
   // decorateIcons(main);
+  decoratePills(main);
   buildAutoBlocks(main);
   decorateSections(main);
+  decorateSectionIds(main);
   decorateLandingSections(main);
   decorateBlocks(main);
 
