@@ -238,6 +238,14 @@ main .section {
   padding: 64px 16px;
 }
 
+span.pill {
+  background: #000;
+  color: #fff;
+  border-radius: 14px;
+  margin: 0 -5px;
+  padding: 2px 5px;
+}
+
 @media (min-width: 600px) {
   main .section {
     padding: 64px 32px;
