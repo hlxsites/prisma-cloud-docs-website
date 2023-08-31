@@ -6,6 +6,7 @@
 
 import {
   BRANCH_ORIGIN,
+  DOCS_ORIGINS,
   decorateMain,
   isValidDocsURL,
   isValidWebURL,
@@ -90,7 +91,11 @@ export default async function decorate(block) {
   const fromDocs = block.classList.contains('docs');
 
   if (store.branch) {
-    const url = new URL(href);
+    const url = new URL(
+      !href.startsWith('/') && !href.startsWith('.')
+        ? href
+        : `${DOCS_ORIGINS[store.env]}${href}`,
+    );
     setBranch(url, store.branch, true);
     href = url.toString();
   }
