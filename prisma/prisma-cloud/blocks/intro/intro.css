@@ -1,0 +1,42 @@
+.operationalize {
+  background-color: var(--color-blue-dark--900);
+}
+
+.operationalize p {
+  color: var(--color-neutral-100);
+}
+
+.ops-intro {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+}
+
+.ops-intro-header {
+  align-items: center;
+  display: flex;
+  height: 60%;
+  justify-content: center;
+  max-width: 840px;
+}
+
+.ops-intro-header h1 {
+  color: var(--color-neutral-white);
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.ops-intro .header-section {
+  display: none;
+  flex-direction: column;
+}
+
+.ops-intro .header-section:first-child {
+  text-align: center;
+}
+
+.ops-intro .header-section.is-active {
+  display: flex;
+}
