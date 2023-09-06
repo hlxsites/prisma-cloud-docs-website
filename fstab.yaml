@@ -6,6 +6,7 @@ folders:
   /prisma/prisma-cloud/en/code-security/: /prisma/prisma-cloud/en/product/book-default
   /prisma/prisma-cloud/en/cspm/: /prisma/prisma-cloud/en/product/book-default
   /prisma/prisma-cloud/en/cns/: /prisma/prisma-cloud/en/product/book-default
+  /prisma/prisma-cloud/en/prisma-cloud-ag/: /prisma/prisma-cloud/en/product/book-default
   /prisma/prisma-cloud/jp/compute/: /prisma/prisma-cloud/jp/product/book-default
   /prisma/prisma-cloud/jp/code-security/: /prisma/prisma-cloud/jp/product/book-default
   /prisma/prisma-cloud/jp/cspm/: /prisma/prisma-cloud/jp/product/book-default
