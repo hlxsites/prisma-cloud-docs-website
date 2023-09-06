@@ -10,7 +10,6 @@ import {
   render,
   renderSidenav,
   setBranch,
-  slugify,
 } from "../../scripts/scripts.js";
 
 import {
@@ -308,18 +307,17 @@ const decorateTitles = (block) => {
     const link = document.createElement("a");
 
     const title = articleTitle.textContent;
-    const slug = `${slugify(title)}`;
+    const slug = articleTitle.getAttribute("id");
     link.setAttribute("href", `#${slug}`);
     link.textContent = title;
     listItem.append(link);
     pageOutline.append(listItem);
 
-    articleTitle.setAttribute("id", "");
     articleTitle.setAttribute("data-id", slug);
     articleTitle.setAttribute("data-docs-heading", true);
 
     articleTitle.innerHTML = `
-          <div id="${slug}" style="height: 50px" class="anchor"></div>
+          <div class="anchor"></div>
           ${title}
           <button class="button-copy button-copy-link">
             <span>
