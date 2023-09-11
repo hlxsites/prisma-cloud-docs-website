@@ -27,10 +27,6 @@
   padding: var(--spacing--10) 0;
 }
 
-.hero-search-container .default-content-wrapper ul a {
-  min-width: 270px;
-}
-
 .hero-search-wrapper p {
   margin: 0 auto;
   max-width: 478px;
@@ -54,7 +50,6 @@
 
 .hero-search-container .default-content-wrapper ul a {
   align-items: center;
-  border-radius: var(--primary-action-border-radius);
   background-color: var(--primary-action-background-color);
   border-radius: var(--primary-action-border-radius);
   color: var(--primary-action-text-color);
@@ -63,6 +58,7 @@
   line-height: var(--control-line-height--reg);
   letter-spacing: var(--letter-spacing-neg--s);
   justify-content: center;
+  min-width: 270px;
   padding: 20px var(--spacing--6);
   text-decoration: none;
 }

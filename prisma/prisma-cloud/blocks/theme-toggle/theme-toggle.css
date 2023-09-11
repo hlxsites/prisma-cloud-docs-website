@@ -3,16 +3,7 @@
 
   --selected-background-color: var(--color-neutral-white);
   --selected-border-color: var(--border-color);
-}
 
-[data-user-theme="dark"] .book .theme-toggle {
-  --border-color: var(--color-neutral-dark-400);
-
-  --selected-border-color: var(--border-color);
-  --selected-background-color: var(--color-body-book-background);
-}
-
-.theme-toggle {
   align-items: center;
   border-top: 1px solid var(--border-color);
   display: flex;
@@ -21,6 +12,13 @@
   padding: var(--spacing--4) var(--spacing--6);
   position: relative;
   width: 100%;
+}
+
+[data-user-theme="dark"] .book .theme-toggle {
+  --border-color: var(--color-neutral-dark-400);
+
+  --selected-border-color: var(--border-color);
+  --selected-background-color: var(--color-body-book-background);
 }
 
 .theme-toggle button:hover {

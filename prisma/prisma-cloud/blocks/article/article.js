@@ -14,7 +14,7 @@ import {
 
 import { getMetadata, loadBlocks, updateSectionsStatus } from '../../scripts/lib-franklin.js';
 
-import '../scroll-spy/scroll-spy.js';
+import '../../scripts/scroll-spy.js';
 import '../theme-toggle/theme-toggle.js';
 
 const TEMPLATE_ICON_COPY = /* html */ `

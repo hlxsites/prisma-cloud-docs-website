@@ -3,6 +3,13 @@
 
   --selected-background-color: var(--color-neutral-white);
   --selected-border-color: var(--border-color);
+
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  /* padding: var(--spacing--4) var(--spacing--6); */
+  position: relative;
+  width: 100%;
 }
 
 [data-user-theme="dark"] .book .language-selector {
@@ -15,15 +22,6 @@
 language-selector.is-disabled {
   opacity: 0.5;
   pointer-events: none;
-}
-
-.language-selector {
-  align-items: center;
-  display: flex;
-  justify-content: space-between;
-  /* padding: var(--spacing--4) var(--spacing--6); */
-  position: relative;
-  width: 100%;
 }
 
 .language-selector button:hover {

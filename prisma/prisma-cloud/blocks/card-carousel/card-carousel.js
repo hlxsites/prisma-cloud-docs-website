@@ -6,8 +6,8 @@ const TEMPLATE = /* html */ `
 <div class="card-carousel">
 <section class="splide">
  <div class="splide__track">
-		<ul class="splide__list">
-			<li class="splide__slide">
+<ul class="splide__list">
+<li class="splide__slide">
         <a href="/" class="card">
           <span class="chip">Blog</span>
           <h5 class="title">
@@ -16,7 +16,7 @@ const TEMPLATE = /* html */ `
           </h5>
         </a>
       </li>
-		</ul>
+</ul>
   </div>
 </section>
 </div>

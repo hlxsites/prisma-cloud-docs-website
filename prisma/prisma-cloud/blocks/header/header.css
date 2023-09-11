@@ -83,7 +83,6 @@
   transition: transform 0.15s ease-in-out;
   display: flex;
   flex-direction: column;
-
   background: var(--mobile-drawer-background-color);
 }
 
@@ -98,9 +97,7 @@
 
 .pan-mobile-nav .nav-header {
   display: flex;
-
   flex-direction: column;
-
   padding: var(--mobile-drawer-header-padding-vert) var(--mobile-drawer-header-padding-horz);
   width: 100%;
 }
@@ -124,12 +121,9 @@
 }
 
 .pan-mobile-nav .nav-header .nav-header-top .btn-close-nav {
-  background-color: transparent;
-  border: none;
   cursor: pointer;
-
   align-items: center;
-  background: var(--header-search-close-background-color);
+  background: var(--header-search-close-background-color) transparent;
   border: 1px solid var(--header-search-close-border-color);
   border-radius: 50%;
   color: var(--search-text-color);
@@ -151,7 +145,6 @@
   /* background-color: #fff;
   border-color: #fff;
   box-shadow: none; */
-
   cursor: pointer;
 }
 
@@ -292,15 +285,10 @@
 .pan-mobile-nav .nav-menu-section .nav-menu li > span {
   cursor: pointer;
   flex-grow: 1;
-  line-height: 20px;
-  font-size: 16px;
-  letter-spacing: 0.06em;
-  color: #36424b;
   position: relative;
   display: flex;
   align-items: center;
   gap: 10px;
-
   color: var(--search-text-color);
   font-size: var(--body-font-size--p2);
   font-weight: 600;
@@ -419,7 +407,6 @@
   width: 100%;
   transition: opacity var(--action-ease-duration) var(--action-ease-function);
   visibility: hidden;
-
   display: flex;
   justify-content: center;
 }
@@ -572,7 +559,6 @@
 }
 
 .pan-desktop-nav .nav-logo-section {
-  align-items: flex-end;
   position: relative;
   z-index: 10;
   margin-right: 40px;
@@ -595,7 +581,6 @@
   transition: transform 0.2s, opacity 0.2s;
   opacity: 0;
   transform-origin: top;
-  /* transform: rotateX(-10deg); */
   padding: 25px;
   border-radius: 10px;
   font-size: 16px;
@@ -720,10 +705,7 @@
   color: var(--header-primary-text-color);
   font-size: var(--control-font-size--sm);
   line-height: var(--control-line-height--sm);
-  padding-top: 9px;
-  padding-right: 8px;
-  padding-bottom: 9px;
-  padding-left: 8px;
+  padding: 9px 8px;
   position: relative;
   margin-right: var(--spacing--6);
   /* margin-bottom: 20px; */
@@ -866,7 +848,6 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-
   font-size: var(--control-font-size--sm);
   font-weight: bold;
   line-height: var(--control-line-height--reg);
@@ -911,7 +892,6 @@
   padding-top: 160px;
   margin-top: -160px;
   color: #fff;
-
   display: none;
 }
 
@@ -928,12 +908,18 @@
 }
 
 .pan-banner::after {
-  pointer-events: none;
   background: url('/prisma/prisma-cloud/assets/landing-right-graphic.webp') 0 0 no-repeat;
-  right: 0;
-  top: 0;
-  height: 756px;
-  width: 406px;
+  content: '';
+  display: block;
+  position: absolute;
+  width: 675px;
+  height: 502px;
+  background-size: 675px 502px;
+  top: -70px;
+  right: 18px;
+  background-repeat: no-repeat;
+  pointer-events: none;
+  transform: rotate(-148deg) scaleX(-1);
 }
 
 .pan-banner::before {
@@ -976,20 +962,6 @@
     transform: rotate(86deg) scale(0.25);
     left: -225px;
   }
-}
-
-.pan-banner::after {
-  content: '';
-  display: block;
-  position: absolute;
-  width: 675px;
-  height: 502px;
-  background-size: 675px 502px;
-  top: -70px;
-  right: 18px;
-  background-repeat: no-repeat;
-  pointer-events: none;
-  transform: rotate(-148deg) scaleX(-1);
 }
 
 @media (min-width: 1200px) {
@@ -1052,7 +1024,6 @@
 
 .nav-mobile-books {
   background: var(--header-books-background-color);
-
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--header-border);
   bottom: -1px;
@@ -1195,13 +1166,6 @@
     height: auto;
   }
 
-  .pan-search-panel .search-panel-container {
-    align-items: flex-end;
-    flex-direction: column;
-    max-width: 100%;
-    padding: var(--mobile-drawer-header-padding-vert) var(--mobile-drawer-header-padding-horz);
-  }
-
   search-bar {
     margin-top: var(--spacing--7);
     order: 2;
@@ -1225,7 +1189,7 @@
     align-items: flex-start;
     background: var(--global-search-background-color);
     backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px); /* stylelint-disable-line */
     display: flex;
     height: 100% !important;
     position: fixed;
@@ -1233,6 +1197,9 @@
 
   .pan-search-panel .search-panel-container {
     align-items: flex-start;
+    flex-direction: column;
+    max-width: 100%;
+    padding: var(--mobile-drawer-header-padding-vert) var(--mobile-drawer-header-padding-horz);
   }
 
   .pan-desktop-nav .nav-logo-section {

@@ -4,7 +4,7 @@ export const collapseSection = (element) => {
 
   // Temporarily disable all css transitions
   const elementTransition = element.style.transition;
-  element.style.transition = "";
+  element.style.transition = '';
 
   /**
    * On the next frame (as soon as the previous style change has taken effect),
@@ -20,12 +20,12 @@ export const collapseSection = (element) => {
      * have the element transition to height: 0
      */
     requestAnimationFrame(() => {
-      element.style.height = "0px";
+      element.style.height = '0px';
     });
   });
 
   // Mark the section as "currently collapsed"
-  element.setAttribute("data-collapsed", "true");
+  element.setAttribute('data-collapsed', 'true');
 };
 
 export const expandSection = (element) => {
@@ -36,14 +36,15 @@ export const expandSection = (element) => {
   element.style.height = `${sectionHeight}px`;
 
   // When the next css transition finishes (which should be the one we just triggered)
-  element.addEventListener("transitionend", (e) => {
+  element.addEventListener('transitionend', () => {
     // Remove this event listener so it only gets triggered once
-    element.removeEventListener("transitionend", arguments.callee);
+    // eslint-disable-next-line no-caller, no-restricted-properties, no-undef
+    element.removeEventListener('transitionend', arguments.callee);
 
     // Remove "height" from the element's inline styles, so it can return to its initial value
     element.style.height = null;
   });
 
   // Mark the section as "currently not collapsed"
-  element.setAttribute("data-collapsed", "false");
+  element.setAttribute('data-collapsed', 'false');
 };

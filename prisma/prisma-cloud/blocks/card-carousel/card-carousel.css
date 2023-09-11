@@ -38,7 +38,7 @@
     rgba(10, 20, 41, 0) 100%
   );
   border-radius: var(--spacing--5);
-  content: "";
+  content: '';
   left: 0;
   top: 0;
   position: absolute;

@@ -8,7 +8,7 @@
   --copy-background-color-active: var(--color-neutral-050);
 
   --image-backdrop-color: var(--color-blue--050);
-  --image-box-shadow: 0px 3.692307710647583px 14.769230842590332px 0px
+  --image-box-shadow: 0px 3.6923px 14.7692px 0px
     rgba(139, 180, 221, 0.3);
 
   --last-updated-text-color: var(--color-neutral-500);
@@ -17,6 +17,10 @@
 
   --small-action-background-color: var(--color-neutral-black);
   --small-action-text-color: var(--color-neutral-white);
+
+  display: flex;
+  height: 100%;
+  width: 100%;
 }
 
 [data-user-theme="dark"] .article {
@@ -37,12 +41,6 @@
 
   --small-action-background-color: var(--color-neutral-white);
   --small-action-text-color: var(--color-neutral-black);
-}
-
-.article {
-  display: flex;
-  height: 100%;
-  width: 100%;
 }
 
 .article .contain {
@@ -94,9 +92,6 @@
   max-height: 65vh;
   overflow: auto;
   padding: 0;
-
-  scrollbar-gutter: stable;
-
   /* Scrollbar styles */
   scrollbar-width: thin;
   scrollbar-color: var(--scrollbar-thumb-background-color) transparent;
@@ -189,7 +184,7 @@
   color: var(--color-body-text);
   display: flex;
   justify-content: center;
-  left: -var(--spacing--2);
+  left: --var(--spacing--2);
   opacity: 0;
   padding: 0;
   position: absolute;
@@ -269,11 +264,9 @@ article [data-docs-heading] span {
 
 .pan-article .book-detail-pagination {
   text-transform: uppercase;
-  display: flex;
+  display: none;
   justify-content: space-between;
   align-items: center;
-
-  display: none;
 }
 
 .article-actions {
@@ -421,7 +414,6 @@ article [data-docs-heading] span {
   /* These are technically the same, but use both */
   overflow-wrap: break-word;
   word-wrap: break-word;
-
   -ms-word-break: break-all;
   /* This is the dangerous one in WebKit, as it breaks things wherever */
   word-break: break-all;
@@ -565,10 +557,6 @@ article [data-docs-heading] span {
 }
 
 @media only screen and (max-width: 560px) {
-  .pan-article {
-    --horizontal-pading: var(--spacing--5);
-  }
-
   .article-actions {
     align-items: flex-start;
     flex-direction: column;
@@ -577,6 +565,8 @@ article [data-docs-heading] span {
   }
 
   .pan-article {
+    --horizontal-pading: var(--spacing--5);
+    
     border-radius: 0;
     padding: var(--spacing--10) var(--horizontal-pading);
   }

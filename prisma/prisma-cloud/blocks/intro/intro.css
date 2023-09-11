@@ -116,7 +116,6 @@
   opacity: 0.1;
   position: absolute;
   right: calc(-1 * var(--spacing--2));
-
   top: 50%;
   transform: translateY(-50%);
   height: 84px;

@@ -8,6 +8,10 @@
 
   --search-autosuggest-border-radius: var(--spacing--4);
   --search-autosuggest-background-hover: var(--color-neutral-050);
+
+  display: flex;
+  align-items: center;
+  width: 100%;
 }
 
 [data-user-theme="dark"] .book .search-bar {
@@ -21,12 +25,6 @@
 
 search-bar {
   display: flex;
-  width: 100%;
-}
-
-.search-bar {
-  display: flex;
-  align-items: center;
   width: 100%;
 }
 
@@ -97,7 +95,6 @@ search-bar {
   height: var(--search-height);
   width: 43px;
   border: none;
-
   background: var(--search-background-color);
 }
 
@@ -159,22 +156,17 @@ search-bar {
 }
 
 .search-bar .dropbtn {
-  /* padding: 15px 15px 14px; */
-  font-size: 16px;
   border: none;
   cursor: pointer;
   width: 100%;
   text-align: left;
-  background: #ffffff8c;
   display: flex;
   align-items: center;
   justify-content: center;
   white-space: nowrap;
-
   background: var(--search-background-color);
   color: var(--search-text-color);
   height: var(--search-height); /* TODO: Adjust this  */
-
   border-top: 1px solid var(--search-border-color);
   border-bottom: 1px solid var(--search-border-color);
   border-left: 1px solid var(--search-border-color);
@@ -228,7 +220,6 @@ search-bar {
   right: 0;
   margin: 0;
   padding: 25px;
-
   text-align: left;
   transform: translateY(var(--spacing--2));
 }
@@ -274,7 +265,7 @@ search-bar {
   .coveo-magicbox-suggestions {
   background: var(--search-background-color);
   border-radius: var(--search-autosuggest-border-radius);
-  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.08);
   overflow: hidden;
   padding: var(--spacing--4) var(--spacing--6);
 }

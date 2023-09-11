@@ -4,6 +4,8 @@
 
   --substep-background-color: var(--color-neutral-black);
   --substep-text-color: var(--color-neutral-white);
+
+  line-height: 1.618;
 }
 
 /* Dark Mode */
@@ -14,10 +16,6 @@
 
   --substep-background-color: var(--color-neutral-white);
   --substep-text-color: var(--color-neutral-dark-600);
-}
-
-.procedure {
-  line-height: 1.618;
 }
 
 .procedure ol.steps {
@@ -43,7 +41,6 @@
   line-height: 18px;
   padding: 5px 0 5px var(--spacing--4);
   position: absolute;
-  text-align: center;
   /* transform: translateX(-100%); */
   transition: background-color var(--action-ease-duration)
       var(--action-ease-function),

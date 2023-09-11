@@ -14,7 +14,7 @@
 
 .promo-wrapper:before,
 .promo-wrapper:after {
-  content: "";
+  content: '';
   left: 0;
   position: absolute;
   width: 100%;
@@ -27,7 +27,7 @@
     rgba(42, 42, 42, 0) 100%
   );
   bottom: 0;
-  content: "";
+  content: '';
   height: 72%;
 }
 

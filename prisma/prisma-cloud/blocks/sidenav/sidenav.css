@@ -12,6 +12,10 @@
   --toggle-border-radius: 50px;
 
   --sidebar-banner-padding: 50px;
+
+  flex-shrink: 0;
+  z-index: 2;
+  width: 375px;
 }
 
 [data-user-theme="dark"] .sidenav-wrapper {
@@ -22,12 +26,6 @@
 
   --book-title-icon-background-color: var(--color-blue-dark--800);
   --book-title-icon-text-color: var(--color-blue-dark--500);
-}
-
-.sidenav-wrapper {
-  flex-shrink: 0;
-  z-index: 2;
-  width: 375px;
 }
 
 .sidenav-wrapper hr,
@@ -112,10 +110,7 @@
 
 .sidenav-container.aside-close .toggle-aside {
   background-color: var(--color-body-book-background);
-  border-bottom-left-radius: 0;
-  border-top-left-radius: 0;
-  border-bottom-right-radius: var(--toggle-border-radius);
-  border-top-right-radius: var(--toggle-border-radius);
+  border-radius: 0 var(--toggle-border-radius) var(--toggle-border-radius) 0;
   transform: translate(100%, -8px);
 }
 
@@ -289,7 +284,6 @@
 
 .pan-sidenav .search-toc {
   margin-bottom: 20px;
-
   display: none;
 }
 
@@ -554,8 +548,6 @@
     max-height: calc(100vh - var(--nav-height) - 117px);
     padding-right: var(--spacing--2);
     overflow-y: scroll;
-    scrollbar-gutter: stable;
-
     /* Scrollbar styles */
     scrollbar-width: thin;
     scrollbar-color: var(--scrollbar-thumb-background-color) transparent;

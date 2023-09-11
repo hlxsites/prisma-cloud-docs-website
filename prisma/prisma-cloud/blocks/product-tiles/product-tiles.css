@@ -21,11 +21,6 @@
   text-align: center;
 }
 
-.product-tiles > div > div {
-  order: 1;
-  text-align: center;
-}
-
 /* Currently this is a one off CTA style, refactor if it becomes used in other places */
 .product-tiles a {
   align-items: center;

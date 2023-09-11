@@ -76,10 +76,10 @@
 }
 
 /* Allow for content to be vertically aligned top */
-.table tbody tr td *:first-chil:not(button) {
+/* .table tbody tr td *:first-child:not(button) {
   margin-top: 0;
   padding-top: 0;
-}
+} */
 
 .table tbody tr td:first-child {
   border-left: 1px solid var(--table-border-color);
