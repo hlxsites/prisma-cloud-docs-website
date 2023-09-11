@@ -1,13 +1,35 @@
 import { html, isValidDocsURL, isValidWebURL } from '../../scripts/scripts.js';
 
+/**
+ * @param {HTMLElement} block
+ */
 function extractColWidths(block) {
-  const match = /(?:\s|^)colgroup-(?<cols>[^ ]*)/.exec(block.className);
-  if (!match) return [];
+  const firstRow = block.querySelector('div');
+  const firstCol = firstRow.querySelector('div');
+  if (firstCol.innerText !== 'col-widths') {
+    return [];
+  }
 
-  const { cols } = match.groups || {};
-  if (!cols) return [];
+  const cols = firstCol.nextElementSibling.textContent.split(',');
+  const maxVal = parseInt([...cols].sort().reverse()[0], 10);
+  const widths = cols.map((swid) => Math.round((100 * parseInt(swid, 10)) / maxVal));
+  firstRow.remove();
+  return widths;
+}
 
-  return cols.split('-');
+/**
+ * @param {HTMLElement} block
+ */
+function extractColSpans(block) {
+  const firstRow = block.querySelector('div');
+  const firstCol = firstRow.querySelector('div');
+  if (firstCol.innerText !== 'col-spans') {
+    return [];
+  }
+
+  const cols = firstCol.nextElementSibling.textContent.split(',');
+  firstRow.remove();
+  return cols;
 }
 
 async function sheetToDivTable(path) {
@@ -51,6 +73,7 @@ async function sheetToDivTable(path) {
  */
 export default async function decorate(block) {
   const headless = block.classList.contains('headless');
+  const colSpans = extractColSpans(block);
   const colWidths = extractColWidths(block);
 
   let rows = [...block.querySelectorAll(':scope > div')];
@@ -72,9 +95,13 @@ export default async function decorate(block) {
   block.appendChild(table);
 
   if (colWidths.length) {
-    const colgroup = html` <colgroup>
-      ${colWidths.map((col) => `<col style="width: ${col}%">`).join('\n')}
-    </colgroup>`;
+    const colgroup = document.createElement('colgroup');
+    colWidths.forEach((colWidth) => {
+      const col = document.createElement('col');
+      col.style.width = `${colWidth}%`;
+      colgroup.appendChild(col);
+    });
+
     table.appendChild(colgroup);
   }
 
@@ -86,7 +113,7 @@ export default async function decorate(block) {
     const thead = html` <table>
       <thead>
         <tr>
-          ${cells.map((cell) => `<th>${cell.innerHTML}</th>`).join('\n')}
+          ${cells.map((cell, i) => `<th${colSpans[i] ? ` colspan="${colSpans[i]}"` : ''}>${cell.innerHTML}</th>`).join('\n')}
         </tr>
       </thead>
     </table>`.firstElementChild;
