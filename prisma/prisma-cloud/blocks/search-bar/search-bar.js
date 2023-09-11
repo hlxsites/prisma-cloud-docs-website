@@ -1,10 +1,9 @@
 /* global Coveo */
-import { getMetadata, loadCSS } from "../../scripts/lib-franklin.js";
+import { getMetadata, loadCSS } from '../../scripts/lib-franklin.js';
 
-const TAG_NAME = "search-bar";
-const COVEO_BUNDLE_VERSION = "v2.10082";
-const BUNDLE_PATH = (ext) =>
-  `${window.hlx.codeBasePath}/blocks/search-bar/coveo-search-${COVEO_BUNDLE_VERSION}.min.${ext}`;
+const TAG_NAME = 'search-bar';
+const COVEO_BUNDLE_VERSION = 'v2.10082';
+const BUNDLE_PATH = (ext) => `${window.hlx.codeBasePath}/blocks/search-bar/coveo-search-${COVEO_BUNDLE_VERSION}.min.${ext}`;
 
 const TEMPLATE = /* html */ `
 <div class="search-bar">
@@ -37,17 +36,17 @@ const TEMPLATE_CLOSE_ICON = `
 
 function getCoveoConfig() {
   switch (store.env) {
-    case "prod":
+    case 'prod':
       return {
-        apiKey: "xx1149a803-7b6b-4fd3-b984-cd35445f7494",
-        orgID: "paloaltonetworksintranet",
-        searchPageURL: "https://docs.paloaltonetworks.com/search/",
+        apiKey: 'xx1149a803-7b6b-4fd3-b984-cd35445f7494',
+        orgID: 'paloaltonetworksintranet',
+        searchPageURL: 'https://docs.paloaltonetworks.com/search/',
       };
     default:
       return {
-        apiKey: "xx8731a310-9aee-4aa4-8fab-81967a8f7391",
-        orgID: "paloaltonetworksintranetsandbox2",
-        searchPageURL: "https://dev.docs.paloaltonetworks.com/search/",
+        apiKey: 'xx8731a310-9aee-4aa4-8fab-81967a8f7391',
+        orgID: 'paloaltonetworksintranetsandbox2',
+        searchPageURL: 'https://dev.docs.paloaltonetworks.com/search/',
       };
   }
 }
@@ -75,21 +74,21 @@ export class SearchBar extends HTMLElement {
   }
 
   init() {
-    const booknameMeta = getMetadata("book-name");
-    const productMeta = getMetadata("product");
-    const docsetMeta = getMetadata("docset-id");
+    const booknameMeta = getMetadata('book-name');
+    const productMeta = getMetadata('product');
+    const docsetMeta = getMetadata('docset-id');
 
-    const appendDropdown = this.querySelector(".dropdown-content");
+    const appendDropdown = this.querySelector('.dropdown-content');
 
-    const defaultOption = this.getAttribute("data-default-option");
-    const defaultOptions = this.getAttribute("data-default-options");
+    const defaultOption = this.getAttribute('data-default-option');
+    const defaultOptions = this.getAttribute('data-default-options');
 
     if (defaultOptions) {
-      let html = "";
+      let html = '';
       const options = JSON.parse(defaultOptions);
       options.forEach((option, i) => {
         html += `<a class="coveo-dropdown-item coveo-dropdown-custom-option ${
-          i === 0 ? "selected" : ""
+          i === 0 ? 'selected' : ''
         }" 
         data-label="${option.label}" 
         data-value="${option.category}==('${option.value}')">
@@ -101,50 +100,36 @@ export class SearchBar extends HTMLElement {
       appendDropdown.innerHTML = html;
     }
     if (docsetMeta && productMeta) {
-      const docSetOption = document.createElement("a");
-      docSetOption.classList.add("coveo-dropdown-item");
+      const docSetOption = document.createElement('a');
+      docSetOption.classList.add('coveo-dropdown-item');
       if (!booknameMeta) {
-        this.querySelector(".coveo-dropdown-item.selected").classList.remove(
-          "selected"
-        );
-        docSetOption.classList.add("selected");
-        this.querySelector(".dropbtn").textContent = `All ${productMeta} books`;
+        this.querySelector('.coveo-dropdown-item.selected').classList.remove('selected');
+        docSetOption.classList.add('selected');
+        this.querySelector('.dropbtn').textContent = `All ${productMeta} books`;
       }
-      docSetOption.setAttribute("data-label", `All ${productMeta} books`);
-      docSetOption.setAttribute(
-        "data-value",
-        `@td_docsetid==("${docsetMeta}")`
-      );
+      docSetOption.setAttribute('data-label', `All ${productMeta} books`);
+      docSetOption.setAttribute('data-value', `@td_docsetid==("${docsetMeta}")`);
       docSetOption.append(`All ${productMeta} books`);
       appendDropdown.prepend(docSetOption);
     }
     if (booknameMeta) {
-      const bookOption = document.createElement("a");
-      this.querySelector(".coveo-dropdown-item.selected").classList.remove(
-        "selected"
-      );
-      bookOption.classList.add("coveo-dropdown-item");
-      bookOption.classList.add("selected");
-      this.querySelector(".dropbtn").textContent = booknameMeta;
-      bookOption.setAttribute("data-label", booknameMeta);
-      bookOption.setAttribute(
-        "data-value",
-        `@panbookname==("${booknameMeta}")`
-      );
+      const bookOption = document.createElement('a');
+      this.querySelector('.coveo-dropdown-item.selected').classList.remove('selected');
+      bookOption.classList.add('coveo-dropdown-item');
+      bookOption.classList.add('selected');
+      this.querySelector('.dropbtn').textContent = booknameMeta;
+      bookOption.setAttribute('data-label', booknameMeta);
+      bookOption.setAttribute('data-value', `@panbookname==("${booknameMeta}")`);
       bookOption.append(booknameMeta);
       appendDropdown.prepend(bookOption);
     }
     if (defaultOption) {
-      const targetOption = this.querySelector(
-        `[data-value="${defaultOption}"]`
-      );
+      const targetOption = this.querySelector(`[data-value="${defaultOption}"]`);
 
       if (targetOption) {
-        this.querySelector(".coveo-dropdown-item.selected").classList.remove(
-          "selected"
-        );
-        targetOption.classList.add("selected");
-        this.querySelector(".dropbtn").textContent = targetOption.textContent;
+        this.querySelector('.coveo-dropdown-item.selected').classList.remove('selected');
+        targetOption.classList.add('selected');
+        this.querySelector('.dropbtn').textContent = targetOption.textContent;
       }
     }
   }
@@ -159,8 +144,8 @@ export class SearchBar extends HTMLElement {
         reject = rej;
       });
 
-      loadCSS(BUNDLE_PATH("css"));
-      import(BUNDLE_PATH("js")).then(resolve).catch(reject);
+      loadCSS(BUNDLE_PATH('css'));
+      import(BUNDLE_PATH('js')).then(resolve).catch(reject);
     }
 
     return SearchBar._CoveoLoading;
@@ -169,87 +154,78 @@ export class SearchBar extends HTMLElement {
   _initCoveo() {
     const { orgID, apiKey, searchPageURL } = this.coveoConfig;
 
-    if (
-      Coveo.SearchEndpoint.defaultEndpoint === undefined ||
-      !this.flags.hasInit
-    ) {
-      const searchBoxRoot = this.querySelector(".searchbox");
+    if (Coveo.SearchEndpoint.defaultEndpoint === undefined || !this.flags.hasInit) {
+      const searchBoxRoot = this.querySelector('.searchbox');
       Coveo.SearchEndpoint.configureCloudV2Endpoint(orgID, apiKey);
-      Coveo.$$(searchBoxRoot).on("newQuery", () => {
+      Coveo.$$(searchBoxRoot).on('newQuery', () => {
         const dropdownSelectedValue = this.querySelector(
-          ".coveo-dropdown-item.selected"
-        ).getAttribute("data-value");
+          '.coveo-dropdown-item.selected',
+        ).getAttribute('data-value');
         try {
-          if (dropdownSelectedValue !== "all") {
-            Coveo.state(searchBoxRoot, "hq", dropdownSelectedValue);
+          if (dropdownSelectedValue !== 'all') {
+            Coveo.state(searchBoxRoot, 'hq', dropdownSelectedValue);
             Coveo.state(
               searchBoxRoot,
-              "hd",
-              this.querySelector(".coveo-dropdown-item.selected")
-                .getAttribute("data-label")
-                .trim()
+              'hd',
+              this.querySelector('.coveo-dropdown-item.selected').getAttribute('data-label').trim(),
             );
           } else {
             // eslint-disable-next-line no-undef
-            Coveo.state(searchBoxRoot, "hq", "");
+            Coveo.state(searchBoxRoot, 'hq', '');
             // eslint-disable-next-line no-undef
-            Coveo.state(searchBoxRoot, "hd", "");
+            Coveo.state(searchBoxRoot, 'hd', '');
           }
         } catch (error) {
           console.log(error);
         }
       });
       Coveo.initSearchbox(searchBoxRoot, searchPageURL);
-      const dropDown = this.querySelector(".dropdown");
-      const dropDownOpen = dropDown.querySelector(".dropbtn");
-      const dropDownLoad = dropDown.querySelector(".dropdown-content");
+      const dropDown = this.querySelector('.dropdown');
+      const dropDownOpen = dropDown.querySelector('.dropbtn');
+      const dropDownLoad = dropDown.querySelector('.dropdown-content');
 
-      dropDownOpen.addEventListener("click", () => {
-        dropDown.classList.toggle("is-active");
-        if (dropDownLoad.style.display === "none") {
-          dropDownLoad.style.display = "block";
+      dropDownOpen.addEventListener('click', () => {
+        dropDown.classList.toggle('is-active');
+        if (dropDownLoad.style.display === 'none') {
+          dropDownLoad.style.display = 'block';
         } else {
-          dropDownLoad.style.display = "none";
+          dropDownLoad.style.display = 'none';
         }
       });
 
       // Set default input placeholder for selected item
-      const defaultLabel = this.querySelector(
-        ".coveo-dropdown-item.selected"
-      ).getAttribute("data-label");
+      const defaultLabel = this.querySelector('.coveo-dropdown-item.selected').getAttribute(
+        'data-label',
+      );
 
-      const searchInput = this.querySelector(".magic-box-input input");
-      searchInput.setAttribute("placeholder", `Search ${defaultLabel}`);
+      const searchInput = this.querySelector('.magic-box-input input');
+      searchInput.setAttribute('placeholder', `Search ${defaultLabel}`);
 
-      for (const dropoption of this.querySelectorAll(".coveo-dropdown-item")) {
-        dropoption.addEventListener("click", (event) => {
-          const label = event.target.getAttribute("data-label");
-          this.querySelector(".coveo-dropdown-item.selected").classList.remove(
-            "selected"
-          );
-          event.target.classList.add("selected");
-          this.querySelector(".dropbtn").textContent = label;
-          dropDownLoad.setAttribute("style", "display : none");
-          dropDown.classList.remove("is-active");
+      for (const dropoption of this.querySelectorAll('.coveo-dropdown-item')) {
+        dropoption.addEventListener('click', (event) => {
+          const label = event.target.getAttribute('data-label');
+          this.querySelector('.coveo-dropdown-item.selected').classList.remove('selected');
+          event.target.classList.add('selected');
+          this.querySelector('.dropbtn').textContent = label;
+          dropDownLoad.setAttribute('style', 'display : none');
+          dropDown.classList.remove('is-active');
 
-          searchInput.setAttribute("placeholder", `Search ${label}`);
+          searchInput.setAttribute('placeholder', `Search ${label}`);
         });
       }
 
-      const updateClearButton = this.querySelector(
-        ".magic-box-clear .magic-box-icon"
-      );
+      const updateClearButton = this.querySelector('.magic-box-clear .magic-box-icon');
 
       if (updateClearButton) {
         updateClearButton.innerHTML = TEMPLATE_CLOSE_ICON;
       }
 
-      const searchBoxInput = this.querySelector(".magic-box-input input");
-      searchBoxInput.addEventListener("focus", () => {
-        searchBoxRoot.classList.add("is-focused");
+      const searchBoxInput = this.querySelector('.magic-box-input input');
+      searchBoxInput.addEventListener('focus', () => {
+        searchBoxRoot.classList.add('is-focused');
       });
-      searchBoxInput.addEventListener("blur", () => {
-        searchBoxRoot.classList.remove("is-focused");
+      searchBoxInput.addEventListener('blur', () => {
+        searchBoxRoot.classList.remove('is-focused');
       });
 
       this.flags.hasInit = true;
@@ -258,7 +234,7 @@ export class SearchBar extends HTMLElement {
 }
 
 export default function decorate(block) {
-  block.innerHTML = "<search-bar></search-bar>";
+  block.innerHTML = '<search-bar></search-bar>';
 }
 
 (async () => {

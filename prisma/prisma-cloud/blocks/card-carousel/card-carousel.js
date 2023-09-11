@@ -1,8 +1,7 @@
-import { loadCSS } from "../../scripts/lib-franklin.js";
+import { loadCSS } from '../../scripts/lib-franklin.js';
 
-const TAG_NAME = "card-carousel";
-const BUNDLE_PATH = (ext) =>
-  `${window.hlx.codeBasePath}/blocks/card-carousel/splide.min.${ext}`;
+const TAG_NAME = 'card-carousel';
+const BUNDLE_PATH = (ext) => `${window.hlx.codeBasePath}/blocks/card-carousel/splide.min.${ext}`;
 const TEMPLATE = /* html */ `
 <div class="card-carousel">
 <section class="splide">
@@ -25,7 +24,7 @@ const TEMPLATE = /* html */ `
 
 const SPLIDE_CONFIG = {
   arrowPath:
-    "M9.408 0.837c-1.116 1.116-1.116 2.925 0 4.041l14.112 14.112c0.558 0.558 0.558 1.463 0 2.021l-14.112 14.112c-1.116 1.116-1.116 2.925 0 4.041s2.925 1.116 4.041 0l17.143-17.143c1.116-1.116 1.116-2.925 0-4.041l-17.143-17.143c-1.116-1.116-2.925-1.116-4.041 0z",
+    'M9.408 0.837c-1.116 1.116-1.116 2.925 0 4.041l14.112 14.112c0.558 0.558 0.558 1.463 0 2.021l-14.112 14.112c-1.116 1.116-1.116 2.925 0 4.041s2.925 1.116 4.041 0l17.143-17.143c1.116-1.116 1.116-2.925 0-4.041l-17.143-17.143c-1.116-1.116-2.925-1.116-4.041 0z',
   focus: 0,
   gap: 24,
   heightRatio: 0.3,
@@ -62,7 +61,7 @@ export class CardCarousel extends HTMLElement {
     // this.init();
     this.loadSplide();
 
-    store.once("blog:loaded", () => {
+    store.once('blog:loaded', () => {
       this.flags.blogLoaded = true;
       this._initSplide();
     });
@@ -84,15 +83,15 @@ export class CardCarousel extends HTMLElement {
         reject = rej;
       });
 
-      loadCSS(BUNDLE_PATH("css"));
-      import(BUNDLE_PATH("js")).then(resolve).catch(reject);
+      loadCSS(BUNDLE_PATH('css'));
+      import(BUNDLE_PATH('js')).then(resolve).catch(reject);
     }
 
     return CardCarousel._SplideLoading;
   }
 
   _initSplide() {
-    const splideRoot = this.querySelector(".splide");
+    const splideRoot = this.querySelector('.splide');
     const loaded = this.flags.blogLoaded && this.flags.splideLoaded;
 
     if (loaded && splideRoot) {
@@ -107,7 +106,7 @@ export class CardCarousel extends HTMLElement {
 }
 
 export default function decorate(block) {
-  block.innerHTML = "<card-carousel></card-carousel>";
+  block.innerHTML = '<card-carousel></card-carousel>';
 }
 
 (async () => {

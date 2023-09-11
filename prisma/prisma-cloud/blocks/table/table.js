@@ -1,4 +1,4 @@
-import { html, isValidDocsURL, isValidWebURL } from "../../scripts/scripts.js";
+import { html, isValidDocsURL, isValidWebURL } from '../../scripts/scripts.js';
 
 function extractColWidths(block) {
   const match = /(?:\s|^)colgroup-(?<cols>[^ ]*)/.exec(block.className);
@@ -7,13 +7,13 @@ function extractColWidths(block) {
   const { cols } = match.groups || {};
   if (!cols) return [];
 
-  return cols.split("-");
+  return cols.split('-');
 }
 
 async function sheetToDivTable(path) {
   let href = path;
   if (!href) return null;
-  if (!href.startsWith("/") && !href.startsWith(".")) {
+  if (!href.startsWith('/') && !href.startsWith('.')) {
     if (isValidWebURL(href)) {
       try {
         href = href.slice(new URL(href).origin.length);
@@ -30,18 +30,18 @@ async function sheetToDivTable(path) {
     return null;
   }
 
-  let tableStr = "<div>";
+  let tableStr = '<div>';
   json.data.forEach((row, i) => {
     if (i === 0) {
       tableStr += `<div>${Object.keys(row)
         .map((header) => `<div>${header}</div>`)
-        .join("")}</div>`;
+        .join('')}</div>`;
     }
     tableStr += `<div>${Object.values(row)
       .map((cell) => `<div>${cell}</div>`)
-      .join("")}</div>`;
+      .join('')}</div>`;
   });
-  tableStr += "</div>";
+  tableStr += '</div>';
 
   return html`${tableStr}`;
 }
@@ -50,30 +50,30 @@ async function sheetToDivTable(path) {
  * @param {HTMLDivElement} block
  */
 export default async function decorate(block) {
-  const headless = block.classList.contains("headless");
+  const headless = block.classList.contains('headless');
   const colWidths = extractColWidths(block);
 
-  let rows = [...block.querySelectorAll(":scope > div")];
+  let rows = [...block.querySelectorAll(':scope > div')];
   if (rows.length === 1 && rows[0].children.length === 1) {
     const cell = rows[0].children.item(0);
-    const link = cell.querySelector("a");
+    const link = cell.querySelector('a');
     if (link && cell.childElementCount === 1) {
       const divTable = await sheetToDivTable(link.href || link.innerText);
       if (divTable) {
-        rows = [...divTable.querySelectorAll(":scope > div")];
+        rows = [...divTable.querySelectorAll(':scope > div')];
       }
     }
   }
 
   if (!rows) return;
 
-  const table = document.createElement("table");
-  block.innerHTML = "";
+  const table = document.createElement('table');
+  block.innerHTML = '';
   block.appendChild(table);
 
   if (colWidths.length) {
     const colgroup = html` <colgroup>
-      ${colWidths.map((col) => `<col style="width: ${col}%">`).join("\n")}
+      ${colWidths.map((col) => `<col style="width: ${col}%">`).join('\n')}
     </colgroup>`;
     table.appendChild(colgroup);
   }
@@ -82,11 +82,11 @@ export default async function decorate(block) {
     const head = rows.shift();
     if (!head) return;
 
-    const cells = [...head.querySelectorAll(":scope > div")];
+    const cells = [...head.querySelectorAll(':scope > div')];
     const thead = html` <table>
       <thead>
         <tr>
-          ${cells.map((cell) => `<th>${cell.innerHTML}</th>`).join("\n")}
+          ${cells.map((cell) => `<th>${cell.innerHTML}</th>`).join('\n')}
         </tr>
       </thead>
     </table>`.firstElementChild;
@@ -99,10 +99,10 @@ export default async function decorate(block) {
   table.appendChild(tbody);
 
   rows.forEach((row) => {
-    const cells = [...row.querySelectorAll(":scope > div")];
+    const cells = [...row.querySelectorAll(':scope > div')];
     const tr = html` <table>
       <tr>
-        ${cells.map((cell) => `<td>${cell.innerHTML}</td>`).join("\n")}
+        ${cells.map((cell) => `<td>${cell.innerHTML}</td>`).join('\n')}
       </tr>
     </table>`.firstElementChild.firstElementChild;
     tbody.appendChild(tr);

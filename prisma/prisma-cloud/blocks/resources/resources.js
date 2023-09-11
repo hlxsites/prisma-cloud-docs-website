@@ -1,16 +1,15 @@
-import { html } from "../../scripts/scripts.js";
-import "../card-carousel/card-carousel.js";
+import { html } from '../../scripts/scripts.js';
+import '../card-carousel/card-carousel.js';
 
-const FEED_URL =
-  store.env === "prod"
-    ? `https://www.paloaltonetworks.com/blog/prisma-cloud/feed/`
-    : `${window.hlx.codeBasePath}/assets/fallback.xml`;
+const FEED_URL = store.env === 'prod'
+  ? 'https://www.paloaltonetworks.com/blog/prisma-cloud/feed/'
+  : `${window.hlx.codeBasePath}/assets/fallback.xml`;
 
 async function getXMLFeed(url) {
   return fetch(url)
     .then((response) => response.text())
     .then((data) => {
-      sessionStorage.setItem("blog", data);
+      sessionStorage.setItem('blog', data);
       return data;
     })
     .catch((e) => {
@@ -19,35 +18,35 @@ async function getXMLFeed(url) {
 }
 
 async function renderXMLAsCards(url) {
-  const xml = sessionStorage.getItem("blog") || (await getXMLFeed(url));
+  const xml = sessionStorage.getItem('blog') || (await getXMLFeed(url));
 
   if (xml) {
     const parser = new DOMParser();
-    const dom = parser.parseFromString(xml, "application/xml");
-    const items = dom.getElementsByTagName("item");
-    let cards = "";
-    for (let i = 0; i < items.length; i++) {
-      const title = items[i].getElementsByTagName("title");
-      const link = items[i].getElementsByTagName("link");
-      const pubDate = items[i].getElementsByTagName("pubDate");
-      const readTime = items[i].getElementsByTagName("readTime");
-      const featuredImage = items[i].getElementsByTagName("featuredImage");
+    const dom = parser.parseFromString(xml, 'application/xml');
+    const items = dom.getElementsByTagName('item');
+    let cards = '';
+    for (let i = 0; i < items.length; i += 1) {
+      const title = items[i].getElementsByTagName('title');
+      const link = items[i].getElementsByTagName('link');
+      const pubDate = items[i].getElementsByTagName('pubDate');
+      const readTime = items[i].getElementsByTagName('readTime');
+      const featuredImage = items[i].getElementsByTagName('featuredImage');
       const background = featuredImage[0].textContent;
       const backgroundStyle = background
         ? `url(${featuredImage[0].textContent}) center center no-repeat`
-        : "url(/prisma/prisma-cloud/assets/card-background.jpg) 0 0 no-repeat";
+        : 'url(/prisma/prisma-cloud/assets/card-background.jpg) 0 0 no-repeat';
       const _pubDate = new Date(pubDate?.[0]?.textContent);
-      const pubDateToLocale = _pubDate.toLocaleString("default", {
-        month: "long",
-        day: "numeric",
-        year: "numeric",
+      const pubDateToLocale = _pubDate.toLocaleString('default', {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric',
       });
 
       cards += `
     <li class="splide__slide">
         <a href="${link[0].textContent}" class="card ${
-        background && "has-custom-background"
-      }" style="background: ${backgroundStyle}; background-size: cover;">
+  background && 'has-custom-background'
+}" style="background: ${backgroundStyle}; background-size: cover;">
             <span class="chip">${readTime[0].textContent} min. read</span>
             <h5 class="title">
                 <span class="eyebrow"></span>
@@ -60,11 +59,11 @@ async function renderXMLAsCards(url) {
     }
 
     const carouselList = document.querySelector(
-      ".carousel-container .splide__list"
+      '.carousel-container .splide__list',
     );
     carouselList.innerHTML = cards;
 
-    store.emit("blog:loaded");
+    store.emit('blog:loaded');
   }
 }
 

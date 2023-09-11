@@ -1,11 +1,11 @@
-import { loadCSS } from "../../scripts/lib-franklin.js";
+import { loadCSS } from '../../scripts/lib-franklin.js';
 
 /**
  * Element that allows a user to toggle the current theme.
  * @extends {HTMLElement}
  * @final
  */
-const TAG_NAME = "theme-toggle";
+const TAG_NAME = 'theme-toggle';
 
 const TEMPLATE_DARK_ICON = `
 <svg focusable="false" aria-label="Dark Mode" class="icon icon-dark-mode" version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
@@ -31,18 +31,18 @@ const TEMPLATE_SYSTEM_ICON = `
 
 const themes = {
   dark: {
-    title: "Dark",
-    value: "dark",
+    title: 'Dark',
+    value: 'dark',
     icon: TEMPLATE_DARK_ICON,
   },
   light: {
-    title: "Light",
-    value: "light",
+    title: 'Light',
+    value: 'light',
     icon: TEMPLATE_LIGHT_ICON,
   },
   system: {
-    title: "System",
-    value: "system",
+    title: 'System',
+    value: 'system',
     icon: TEMPLATE_SYSTEM_ICON,
   },
 };
@@ -84,29 +84,29 @@ class ThemeToggle extends HTMLElement {
 
     this.innerHTML = TEMPLATE;
 
-    this.STORAGE_KEY = "user-color-scheme";
-    this.COLOR_MODE_KEY = "--color-mode";
+    this.STORAGE_KEY = 'user-color-scheme';
+    this.COLOR_MODE_KEY = '--color-mode';
   }
 
   connectedCallback() {
-    this.target = this.querySelector(".action");
-    this.toggleSwitch = this.querySelectorAll("[data-theme]");
-    this.toggleDrawer = this.querySelector(".selected");
-    this.drawer = this.querySelector(".drawer");
-    this.selectedTitle = this.toggleDrawer.querySelector(".title");
-    this.selectedIcon = this.toggleDrawer.querySelector(".icon");
+    this.target = this.querySelector('.action');
+    this.toggleSwitch = this.querySelectorAll('[data-theme]');
+    this.toggleDrawer = this.querySelector('.selected');
+    this.drawer = this.querySelector('.drawer');
+    this.selectedTitle = this.toggleDrawer.querySelector('.title');
+    this.selectedIcon = this.toggleDrawer.querySelector('.icon');
 
     if (this.toggleDrawer) {
-      this.toggleDrawer.addEventListener("click", () => {
-        this.drawer.classList.toggle("is-active");
+      this.toggleDrawer.addEventListener('click', () => {
+        this.drawer.classList.toggle('is-active');
       });
     }
 
     if (this.toggleSwitch) {
       // On change, calculate the new setting, toggle state changes and store in storage
       this.toggleSwitch.forEach((button) => {
-        button.addEventListener("click", () => {
-          const setting = button.getAttribute("data-theme");
+        button.addEventListener('click', () => {
+          const setting = button.getAttribute('data-theme');
           this.applySetting(setting);
           localStorage.setItem(this.STORAGE_KEY, setting);
         });
@@ -115,7 +115,7 @@ class ThemeToggle extends HTMLElement {
       this.applySetting();
     }
 
-    document.addEventListener("click", (event) => {
+    document.addEventListener('click', (event) => {
       const isClickInside = this.target.contains(event.target);
 
       if (!isClickInside) {
@@ -125,32 +125,31 @@ class ThemeToggle extends HTMLElement {
   }
 
   applySetting(passedSetting) {
-    const browserSetting = window.matchMedia("(prefers-color-scheme: dark)")
+    const browserSetting = window.matchMedia('(prefers-color-scheme: dark)')
       .matches
-      ? "dark"
-      : "light";
+      ? 'dark'
+      : 'light';
     // Attempts to load the setting from local storage
-    const currentSetting =
-      passedSetting || localStorage.getItem(this.STORAGE_KEY) || browserSetting;
+    const currentSetting = passedSetting || localStorage.getItem(this.STORAGE_KEY)
+    || browserSetting;
 
     if (currentSetting) {
       this.setToggleSwitchStatus(currentSetting);
       this.applyThemeSetting(currentSetting);
-    }
-    // If no storage setting, we set up media query-based state change
-    else {
+      // If no storage setting, we set up media query-based state change
+    } else {
       // Set the checkbox to on if we're already in dark preference
       //   if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
       //     this.setToggleSwitchStatus("dark");
       //   }
       this.selectedIcon.innerHTML = TEMPLATE_SYSTEM_ICON;
-      this.selectedTitle.textContent = "System";
+      this.selectedTitle.textContent = 'System';
 
       // Listen for changes to the preference and set checkbox state accordingly
       window
-        .matchMedia("(prefers-color-scheme: dark)")
-        .addEventListener("change", (evt) => {
-          this.setToggleSwitchStatus(evt.matches ? "dark" : "light");
+        .matchMedia('(prefers-color-scheme: dark)')
+        .addEventListener('change', (evt) => {
+          this.setToggleSwitchStatus(evt.matches ? 'dark' : 'light');
         });
     }
   }
@@ -177,21 +176,19 @@ class ThemeToggle extends HTMLElement {
 
   // Apply the current theme
   applyThemeSetting(_override) {
-    const browserSetting = window.matchMedia("(prefers-color-scheme: dark)")
+    const browserSetting = window.matchMedia('(prefers-color-scheme: dark)')
       .matches
-      ? "dark"
-      : "light";
-    const override = _override === "system" ? browserSetting : _override;
-    const currentSetting =
-      override || localStorage.getItem(this.STORAGE_KEY) || browserSetting;
-    const currentAttribute =
-      document.documentElement.getAttribute("data-user-theme");
+      ? 'dark'
+      : 'light';
+    const override = _override === 'system' ? browserSetting : _override;
+    const currentSetting = override || localStorage.getItem(this.STORAGE_KEY) || browserSetting;
+    const currentAttribute = document.documentElement.getAttribute('data-user-theme');
 
     if (currentSetting) {
       if (currentSetting !== currentAttribute) {
         document.documentElement.setAttribute(
-          "data-user-theme",
-          currentSetting
+          'data-user-theme',
+          currentSetting,
         );
         document.documentElement.style.colorScheme = currentSetting;
       }
@@ -199,12 +196,12 @@ class ThemeToggle extends HTMLElement {
   }
 
   close() {
-    this.drawer.classList.remove("is-active");
+    this.drawer.classList.remove('is-active');
   }
 }
 
 export default function decorate(block) {
-  block.innerHTML = "<theme-toggle></theme-toggle>";
+  block.innerHTML = '<theme-toggle></theme-toggle>';
 }
 
 (async () => {

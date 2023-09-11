@@ -1,5 +1,5 @@
-import { html, renderParallax } from "../../scripts/scripts.js";
-import "../search-bar/search-bar.js";
+import { html, renderParallax } from '../../scripts/scripts.js';
+import '../search-bar/search-bar.js';
 
 /**
  * @param {HTMLDivElement} block
@@ -55,8 +55,8 @@ export default function decorate(block) {
 
   `;
 
-  const section = block.closest("div.section");
-  const wrapper = section.querySelector(".hero-search-wrapper");
+  const section = block.closest('div.section');
+  const wrapper = section.querySelector('.hero-search-wrapper');
 
   wrapper.append(html`<div class="hero-search-background"></div>`);
   wrapper.prepend(html`${ICON}`);

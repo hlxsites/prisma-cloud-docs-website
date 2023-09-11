@@ -1,12 +1,12 @@
-import { loadCSS } from "../../scripts/lib-franklin.js";
-import { PATH_PREFIX } from "../../scripts/scripts.js";
+import { loadCSS } from '../../scripts/lib-franklin.js';
+import { PATH_PREFIX } from '../../scripts/scripts.js';
 
 /**
  * Element that allows a user to toggle the current theme.
  * @extends {HTMLElement}
  * @final
  */
-const TAG_NAME = "language-selector";
+const TAG_NAME = 'language-selector';
 
 const TEMPLATE = `
 <div class="language-selector">
@@ -33,20 +33,20 @@ class LanguageSelector extends HTMLElement {
   }
 
   connectedCallback() {
-    this.target = this.querySelector(".action");
-    this.toggleDrawer = this.querySelector(".selected");
-    this.drawer = this.querySelector(".drawer");
-    this.selectedTitle = this.toggleDrawer.querySelector(".title");
+    this.target = this.querySelector('.action');
+    this.toggleDrawer = this.querySelector('.selected');
+    this.drawer = this.querySelector('.drawer');
+    this.selectedTitle = this.toggleDrawer.querySelector('.title');
 
     if (this.toggleDrawer) {
-      this.toggleDrawer.addEventListener("click", () => {
-        this.drawer.classList.toggle("is-active");
+      this.toggleDrawer.addEventListener('click', () => {
+        this.drawer.classList.toggle('is-active');
       });
     }
 
     this.init();
 
-    document.addEventListener("click", (event) => {
+    document.addEventListener('click', (event) => {
       const isClickInside = this.target.contains(event.target);
 
       if (!isClickInside) {
@@ -58,35 +58,34 @@ class LanguageSelector extends HTMLElement {
   async init() {
     const curLangKey = document.documentElement.lang;
 
-    if (curLangKey === "not-applicable") {
-      this.classList.add("is-disabled");
+    if (curLangKey === 'not-applicable') {
+      this.classList.add('is-disabled');
       return;
     }
 
-    const { languages, langMap } =
-      store.pageTemplate === "book"
-        ? await store.getLocalizationInfo()
-        : await store.getNonBookLocalizationInfo();
+    const { languages, langMap } = store.pageTemplate === 'book'
+      ? await store.getLocalizationInfo()
+      : await store.getNonBookLocalizationInfo();
 
     this.selectedTitle.textContent = langMap?.[curLangKey];
 
     // Verify that there are other languages to switch to
     if (!languages) {
-      this.classList.add("is-disabled");
+      this.classList.add('is-disabled');
       return;
     }
 
     this.target.addEventListener(
-      "mouseenter",
+      'mouseenter',
       async () => {
         const { pathname } = window.location;
 
         // Remove leading slash, lang
         const segments = pathname
           .substring(PATH_PREFIX.length)
-          .split("/")
+          .split('/')
           .slice(2);
-        const unlocalizedPath = segments.join("/");
+        const unlocalizedPath = segments.join('/');
 
         /**
          * Create url for current page in specefied language
@@ -102,7 +101,7 @@ class LanguageSelector extends HTMLElement {
          * @returns {HTMLElement}
          */
         const makeEntry = (lang, title) => {
-          const a = document.createElement("a");
+          const a = document.createElement('a');
 
           a.href = makeHref(lang);
           a.textContent = title;
@@ -121,22 +120,22 @@ class LanguageSelector extends HTMLElement {
 
         this.drawer.append(...otherLangItems);
       },
-      { once: true }
+      { once: true },
     );
   }
 
   close() {
-    this.drawer.classList.remove("is-active");
+    this.drawer.classList.remove('is-active');
   }
 }
 
 export default function decorate(block) {
-  block.innerHTML = "<language-selector></language-selector>";
+  block.innerHTML = '<language-selector></language-selector>';
 }
 
 (async () => {
   customElements.define(TAG_NAME, LanguageSelector);
   loadCSS(
-    `${window.hlx.codeBasePath}/blocks/language-selector/language-selector.css`
+    `${window.hlx.codeBasePath}/blocks/language-selector/language-selector.css`,
   );
 })();

@@ -2,18 +2,17 @@
 // TODO a11y
 // TODO i18n
 
-import { getMetadata } from "../../scripts/lib-franklin.js";
+import { getMetadata } from '../../scripts/lib-franklin.js';
 import {
   PATH_PREFIX,
-  getPlaceholders,
   isMobile,
   parseFragment,
   render,
   renderBreadCrumbs,
-} from "../../scripts/scripts.js";
-import "../language-selector/language-selector.js";
-import "../search-bar/search-bar.js";
-import "../theme-toggle/theme-toggle.js";
+} from '../../scripts/scripts.js';
+import '../language-selector/language-selector.js';
+import '../search-bar/search-bar.js';
+import '../theme-toggle/theme-toggle.js';
 
 // <search-bar data-default-option="all"></search-bar>
 const TEMPLATE = /* html */ `    
@@ -158,7 +157,7 @@ const TEMPLATE = /* html */ `
  */
 async function load() {
   // fetch nav content & template
-  const navMeta = getMetadata("nav");
+  const navMeta = getMetadata('nav');
   const { lang } = document.documentElement;
   const navPath = `${
     navMeta ? new URL(navMeta).pathname : `${PATH_PREFIX}/${lang}/nav`
@@ -179,63 +178,49 @@ async function load() {
   }
 }
 
-function localize(block) {
-  queueMicrotask(async () => {
-    const ph = await getPlaceholders();
-    block.querySelector(".locale-home").textContent = ph?.home;
-    block.querySelector(".locale-location").textContent = ph?.location;
-    block.querySelector(".locale-menu").textContent = ph?.menu;
-    block.querySelector(".locale-search-panel-close").ariaLabel =
-      ph?.searchPanelClose;
-    block.querySelector(".locale-search-panel-open").ariaLabel =
-      ph?.searchPanelOpen;
-  });
-}
+// function localize(block) {
+//   queueMicrotask(async () => {
+//     const ph = await getPlaceholders();
+//     block.querySelector('.locale-home').textContent = ph?.home;
+//     block.querySelector('.locale-location').textContent = ph?.location;
+//     block.querySelector('.locale-menu').textContent = ph?.menu;
+//     block.querySelector('.locale-search-panel-close').ariaLabel = ph?.searchPanelClose;
+//     block.querySelector('.locale-search-panel-open').ariaLabel = ph?.searchPanelOpen;
+//   });
+// }
 
 /**
  * Add menu dropdowns, mobile columns and search interactions
  * @param {Element} block The header block element
  */
 function addEventListeners(block) {
-  const mobileBooksNav = document.querySelector(".sidenav-container");
-  const mobileNav = block.querySelector(".pan-mobile-nav");
-  const desktopNav = block.querySelector(".pan-desktop-nav");
-  const searchPanel = block.querySelector(".pan-search-panel");
+  const mobileBooksNav = document.querySelector('.sidenav-container');
+  const mobileNav = block.querySelector('.pan-mobile-nav');
+  const desktopNav = block.querySelector('.pan-desktop-nav');
+  const searchPanel = block.querySelector('.pan-search-panel');
 
   /* Mobile */
-  const mobileBooksMenuButton = block.querySelector(".nav-open-booksmenu");
-  const mobileNavCloseButton = mobileNav.querySelector(
-    ".pan-mobile-nav .btn-close-nav"
-  );
-  const mobileNavRootMenu = mobileNav.querySelector(
-    ".pan-mobile-nav .root-menu"
-  );
-  const mobileNavMenuExpanded = mobileNav.querySelectorAll(
-    ".pan-mobile-nav .nav-menu-expanded"
-  );
-  const mobileNavMenuDetails = mobileNav.querySelector(
-    ".pan-mobile-nav .nav-menu-details"
-  );
-  const mobileNavMenuDetailsItems =
-    mobileNavMenuDetails.querySelectorAll(":scope > div > ul");
-  const mobileNavBreadcrumb = mobileNav.querySelector(
-    ".pan-mobile-nav .nav-breadcrumbs"
-  );
-  const mobileBreadcrumb = mobileNavBreadcrumb.querySelector(".breadcrumb");
-  const mobileBreadcrumbBackButton =
-    mobileNavBreadcrumb.querySelector(".btn-back");
-  const mobileMenuButton = desktopNav.querySelector(".nav-open-sidemenu");
+  const mobileBooksMenuButton = block.querySelector('.nav-open-booksmenu');
+  const mobileNavCloseButton = mobileNav.querySelector('.pan-mobile-nav .btn-close-nav');
+  const mobileNavRootMenu = mobileNav.querySelector('.pan-mobile-nav .root-menu');
+  const mobileNavMenuExpanded = mobileNav.querySelectorAll('.pan-mobile-nav .nav-menu-expanded');
+  const mobileNavMenuDetails = mobileNav.querySelector('.pan-mobile-nav .nav-menu-details');
+  const mobileNavMenuDetailsItems = mobileNavMenuDetails.querySelectorAll(':scope > div > ul');
+  const mobileNavBreadcrumb = mobileNav.querySelector('.pan-mobile-nav .nav-breadcrumbs');
+  const mobileBreadcrumb = mobileNavBreadcrumb.querySelector('.breadcrumb');
+  const mobileBreadcrumbBackButton = mobileNavBreadcrumb.querySelector('.btn-back');
+  const mobileMenuButton = desktopNav.querySelector('.nav-open-sidemenu');
 
   const toggleActiveMenu = (currentActive, currentInactive) => {
-    currentInactive.classList.add("active");
-    currentInactive.classList.remove("inactive");
-    currentActive.classList.remove("active");
-    currentActive.classList.add("inactive");
+    currentInactive.classList.add('active');
+    currentInactive.classList.remove('inactive');
+    currentActive.classList.remove('active');
+    currentActive.classList.add('inactive');
   };
 
   const renderMenuItem = (item) => {
     const clone = item.cloneNode(true);
-    const ul = clone.querySelector("ul");
+    const ul = clone.querySelector('ul');
     if (ul) {
       ul.remove();
     }
@@ -243,30 +228,28 @@ function addEventListeners(block) {
     return clone;
   };
 
-  mobileBooksMenuButton.addEventListener("click", () => {
-    document.body.classList.toggle("no-body-scroll");
-    mobileBooksMenuButton.classList.toggle("is-active");
-    mobileBooksNav.classList.toggle("aside-close");
+  mobileBooksMenuButton.addEventListener('click', () => {
+    document.body.classList.toggle('no-body-scroll');
+    mobileBooksMenuButton.classList.toggle('is-active');
+    mobileBooksNav.classList.toggle('aside-close');
   });
 
-  mobileMenuButton.addEventListener("click", () => {
-    document.body.classList.add("no-body-scroll");
-    mobileNav.classList.add("active");
+  mobileMenuButton.addEventListener('click', () => {
+    document.body.classList.add('no-body-scroll');
+    mobileNav.classList.add('active');
   });
 
-  mobileNavCloseButton.addEventListener("click", () => {
-    document.body.classList.remove("no-body-scroll");
-    mobileNav.classList.remove("active");
+  mobileNavCloseButton.addEventListener('click', () => {
+    document.body.classList.remove('no-body-scroll');
+    mobileNav.classList.remove('active');
   });
 
-  mobileNavRootMenu.addEventListener("click", ({ target }) => {
-    if (target.matches("span")) {
-      const selectedMenuIndex = [...mobileNavRootMenu.children].indexOf(
-        target.parentElement
-      );
+  mobileNavRootMenu.addEventListener('click', ({ target }) => {
+    if (target.matches('span')) {
+      const selectedMenuIndex = [...mobileNavRootMenu.children].indexOf(target.parentElement);
       const selectedMenuDetails = mobileNavMenuDetailsItems[selectedMenuIndex];
 
-      mobileNavMenuExpanded[0].innerHTML = "";
+      mobileNavMenuExpanded[0].innerHTML = '';
       for (const item of selectedMenuDetails.children) {
         const clone = renderMenuItem(item);
         mobileNavMenuExpanded[0].append(clone);
@@ -276,138 +259,121 @@ function addEventListeners(block) {
 
       const breadcrumbItemHome = mobileBreadcrumb.children[0];
       const newBreadcrumbItem = breadcrumbItemHome.cloneNode(true);
-      newBreadcrumbItem.classList.add("active");
+      newBreadcrumbItem.classList.add('active');
 
-      const newBreadcrumbItemLink = newBreadcrumbItem.querySelector("a");
+      const newBreadcrumbItemLink = newBreadcrumbItem.querySelector('a');
       newBreadcrumbItemLink.textContent = target.textContent;
-      newBreadcrumbItemLink.href = `#${target.textContent
-        .trim()
-        .replace(/\s/g, "-")}`;
-      breadcrumbItemHome.classList.remove("active");
+      newBreadcrumbItemLink.href = `#${target.textContent.trim().replace(/\s/g, '-')}`;
+      breadcrumbItemHome.classList.remove('active');
       mobileBreadcrumb.append(newBreadcrumbItem);
-      mobileNavBreadcrumb.classList.add("has-back-btn");
+      mobileNavBreadcrumb.classList.add('has-back-btn');
     }
   });
 
   for (const mobileNavMenuExpandedItem of mobileNavMenuExpanded) {
-    mobileNavMenuExpandedItem.addEventListener("click", (event) => {
-      if (event.target.querySelector(".nav-expand")) {
+    mobileNavMenuExpandedItem.addEventListener('click', (event) => {
+      if (event.target.querySelector('.nav-expand')) {
         event.preventDefault();
 
         let details;
-        for (const link of mobileNavMenuDetails.querySelectorAll("a")) {
+        for (const link of mobileNavMenuDetails.querySelectorAll('a')) {
           if (link.textContent === event.target.textContent) {
-            details = link.closest("li").querySelectorAll(":scope > ul > li");
+            details = link.closest('li').querySelectorAll(':scope > ul > li');
             break;
           }
         }
 
         if (details) {
-          const active = block.querySelector(
-            ".pan-mobile-nav .nav-menu-expanded.active"
-          );
-          const inactive = block.querySelector(
-            ".pan-mobile-nav .nav-menu-expanded.inactive"
-          );
+          const active = block.querySelector('.pan-mobile-nav .nav-menu-expanded.active');
+          const inactive = block.querySelector('.pan-mobile-nav .nav-menu-expanded.inactive');
 
-          inactive.innerHTML = "";
+          inactive.innerHTML = '';
           inactive.append(...[...details].map((li) => renderMenuItem(li)));
 
           toggleActiveMenu(active, inactive);
 
           const breadcrumbItemHome = mobileBreadcrumb.children[0];
           const newBreadcrumbItem = breadcrumbItemHome.cloneNode(true);
-          newBreadcrumbItem.classList.add("active");
+          newBreadcrumbItem.classList.add('active');
 
-          const newBreadcrumbItemLink = newBreadcrumbItem.querySelector("a");
+          const newBreadcrumbItemLink = newBreadcrumbItem.querySelector('a');
           newBreadcrumbItemLink.textContent = event.target.textContent;
-          newBreadcrumbItemLink.href = `#${event.target.getAttribute("href")}`;
+          newBreadcrumbItemLink.href = `#${event.target.getAttribute('href')}`;
 
-          mobileBreadcrumb.querySelector(".active").classList.remove("active");
+          mobileBreadcrumb.querySelector('.active').classList.remove('active');
           mobileBreadcrumb.append(newBreadcrumbItem);
         }
       }
     });
   }
 
-  mobileBreadcrumbBackButton.addEventListener("click", () => {
-    const active = mobileBreadcrumb.querySelector(".active");
-    active.previousElementSibling.querySelector("a").click();
+  mobileBreadcrumbBackButton.addEventListener('click', () => {
+    const active = mobileBreadcrumb.querySelector('.active');
+    active.previousElementSibling.querySelector('a').click();
   });
 
   mobileBreadcrumb.addEventListener(
-    "click",
+    'click',
     (event) => {
       event.preventDefault();
 
-      const li = event.target.closest("li");
-      if (li.classList.contains("active")) {
+      const li = event.target.closest('li');
+      if (li.classList.contains('active')) {
         return;
       }
 
-      const active = block.querySelector(
-        ".pan-mobile-nav .nav-menu-expanded.active"
-      );
-      const inactive = block.querySelector(
-        ".pan-mobile-nav .nav-menu-expanded.inactive"
-      );
+      const active = block.querySelector('.pan-mobile-nav .nav-menu-expanded.active');
+      const inactive = block.querySelector('.pan-mobile-nav .nav-menu-expanded.inactive');
 
       // Home
       if (li.querySelector('a[href="#home"]')) {
-        mobileBreadcrumb.innerHTML = "";
+        mobileBreadcrumb.innerHTML = '';
         mobileBreadcrumb.append(li);
-        mobileNavBreadcrumb.classList.remove("has-back-btn");
+        mobileNavBreadcrumb.classList.remove('has-back-btn');
 
         toggleActiveMenu(active, mobileNavRootMenu);
       } else {
         for (const el of [
-          ...mobileNavMenuDetails.querySelectorAll("a"),
-          ...mobileNavRootMenu.querySelectorAll(":scope > li > span"),
+          ...mobileNavMenuDetails.querySelectorAll('a'),
+          ...mobileNavRootMenu.querySelectorAll(':scope > li > span'),
         ]) {
           if (el.textContent === event.target.textContent) {
-            if (mobileBreadcrumb.querySelector("li:nth-child(2)") === li) {
-              const selectedMenuIndex = [...mobileNavRootMenu.children].indexOf(
-                el.closest("li")
-              );
-              const selectedMenuDetails =
-                mobileNavMenuDetailsItems[selectedMenuIndex];
+            if (mobileBreadcrumb.querySelector('li:nth-child(2)') === li) {
+              const selectedMenuIndex = [...mobileNavRootMenu.children].indexOf(el.closest('li'));
+              const selectedMenuDetails = mobileNavMenuDetailsItems[selectedMenuIndex];
 
-              inactive.innerHTML = "";
+              inactive.innerHTML = '';
               for (const item of selectedMenuDetails.children) {
                 const clone = renderMenuItem(item);
                 inactive.append(clone);
               }
             } else {
-              const details = el
-                .closest("li")
-                .querySelectorAll(":scope > ul > li");
+              const details = el.closest('li').querySelectorAll(':scope > ul > li');
 
-              inactive.innerHTML = "";
-              inactive.append(
-                ...[...details].map((item) => renderMenuItem(item))
-              );
+              inactive.innerHTML = '';
+              inactive.append(...[...details].map((item) => renderMenuItem(item)));
             }
 
             toggleActiveMenu(active, inactive);
 
-            const newActiveBreadcrumb = event.target.closest("li");
+            const newActiveBreadcrumb = event.target.closest('li');
 
             while (newActiveBreadcrumb.nextElementSibling) {
               newActiveBreadcrumb.nextElementSibling.remove();
             }
-            newActiveBreadcrumb.classList.add("active");
+            newActiveBreadcrumb.classList.add('active');
 
             break;
           }
         }
       }
     },
-    true
+    true,
   );
 
   /* Search */
-  const searchButtonOpen = desktopNav.querySelector(".nav-search-button");
-  const searchButtonClose = searchPanel.querySelector(".search-panel-close");
+  const searchButtonOpen = desktopNav.querySelector('.nav-search-button');
+  const searchButtonClose = searchPanel.querySelector('.search-panel-close');
 
   // searchButtonOpen.addEventListener(
   //   "mouseenter",
@@ -419,7 +385,7 @@ function addEventListeners(block) {
 
   const focusSearchInput = () => {
     // Check for searchbar
-    const searchInput = searchPanel.querySelector(".magic-box-input input");
+    const searchInput = searchPanel.querySelector('.magic-box-input input');
 
     if (searchInput) {
       // Wait a tick before focusing
@@ -429,66 +395,66 @@ function addEventListeners(block) {
     }
   };
 
-  window.addEventListener("keydown", (e) => {
+  window.addEventListener('keydown', (e) => {
     const { key } = e;
-    const searchIsActive = searchPanel.classList.contains("active");
+    const searchIsActive = searchPanel.classList.contains('active');
 
-    if (key === "/" && !searchIsActive) {
-      searchPanel.classList.add("active");
+    if (key === '/' && !searchIsActive) {
+      searchPanel.classList.add('active');
 
       // Focus on search input
       focusSearchInput();
     }
 
-    if (key === "Escape" && searchIsActive) {
-      searchPanel.classList.remove("active");
+    if (key === 'Escape' && searchIsActive) {
+      searchPanel.classList.remove('active');
     }
   });
 
-  searchButtonOpen.addEventListener("click", () => {
-    searchPanel.classList.add("active");
+  searchButtonOpen.addEventListener('click', () => {
+    searchPanel.classList.add('active');
 
     // Focus on search input
     focusSearchInput();
   });
 
-  searchButtonClose.addEventListener("click", () => {
-    searchPanel.classList.remove("active");
+  searchButtonClose.addEventListener('click', () => {
+    searchPanel.classList.remove('active');
   });
 
   /* Desktop */
-  const desktopNavLogo = desktopNav.querySelector(".nav-logo");
-  const desktopNavList = desktopNav.querySelector(".nav-list");
-  const desktopNavListItems = desktopNavList.querySelectorAll("span");
-  const desktopDropdown = desktopNav.querySelector(".nav-menu-dropdown");
-  const desktopMenus = desktopDropdown.querySelectorAll("div > ul");
+  const desktopNavLogo = desktopNav.querySelector('.nav-logo');
+  const desktopNavList = desktopNav.querySelector('.nav-list');
+  const desktopNavListItems = desktopNavList.querySelectorAll('span');
+  const desktopDropdown = desktopNav.querySelector('.nav-menu-dropdown');
+  const desktopMenus = desktopDropdown.querySelectorAll('div > ul');
 
   desktopMenus.forEach((menu) => {
-    menu.classList.add("drawer");
+    menu.classList.add('drawer');
   });
 
   const clearActive = () => {
     for (const item of desktopNavListItems) {
-      item.classList.remove("active");
+      item.classList.remove('active');
     }
-    const activeMenu = desktopDropdown.querySelector("div > ul.showmenu");
+    const activeMenu = desktopDropdown.querySelector('div > ul.showmenu');
     if (activeMenu) {
-      activeMenu.classList.remove("showmenu");
+      activeMenu.classList.remove('showmenu');
     }
   };
 
   const showMenu = (target) => {
     clearActive();
-    target.classList.add("active");
-    desktopDropdown.classList.add("showdropdown");
+    target.classList.add('active');
+    desktopDropdown.classList.add('showdropdown');
 
     const index = [...target.parentElement.children].indexOf(target);
-    const root = document.querySelector(".pan-desktop-nav .nav-menu-section");
-    root.setAttribute("data-active-section", index);
+    const root = document.querySelector('.pan-desktop-nav .nav-menu-section');
+    root.setAttribute('data-active-section', index);
     const activeMenu = desktopMenus[index];
-    activeMenu.classList.add("showmenu");
+    activeMenu.classList.add('showmenu');
 
-    const panNavDropdown = document.querySelector(".nav-menu-dropdown");
+    const panNavDropdown = document.querySelector('.nav-menu-dropdown');
     const linkCenter = target.offsetLeft + target.offsetWidth / 2;
     const dropDownWidth = activeMenu.getBoundingClientRect().width;
 
@@ -499,8 +465,7 @@ function addEventListeners(block) {
     if (dropDownLeft < 0) dropDownLeft = 0;
 
     const panNavDropdownLeft = panNavDropdown.getBoundingClientRect().left;
-    const marginRight =
-      window.screen.width - (panNavDropdownLeft + dropDownWidth);
+    const marginRight = window.screen.width - (panNavDropdownLeft + dropDownWidth);
 
     if (marginRight < panNavDropdownLeft) {
       dropDownLeft = (marginRight - panNavDropdownLeft) / 2;
@@ -508,26 +473,26 @@ function addEventListeners(block) {
 
     // Set the computed left position
     if (dropDownLeft > 0) {
-      activeMenu.setAttribute("style", `left: ${dropDownLeft}px`);
+      activeMenu.setAttribute('style', `left: ${dropDownLeft}px`);
     }
   };
 
   const hideMenu = () => {
     clearActive();
-    desktopDropdown.classList.remove("showdropdown");
+    desktopDropdown.classList.remove('showdropdown');
   };
 
-  desktopNavList.addEventListener("mouseover", ({ target }) => {
-    if (target.matches("span")) {
+  desktopNavList.addEventListener('mouseover', ({ target }) => {
+    if (target.matches('span')) {
       showMenu(target);
     }
   });
 
-  block.addEventListener("mouseleave", () => {
+  block.addEventListener('mouseleave', () => {
     hideMenu();
   });
 
-  desktopNavLogo.addEventListener("mouseover", () => {
+  desktopNavLogo.addEventListener('mouseover', () => {
     hideMenu();
   });
 }
@@ -544,123 +509,110 @@ export default async function decorate(block) {
   const { nav, template } = res;
 
   // "Slotify"
-  nav.querySelector("a").setAttribute("slot", "logo");
-  nav.querySelector("ul").setAttribute("slot", "logo-menu");
+  nav.querySelector('a').setAttribute('slot', 'logo');
+  nav.querySelector('ul').setAttribute('slot', 'logo-menu');
 
-  const menu = document.createElement("div");
-  menu.setAttribute("slot", "menu");
+  const menu = document.createElement('div');
+  menu.setAttribute('slot', 'menu');
   nav.append(menu);
 
-  const menuDropdown = document.createElement("div");
-  menuDropdown.setAttribute("slot", "menu-dropdown");
+  const menuDropdown = document.createElement('div');
+  menuDropdown.setAttribute('slot', 'menu-dropdown');
   nav.append(menuDropdown);
 
   // NOTE: not using nth-child due to safari not lacking support for elements without a parent
-  nav
-    .querySelectorAll('div > ul:not([slot="logo-menu"]) > li')
-    .forEach((menuItem) => {
-      // Move the text node inside a span
-      const span = document.createElement("span");
-      span.append(menuItem.firstChild);
-      menu.append(span);
+  nav.querySelectorAll('div > ul:not([slot="logo-menu"]) > li').forEach((menuItem) => {
+    // Move the text node inside a span
+    const span = document.createElement('span');
+    span.append(menuItem.firstChild);
+    menu.append(span);
 
-      const links = menuItem.querySelector("ul");
-      menuDropdown.append(links);
-    });
+    const links = menuItem.querySelector('ul');
+    menuDropdown.append(links);
+  });
 
   // Render with slots
   render(template, nav);
 
   // Post render
-  const desktopNav = template.querySelector(".pan-desktop-nav");
-  const navList = desktopNav.querySelector(".nav-list");
-  const navListItems = navList.querySelectorAll("span");
+  const desktopNav = template.querySelector('.pan-desktop-nav');
 
   //
-  const booknameMeta = getMetadata("book-name");
-  const searchButtonTitle = desktopNav.querySelector(".nav-search-title");
-  const searchBar = desktopNav.querySelector("search-bar");
+  const booknameMeta = getMetadata('book-name');
+  const searchButtonTitle = desktopNav.querySelector('.nav-search-title');
+  const searchBar = desktopNav.querySelector('search-bar');
   if (booknameMeta && searchButtonTitle) {
     searchButtonTitle.innerHTML = booknameMeta;
   } else if (!booknameMeta && searchBar) {
     // data-default-option
-    searchBar.setAttribute("data-default-option", "all");
+    searchBar.setAttribute('data-default-option', 'all');
   }
 
-  const navMenuDropdown = desktopNav.querySelector(".nav-menu-dropdown");
-  for (const menuWithIcon of [...navMenuDropdown.querySelectorAll("li")].filter(
-    (el) => el.querySelector(":scope > .icon + ul")
-  )) {
-    const div = document.createElement("div");
-    div.classList.add("has-icon");
-    div.append(menuWithIcon.querySelector(".icon"));
+  const navMenuDropdown = desktopNav.querySelector('.nav-menu-dropdown');
+  for (const menuWithIcon of [...navMenuDropdown.querySelectorAll('li')].filter((el) => el.querySelector(':scope > .icon + ul'))) {
+    const div = document.createElement('div');
+    div.classList.add('has-icon');
+    div.append(menuWithIcon.querySelector('.icon'));
     // text child
     div.append(menuWithIcon.firstChild);
     menuWithIcon.prepend(div);
   }
-  for (const menuWithoutLink of navMenuDropdown.querySelectorAll(
-    "div > ul > li"
-  )) {
-    if (!menuWithoutLink.querySelector(":scope > a")) {
-      const div = document.createElement("div");
+  for (const menuWithoutLink of navMenuDropdown.querySelectorAll('div > ul > li')) {
+    if (!menuWithoutLink.querySelector(':scope > a')) {
+      const div = document.createElement('div');
       // text child
       div.append(menuWithoutLink.firstChild);
       menuWithoutLink.prepend(div);
     }
   }
 
-  for (const ul of [
-    ...navMenuDropdown.querySelectorAll(":scope > div > ul"),
-  ].filter((el) => el.querySelectorAll(":scope > ul").length === 0)) {
-    ul.classList.add("has-not-ul");
+  for (const ul of [...navMenuDropdown.querySelectorAll(':scope > div > ul')].filter(
+    (el) => el.querySelectorAll(':scope > ul').length === 0,
+  )) {
+    ul.classList.add('has-not-ul');
   }
 
-  const mobileNav = template.querySelector(".pan-mobile-nav");
-  const navMobileRootMenu = mobileNav.querySelector(".root-menu");
-  const navMobileRootMenuItems =
-    navMobileRootMenu.querySelectorAll("span:not(:empty)");
-  const navMobileMenuDetails = mobileNav.querySelector(".nav-menu-details");
-  const navMobileMenuDetailsItems = navMobileMenuDetails.querySelectorAll("li");
-  const navMobileMenuExpand = mobileNav.querySelector(".nav-expand");
+  const mobileNav = template.querySelector('.pan-mobile-nav');
+  const navMobileRootMenu = mobileNav.querySelector('.root-menu');
+  const navMobileRootMenuItems = navMobileRootMenu.querySelectorAll('span:not(:empty)');
+  const navMobileMenuDetails = mobileNav.querySelector('.nav-menu-details');
+  const navMobileMenuDetailsItems = navMobileMenuDetails.querySelectorAll('li');
+  const navMobileMenuExpand = mobileNav.querySelector('.nav-expand');
 
   for (const navMobileRootMenuItem of navMobileRootMenuItems) {
     navMobileRootMenuItem.append(navMobileMenuExpand.cloneNode(true));
-    const li = document.createElement("li");
+    const li = document.createElement('li');
     li.append(navMobileRootMenuItem);
     navMobileRootMenu.append(li);
   }
 
   for (const navMobileMenuDetailsItem of navMobileMenuDetailsItems) {
     // Has icon
-    const icon = navMobileMenuDetailsItem.querySelector(".icon");
+    const icon = navMobileMenuDetailsItem.querySelector('.icon');
     if (icon) {
-      const a = document.createElement("a");
-      a.href = "#";
+      const a = document.createElement('a');
+      a.href = '#';
       a.append(icon);
-      a.append(
-        [...navMobileMenuDetailsItem.childNodes].find((child) => !child.tagName)
-      );
+      a.append([...navMobileMenuDetailsItem.childNodes].find((child) => !child.tagName));
 
       navMobileMenuDetailsItem.prepend(a);
     }
 
     // Text node only
-    if (!navMobileMenuDetailsItem.querySelector(":scope > *:not(ul)")) {
-      const a = document.createElement("a");
-      a.href = "#";
+    if (!navMobileMenuDetailsItem.querySelector(':scope > *:not(ul)')) {
+      const a = document.createElement('a');
+      a.href = '#';
       a.append(navMobileMenuDetailsItem.firstChild);
 
       navMobileMenuDetailsItem.prepend(a);
     }
 
     // Has sub nav items
-    if (navMobileMenuDetailsItem.querySelector("ul")) {
-      navMobileMenuDetailsItem
-        .querySelector("a, div")
-        .append(navMobileMenuExpand.cloneNode(true));
+    if (navMobileMenuDetailsItem.querySelector('ul')) {
+      navMobileMenuDetailsItem.querySelector('a, div').append(navMobileMenuExpand.cloneNode(true));
     }
   }
-  navMobileRootMenu.querySelector("[slot]").remove();
+  navMobileRootMenu.querySelector('[slot]').remove();
   navMobileMenuExpand.remove();
 
   block.firstElementChild.replaceWith(...template.children);
@@ -668,12 +620,12 @@ export default async function decorate(block) {
   addEventListeners(block);
   // decorateIcons(block);
 
-  document.body.querySelector("header").classList.add("loaded");
-  store.emit("header:loaded");
+  document.body.querySelector('header').classList.add('loaded');
+  store.emit('header:loaded');
 
   if (!isMobile()) {
     // renderBreadCrumbs();
   } else {
-    store.once("delayed:loaded", renderBreadCrumbs);
+    store.once('delayed:loaded', renderBreadCrumbs);
   }
 }

@@ -10,16 +10,12 @@ import {
   render,
   renderSidenav,
   setBranch,
-} from "../../scripts/scripts.js";
+} from '../../scripts/scripts.js';
 
-import {
-  getMetadata,
-  loadBlocks,
-  updateSectionsStatus,
-} from "../../scripts/lib-franklin.js";
+import { getMetadata, loadBlocks, updateSectionsStatus } from '../../scripts/lib-franklin.js';
 
-import "../scroll-spy/scroll-spy.js";
-import "../theme-toggle/theme-toggle.js";
+import '../scroll-spy/scroll-spy.js';
+import '../theme-toggle/theme-toggle.js';
 
 const TEMPLATE_ICON_COPY = /* html */ `
 <svg class="icon icon-copy" focusable="false" aria-label="Copy" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -120,42 +116,38 @@ const TEMPLATE = /* html */ `
  * @param {Element} wrapper
  */
 function initVersionDropdown(wrapper) {
-  const versionsContainer = wrapper.querySelector(".article .banner .versions");
-  const versionsDropdown = versionsContainer.querySelector(".version-dropdown");
-  const versionButton = versionsDropdown.querySelector(".version-button");
-  const versionsDropdownMenuContainer = versionsContainer.querySelector(
-    ".version-dropdown-menu"
-  );
-  const curVersionKey = getMetadata("version");
+  const versionsContainer = wrapper.querySelector('.article .banner .versions');
+  const versionsDropdown = versionsContainer.querySelector('.version-dropdown');
+  const versionButton = versionsDropdown.querySelector('.version-button');
+  const versionsDropdownMenuContainer = versionsContainer.querySelector('.version-dropdown-menu');
+  const curVersionKey = getMetadata('version');
 
-  if (!store.product || curVersionKey === "not-applicable") {
+  if (!store.product || curVersionKey === 'not-applicable') {
     versionsContainer.remove();
     return;
   }
 
   const { lang } = document.documentElement;
-  const versionsDropdownMenu = versionsDropdown.querySelector(
-    ".version-dropdown-menu ul"
-  );
+  const versionsDropdownMenu = versionsDropdown.querySelector('.version-dropdown-menu ul');
 
-  versionButton.addEventListener("click", () => {
-    versionsDropdownMenuContainer.classList.toggle("is-active");
+  versionButton.addEventListener('click', () => {
+    versionsDropdownMenuContainer.classList.toggle('is-active');
   });
 
-  document.addEventListener("click", (event) => {
+  document.addEventListener('click', (event) => {
     const isClickInside = versionsContainer.contains(event.target);
 
     if (!isClickInside) {
-      versionsDropdownMenuContainer.classList.remove("is-active");
+      versionsDropdownMenuContainer.classList.remove('is-active');
     }
   });
 
   versionsDropdown.addEventListener(
-    "mouseenter",
+    'mouseenter',
     async () => {
       const json = await store.fetchJSON(
         `${window.location.origin}${PATH_PREFIX}/${lang}/versions`,
-        store.product
+        store.product,
       );
 
       if (!json) return;
@@ -164,17 +156,14 @@ function initVersionDropdown(wrapper) {
 
       const { pathname } = window.location;
       // rm leading slash, lang, product
-      let segments = pathname.substring(PATH_PREFIX.length).split("/").slice(3);
+      let segments = pathname.substring(PATH_PREFIX.length).split('/').slice(3);
       // if current href has version folder, remove it
       if (curVersion.Folder) {
         segments = segments.slice(1);
       }
-      const unversionedPath = segments.join("/");
+      const unversionedPath = segments.join('/');
 
-      const makeHref = (folder) =>
-        `${PATH_PREFIX}/${lang}/${store.product}/${
-          folder ? `${folder}/` : ""
-        }${unversionedPath}`;
+      const makeHref = (folder) => `${PATH_PREFIX}/${lang}/${store.product}/${folder ? `${folder}/` : ''}${unversionedPath}`;
 
       const newVersions = json.data
         .map((row) => {
@@ -183,8 +172,8 @@ function initVersionDropdown(wrapper) {
             return undefined;
           }
 
-          const li = document.createElement("li");
-          const a = document.createElement("a");
+          const li = document.createElement('li');
+          const a = document.createElement('a');
           li.append(a);
 
           a.href = makeHref(row.Folder);
@@ -197,7 +186,7 @@ function initVersionDropdown(wrapper) {
 
       versionsDropdownMenu.append(...newVersions);
     },
-    { once: true }
+    { once: true },
   );
 }
 
@@ -207,11 +196,10 @@ function initVersionDropdown(wrapper) {
 function localize(block) {
   queueMicrotask(async () => {
     const ph = await getPlaceholders();
-    block.querySelector(".locale-article-edit-github").textContent =
-      ph.editOnGithub;
-    const articleDoc = block.querySelector(".locale-article-document");
+    block.querySelector('.locale-article-edit-github').textContent = ph.editOnGithub;
+    const articleDoc = block.querySelector('.locale-article-document');
     if (articleDoc) {
-      block.querySelector(".locale-article-document").textContent = ph.document;
+      block.querySelector('.locale-article-document').textContent = ph.document;
     }
   });
 }
@@ -221,9 +209,9 @@ function shouldRedirectMissing() {
     return false;
   }
   const { pathname } = window.location;
-  const segments = pathname.substring(PATH_PREFIX.length).split("/").slice(2);
-  const version = getMetadata("version");
-  return segments.length >= (version === "not-applicable" ? 4 : 5);
+  const segments = pathname.substring(PATH_PREFIX.length).split('/').slice(2);
+  const version = getMetadata('version');
+  return segments.length >= (version === 'not-applicable' ? 4 : 5);
 }
 
 async function redirectToFirstChapter() {
@@ -231,13 +219,11 @@ async function redirectToFirstChapter() {
   if (!book) return;
 
   const chapter = book.chapters.data[0];
-  const version = getMetadata("version");
-  const bookKey = book.default.data[0].path.split("/").pop();
-  let redirect = `${PATH_PREFIX}/${document.documentElement.lang}/${
-    store.product
-  }/${version && version !== "not-applicable" ? `${version}/` : ""}${bookKey}/${
-    chapter.key
-  }/${chapter.key}`;
+  const version = getMetadata('version');
+  const bookKey = book.default.data[0].path.split('/').pop();
+  let redirect = `${PATH_PREFIX}/${document.documentElement.lang}/${store.product}/${
+    version && version !== 'not-applicable' ? `${version}/` : ''
+  }${bookKey}/${chapter.key}/${chapter.key}`;
 
   if (store.branch) {
     redirect += `?branch=${store.branch}`;
@@ -245,7 +231,7 @@ async function redirectToFirstChapter() {
 
   // set flag to avoid infinite loops on books with bad first chapter/topics
   try {
-    sessionStorage.setItem(REDIRECTED_ARTICLE_KEY, "true");
+    sessionStorage.setItem(REDIRECTED_ARTICLE_KEY, 'true');
   } catch (_) {
     redirect += `#${REDIRECTED_ARTICLE_KEY}`;
   }
@@ -254,27 +240,27 @@ async function redirectToFirstChapter() {
 
 const decorateCodeBlocks = (block) => {
   // Add copy code button
-  for (const pre of block.querySelectorAll("pre")) {
-    const button = document.createElement("button");
-    const wrapper = document.createElement("div");
-    wrapper.classList.add("wrapper");
-    const code = pre.querySelector("code");
-    button.classList.add("button-copy", "button-copy-code");
+  for (const pre of block.querySelectorAll('pre')) {
+    const button = document.createElement('button');
+    const wrapper = document.createElement('div');
+    wrapper.classList.add('wrapper');
+    const code = pre.querySelector('code');
+    button.classList.add('button-copy', 'button-copy-code');
     button.innerHTML = TEMPLATE_ICON_COPY;
-    button.addEventListener("click", (event) => {
+    button.addEventListener('click', () => {
       const codeToCopy = code.textContent;
       // Use textarea to keep multi line formatting
-      const dummy = document.createElement("textarea");
+      const dummy = document.createElement('textarea');
       document.body.appendChild(dummy);
       dummy.value = codeToCopy;
       dummy.select();
-      document.execCommand("copy");
+      document.execCommand('copy');
       document.body.removeChild(dummy);
 
-      button.classList.add("active");
+      button.classList.add('active');
 
       setTimeout(() => {
-        button.classList.remove("active");
+        button.classList.remove('active');
       }, 2000);
     });
     wrapper.append(code);
@@ -285,36 +271,36 @@ const decorateCodeBlocks = (block) => {
 
 const decorateImages = (block) => {
   // Wrap images in div
-  for (const image of block.querySelectorAll("img")) {
-    const imageWrapper = document.createElement("div");
+  for (const image of block.querySelectorAll('img')) {
+    const imageWrapper = document.createElement('div');
     // Use data selector to prevent franklin from automatically trying to load a block
-    imageWrapper.setAttribute("data-class", "image-wrapper");
-    image.insertAdjacentElement("afterend", imageWrapper);
+    imageWrapper.setAttribute('data-class', 'image-wrapper');
+    image.insertAdjacentElement('afterend', imageWrapper);
     imageWrapper.append(image);
   }
 };
 
 const decorateTitles = (block) => {
   // Add page outline
-  const pageOutline = document.createElement("ul");
-  pageOutline.setAttribute("slot", "outline");
+  const pageOutline = document.createElement('ul');
+  pageOutline.setAttribute('slot', 'outline');
   const outlineSlot = block.querySelector('[name="outline"]');
-  const bookContent = block.querySelector(".book-content");
-  const articleTitles = bookContent.querySelectorAll("h1, h2, h3, h4, h5, h6");
+  const bookContent = block.querySelector('.book-content');
+  const articleTitles = bookContent.querySelectorAll('h1, h2, h3, h4, h5, h6');
 
   for (const articleTitle of articleTitles) {
-    const listItem = document.createElement("li");
-    const link = document.createElement("a");
+    const listItem = document.createElement('li');
+    const link = document.createElement('a');
 
     const title = articleTitle.textContent;
-    const slug = articleTitle.getAttribute("id");
-    link.setAttribute("href", `#${slug}`);
+    const slug = articleTitle.getAttribute('id');
+    link.setAttribute('href', `#${slug}`);
     link.textContent = title;
     listItem.append(link);
     pageOutline.append(listItem);
 
-    articleTitle.setAttribute("data-id", slug);
-    articleTitle.setAttribute("data-docs-heading", true);
+    articleTitle.setAttribute('data-id', slug);
+    articleTitle.setAttribute('data-docs-heading', true);
 
     articleTitle.innerHTML = `
           <div class="anchor"></div>
@@ -331,21 +317,21 @@ const decorateTitles = (block) => {
           </button>
       `;
 
-    const button = articleTitle.querySelector(".button-copy");
-    articleTitle.addEventListener("click", (event) => {
+    const button = articleTitle.querySelector('.button-copy');
+    articleTitle.addEventListener('click', () => {
       const { origin, pathname } = window.location;
       const toCopy = `${origin}${pathname}#${slug}`;
-      const dummy = document.createElement("textarea");
+      const dummy = document.createElement('textarea');
       document.body.appendChild(dummy);
       dummy.value = toCopy;
       dummy.select();
-      document.execCommand("copy");
+      document.execCommand('copy');
       document.body.removeChild(dummy);
 
-      button.classList.add("active");
+      button.classList.add('active');
 
       setTimeout(() => {
-        button.classList.remove("active");
+        button.classList.remove('active');
       }, 2000);
     });
   }
@@ -354,14 +340,14 @@ const decorateTitles = (block) => {
 
   // Only show outline if there are headings in the article
   if (articleTitles?.length > 0) {
-    const pageOutlineContainer = document.querySelector(".article-outline");
-    pageOutlineContainer.classList.add("is-visible");
+    const pageOutlineContainer = document.querySelector('.article-outline');
+    pageOutlineContainer.classList.add('is-visible');
   }
 
   // Start scrollspy
-  const scrollSpy = block.querySelector("web-scroll-spy");
+  const scrollSpy = block.querySelector('web-scroll-spy');
   if (scrollSpy) {
-    scrollSpy.setAttribute("ready", true);
+    scrollSpy.setAttribute('ready', true);
   }
 
   const hash = window.location?.hash;
@@ -369,7 +355,6 @@ const decorateTitles = (block) => {
     const target = block.querySelector(`${hash}`);
 
     if (target) {
-      const { top, height } = target.getBoundingClientRect();
       window.scrollTo({
         top: -500,
       });
@@ -384,7 +369,7 @@ const decorateTitles = (block) => {
  */
 async function renderContent(block, hrefOrRes, rerender = false) {
   let articleFound = true;
-  block.innerHTML = "";
+  block.innerHTML = '';
 
   let res = hrefOrRes;
   if (!rerender) {
@@ -395,16 +380,16 @@ async function renderContent(block, hrefOrRes, rerender = false) {
         await redirectToFirstChapter();
       }
       articleFound = false;
-      block.classList.add("not-found");
+      block.classList.add('not-found');
     }
   }
 
   const template = parseFragment(TEMPLATE);
-  const fragment = document.createElement("div");
+  const fragment = document.createElement('div');
 
-  const docTitle = document.createElement("a");
-  docTitle.setAttribute("slot", "document");
-  docTitle.href = window.location.href.split("/").slice(0, -2).join("/");
+  const docTitle = document.createElement('a');
+  docTitle.setAttribute('slot', 'document');
+  docTitle.href = window.location.href.split('/').slice(0, -2).join('/');
   docTitle.textContent = store?.mainBook?.title;
   fragment.append(docTitle);
 
@@ -415,21 +400,21 @@ async function renderContent(block, hrefOrRes, rerender = false) {
     // Set last updated
     const lastUpdated = res?.info?.lastModified;
     if (lastUpdated) {
-      const lastUpdatedLocale = lastUpdated.toLocaleString("default", {
-        month: "long",
-        day: "numeric",
-        year: "numeric",
+      const lastUpdatedLocale = lastUpdated.toLocaleString('default', {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric',
       });
 
-      const time = document.createElement("time");
-      time.setAttribute("slot", "time");
+      const time = document.createElement('time');
+      time.setAttribute('slot', 'time');
       time.textContent = lastUpdatedLocale;
-      time.setAttribute("datetime", lastUpdated.toISOString());
+      time.setAttribute('datetime', lastUpdated.toISOString());
       fragment.append(time);
     }
 
     // Fixup images src
-    for (const image of article.querySelectorAll("img")) {
+    for (const image of article.querySelectorAll('img')) {
       const imageURL = new URL(image.src);
 
       if (store.branch) {
@@ -440,35 +425,35 @@ async function renderContent(block, hrefOrRes, rerender = false) {
       }
 
       const picture = image.parentElement;
-      if (picture.tagName === "PICTURE") {
-        for (const source of picture.querySelectorAll("source")) {
-          const search = source.srcset.split("?")[1];
+      if (picture.tagName === 'PICTURE') {
+        for (const source of picture.querySelectorAll('source')) {
+          const search = source.srcset.split('?')[1];
           source.srcset = `${image.src}?${search}`;
         }
       }
     }
 
-    const articleTitle = article.querySelector("h1, h2");
+    const articleTitle = article.querySelector('h1, h2');
     if (articleTitle) {
       info.title = articleTitle.textContent;
       document.title = info.title;
-      const span = document.createElement("span");
-      span.setAttribute("slot", "title");
+      const span = document.createElement('span');
+      span.setAttribute('slot', 'title');
       span.textContent = info.title;
       articleTitle.remove();
       fragment.append(span);
     }
 
-    const content = document.createElement("div");
-    content.setAttribute("slot", "content");
+    const content = document.createElement('div');
+    content.setAttribute('slot', 'content');
     content.append(article);
 
     fragment.append(content);
 
     // Remove class if coming from first chapter
-    block.classList.remove("not-found");
+    block.classList.remove('not-found');
 
-    store.emit("article:loaded", info);
+    store.emit('article:loaded', info);
   }
 
   // Render with slots
@@ -478,49 +463,46 @@ async function renderContent(block, hrefOrRes, rerender = false) {
 
   // Post render
   block.querySelector(
-    ".edit-github a"
+    '.edit-github a',
   ).href = `https://github.com/hlxsites/prisma-cloud-docs/blob/main/${window.location.pathname.replace(
     PATH_PREFIX,
-    "docs"
+    'docs',
   )}.adoc`;
 
   // update dropdown links
-  const versionMenu = block.querySelector(".version-dropdown-menu");
+  const versionMenu = block.querySelector('.version-dropdown-menu');
   if (versionMenu) {
     const curVers = store.version;
 
-    versionMenu.querySelectorAll("li:not(.active) a").forEach((a) => {
+    versionMenu.querySelectorAll('li:not(.active) a').forEach((a) => {
       const siteHref = window.location.href;
       const nextVers = a.dataset.version;
       const [prefix] = a.href.split(`/${nextVers}/`);
-      const suffix = siteHref
-        .split(`/${curVers}/`)
-        .slice(1)
-        .join(`/${curVers}/`);
+      const suffix = siteHref.split(`/${curVers}/`).slice(1).join(`/${curVers}/`);
       a.href = `${prefix}/${nextVers}/${suffix}`;
     });
   }
 
   // Add link to division landing
-  const backHomeLink = block.querySelector(".back-home a");
+  const backHomeLink = block.querySelector('.back-home a');
   if (backHomeLink) {
-    const locale = window.location.pathname.split("/")?.[3];
+    const locale = window.location.pathname.split('/')?.[3];
     const divisionLandingUrl = `${window.location.origin}${window.hlx.codeBasePath}/${locale}`;
-    backHomeLink.setAttribute("href", divisionLandingUrl);
+    backHomeLink.setAttribute('href', divisionLandingUrl);
   }
 
   // Show last updated if it exisxts
   const lastUpdated = res?.info?.lastModified;
   if (lastUpdated) {
-    const lastUpdatedWrapper = document.querySelector(".last-updated");
-    lastUpdatedWrapper.classList.add("is-visible");
+    const lastUpdatedWrapper = document.querySelector('.last-updated');
+    lastUpdatedWrapper.classList.add('is-visible');
   }
 
   if (store.mainBook) {
     loadBook(store.mainBook.href).then((book) => {
-      store.emit("book:loaded", book);
+      store.emit('book:loaded', book);
 
-      if (!articleFound) return;
+      // if (!articleFound) return;
 
       // to use the title from the book definition instead of metadata
       // const docSlot = block.querySelector('slot[name="document"]');
@@ -534,9 +516,7 @@ async function renderContent(block, hrefOrRes, rerender = false) {
   }
 
   if (articleFound) {
-    const bookContent = block.querySelector(
-      '.book-content div[slot="content"]'
-    );
+    const bookContent = block.querySelector('.book-content div[slot="content"]');
     if (bookContent) {
       decorateMain(bookContent);
       await loadBlocks(bookContent);
@@ -553,17 +533,17 @@ async function renderContent(block, hrefOrRes, rerender = false) {
 const renderCurrentVersion = (block) => {
   const curVersionBtn = block.querySelector('[slot="version"]');
   if (curVersionBtn) {
-    curVersionBtn.textContent = getMetadata("version-title");
+    curVersionBtn.textContent = getMetadata('version-title');
   }
 };
 
 /** @param {HTMLDivElement} block */
 export default async function decorate(block) {
-  const link = block.querySelector("a");
+  const link = block.querySelector('a');
 
   if (link) {
     try {
-      const href = link.getAttribute("href") || link.innerText;
+      const href = link.getAttribute('href') || link.innerText;
       if (href) {
         if (store.branch) {
           const url = new URL(href);
@@ -584,7 +564,7 @@ export default async function decorate(block) {
   }
 
   if (SPA_NAVIGATION) {
-    store.on("spa:navigate:article", async (res) => {
+    store.on('spa:navigate:article', async (res) => {
       await renderContent(block, res, true);
       // block.querySelector("article").scrollIntoView();
       renderCurrentVersion(block);

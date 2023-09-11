@@ -1,4 +1,4 @@
-import { html } from "../../scripts/scripts.js";
+import { html } from '../../scripts/scripts.js';
 
 /**
  * @param {HTMLDivElement} block

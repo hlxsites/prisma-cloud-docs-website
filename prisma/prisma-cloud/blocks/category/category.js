@@ -1,10 +1,11 @@
-import { parseFragment, render } from "../../scripts/scripts.js";
-import { collapseSection, expandSection } from "./utils.js";
+import { parseFragment, render } from '../../scripts/scripts.js';
+import { showRoute } from '../intro/utils.js';
+import { collapseSection, expandSection } from './utils.js';
 
 const TEMPLATE_BUTTON = `
 <div slot="category-button" class="ops-accordion-item">
   <button class="summary">
-    <span>Use Case</span>
+    <span class="eyebrow">Use Case</span>
     <slot name="teaser"></slot>
   </button>
   <slot name="details" class="accordion-details"></slot>
@@ -26,8 +27,8 @@ function toNodeList(arrayOfNodes, fragment) {
     items.push(item);
     // Group use case with steps
     if (i % 2) {
-      const div = document.createElement("div");
-      div.classList.add("row");
+      const div = document.createElement('div');
+      div.classList.add('row');
 
       div.append(items?.[0].cloneNode(true));
       div.append(items?.[1].cloneNode(true));
@@ -41,26 +42,27 @@ function toNodeList(arrayOfNodes, fragment) {
  * @param {HTMLElement} block the container element
  */
 async function renderContent(block) {
-  const rows = [...block.querySelectorAll(":scope > div")];
+  const rows = [...block.querySelectorAll(':scope > div')];
 
-  const overview = rows[0].querySelector(":scope > div");
-  const head = rows[1].querySelectorAll(":scope > div");
+  const overview = rows[0].querySelector(':scope > div');
+  const overviewTitle = overview.querySelector('h1');
+  const categoryId = overviewTitle.getAttribute('id');
+  const categoryRouteId = categoryId.substring(0, categoryId.length - 2);
+  const head = rows[1].querySelectorAll(':scope > div');
   const headCols = head.length;
   const content = rows.slice(2, rows.length);
 
   // Create data model from Fraklink's DOM output
   const { store } = content.reduce(
     (ret, row) => {
-      const rowCols = row.querySelectorAll(":scope > div");
+      const rowCols = row.querySelectorAll(':scope > div');
       const titleRow = row.firstElementChild;
       const title = titleRow.firstElementChild;
-      const slug = title?.getAttribute("id");
+      const slug = title?.getAttribute('id');
 
       if (ret.store.size === 0 || rowCols.length === headCols) {
         // Skip first cell which is the title
-        const items = Array.from(
-          row.querySelectorAll(":scope > div:not(:first-child)")
-        );
+        const items = Array.from(row.querySelectorAll(':scope > div:not(:first-child)'));
 
         ret.store.set(slug, {
           title: title.textContent,
@@ -69,7 +71,7 @@ async function renderContent(block) {
         });
         ret.title = slug;
       } else if (ret.store.has(ret.title)) {
-        const items = Array.from(row.querySelectorAll(":scope > div"));
+        const items = Array.from(row.querySelectorAll(':scope > div'));
         const values = ret.store.get(ret.title);
 
         values.items = [...values.items, ...items];
@@ -81,23 +83,26 @@ async function renderContent(block) {
     {
       store: new Map(),
       title: null,
-    }
+    },
   );
 
-  console.log("store : ", store);
+  console.log('store : ', store);
 
   const template = parseFragment(TEMPLATE);
-
+  const templateRoot = template.querySelector('.ops-category');
+  templateRoot.setAttribute('data-route', `#${categoryRouteId}`);
   const overviewSlot = template.querySelector('slot[name="overview"]');
-  overview.classList.add("overview");
+  overview.classList.add('overview');
   overviewSlot.replaceWith(overview.cloneNode(true));
 
   const buttonsSlot = template.querySelector('[slot="buttons"]');
-  for (let [key, value] of store.entries()) {
+  let index = 0;
+  for (const [key, value] of store.entries()) {
     const _fragment = parseFragment(TEMPLATE_BUTTON);
     const root = _fragment.querySelector('[slot="category-button"]');
-    root.setAttribute("id", key);
-    root.setAttribute("data-collapsed", true);
+    root.setAttribute('id', key);
+    root.setAttribute('data-collapsed', true);
+    root.setAttribute('style', `--index: ${index / 10}s`);
 
     const teaserSlot = _fragment.querySelector('slot[name="teaser"]');
     teaserSlot.replaceWith(value.teaser.cloneNode(true));
@@ -108,27 +113,29 @@ async function renderContent(block) {
 
     buttonsSlot.append(_fragment);
 
-    root.addEventListener("click", (e) => {
+    root.addEventListener('click', (e) => {
       const rootEl = e.target.closest('[slot="category-button"]');
-      const isCollapsed = rootEl.getAttribute("data-collapsed") === "true";
+      const isCollapsed = rootEl.getAttribute('data-collapsed') === 'true';
 
       if (isCollapsed) {
         expandSection(detailsSlot);
-        rootEl.setAttribute("data-collapsed", false);
+        rootEl.setAttribute('data-collapsed', false);
       } else {
         collapseSection(detailsSlot);
-        rootEl.setAttribute("data-collapsed", true);
+        rootEl.setAttribute('data-collapsed', true);
       }
     });
+
+    index += 1;
   }
 
   // const template = parseFragment(TEMPLATE);
-  const fragment = document.createElement("div");
+  const fragment = document.createElement('div');
 
   // Render with slots
   render(template, fragment);
   // Clear out generated HTML
-  block.innerHTML = "";
+  block.innerHTML = '';
   block.append(template);
   // localize(block);
 }
@@ -138,4 +145,7 @@ async function renderContent(block) {
  */
 export default async function decorate(block) {
   await renderContent(block);
+  // Get current hash, render that view
+  const { hash } = window.location;
+  showRoute(hash);
 }

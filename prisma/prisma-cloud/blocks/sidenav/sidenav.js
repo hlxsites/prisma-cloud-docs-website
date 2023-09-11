@@ -1,4 +1,4 @@
-import { getMetadata } from "../../scripts/lib-franklin.js";
+import { getMetadata } from '../../scripts/lib-franklin.js';
 import {
   PATH_PREFIX,
   SPA_NAVIGATION,
@@ -10,7 +10,7 @@ import {
   loadArticle,
   parseFragment,
   render,
-} from "../../scripts/scripts.js";
+} from '../../scripts/scripts.js';
 
 const TEMPLATE = /* html */ `
 <div class="toc-resizer"></div>
@@ -18,7 +18,7 @@ const TEMPLATE = /* html */ `
       <!-- Mobile -->
       <!-- End Mobile -->
       <div class="toggle-aside">
-          <i class="icon">${getIcon("chevron-right")}</i>
+          <i class="icon">${getIcon('chevron-right')}</i>
       </div>
       <div class="banner">
         <div class="banner-inner">
@@ -70,7 +70,7 @@ const TEMPLATE = /* html */ `
                 <div class="banner-dropdown language-dropdown">
                   <a>
                       <span slot="language"></span>
-                      <i class="icon">${getIcon("chevron-down")}</i>
+                      <i class="icon">${getIcon('chevron-down')}</i>
                   </a>
                   <div class="banner-dropdown-menu language-dropdown-menu">
                     <ul>
@@ -100,7 +100,7 @@ const TEMPLATE = /* html */ `
               <div class="search-toc">
                   <div class="search-toc-label">
                       <div class="filter-icon">
-                          ${getIcon("filter")}
+                          ${getIcon('filter')}
                       </div>
                       <span class="locale-toc-filter"></span>
                   </div>
@@ -119,60 +119,52 @@ const TEMPLATE = /* html */ `
   </aside>`;
 
 function formatDate(date) {
-  const [month, day, year] = date.toString().split(" ").slice(1);
+  const [month, day, year] = date.toString().split(' ').slice(1);
   return `${month} ${day}, ${year}`;
 }
 
 function handleSPANavigation(state) {
-  const sidenav = document.querySelector(".block.sidenav .pan-sidenav");
-  const banner = sidenav.querySelector("div.banner");
-  const toc = sidenav.querySelector("div.toc-books");
+  const sidenav = document.querySelector('.block.sidenav .pan-sidenav');
+  const banner = sidenav.querySelector('div.banner');
+  const toc = sidenav.querySelector('div.toc-books');
 
   // change current sidenav item
-  const prev = toc.querySelector("li.current");
+  const prev = toc.querySelector('li.current');
   if (prev) {
-    prev.classList.remove("current");
+    prev.classList.remove('current');
   }
 
   const next = toc.querySelector(`a[href="${state.siteHref}"]`);
   if (next) {
-    next.closest("li").classList.add("current");
+    next.closest('li').classList.add('current');
   }
 
   // update modified date
-  const dateEl = banner.querySelector(
-    '.book-detail-banner-info slot[name="date"]'
-  );
+  const dateEl = banner.querySelector('.book-detail-banner-info slot[name="date"]');
   if (dateEl) {
     dateEl.textContent = formatDate(state.info.lastModified);
   }
 
   // update dropdown links
-  const versionMenu = banner.querySelector(".version-dropdown-menu");
+  const versionMenu = banner.querySelector('.version-dropdown-menu');
   if (versionMenu) {
     const curVers = store.version;
 
-    versionMenu.querySelectorAll("li:not(.active) a").forEach((a) => {
+    versionMenu.querySelectorAll('li:not(.active) a').forEach((a) => {
       const nextVers = a.dataset.version;
       const [prefix] = a.href.split(`/${nextVers}/`);
-      const suffix = state.siteHref
-        .split(`/${curVers}/`)
-        .slice(1)
-        .join(`/${curVers}/`);
+      const suffix = state.siteHref.split(`/${curVers}/`).slice(1).join(`/${curVers}/`);
       a.href = `${prefix}/${nextVers}/${suffix}`;
     });
   }
 
-  const langMenu = banner.querySelector(".language-dropdown-menu");
+  const langMenu = banner.querySelector('.language-dropdown-menu');
   if (langMenu) {
     const { lang: curLang } = document.documentElement;
-    langMenu.querySelectorAll("li:not(.active) a").forEach((a) => {
+    langMenu.querySelectorAll('li:not(.active) a').forEach((a) => {
       const nextLang = a.dataset.lang;
       const [prefix] = a.href.split(`/${nextLang}/`);
-      const suffix = state.siteHref
-        .split(`/${curLang}/`)
-        .slice(1)
-        .join(`/${curLang}/`);
+      const suffix = state.siteHref.split(`/${curLang}/`).slice(1).join(`/${curLang}/`);
       a.href = `${prefix}/${nextLang}/${suffix}`;
     });
   }
@@ -181,13 +173,11 @@ function handleSPANavigation(state) {
 async function navigateArticleSPA(ev) {
   if (!SPA_NAVIGATION) return;
 
-  const siteHref = ev.target.getAttribute("href");
+  const siteHref = ev.target.getAttribute('href');
   if (!siteHref) return;
 
   // convert website path to docs path
-  const docHref = `${PATH_PREFIX}/docs${siteHref.substring(
-    PATH_PREFIX.length
-  )}`;
+  const docHref = `${PATH_PREFIX}/docs${siteHref.substring(PATH_PREFIX.length)}`;
 
   // navigate normally to different books, only SPA within the same book
   if (!docHref.startsWith(store.bookPath)) return;
@@ -197,13 +187,13 @@ async function navigateArticleSPA(ev) {
   const res = await loadArticle(docHref);
   if (!res.ok) {
     // also navigate normally if article fetch fails
-    console.error("failed to load article: ", docHref, res);
+    console.error('failed to load article: ', docHref, res);
     window.location.href = siteHref;
     return;
   }
 
   const state = { docHref, siteHref, ...res };
-  store.emit("spa:navigate:article", state);
+  store.emit('spa:navigate:article', state);
   handleSPANavigation(state);
 }
 
@@ -212,39 +202,33 @@ async function navigateArticleSPA(ev) {
  * @param {Element} wrapper
  */
 const initProductDropdown = async (wrapper) => {
-  const productsContainer = wrapper.querySelector(".sidenav .banner .products");
-  const productsDropdown = productsContainer.querySelector(".product-dropdown");
-  const productButton = productsDropdown.querySelector(".product-button");
-  const productsDropdownMenuContainer = productsContainer.querySelector(
-    ".product-dropdown-menu"
-  );
-  const curProductKey = getMetadata("product");
+  const productsContainer = wrapper.querySelector('.sidenav .banner .products');
+  const productsDropdown = productsContainer.querySelector('.product-dropdown');
+  const productButton = productsDropdown.querySelector('.product-button');
+  const productsDropdownMenuContainer = productsContainer.querySelector('.product-dropdown-menu');
+  const curProductKey = getMetadata('product');
 
-  if (!store.product || curProductKey === "not-applicable") {
+  if (!store.product || curProductKey === 'not-applicable') {
     productsContainer.remove();
     return;
   }
 
   const { lang } = document.documentElement;
-  const productsDropdownMenu = productsDropdown.querySelector(
-    ".product-dropdown-menu ul"
-  );
+  const productsDropdownMenu = productsDropdown.querySelector('.product-dropdown-menu ul');
 
-  productButton.addEventListener("click", () => {
-    productsDropdownMenuContainer.classList.toggle("is-active");
+  productButton.addEventListener('click', () => {
+    productsDropdownMenuContainer.classList.toggle('is-active');
   });
 
-  document.addEventListener("click", (event) => {
+  document.addEventListener('click', (event) => {
     const isClickInside = productsContainer.contains(event.target);
 
     if (!isClickInside) {
-      productsDropdownMenuContainer.classList.remove("is-active");
+      productsDropdownMenuContainer.classList.remove('is-active');
     }
   });
 
-  const json = await store.fetchJSON(
-    `${window.location.origin}${PATH_PREFIX}/products`
-  );
+  const json = await store.fetchJSON(`${window.location.origin}${PATH_PREFIX}/products`);
 
   if (!json) return;
 
@@ -255,7 +239,7 @@ const initProductDropdown = async (wrapper) => {
     curProductBtn.textContent = curProduct.Product;
   }
 
-  const makeHref = (url) => `${PATH_PREFIX}/${lang}${url ? `${url}/` : ""}`;
+  const makeHref = (url) => `${PATH_PREFIX}/${lang}${url ? `${url}/` : ''}`;
 
   const newProducts = json.data
     .map((row) => {
@@ -264,8 +248,8 @@ const initProductDropdown = async (wrapper) => {
         return undefined;
       }
 
-      const li = document.createElement("li");
-      const a = document.createElement("a");
+      const li = document.createElement('li');
+      const a = document.createElement('a');
       li.append(a);
 
       a.href = makeHref(row.URL);
@@ -284,11 +268,11 @@ const initProductDropdown = async (wrapper) => {
  * @param {Element} wrapper
  */
 async function initLanguagesDropdown(wrapper) {
-  const langsContainer = wrapper.querySelector(".sidenav .banner .languages");
-  const langsDropdown = langsContainer.querySelector(".language-dropdown");
+  const langsContainer = wrapper.querySelector('.sidenav .banner .languages');
+  const langsDropdown = langsContainer.querySelector('.language-dropdown');
   const curLangKey = document.documentElement.lang;
 
-  if (!store.product || curLangKey === "not-applicable") {
+  if (!store.product || curLangKey === 'not-applicable') {
     langsContainer.remove();
     return;
   }
@@ -299,27 +283,22 @@ async function initLanguagesDropdown(wrapper) {
     return;
   }
 
-  const langDropdownMenu = langsDropdown.querySelector(
-    ".language-dropdown-menu ul"
-  );
+  const langDropdownMenu = langsDropdown.querySelector('.language-dropdown-menu ul');
   const curLang = document.documentElement.lang;
 
   langsDropdown.addEventListener(
-    "mouseenter",
+    'mouseenter',
     async () => {
       const { pathname } = window.location;
       // rm leading slash, lang
-      const segments = pathname
-        .substring(PATH_PREFIX.length)
-        .split("/")
-        .slice(2);
-      const unlocalizedPath = segments.join("/");
+      const segments = pathname.substring(PATH_PREFIX.length).split('/').slice(2);
+      const unlocalizedPath = segments.join('/');
 
       const makeHref = (lang) => `${PATH_PREFIX}/${lang}/${unlocalizedPath}`;
 
       const makeEntry = (lang, title) => {
-        const li = document.createElement("li");
-        const a = document.createElement("a");
+        const li = document.createElement('li');
+        const a = document.createElement('a');
         li.append(a);
 
         a.href = makeHref(lang);
@@ -339,7 +318,7 @@ async function initLanguagesDropdown(wrapper) {
 
       langDropdownMenu.append(...otherLangItems);
     },
-    { once: true }
+    { once: true },
   );
 }
 
@@ -350,8 +329,8 @@ async function initLanguagesDropdown(wrapper) {
 function addEventListeners(wrapper) {
   let ww = window.innerWidth;
 
-  wrapper.addEventListener("click", (event) => {
-    const link = event.target.closest("a");
+  wrapper.addEventListener('click', (event) => {
+    const link = event.target.closest('a');
 
     // Reset scroll to top of the page when changing view
     if (link) {
@@ -359,61 +338,61 @@ function addEventListeners(wrapper) {
         window.scrollTo({ top: 0 });
       }, 100);
 
-      const mobileToggle = document.querySelector(".nav-open-booksmenu");
-      if (mobileToggle.classList.contains("is-active")) {
+      const mobileToggle = document.querySelector('.nav-open-booksmenu');
+      if (mobileToggle.classList.contains('is-active')) {
         mobileToggle.click();
       }
     }
 
     /** @type {HTMLElement} */
-    const toggle = event.target.closest(".toggle-aside");
+    const toggle = event.target.closest('.toggle-aside');
     if (!toggle) return;
 
-    const next = !wrapper.parentElement.classList.contains("aside-close");
-    wrapper.parentElement.classList.toggle("aside-close", next);
+    const next = !wrapper.parentElement.classList.contains('aside-close');
+    wrapper.parentElement.classList.toggle('aside-close', next);
     if (isMobile()) {
-      toggle.querySelector("i").style.rotate = `${next ? "0" : "180"}deg`;
+      toggle.querySelector('i').style.rotate = `${next ? '0' : '180'}deg`;
     }
   });
 
   // Mobile resize
   let mobileTriggered = false;
   let desktopTriggered = false;
-  const handleWindowResize = debounce((event) => {
+  const handleWindowResize = debounce(() => {
     ww = window.innerWidth;
     if (ww < 900 && !mobileTriggered) {
       mobileTriggered = true;
       desktopTriggered = false;
-      wrapper.parentElement.classList.add("aside-close");
+      wrapper.parentElement.classList.add('aside-close');
     } else if (ww >= 900 && !desktopTriggered) {
       mobileTriggered = false;
       desktopTriggered = true;
-      wrapper.parentElement.classList.remove("aside-close");
+      wrapper.parentElement.classList.remove('aside-close');
     }
   }, 50);
 
-  window.addEventListener("resize", handleWindowResize);
+  window.addEventListener('resize', handleWindowResize);
 
-  const form = wrapper.querySelector(".form-input");
-  const input = form.querySelector("input");
-  const reset = form.querySelector("button");
-  const toc = wrapper.querySelector(".toc-books");
+  const form = wrapper.querySelector('.form-input');
+  const input = form.querySelector('input');
+  const reset = form.querySelector('button');
+  const toc = wrapper.querySelector('.toc-books');
 
   const toggleExpanded = (el, toggle) => {
-    let parent = el.parentElement.closest("li");
+    let parent = el.parentElement.closest('li');
     while (parent) {
       parent.ariaExpanded = toggle;
       if (parent.dataset.key) {
         parent.hidden = !toggle;
       }
-      parent = parent.parentElement.closest("li");
+      parent = parent.parentElement.closest('li');
     }
   };
 
-  input.addEventListener("input", () => {
+  input.addEventListener('input', () => {
     const { value } = input;
 
-    const links = toc.querySelectorAll("a");
+    const links = toc.querySelectorAll('a');
 
     if (value) {
       reset.hidden = false;
@@ -425,7 +404,7 @@ function addEventListeners(wrapper) {
         if (!find(link)) {
           const { textContent } = link;
           link.textContent = textContent;
-          link.textContent = link.innerHTML.replaceAll("&nbsp;", " ");
+          link.textContent = link.innerHTML.replaceAll('&nbsp;', ' ');
 
           toggleExpanded(link, false);
         }
@@ -434,8 +413,8 @@ function addEventListeners(wrapper) {
       links.forEach((link) => {
         if (find(link)) {
           link.innerHTML = link.textContent
-            .replace(new RegExp(`(${value})`, "gi"), "<mark>$1</mark>")
-            .replaceAll(" ", "&nbsp;");
+            .replace(new RegExp(`(${value})`, 'gi'), '<mark>$1</mark>')
+            .replaceAll(' ', '&nbsp;');
 
           toggleExpanded(link, true);
         }
@@ -447,29 +426,29 @@ function addEventListeners(wrapper) {
         const { textContent } = link;
 
         link.textContent = textContent;
-        link.textContent = link.innerHTML.replaceAll("&nbsp;", " ");
-        link.closest("li[data-key]").hidden = false;
+        link.textContent = link.innerHTML.replaceAll('&nbsp;', ' ');
+        link.closest('li[data-key]').hidden = false;
 
-        toggleExpanded(link, "false");
+        toggleExpanded(link, 'false');
       });
 
-      toggleExpanded(toc.querySelector("li.current"), "true");
+      toggleExpanded(toc.querySelector('li.current'), 'true');
     }
   });
 
-  reset.addEventListener("click", () => {
+  reset.addEventListener('click', () => {
     reset.hidden = true;
     requestAnimationFrame(() => {
-      input.dispatchEvent(new Event("input"));
+      input.dispatchEvent(new Event('input'));
     });
   });
 
-  form.addEventListener("submit", (event) => {
+  form.addEventListener('submit', (event) => {
     event.preventDefault();
   });
 
   // TOC Resizer
-  const resizer = wrapper.querySelector(".toc-resizer");
+  const resizer = wrapper.querySelector('.toc-resizer');
   const sidebar = wrapper;
   const minWidth = 375;
 
@@ -483,16 +462,16 @@ function addEventListeners(wrapper) {
     }
   };
 
-  resizer.addEventListener("mousedown", () => {
-    document.body.style.userSelect = "none";
-    document.addEventListener("mousemove", resize, false);
+  resizer.addEventListener('mousedown', () => {
+    document.body.style.userSelect = 'none';
+    document.addEventListener('mousemove', resize, false);
     document.addEventListener(
-      "mouseup",
+      'mouseup',
       () => {
-        document.removeEventListener("mousemove", resize, false);
-        document.body.style.userSelect = "auto";
+        document.removeEventListener('mousemove', resize, false);
+        document.body.style.userSelect = 'auto';
       },
-      false
+      false,
     );
   });
 }
@@ -500,22 +479,20 @@ function addEventListeners(wrapper) {
 function localize(block) {
   queueMicrotask(async () => {
     const ph = await getPlaceholders();
-    block.querySelector(".locale-toc-form-input").placeholder = ph.tocFormInput;
-    block.querySelector(".locale-book-last-updated").textContent =
-      ph.lastUpdated;
-    const curVersion = block.querySelector(".locale-book-current-version");
+    block.querySelector('.locale-toc-form-input').placeholder = ph.tocFormInput;
+    block.querySelector('.locale-book-last-updated').textContent = ph.lastUpdated;
+    const curVersion = block.querySelector('.locale-book-current-version');
     if (curVersion) {
       curVersion.textContent = ph.currentVersion;
     }
-    const curLang = block.querySelector(".locale-book-current-language");
+    const curLang = block.querySelector('.locale-book-current-language');
     if (curLang) {
       curLang.textContent = ph.currentLanguage;
     }
-    block.querySelector(".locale-toc-title").textContent = ph.tableOfContents;
-    block.querySelector(".locale-toc-filter").textContent = ph.filter;
+    block.querySelector('.locale-toc-title').textContent = ph.tableOfContents;
+    block.querySelector('.locale-toc-filter').textContent = ph.filter;
 
-    block.querySelector(".locale-article-document").textContent =
-      ph.articleDocument;
+    block.querySelector('.locale-article-document').textContent = ph.articleDocument;
   });
 }
 
@@ -543,31 +520,29 @@ function sortBook(book) {
 
 function hasSubtopics(topic) {
   return (
-    topic.children &&
-    (topic.children.length > 1 ||
-      topic.children.some(
-        (sub) => sub.name !== topic.name && sub.key !== topic.key
-      ))
+    topic.children
+    && (topic.children.length > 1
+      || topic.children.some((sub) => sub.name !== topic.name && sub.key !== topic.key))
   );
 }
 
 function bookToList(book) {
-  const root = document.createElement("ul");
+  const root = document.createElement('ul');
 
   let current = root;
   const addSubList = (title, href, key) => {
-    const item = document.createElement("li");
+    const item = document.createElement('li');
     item.dataset.key = key;
-    const div = document.createElement("div");
-    const link = document.createElement("a");
+    const div = document.createElement('div');
+    const link = document.createElement('a');
     link.innerText = title;
-    link.href = href || "";
-    link.addEventListener("click", navigateArticleSPA);
+    link.href = href || '';
+    link.addEventListener('click', navigateArticleSPA);
 
     div.append(link);
 
-    const expander = document.createElement("span");
-    expander.classList.add("icon-toggle");
+    const expander = document.createElement('span');
+    expander.classList.add('icon-toggle');
     expander.append(html`<svg
       class="icon icon-arrow"
       focusable="false"
@@ -589,13 +564,13 @@ function bookToList(book) {
 
     current.append(item);
 
-    expander.addEventListener("click", (e) => {
+    expander.addEventListener('click', (e) => {
       e.preventDefault();
-      const li = link.closest("li");
-      li.ariaExpanded = !(li.ariaExpanded === "true");
+      const li = link.closest('li');
+      li.ariaExpanded = !(li.ariaExpanded === 'true');
     });
 
-    const next = document.createElement("ul");
+    const next = document.createElement('ul');
     item.append(next);
     current = next;
     return current;
@@ -610,13 +585,10 @@ function bookToList(book) {
     const chapterUl = addSubList(
       chapter.name,
       `${book.path}/${chapter.key}/${chapter.key}`,
-      chapter.key
+      chapter.key,
     );
 
-    const makeHref = (topic, parentKey) =>
-      `${book.path}/${chapter.key}/${parentKey ? `${parentKey}/` : ""}${
-        topic.key
-      }`;
+    const makeHref = (topic, parentKey) => `${book.path}/${chapter.key}/${parentKey ? `${parentKey}/` : ''}${topic.key}`;
 
     // then the topics recursively
     const processTopic = (topic, parentKey) => {
@@ -625,13 +597,13 @@ function bookToList(book) {
         current = chapterUl;
       }
 
-      const li = document.createElement("li");
-      const link = document.createElement("a");
+      const li = document.createElement('li');
+      const link = document.createElement('a');
       link.innerText = topic.name;
       link.href = makeHref(topic, parentKey);
-      link.addEventListener("click", navigateArticleSPA);
+      link.addEventListener('click', navigateArticleSPA);
 
-      const div = document.createElement("div");
+      const div = document.createElement('div');
       div.append(link);
       li.append(div);
       current.append(li);
@@ -640,17 +612,17 @@ function bookToList(book) {
         if (hasSubtopics(topic)) {
           addSubList(
             topic.name,
-            `${book.path}/${chapter.key}/${parentKey ? `${parentKey}/` : ""}${
+            `${book.path}/${chapter.key}/${parentKey ? `${parentKey}/` : ''}${topic.key}/${
               topic.key
-            }/${topic.key}`,
-            topic.key
+            }`,
+            topic.key,
           );
           topic.children.forEach((subtopic) => {
             processTopic(
               subtopic,
-              `${parentKey ? `${parentKey}/` : ""}${topic.key}${
-                subtopic.parent ? `/${subtopic.parent}` : ""
-              }`
+              `${parentKey ? `${parentKey}/` : ''}${topic.key}${
+                subtopic.parent ? `/${subtopic.parent}` : ''
+              }`,
             );
           });
         } else {
@@ -675,33 +647,30 @@ function bookToList(book) {
  */
 function renderTOC(container, book, expand, replace) {
   const list = bookToList(book);
-  const rootList = list.querySelector(":scope > li > ul");
+  const rootList = list.querySelector(':scope > li > ul');
   // Clean dups
-  rootList.querySelectorAll(":scope > li li[data-key]").forEach((li) => {
+  rootList.querySelectorAll(':scope > li li[data-key]').forEach((li) => {
     const prev = li.previousElementSibling;
     if (
-      prev &&
-      prev.querySelector("a").textContent.trim() ===
-        li.querySelector("a").textContent.trim()
+      prev
+      && prev.querySelector('a').textContent.trim() === li.querySelector('a').textContent.trim()
     ) {
       prev.remove();
     }
   });
 
   // remove all first list entries that are identical to their parent
-  rootList
-    .querySelectorAll(":scope li[data-key] > ul > li:first-child")
-    .forEach((li) => {
-      const parent = li.parentElement.closest("li");
-      if (!parent) return;
+  rootList.querySelectorAll(':scope li[data-key] > ul > li:first-child').forEach((li) => {
+    const parent = li.parentElement.closest('li');
+    if (!parent) return;
 
-      const parentLink = parent.querySelector(":scope > div > a");
-      if (!parentLink) return;
+    const parentLink = parent.querySelector(':scope > div > a');
+    if (!parentLink) return;
 
-      if (parentLink.textContent === li.textContent) {
-        li.remove();
-      }
-    });
+    if (parentLink.textContent === li.textContent) {
+      li.remove();
+    }
+  });
 
   // replace or append
   if (replace) {
@@ -711,20 +680,18 @@ function renderTOC(container, book, expand, replace) {
   }
 
   // Set current
-  const current = rootList.querySelector(
-    `a[href="${window.location.pathname}"]`
-  );
+  const current = rootList.querySelector(`a[href="${window.location.pathname}"]`);
 
   if (current) {
-    const currentLi = current.closest("li");
-    currentLi.classList.add("current");
+    const currentLi = current.closest('li');
+    currentLi.classList.add('current');
 
     // Expand from current leaf to root
     if (expand) {
       let closestListItem = currentLi;
       while (closestListItem) {
-        closestListItem.ariaExpanded = "true";
-        closestListItem = closestListItem.parentElement.closest("li");
+        closestListItem.ariaExpanded = 'true';
+        closestListItem = closestListItem.parentElement.closest('li');
       }
     }
 
@@ -748,7 +715,7 @@ function renderTOC(container, book, expand, replace) {
  * @param {HTMLElement} container
  */
 function initAdditionalBooks(block, container) {
-  const mainBook = container.querySelector("ul");
+  const mainBook = container.querySelector('ul');
 
   // insert books in order defined in metadata
   store.allBooks.forEach((book) => {
@@ -760,34 +727,28 @@ function initAdditionalBooks(block, container) {
               <div>
                 <a>${book.title}</a>
                 <span>
-                  <i class="icon"> ${getIcon("chevron-right")} </i>
+                  <i class="icon"> ${getIcon('chevron-right')} </i>
                 </span>
               </div>
             </li>
-          </ul>`
+          </ul>`,
     );
   });
 
   // load additional book data on block hover, replace toc list once loaded
   block.addEventListener(
-    "mouseenter",
+    'mouseenter',
     async () => {
-      container
-        .querySelectorAll("[data-additional-book-href]")
-        .forEach((list) => {
-          store
-            .fetchJSON(list.dataset.additionalBookHref, [
-              "default",
-              "chapters",
-              "topics",
-            ])
-            .then((data) => {
-              const sorted = sortBook(data);
-              renderTOC(container, sorted, false, list);
-            });
-        });
+      container.querySelectorAll('[data-additional-book-href]').forEach((list) => {
+        store
+          .fetchJSON(list.dataset.additionalBookHref, ['default', 'chapters', 'topics'])
+          .then((data) => {
+            const sorted = sortBook(data);
+            renderTOC(container, sorted, false, list);
+          });
+      });
     },
-    { once: true }
+    { once: true },
   );
 }
 
@@ -795,18 +756,18 @@ function initAdditionalBooks(block, container) {
  * @param {HTMLDivElement} block
  */
 export default async function decorate(block) {
-  block.innerHTML = "";
+  block.innerHTML = '';
   const template = parseFragment(TEMPLATE);
 
-  const toggle = template.querySelector(".toggle-aside");
-  const wrapper = block.closest(".sidenav-wrapper");
+  const toggle = template.querySelector('.toggle-aside');
+  const wrapper = block.closest('.sidenav-wrapper');
   wrapper.append(toggle);
 
-  const div = document.createElement("div");
+  const div = document.createElement('div');
 
-  const docTitle = document.createElement("a");
-  docTitle.setAttribute("slot", "document");
-  docTitle.href = window.location.href.split("/").slice(0, -2).join("/");
+  const docTitle = document.createElement('a');
+  docTitle.setAttribute('slot', 'document');
+  docTitle.href = window.location.href.split('/').slice(0, -2).join('/');
   div.append(docTitle);
 
   // Render with slots
@@ -816,24 +777,21 @@ export default async function decorate(block) {
 
   const curLangBtn = block.querySelector('[slot="language"]');
   if (curLangBtn) {
-    curLangBtn.textContent = getMetadata("language-title");
+    curLangBtn.textContent = getMetadata('language-title');
   }
 
-  const toc = block.querySelector(".content-inner .toc-books");
+  const toc = block.querySelector('.content-inner .toc-books');
   if (isMobile()) {
-    wrapper.parentElement.classList.add("aside-close");
+    wrapper.parentElement.classList.add('aside-close');
   }
 
-  store.once("article:loaded", (info) => {
+  store.once('article:loaded', (info) => {
     block.querySelector('slot[name="title"]').textContent = info.title;
-    block.querySelector('slot[name="date"]').textContent = formatDate(
-      info.lastModified
-    );
+    block.querySelector('slot[name="date"]').textContent = formatDate(info.lastModified);
   });
 
-  store.once("book:loaded", (book) => {
-    block.querySelector('a[slot="document"]').textContent =
-      book.default.data[0].title;
+  store.once('book:loaded', (book) => {
+    block.querySelector('a[slot="document"]').textContent = book.default.data[0].title;
 
     const sorted = sortBook(book);
     renderTOC(toc, sorted, true);
@@ -845,6 +803,6 @@ export default async function decorate(block) {
   });
 
   if (SPA_NAVIGATION) {
-    store.on("spa:navigate:article", handleSPANavigation);
+    store.on('spa:navigate:article', handleSPANavigation);
   }
 }

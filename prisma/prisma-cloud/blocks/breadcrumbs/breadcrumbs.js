@@ -1,7 +1,7 @@
+import { getMetadata } from '../../scripts/lib-franklin.js';
 import {
   PATH_PREFIX, SPA_NAVIGATION, getPlaceholders, loadBook, parseFragment,
 } from '../../scripts/scripts.js';
-import { getMetadata } from '../../scripts/lib-franklin.js';
 
 const TEMPLATE = /* html */`
   <nav class="pan-breadcrumbs">
