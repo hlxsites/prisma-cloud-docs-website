@@ -1,9 +1,17 @@
-import { parseFragment, render } from '../../scripts/scripts.js';
+import { PATH_PREFIX, loadLottie, parseFragment, render } from '../../scripts/scripts.js';
 import { showRoute } from '../intro/utils.js';
 import { collapseSection, expandSection } from './utils.js';
 
 const TEMPLATE_BUTTON = `
 <div slot="category-button" class="ops-accordion-item">
+  <div class="ops-icon-button"> 
+  <svg class="icon" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g id="Group 230">
+    <line id="Line 83" x1="6.25" y1="11.25" x2="6.25" y2="0.75" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+    <line id="Line 84" x1="0.75" y1="6.25" x2="11.25" y2="6.25" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+    </g>
+  </svg>
+  </div>
   <button class="summary">
     <span class="eyebrow">Use Case</span>
     <slot name="teaser"></slot>
@@ -20,6 +28,39 @@ const TEMPLATE = /* html */ `
   <div slot="buttons" class="ops-accordion"></div>
 </div>
 `;
+
+const TEMPLATE_NAV = /* html */ `
+<div class="ops-category-nav">
+  <a href="" class="back ops-icon-button category-back">
+    <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="40" height="40" focusable="false"><path d="M9.408 0.837c-1.116 1.116-1.116 2.925 0 4.041l14.112 14.112c0.558 0.558 0.558 1.463 0 2.021l-14.112 14.112c-1.116 1.116-1.116 2.925 0 4.041s2.925 1.116 4.041 0l17.143-17.143c1.116-1.116 1.116-2.925 0-4.041l-17.143-17.143c-1.116-1.116-2.925-1.116-4.041 0z"></path></svg>
+  </a>
+  <div class="ops-category-nav-buttons">
+
+  </div>
+</div>
+`;
+
+const TEMPLATE_MOBILE_NAV = `
+<div class="ops-category-nav-mobile">
+    <div class="drawer"></div>
+    <button class="nav-label selected">
+    <span class="title">Secure the Infrastructure</span>
+    <svg focusable="false" aria-label="Clear" class="icon icon-down-arrow" version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+        <title>Down Arrow</title>
+        <path d="M7.79 9.671c-0.867-0.894-2.276-0.894-3.144 0-0.862 0.889-0.862 2.327 0 3.217l8.717 8.988c1.455 1.5 3.817 1.5 5.272 0l8.717-8.988c0.862-0.889 0.862-2.327 0-3.217-0.867-0.894-2.276-0.894-3.144 0l-7.492 7.724c-0.393 0.405-1.043 0.405-1.436 0l-7.492-7.724z"></path>
+    </svg>
+    </button>
+</div>
+`;
+
+// Lottie animations for each categoiry
+const LOTTIE_PATHS = {
+  'secure-the-infrastructure': `${window.hlx.codeBasePath}/assets/lottie-infrastructure.json`,
+  'secure-the-code': `${window.hlx.codeBasePath}/assets/lottie-code.json`,
+  'secure-the-runtime': `${window.hlx.codeBasePath}/assets/lottie-runtime.json`,
+};
+
+const LOTTIE_TEMPLATE = '<lottie-player loop mode="normal"></lottie-player>';
 
 function toNodeList(arrayOfNodes, fragment) {
   let items = [];
@@ -42,6 +83,7 @@ function toNodeList(arrayOfNodes, fragment) {
  * @param {HTMLElement} block the container element
  */
 async function renderContent(block) {
+  const { lang } = document.documentElement;
   const rows = [...block.querySelectorAll(':scope > div')];
 
   const overview = rows[0].querySelector(':scope > div');
@@ -88,11 +130,44 @@ async function renderContent(block) {
 
   console.log('store : ', store);
 
+  /** Prepend category nav */
+  const hasCategoryNav = document.querySelector('.ops-category-nav');
+  if (!hasCategoryNav) {
+    const navTemplate = parseFragment(TEMPLATE_NAV);
+    const categoryContainer = document.querySelector('.category-container');
+    categoryContainer.prepend(navTemplate);
+
+    // Mobile nav
+    const mobileNavTemplate = parseFragment(TEMPLATE_MOBILE_NAV);
+    categoryContainer.prepend(mobileNavTemplate);
+  }
+
+  // Add category nav button
+  const categoryNav = document.querySelector('.ops-category-nav-buttons');
+  const mobileNav = document.querySelector('.ops-category-nav-mobile');
+  const mobileNavDrawer = mobileNav.querySelector('.ops-category-nav-mobile .drawer');
+  const categoryNavLink = document.createElement('a');
+  categoryNavLink.textContent = overviewTitle.textContent;
+  categoryNavLink.href = `${PATH_PREFIX}/${lang}/operationalize#${categoryRouteId}`;
+  categoryNavLink.setAttribute('data-category-nav-route', `#${categoryRouteId}`);
+  if (categoryNav && mobileNav) {
+    categoryNav.append(categoryNavLink);
+    mobileNavDrawer.append(categoryNavLink.cloneNode(true));
+  }
+
+  const backButton = document.querySelector('.category-back');
+  backButton.href = `${PATH_PREFIX}/${lang}/operationalize#`;
+
   const template = parseFragment(TEMPLATE);
   const templateRoot = template.querySelector('.ops-category');
   templateRoot.setAttribute('data-route', `#${categoryRouteId}`);
   const overviewSlot = template.querySelector('slot[name="overview"]');
   overview.classList.add('overview');
+
+  // Add lottie player
+  const lottieTemplate = parseFragment(LOTTIE_TEMPLATE);
+  overview.append(lottieTemplate);
+
   overviewSlot.replaceWith(overview.cloneNode(true));
 
   const buttonsSlot = template.querySelector('[slot="buttons"]');
@@ -110,24 +185,42 @@ async function renderContent(block) {
     // Details
     const detailsSlot = _fragment.querySelector('slot[name="details"]');
     toNodeList(value.items, detailsSlot);
+    const rowsOfContent = value.items.length / 2;
 
     buttonsSlot.append(_fragment);
 
-    root.addEventListener('click', (e) => {
-      const rootEl = e.target.closest('[slot="category-button"]');
-      const isCollapsed = rootEl.getAttribute('data-collapsed') === 'true';
+    if (rowsOfContent > 1) {
+      root.classList.add('accordion-active');
+      root.addEventListener('click', (e) => {
+        const rootEl = e.target.closest('[slot="category-button"]');
+        const isCollapsed = rootEl.getAttribute('data-collapsed') === 'true';
 
-      if (isCollapsed) {
-        expandSection(detailsSlot);
-        rootEl.setAttribute('data-collapsed', false);
-      } else {
-        collapseSection(detailsSlot);
-        rootEl.setAttribute('data-collapsed', true);
-      }
-    });
+        if (isCollapsed) {
+          expandSection(detailsSlot);
+          rootEl.setAttribute('data-collapsed', false);
+        } else {
+          collapseSection(detailsSlot);
+          rootEl.setAttribute('data-collapsed', true);
+        }
+      });
+    }
 
     index += 1;
   }
+
+  // Add events
+  loadLottie();
+  const player = template.querySelector('lottie-player');
+  player.addEventListener('rendered', () => {
+    // Load via URL
+    player.load(LOTTIE_PATHS[categoryRouteId]);
+  });
+
+  const toggleDrawer = mobileNav.querySelector('.selected');
+
+  toggleDrawer.addEventListener('click', () => {
+    mobileNavDrawer.classList.toggle('is-active');
+  });
 
   // const template = parseFragment(TEMPLATE);
   const fragment = document.createElement('div');

@@ -971,3 +971,29 @@ export function lerp(start, end, amt) {
 export function truncate(value, decimals) {
   return parseFloat(value.toFixed(decimals));
 }
+
+export function loadLottie() {
+  const BUNDLE_PATH = `${window.hlx.codeBasePath}/scripts/lottie.min.js`;
+
+  const scriptLoaded = document.querySelector('.js-lottie');
+  if (!scriptLoaded) {
+    const script = document.createElement('script');
+    script.src = BUNDLE_PATH;
+    script.classList.add('js-lottie');
+    document.body.append(script);
+  }
+}
+
+export function playLottie(player) {
+  if (player) {
+    try {
+      player.play();
+    } catch {
+      const play = () => {
+        player.play();
+        player.removeEventListener('ready', play);
+      };
+      player.addEventListener('ready', play);
+    }
+  }
+}

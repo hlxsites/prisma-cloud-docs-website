@@ -289,6 +289,7 @@
 }
 
 /* Dark Mode */
+.operationalize,
 [data-user-theme='dark'] .book {
   /* Tier 2 variables (High-level variables) */
   --code-background: var(--color-neutral-dark-800);
@@ -303,8 +304,8 @@
   --copy-confirmation-background-color: var(--color-neutral-dark-500);
   --copy-confirmation-box-shadow: 0px 2px 12px 0px rgba(0, 0, 0, 0.48);
 
-  --header-background: rgba(0, 0, 0, 0.5);
-  --header-border: var(--color-neutral-dark-600);
+  --header-background--default: rgba(0, 0, 0, 0.5);
+  --header-border--default: var(--color-neutral-dark-600);
 
   --inline-link-text-color: var(--color-blue-dark--500);
 
@@ -424,6 +425,19 @@ body.appear {
 
 body.no-body-scroll {
   overflow: hidden;
+}
+
+/* Ops Nav */
+.operationalize header {
+  --header-background--default: transparent;
+  --header-border--default: transparent;
+}
+
+@media only screen and (max-width: 1024px) {
+  .operationalize header {
+    --header-background--default: rgba(0, 0, 0, 0.5);
+    --header-border--default: var(--color-neutral-dark-600);
+  }
 }
 
 header {
@@ -1080,6 +1094,25 @@ main .breadcrumbs-container[data-section-status='loaded'] {
 
 .landing-product .section.cards-container h3 + p.is-sibling-of-ul + ul {
   border-top: 0;
+}
+
+.ops-icon-button {
+  align-items: center;
+  background: var(--color-neutral-black);
+  border: 1px solid var(--color-neutral-dark-600);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  padding: 0;
+  height: var(--spacing--12);
+  width: var(--spacing--12);
+}
+
+.ops-icon-button svg {
+  color: var(--color-neutral-white);
+  transform: scaleX(-1);
+  height: var(--spacing--4);
+  width: var(--spacing--4);
 }
 
 /* Mobile Styles */

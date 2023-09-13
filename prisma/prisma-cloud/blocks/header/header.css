@@ -1,4 +1,4 @@
-:root {
+.header  {
   --desktop-bottom-padding: var(--spacing--3);
   --desktop-drawer-top-distance: var(--spacing--6);
 
@@ -25,6 +25,7 @@
   --search-height: var(--spacing--10);
 }
 
+.operationalize .header,
 [data-user-theme='dark'] .book .header {
   --header-primary-text-color: var(--color-neutral-dark-200);
   --header-search-text-color: var(--color-neutral-200);
@@ -45,14 +46,18 @@
   --search-text-color: var(--color-neutral-white);
 }
 
+.operationalize .header .nav-logo picture,
 [data-user-theme='dark'] .book .header .nav-logo picture {
   opacity: 0;
 }
 
+.operationalize .header .nav-logo a,
 [data-user-theme='dark'] .book .header .nav-logo a {
   background: url('/prisma/prisma-cloud/assets/techdocs-logo-dark-mode.webp') 0 0 no-repeat;
   background-size: contain;
 }
+
+
 
 .header-wrapper {
   left: 0;
