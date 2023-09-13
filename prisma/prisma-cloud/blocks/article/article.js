@@ -12,10 +12,9 @@ import {
   setBranch,
 } from '../../scripts/scripts.js';
 
-import { getMetadata, loadBlocks, updateSectionsStatus } from '../../scripts/lib-franklin.js';
-
-import '../../scripts/scroll-spy.js';
-import '../theme-toggle/theme-toggle.js';
+import {
+  getMetadata, loadBlock, loadBlocks, updateSectionsStatus,
+} from '../../scripts/lib-franklin.js';
 
 const TEMPLATE_ICON_COPY = /* html */ `
 <svg class="icon icon-copy" focusable="false" aria-label="Copy" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -513,6 +512,8 @@ async function renderContent(block, hrefOrRes, rerender = false) {
   // Load sidenav, once
   if (!rerender) {
     renderSidenav(block);
+    loadBlock('theme-toggle');
+    await import('../../scripts/scroll-spy.js');
   }
 
   if (articleFound) {
