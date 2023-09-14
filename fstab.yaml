@@ -2,9 +2,8 @@ mountpoints:
   /: https://drive.google.com/drive/folders/147VhNyUTZTSvvhkHK28KxMM5mGLIK4jW
 
 folders:
+  /prisma/prisma-cloud/en/enterprise-edition/: /prisma/prisma-cloud/en/product/book-default
   /prisma/prisma-cloud/en/compute-edition/: /prisma/prisma-cloud/en/product/book-default
-  /prisma/prisma-cloud/en/cspm/: /prisma/prisma-cloud/en/product/book-default
   /prisma/prisma-cloud/en/classic/: /prisma/prisma-cloud/en/product/book-default
+  /prisma/prisma-cloud/jp/enterprise-edition/: /prisma/prisma-cloud/jp/product/book-default
   /prisma/prisma-cloud/jp/compute-edition/: /prisma/prisma-cloud/jp/product/book-default
-  /prisma/prisma-cloud/jp/cspm/: /prisma/prisma-cloud/jp/product/book-default
-
