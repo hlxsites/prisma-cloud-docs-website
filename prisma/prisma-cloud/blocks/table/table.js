@@ -55,10 +55,13 @@ async function sheetToDivTable(path) {
   let tableStr = '<div>';
   json.data.forEach((row, i) => {
     if (i === 0) {
-      tableStr += `<div>${
-        Object.keys(row).map((header) => `<div>${header}</div>`).join('')}</div>`;
+      tableStr += `<div>${Object.keys(row)
+        .map((header) => `<div>${header}</div>`)
+        .join('')}</div>`;
     }
-    tableStr += `<div>${Object.values(row).map((cell) => `<div>${cell}</div>`).join('')}</div>`;
+    tableStr += `<div>${Object.values(row)
+      .map((cell) => `<div>${cell}</div>`)
+      .join('')}</div>`;
   });
   tableStr += '</div>';
 
@@ -107,8 +110,7 @@ export default async function decorate(block) {
     if (!head) return;
 
     const cells = [...head.querySelectorAll(':scope > div')];
-    const thead = html`
-    <table>
+    const thead = html` <table>
       <thead>
         <tr>
           ${cells.map((cell, i) => `<th${colSpans[i] ? ` colspan="${colSpans[i]}"` : ''}>${cell.innerHTML}</th>`).join('\n')}
@@ -118,13 +120,14 @@ export default async function decorate(block) {
     table.appendChild(thead);
   }
 
-  const tbody = html`<table><tbody></tbody></table>`.firstElementChild;
+  const tbody = html`<table>
+    <tbody></tbody>
+  </table>`.firstElementChild;
   table.appendChild(tbody);
 
   rows.forEach((row) => {
     const cells = [...row.querySelectorAll(':scope > div')];
-    const tr = html`
-    <table>
+    const tr = html` <table>
       <tr>
         ${cells.map((cell) => `<td>${cell.innerHTML}</td>`).join('\n')}
       </tr>

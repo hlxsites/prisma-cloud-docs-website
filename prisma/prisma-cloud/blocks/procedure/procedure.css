@@ -1,5 +1,21 @@
 .procedure {
-  line-height: 1.6180;
+  --step-background-color: var(--color-blue--100);
+  --step-text-color: var(--color-neutral-800);
+
+  --substep-background-color: var(--color-neutral-black);
+  --substep-text-color: var(--color-neutral-white);
+
+  line-height: 1.618;
+}
+
+/* Dark Mode */
+
+[data-user-theme="dark"] .procedure {
+  --step-background-color: var(--color-blue-dark--700);
+  --step-text-color: var(--color-neutral-dark-050);
+
+  --substep-background-color: var(--color-neutral-white);
+  --substep-text-color: var(--color-neutral-dark-600);
 }
 
 .procedure ol.steps {
@@ -9,21 +25,27 @@
 }
 
 .procedure ol.steps li.step {
-  margin: 30px 0 30px 80px;
+  margin: 46px 0;
+  padding-left: 103px;
   position: relative;
   counter-reset: substep-counter;
 }
 
 .procedure ol.steps li.step::before {
-  font-family: 'HCo Decimal', 'HCo Decimal Fallback', Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif, FontAwesome;
+  background-color: var(--step-background-color);
+  border-radius: 38px;
   counter-increment: step-counter;
-  content: "STEP " counter(step-counter) " \f101";
-  color: #fa582d;
-  font-weight: 500;
-  font-size: 16px;
+  content: "STEP " counter(step-counter) "";
+  color: var(--step-text-color);
+  left: 0;
+  line-height: 18px;
+  padding: 5px 0 5px var(--spacing--4);
   position: absolute;
-  right: 99%;
-  width: 90px;
+  /* transform: translateX(-100%); */
+  transition: background-color var(--action-ease-duration)
+      var(--action-ease-function),
+    color var(--action-ease-duration) var(--action-ease-function);
+  width: 72px;
   text-align: left;
   top: -3px;
 }
@@ -34,24 +56,38 @@
 }
 
 .procedure ol.steps li.step ol.substeps li.substep {
-  margin: 20px 0 20px 25px;
+  margin: var(--article-block-spacing) 0 var(--article-block-spacing) 25px;
   padding-left: 10px;
   position: relative;
 }
 
 .procedure ol.steps li.step ol.substeps li.substep::before {
+  align-items: center;
+  background-color: var(--substep-background-color);
+  border-radius: 50%;
+  color: var(--substep-text-color);
   content: counter(substep-counter);
   counter-increment: substep-counter;
-  height: 25px;
-  width: 25px;
-  border: 1px solid #fa582d;
-  border-radius: 50%;
-  color: #fa582d;
+  display: flex;
+  font-size: var(--body-font-size--p3);
+  height: 20px;
+  justify-content: center;
+  letter-spacing: var(--letter-spacing-neg--s);
+  line-height: var(--body-line-height--p3);
   position: absolute;
   right: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1.15em;
-  top: -3px;
+  width: 20px;
+}
+
+/* Mobile Styles */
+@media only screen and (max-width: 560px) {
+  .procedure ol.steps li.step {
+    margin: 90px 0;
+    padding-left: 0;
+  }
+
+  .procedure ol.steps li.step::before {
+    transform: translateY(-100%);
+    top: calc(-1 * var(--spacing--5));
+  }
 }

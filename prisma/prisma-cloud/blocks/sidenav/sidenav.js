@@ -2,6 +2,7 @@ import { getMetadata } from '../../scripts/lib-franklin.js';
 import {
   PATH_PREFIX,
   SPA_NAVIGATION,
+  debounce,
   getIcon,
   getPlaceholders,
   html,
@@ -11,8 +12,11 @@ import {
   render,
 } from '../../scripts/scripts.js';
 
-const TEMPLATE = /* html */`
+const TEMPLATE = /* html */ `
+<div class="toc-resizer"></div>
   <aside class="pan-sidenav">
+      <!-- Mobile -->
+      <!-- End Mobile -->
       <div class="toggle-aside">
           <i class="icon">${getIcon('chevron-right')}</i>
       </div>
@@ -34,21 +38,28 @@ const TEMPLATE = /* html */`
               <slot name="date">-</slot>
           </div>
 
-          <div class="versions">
+          <div class="products">
             <div class="book-detail-banner-info">
-              <div class="banner-info-label locale-book-current-version"></div>
-                <div class="banner-dropdown version-dropdown">
-                  <a>
-                      <span slot="version"></span>
-                      <i class="icon">${getIcon('chevron-down')}</i>
-                  </a>
-                  <div class="banner-dropdown-menu version-dropdown-menu">
+              <div class="banner-info-label locale-book-current-product"></div>
+                <div class="banner-dropdown product-dropdown">
+                <div class="banner-dropdown-menu product-dropdown-menu drawer">
                     <ul>
-                      <li class="active">
-                        <a href="#" slot="version"></a>
-                      </li>
                     </ul>
                   </div>
+                  <button class="product-button">
+                      <div class="product-button__left">  
+                        <svg width="20" height="22" class="icon icon-logo" focusable="false" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd" clip-rule="evenodd" d="M9.55536 0.125406C9.85815 -0.0424573 10.2262 -0.0417582 10.5284 0.127254L19.4882 5.13896C19.8042 5.31575 20 5.64958 20 6.01171V15.9883C20 16.3504 19.8042 16.6843 19.4882 16.861L10.5284 21.8727C10.2262 22.0418 9.85815 22.0425 9.55536 21.8746L0.515143 16.8629C0.197238 16.6866 0 16.3518 0 15.9883V6.01171C0 5.64822 0.197238 5.31336 0.515143 5.13712L9.55536 0.125406ZM2.25757 15.5421C2.09862 15.454 2 15.2865 2 15.1048V12.6996L4.5 14.0885V16.7852L2.25757 15.5421ZM5.98564 12.626L2 10.4117V7.41374L8.86421 11.2269C9.10232 11.3591 9.25 11.6101 9.25 11.8825V19.4185L6.5 17.894V13.5001C6.5 13.137 6.30311 12.8023 5.98564 12.626ZM15.5 16.8002L17.7441 15.545C17.9021 15.4566 18 15.2897 18 15.1086V12.6996L15.5 14.0885V16.8002ZM13.5 17.9189L10.75 19.4572V11.8822C10.75 11.6098 10.8977 11.3589 11.1358 11.2266L18 7.41294V10.4117L14.0144 12.626C13.6969 12.8023 13.5 13.137 13.5 13.5001V17.9189ZM9.63554 9.93943C9.86206 10.0653 10.1375 10.0653 10.364 9.93941L17.1917 6.14605L14.5034 4.64234L10.4859 6.87429C10.1839 7.04208 9.81667 7.04208 9.51465 6.87429L5.51483 4.65217L2.81349 6.14973L9.63554 9.93943ZM7.57614 3.50942L10.0003 4.85617L12.4513 3.49448L10.281 2.28052C10.13 2.19601 9.94592 2.19566 9.79453 2.27959L7.57614 3.50942Z" />
+                        </svg>
+                        <span slot="product"></span>
+                      </div>  
+                      <div class="icon-container">
+                        <svg class="icon icon-arrow-down" focusable="false" aria-label="Expand" version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+                        <title>down-arrow</title>
+                        <path d="M7.79 9.671c-0.867-0.894-2.276-0.894-3.144 0-0.862 0.889-0.862 2.327 0 3.217l8.717 8.988c1.455 1.5 3.817 1.5 5.272 0l8.717-8.988c0.862-0.889 0.862-2.327 0-3.217-0.867-0.894-2.276-0.894-3.144 0l-7.492 7.724c-0.393 0.405-1.043 0.405-1.436 0l-7.492-7.724z"></path>
+                        </svg>
+                      </div>
+                  </button>
                 </div>
               </div>
             </div>
@@ -76,11 +87,16 @@ const TEMPLATE = /* html */`
       </div>
       <div class="content">
           <div class="toggle-aside">
-            <i class="icon">${getIcon(`chevron-${isMobile() ? 'down' : 'left'}`)}</i>
+            <svg class="icon icon-collapse" focusable="false" aria-label="Collapse" version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+              <title>collapse</title>
+              <path d="M24.521 9.843c0.639-0.65 0.639-1.707 0-2.358-0.635-0.647-1.662-0.647-2.298 0l-6.42 6.538c-1.071 1.091-1.071 2.863 0 3.954l6.42 6.538c0.635 0.647 1.663 0.647 2.298 0 0.639-0.65 0.639-1.707 0-2.358l-5.517-5.619c-0.289-0.295-0.289-0.782 0-1.077l5.517-5.619z"></path>
+              <path d="M16.521 9.843c0.639-0.65 0.639-1.707 0-2.358-0.635-0.647-1.662-0.647-2.298 0l-6.42 6.538c-1.071 1.091-1.071 2.863 0 3.954l6.42 6.538c0.635 0.647 1.662 0.647 2.298 0 0.639-0.65 0.639-1.707 0-2.358l-5.517-5.619c-0.289-0.295-0.289-0.782 0-1.077l5.517-5.619z"></path>
+            </svg>
           </div>
           <h2 class="locale-toc-title"></h2>
           <hr>
           <div class="content-inner">
+              
               <div class="search-toc">
                   <div class="search-toc-label">
                       <div class="filter-icon">
@@ -133,6 +149,7 @@ function handleSPANavigation(state) {
   const versionMenu = banner.querySelector('.version-dropdown-menu');
   if (versionMenu) {
     const curVers = store.version;
+
     versionMenu.querySelectorAll('li:not(.active) a').forEach((a) => {
       const nextVers = a.dataset.version;
       const [prefix] = a.href.split(`/${nextVers}/`);
@@ -181,42 +198,53 @@ async function navigateArticleSPA(ev) {
 }
 
 /**
- * Add version dropdown
+ * Add product dropdown
  * @param {Element} wrapper
  */
-function initVersionDropdown(wrapper) {
-  const versionsContainer = wrapper.querySelector('.sidenav .banner .versions');
-  const versionsDropdown = versionsContainer.querySelector('.version-dropdown');
-  const curVersionKey = getMetadata('version');
+const initProductDropdown = async (wrapper) => {
+  const productsContainer = wrapper.querySelector('.sidenav .banner .products');
+  const productsDropdown = productsContainer.querySelector('.product-dropdown');
+  const productButton = productsDropdown.querySelector('.product-button');
+  const productsDropdownMenuContainer = productsContainer.querySelector('.product-dropdown-menu');
+  const curProductKey = getMetadata('product');
 
-  if (!store.product || curVersionKey === 'not-applicable') {
-    versionsContainer.remove();
+  if (!store.product || curProductKey === 'not-applicable') {
+    productsContainer.remove();
     return;
   }
 
   const { lang } = document.documentElement;
-  const versionsDropdownMenu = versionsDropdown.querySelector('.version-dropdown-menu ul');
+  const productsDropdownMenu = productsDropdown.querySelector('.product-dropdown-menu ul');
 
-  versionsDropdown.addEventListener('mouseenter', async () => {
-    const json = await store.fetchJSON(`${window.location.origin}${PATH_PREFIX}/${lang}/versions`, store.product);
-    if (!json) return;
+  productButton.addEventListener('click', () => {
+    productsDropdownMenuContainer.classList.toggle('is-active');
+  });
 
-    const curVersion = json.data.find((row) => row.Key === curVersionKey);
+  document.addEventListener('click', (event) => {
+    const isClickInside = productsContainer.contains(event.target);
 
-    const { pathname } = window.location;
-    // rm leading slash, lang, product
-    let segments = pathname.substring(PATH_PREFIX.length).split('/').slice(3);
-    // if current href has version folder, remove it
-    if (curVersion.Folder) {
-      segments = segments.slice(1);
+    if (!isClickInside) {
+      productsDropdownMenuContainer.classList.remove('is-active');
     }
-    const unversionedPath = segments.join('/');
+  });
 
-    const makeHref = (folder) => `${PATH_PREFIX}/${lang}/${store.product}/${folder ? `${folder}/` : ''}${unversionedPath}`;
+  const json = await store.fetchJSON(`${window.location.origin}${PATH_PREFIX}/products`);
 
-    const newVersions = json.data.map((row) => {
-      // exclude current version from dropdown
-      if (row.Key === curVersionKey) {
+  if (!json) return;
+
+  const curProduct = json.data.find((row) => row.Key === curProductKey);
+
+  const curProductBtn = productButton.querySelector('[slot="product"]');
+  if (curProductBtn) {
+    curProductBtn.textContent = curProduct.Product;
+  }
+
+  const makeHref = (url) => `${PATH_PREFIX}/${lang}${url ? `${url}/` : ''}`;
+
+  const newProducts = json.data
+    .map((row) => {
+      // exclude current product from dropdown
+      if (row.Key === curProductKey) {
         return undefined;
       }
 
@@ -224,16 +252,16 @@ function initVersionDropdown(wrapper) {
       const a = document.createElement('a');
       li.append(a);
 
-      a.href = makeHref(row.Folder);
-      a.textContent = row.Title;
-      a.dataset.version = row.Folder;
+      a.href = makeHref(row.URL);
+      a.textContent = row.Product;
+      // a.dataset.product = row.Folder;
 
       return li;
-    }).filter((item) => !!item);
+    })
+    .filter((item) => !!item);
 
-    versionsDropdownMenu.append(...newVersions);
-  }, { once: true });
-}
+  productsDropdownMenu.append(...newProducts);
+};
 
 /**
  * Add version dropdown
@@ -258,34 +286,40 @@ async function initLanguagesDropdown(wrapper) {
   const langDropdownMenu = langsDropdown.querySelector('.language-dropdown-menu ul');
   const curLang = document.documentElement.lang;
 
-  langsDropdown.addEventListener('mouseenter', async () => {
-    const { pathname } = window.location;
-    // rm leading slash, lang
-    const segments = pathname.substring(PATH_PREFIX.length).split('/').slice(2);
-    const unlocalizedPath = segments.join('/');
+  langsDropdown.addEventListener(
+    'mouseenter',
+    async () => {
+      const { pathname } = window.location;
+      // rm leading slash, lang
+      const segments = pathname.substring(PATH_PREFIX.length).split('/').slice(2);
+      const unlocalizedPath = segments.join('/');
 
-    const makeHref = (lang) => `${PATH_PREFIX}/${lang}/${unlocalizedPath}`;
+      const makeHref = (lang) => `${PATH_PREFIX}/${lang}/${unlocalizedPath}`;
 
-    const makeEntry = (lang, title) => {
-      const li = document.createElement('li');
-      const a = document.createElement('a');
-      li.append(a);
+      const makeEntry = (lang, title) => {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        li.append(a);
 
-      a.href = makeHref(lang);
-      a.textContent = title;
-      a.dataset.lang = lang;
-      return li;
-    };
+        a.href = makeHref(lang);
+        a.textContent = title;
+        a.dataset.lang = lang;
+        return li;
+      };
 
-    const otherLangItems = languages.map((lang) => {
-      if (lang === curLang) {
-        return undefined;
-      }
-      return makeEntry(lang, langMap[lang]);
-    }).filter((item) => !!item);
+      const otherLangItems = languages
+        .map((lang) => {
+          if (lang === curLang) {
+            return undefined;
+          }
+          return makeEntry(lang, langMap[lang]);
+        })
+        .filter((item) => !!item);
 
-    langDropdownMenu.append(...otherLangItems);
-  }, { once: true });
+      langDropdownMenu.append(...otherLangItems);
+    },
+    { once: true },
+  );
 }
 
 /**
@@ -293,7 +327,23 @@ async function initLanguagesDropdown(wrapper) {
  * @param {Element} wrapper
  */
 function addEventListeners(wrapper) {
+  let ww = window.innerWidth;
+
   wrapper.addEventListener('click', (event) => {
+    const link = event.target.closest('a');
+
+    // Reset scroll to top of the page when changing view
+    if (link) {
+      setTimeout(() => {
+        window.scrollTo({ top: 0 });
+      }, 100);
+
+      const mobileToggle = document.querySelector('.nav-open-booksmenu');
+      if (mobileToggle.classList.contains('is-active')) {
+        mobileToggle.click();
+      }
+    }
+
     /** @type {HTMLElement} */
     const toggle = event.target.closest('.toggle-aside');
     if (!toggle) return;
@@ -304,6 +354,24 @@ function addEventListeners(wrapper) {
       toggle.querySelector('i').style.rotate = `${next ? '0' : '180'}deg`;
     }
   });
+
+  // Mobile resize
+  let mobileTriggered = false;
+  let desktopTriggered = false;
+  const handleWindowResize = debounce(() => {
+    ww = window.innerWidth;
+    if (ww < 900 && !mobileTriggered) {
+      mobileTriggered = true;
+      desktopTriggered = false;
+      wrapper.parentElement.classList.add('aside-close');
+    } else if (ww >= 900 && !desktopTriggered) {
+      mobileTriggered = false;
+      desktopTriggered = true;
+      wrapper.parentElement.classList.remove('aside-close');
+    }
+  }, 50);
+
+  window.addEventListener('resize', handleWindowResize);
 
   const form = wrapper.querySelector('.form-input');
   const input = form.querySelector('input');
@@ -344,7 +412,9 @@ function addEventListeners(wrapper) {
 
       links.forEach((link) => {
         if (find(link)) {
-          link.innerHTML = link.textContent.replace(new RegExp(`(${value})`, 'gi'), '<mark>$1</mark>').replaceAll(' ', '&nbsp;');
+          link.innerHTML = link.textContent
+            .replace(new RegExp(`(${value})`, 'gi'), '<mark>$1</mark>')
+            .replaceAll(' ', '&nbsp;');
 
           toggleExpanded(link, true);
         }
@@ -375,6 +445,34 @@ function addEventListeners(wrapper) {
 
   form.addEventListener('submit', (event) => {
     event.preventDefault();
+  });
+
+  // TOC Resizer
+  const resizer = wrapper.querySelector('.toc-resizer');
+  const sidebar = wrapper;
+  const minWidth = 375;
+
+  const resize = (e) => {
+    const maxWidth = ww / 2;
+    const targetSize = e.x;
+    const size = `${targetSize}px`;
+    if (targetSize < maxWidth && targetSize >= minWidth) {
+      sidebar.style.flexBasis = size;
+      resizer.style.transform = `translateX(${size})`;
+    }
+  };
+
+  resizer.addEventListener('mousedown', () => {
+    document.body.style.userSelect = 'none';
+    document.addEventListener('mousemove', resize, false);
+    document.addEventListener(
+      'mouseup',
+      () => {
+        document.removeEventListener('mousemove', resize, false);
+        document.body.style.userSelect = 'auto';
+      },
+      false,
+    );
   });
 }
 
@@ -425,9 +523,10 @@ function sortBook(book) {
 }
 
 function hasSubtopics(topic) {
-  return topic.children && (
-    topic.children.length > 1
-    || topic.children.some((sub) => sub.name !== topic.name && sub.key !== topic.key)
+  return (
+    topic.children
+    && (topic.children.length > 1
+      || topic.children.some((sub) => sub.name !== topic.name && sub.key !== topic.key))
   );
 }
 
@@ -447,7 +546,22 @@ function bookToList(book) {
     div.append(link);
 
     const expander = document.createElement('span');
-    expander.append(html`<i class="icon">${getIcon('chevron-right')}</i>`);
+    expander.classList.add('icon-toggle');
+    expander.append(html`<svg
+      class="icon icon-arrow"
+      focusable="false"
+      aria-label="Expand"
+      version="1.1"
+      xmlns="http://www.w3.org/2000/svg"
+      width="32"
+      height="32"
+      viewBox="0 0 32 32"
+    >
+      <title>Right Arrow</title>
+      <path
+        d="M7.527 0.669c-0.893 0.893-0.893 2.34 0 3.232l11.29 11.29c0.446 0.446 0.446 1.17 0 1.616l-11.29 11.29c-0.893 0.893-0.893 2.34 0 3.232s2.34 0.893 3.232 0l13.714-13.714c0.893-0.893 0.893-2.34 0-3.232l-13.714-13.714c-0.893-0.893-2.34-0.893-3.232 0z"
+      ></path>
+    </svg>`);
     div.append(expander);
 
     item.append(div);
@@ -472,7 +586,11 @@ function bookToList(book) {
     current = bookUl;
 
     // add the chapter
-    const chapterUl = addSubList(chapter.name, `${book.path}/${chapter.key}/${chapter.key}`, chapter.key);
+    const chapterUl = addSubList(
+      chapter.name,
+      `${book.path}/${chapter.key}/${chapter.key}`,
+      chapter.key,
+    );
 
     const makeHref = (topic, parentKey) => `${book.path}/${chapter.key}/${parentKey ? `${parentKey}/` : ''}${topic.key}`;
 
@@ -496,13 +614,24 @@ function bookToList(book) {
 
       if (topic.children && topic.children.length) {
         if (hasSubtopics(topic)) {
-          addSubList(topic.name, `${book.path}/${chapter.key}/${parentKey ? `${parentKey}/` : ''}${topic.key}/${topic.key}`, topic.key);
+          addSubList(
+            topic.name,
+            `${book.path}/${chapter.key}/${parentKey ? `${parentKey}/` : ''}${topic.key}/${
+              topic.key
+            }`,
+            topic.key,
+          );
           topic.children.forEach((subtopic) => {
-            processTopic(subtopic, `${parentKey ? `${parentKey}/` : ''}${topic.key}${subtopic.parent ? `/${subtopic.parent}` : ''}`);
+            processTopic(
+              subtopic,
+              `${parentKey ? `${parentKey}/` : ''}${topic.key}${
+                subtopic.parent ? `/${subtopic.parent}` : ''
+              }`,
+            );
           });
         } else {
-        // has children, but not subtopics to render
-        // this means the link on the parent is actually the child's link
+          // has children, but not subtopics to render
+          // this means the link on the parent is actually the child's link
           const [first] = topic.children;
           link.href = `${link.href}/${first.key}`;
         }
@@ -526,7 +655,10 @@ function renderTOC(container, book, expand, replace) {
   // Clean dups
   rootList.querySelectorAll(':scope > li li[data-key]').forEach((li) => {
     const prev = li.previousElementSibling;
-    if (prev && prev.querySelector('a').textContent.trim() === li.querySelector('a').textContent.trim()) {
+    if (
+      prev
+      && prev.querySelector('a').textContent.trim() === li.querySelector('a').textContent.trim()
+    ) {
       prev.remove();
     }
   });
@@ -553,6 +685,7 @@ function renderTOC(container, book, expand, replace) {
 
   // Set current
   const current = rootList.querySelector(`a[href="${window.location.pathname}"]`);
+
   if (current) {
     const currentLi = current.closest('li');
     currentLi.classList.add('current');
@@ -590,30 +723,37 @@ function initAdditionalBooks(block, container) {
 
   // insert books in order defined in metadata
   store.allBooks.forEach((book) => {
-    container.append(book.mainBook ? mainBook : html`
-      <ul data-additional-book-href="${book.href}">
-        <li data-key="" aria-expanded="false">
-          <div>
-            <a>${book.title}</a>
-            <span>
-              <i class="icon">
-                ${getIcon('chevron-right')}
-              </i>
-            </span>
-          </div>
-        </li>
-      </ul>`);
+    container.append(
+      book.mainBook
+        ? mainBook
+        : html` <ul data-additional-book-href="${book.href}">
+            <li data-key="" aria-expanded="false">
+              <div>
+                <a>${book.title}</a>
+                <span>
+                  <i class="icon"> ${getIcon('chevron-right')} </i>
+                </span>
+              </div>
+            </li>
+          </ul>`,
+    );
   });
 
   // load additional book data on block hover, replace toc list once loaded
-  block.addEventListener('mouseenter', async () => {
-    container.querySelectorAll('[data-additional-book-href]').forEach((list) => {
-      store.fetchJSON(list.dataset.additionalBookHref, ['default', 'chapters', 'topics']).then((data) => {
-        const sorted = sortBook(data);
-        renderTOC(container, sorted, false, list);
+  block.addEventListener(
+    'mouseenter',
+    async () => {
+      container.querySelectorAll('[data-additional-book-href]').forEach((list) => {
+        store
+          .fetchJSON(list.dataset.additionalBookHref, ['default', 'chapters', 'topics'])
+          .then((data) => {
+            const sorted = sortBook(data);
+            renderTOC(container, sorted, false, list);
+          });
       });
-    });
-  }, { once: true });
+    },
+    { once: true },
+  );
 }
 
 /**
@@ -639,11 +779,6 @@ export default async function decorate(block) {
   block.append(template);
   localize(block);
 
-  const curVersionBtn = block.querySelector('[slot="version"]');
-  if (curVersionBtn) {
-    curVersionBtn.textContent = getMetadata('version-title');
-  }
-
   const curLangBtn = block.querySelector('[slot="language"]');
   if (curLangBtn) {
     curLangBtn.textContent = getMetadata('language-title');
@@ -667,7 +802,7 @@ export default async function decorate(block) {
     initAdditionalBooks(block, toc);
 
     addEventListeners(wrapper);
-    initVersionDropdown(wrapper);
+    initProductDropdown(wrapper);
     initLanguagesDropdown(wrapper);
   });
 

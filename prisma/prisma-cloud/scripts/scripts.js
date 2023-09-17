@@ -1,22 +1,22 @@
 import {
-  getMetadata,
-  sampleRUM,
   buildBlock,
-  loadHeader,
-  loadFooter,
-  decorateButtons,
-  decorateIcons,
-  decorateSections,
+  decorateBlock,
   decorateBlocks,
+  decorateButtons,
+  decorateSections,
   decorateTemplateAndTheme,
-  waitForLCP,
+  fetchPlaceholders,
+  getMetadata,
+  loadBlock,
   loadBlocks,
   loadCSS,
-  fetchPlaceholders,
-  decorateBlock,
-  loadBlock,
-  updateSectionsStatus,
+  loadFooter,
+  loadHeader,
+  loadLanguageSelector,
+  sampleRUM,
   toClassName,
+  updateSectionsStatus,
+  waitForLCP,
 } from './lib-franklin.js';
 
 // eslint-disable-next-line no-use-before-define
@@ -30,7 +30,9 @@ export const PATH_PREFIX = '/prisma/prisma-cloud';
 const LCP_BLOCKS = ['article']; // add your LCP blocks to the list
 window.hlx.RUM_GENERATION = 'prisma-cloud-docs-website'; // add your RUM generation information here
 
-const lang = getMetadata('lang') || window.location.pathname.substring(PATH_PREFIX.length).split('/').slice(1)[0] || 'en';
+const lang = getMetadata('lang')
+  || window.location.pathname.substring(PATH_PREFIX.length).split('/').slice(1)[0]
+  || 'en';
 document.documentElement.lang = lang;
 
 export const WEB_ORIGINS = {
@@ -56,7 +58,7 @@ export function getPlaceholders() {
 }
 
 export function isMobile() {
-  return window.screen.width < 768;
+  return window.innerWidth < 900;
 }
 
 function getEnv() {
@@ -99,11 +101,7 @@ export function siteToDocURL(siteUrl) {
  * @param {(string | null)} [branch]
  * @param {boolean} [searchParamOnly]
  */
-export function setBranch(
-  url,
-  branch = getBranch(),
-  searchParamOnly = false,
-) {
+export function setBranch(url, branch = getBranch(), searchParamOnly = false) {
   if (branch) {
     url.searchParams.append('branch', branch);
     if (!searchParamOnly) {
@@ -190,7 +188,10 @@ const store = new (class {
 
     const makeBookHref = (path) => `${this.docsOrigin}${path}/book`;
 
-    this.allBooks = (getMetadata('all-books') || '').split(';;').map((s) => s.trim()).filter((s) => !!s)
+    this.allBooks = (getMetadata('all-books') || '')
+      .split(';;')
+      .map((s) => s.trim())
+      .filter((s) => !!s)
       .map((data) => {
         const [path, title] = data.split(';');
 
@@ -218,12 +219,16 @@ const store = new (class {
     this.once('article:fetched', (data) => {
       const siteHref = window.location.href.substring(window.location.origin.length);
       const docHref = siteToDocURL(siteHref);
-      window.history.replaceState({
-        ...data,
-        index: 0,
+      window.history.replaceState(
+        {
+          ...data,
+          index: 0,
+          siteHref,
+          docHref,
+        },
+        '',
         siteHref,
-        docHref,
-      }, '', siteHref);
+      );
     });
 
     // handle state updates, ignore if initiated by store
@@ -249,11 +254,17 @@ const store = new (class {
       book = this.bookPath.split('/').pop();
     }
     const versionedSheet = version === 'not-applicable' ? product : `${product}--${version}`;
-    const data = await this.fetchJSON('/prisma/prisma-cloud/languages', ['default', versionedSheet]);
-    const langMap = ((data.default || {}).data || []).reduce((prev, row) => ({
-      ...prev,
-      [row.Key]: row.Title,
-    }), {});
+    const data = await this.fetchJSON('/prisma/prisma-cloud/languages', [
+      'default',
+      versionedSheet,
+    ]);
+    const langMap = ((data.default || {}).data || []).reduce(
+      (prev, row) => ({
+        ...prev,
+        [row.Key]: row.Title,
+      }),
+      {},
+    );
 
     // null for not applicable
     let languages = null;
@@ -265,6 +276,28 @@ const store = new (class {
         languages = bookRow.Languages.split(',').map((l) => l.trim());
       }
     }
+
+    return {
+      langMap,
+      languages,
+    };
+  }
+
+  async getNonBookLocalizationInfo() {
+    const data = await this.fetchJSON('/prisma/prisma-cloud/languages', ['default']);
+
+    const { languages, langMap } = (data.data || []).reduce(
+      (prev, row) => {
+        prev.languages.push(row.Key);
+        prev.langMap[row.Key] = row.Title;
+
+        return prev;
+      },
+      {
+        langMap: {},
+        languages: [],
+      },
+    );
 
     return {
       langMap,
@@ -425,7 +458,7 @@ export function getIcon(icons, alt, minBp) {
   // eslint-disable-next-line no-param-reassign
   icons = Array.isArray(icons) ? icons : [icons];
   const [defaultIcon, mobileIcon] = icons;
-  const ogIcon = (mobileIcon && window.innerWidth < 600) ? mobileIcon : defaultIcon;
+  const ogIcon = mobileIcon && window.innerWidth < 600 ? mobileIcon : defaultIcon;
   let icon = ogIcon;
 
   let rotation;
@@ -440,9 +473,9 @@ export function getIcon(icons, alt, minBp) {
       rotation = 270;
     }
   }
-  return (`<img class="icon icon-${icon} icon-${ogIcon} ${minBp ? `v-${minBp}` : ''}" ${rotation
-    ? `style="transform:rotate(${rotation}deg);"`
-    : ''} src="${window.hlx.codeBasePath}/icons/${icon}.svg" alt="${alt || icon}">`);
+  return `<img class="icon icon-${icon} icon-${ogIcon} ${minBp ? `v-${minBp}` : ''}" ${
+    rotation ? `style="transform:rotate(${rotation}deg);"` : ''
+  } src="${window.hlx.codeBasePath}/icons/${icon}.svg" alt="${alt || icon}">`;
 }
 
 export function getIconEl(...args) {
@@ -517,7 +550,7 @@ function buildHeroBlock(main) {
   const h1 = main.querySelector('h1');
   const picture = main.querySelector('picture');
   // eslint-disable-next-line no-bitwise
-  if (h1 && picture && (h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING)) {
+  if (h1 && picture && h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING) {
     const section = document.createElement('div');
     section.append(buildBlock('hero', { elems: [picture, h1] }));
     main.prepend(section);
@@ -534,6 +567,23 @@ function buildBreadcrumbsBlock() {
     link.textContent = store.mainBook.title;
   }
   return buildBlock('breadcrumbs', { elems: [link] });
+}
+
+export function renderParallax() {
+  const section = document.createElement('div');
+  section.classList.add('parallax-container');
+  const wrapper = document.createElement('div');
+  const parallax = buildBlock('parallax', { elems: [] });
+  wrapper.append(parallax);
+  section.append(wrapper);
+
+  const main = document.querySelector('main');
+  main.prepend(section);
+
+  decorateBlock(parallax);
+  loadBlock(parallax).then(() => {
+    updateSectionsStatus(document.querySelector('main'));
+  });
 }
 
 export function renderBreadCrumbs() {
@@ -634,7 +684,9 @@ export async function loadArticle(href) {
   const resp = await fetch(url.toString(), store.branch ? { cache: 'reload' } : undefined);
   if (!resp.ok) return resp;
   try {
-    const lastModified = resp.headers.get('last-modified') !== 'null' ? new Date(resp.headers.get('last-modified')) : new Date();
+    const lastModified = resp.headers.get('last-modified') !== 'null'
+      ? new Date(resp.headers.get('last-modified'))
+      : new Date();
     const data = {
       ok: true,
       status: resp.status,
@@ -755,10 +807,12 @@ export function decoratePills(main) {
  * @param {HTMLElement} main
  */
 function decorateSectionIds(main) {
-  main.querySelectorAll('.section[data-id] :is(h1,h2,h3,h4,h5,h6):nth-child(1)').forEach((heading) => {
-    const section = heading.closest('div.section');
-    heading.id = section.dataset.id;
-  });
+  main
+    .querySelectorAll('.section[data-id] :is(h1,h2,h3,h4,h5,h6):nth-child(1)')
+    .forEach((heading) => {
+      const section = heading.closest('div.section');
+      heading.id = section.dataset.id;
+    });
 }
 
 /**
@@ -770,13 +824,15 @@ export function decorateMain(main) {
   // hopefully forward compatible button decoration
   decorateButtons(main);
   convertCodeIconsToText(main);
-  decorateIcons(main);
+  // decorateIcons(main);
   decoratePills(main);
   buildAutoBlocks(main);
   decorateSections(main);
   decorateSectionIds(main);
   decorateLandingSections(main);
   decorateBlocks(main);
+
+  window.history.scrollRestoration = 'manual';
 }
 
 /**
@@ -832,6 +888,7 @@ async function loadLazy(doc) {
   if (hash && element) element.scrollIntoView();
 
   loadHeader(doc.querySelector('header'));
+  loadLanguageSelector(doc.querySelector('footer'));
   loadFooter(doc.querySelector('footer'));
 
   if (doc.body.classList.contains('book')) {
@@ -864,8 +921,12 @@ function loadDelayed() {
  */
 function onBlocksLoaded() {
   const statusObserver = new MutationObserver(() => {
-    const ready = [...document.body.querySelectorAll('[data-section-status]')].every((element) => element.dataset.sectionStatus === 'loaded')
-      && [...document.body.querySelectorAll('[data-block-status]')].every((element) => element.dataset.blockStatus === 'loaded');
+    const ready = [...document.body.querySelectorAll('[data-section-status]')].every(
+      (element) => element.dataset.sectionStatus === 'loaded',
+    )
+      && [...document.body.querySelectorAll('[data-block-status]')].every(
+        (element) => element.dataset.blockStatus === 'loaded',
+      );
 
     if (ready) {
       store.emit('blocks:loaded');
@@ -893,4 +954,20 @@ function polyfill() {
   if (typeof queueMicrotask === 'undefined') {
     window.queueMicrotask = (fn) => Promise.resolve().then(fn);
   }
+}
+
+export function clamp(min, input, max) {
+  return Math.max(min, Math.min(input, max));
+}
+
+export function mapRange(inmin, inmax, input, outmin, outmax) {
+  return ((input - inmin) * (outmax - outmin)) / (inmax - inmin) + outmin;
+}
+
+export function lerp(start, end, amt) {
+  return (1 - amt) * start + amt * end;
+}
+
+export function truncate(value, decimals) {
+  return parseFloat(value.toFixed(decimals));
 }

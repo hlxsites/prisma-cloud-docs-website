@@ -1,29 +1,35 @@
-.pan-admonition {
-    margin: 10px 0;
-    border: 1px solid #141414;
-    word-wrap: break-word;
-    word-break: break-word;
-    hyphens: auto;
-    position: relative;
-    display: flex;
-    border-radius: 15px;
-    font-size: 12px;
+:root {
+  --admonition-bar-color: var(--inline-link-text-color);
 }
 
-.pan-admonition div {
-    padding: 10px 10px 10px 15px;
+.pan-admonition {
+  display: flex;
+  flex-direction: column;
+  hyphens: auto;
+  margin: var(--article-block-spacing) 0;
+  padding-left: var(--spacing--5);
+  position: relative;
+  word-wrap: break-word;
+  word-break: break-word;
+}
+
+.pan-admonition > div {
+  padding: 8px 0 0;
 }
 
 .pan-admonition::before {
-    background-color: #141414;
-    content: url("/prisma/prisma-cloud/assets/note-icon.webp");
-    color: #fff;
-    font-size: 300%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0 2%;
-    min-height: 100%;
-    border-bottom-left-radius: 15px;
-    border-top-left-radius: 15px;
+  content: "Note:";
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.pan-admonition::after {
+  background: var(--admonition-bar-color);
+  border-radius: 8px;
+  content: "";
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 6px;
 }

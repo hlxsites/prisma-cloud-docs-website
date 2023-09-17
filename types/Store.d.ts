@@ -10,10 +10,14 @@
  * governing permissions and limitations under the License.
  */
 
+import type { EventHandler, EventMap, OffEventFn } from "./Events";
 import { FilterPrivate } from "./util";
-import type { EventHandler, EventMap, OffEventFn } from './Events';
 
-type BookDescriptor = { title: string; href: string; value: JSONData | undefined };
+type BookDescriptor = {
+  title: string;
+  href: string;
+  value: JSONData | undefined;
+};
 
 interface LocalizationInfo {
   /**
@@ -38,12 +42,12 @@ declare class StoreImpl {
   /**
    * Current environment
    */
-  env: 'dev' | 'preview' | 'publish' | 'prod';
+  env: "dev" | "preview" | "publish" | "prod";
 
   /**
    * Code-driven page type
    */
-  pageTemplate: 'book' | undefined;
+  pageTemplate: "book" | undefined;
 
   /**
    * Origin that article content is loaded from.
@@ -123,7 +127,10 @@ declare class StoreImpl {
    * @param path path to workbook
    * @param sheets sheet name(s) to fetch
    */
-  fetchJSON: <TData = any>(path: string, sheets?: string | string[]) => Promise<TData>;
+  fetchJSON: <TData = any>(
+    path: string,
+    sheets?: string | string[]
+  ) => Promise<TData>;
 
   /**
    * Emit event via document
@@ -135,7 +142,10 @@ declare class StoreImpl {
    * Trigger handler once.
    * Immediately if event has already occurred, or when it is emitted.
    */
-  once: <T extends keyof EventMap>(ev: T, handler: EventHandler<T>) => OffEventFn;
+  once: <T extends keyof EventMap>(
+    ev: T,
+    handler: EventHandler<T>
+  ) => OffEventFn;
 
   /**
    * Trigger handler whenever event occurs.
@@ -154,10 +164,20 @@ declare class StoreImpl {
    * @param product product name, defaults to `store.product` from metadata
    * @param version current version, defaults to `store.version` from metadata
    */
-  getLocalizationInfo(book?: string, product?: string, version?: string): Promise<LocalizationInfo>;
+  getLocalizationInfo(
+    book?: string,
+    product?: string,
+    version?: string
+  ): Promise<LocalizationInfo>;
+
+  /**
+   * Get localization info for non book pages.
+   *
+   */
+  getNonBookLocalizationInfo(): Promise<LocalizationInfo>;
 }
 
 /**
  * The exposed store API
  */
-export type Store = FilterPrivate<StoreImpl>
+export type Store = FilterPrivate<StoreImpl>;
