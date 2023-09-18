@@ -637,7 +637,7 @@ function bookToList(book) {
         }
       }
     };
-    chapter.children.forEach((topic) => processTopic(topic));
+    (chapter.children || []).forEach((topic) => processTopic(topic));
   });
 
   return root;
