@@ -42,6 +42,8 @@ async function loadFragment(path, fromDocs) {
     const url = new URL(href, store.branch ? BRANCH_ORIGIN : store.docsOrigin);
     url.pathname += '.plain.html';
     href = url.toString();
+  } else if (!href.endsWith('.plain.html')) {
+    href = `${href}.plain.html`;
   }
 
   const resp = await fetch(href);
