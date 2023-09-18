@@ -308,8 +308,9 @@ const store = new (class {
   /**
    * @param {string} path
    * @param {string|string[]} [sheets]
+   * @param {Record<string, string|number>} [filters]
    */
-  async fetchJSON(path, sheets) {
+  async fetchJSON(path, sheets, filters = {}) {
     let url;
     try {
       url = new URL(`${path}.json`);
@@ -322,6 +323,12 @@ const store = new (class {
       sheets = Array.isArray(sheets) ? [...sheets] : [sheets];
       sheets.sort().forEach((sheet) => {
         url.searchParams.append('sheet', sheet);
+      });
+    }
+
+    if (filters) {
+      Object.entries(filters).forEach(([filter, value]) => {
+        url.searchParams.append(filter, value);
       });
     }
 
@@ -539,7 +546,7 @@ export function render(template, fragment) {
  */
 export async function loadBook(href) {
   assertValidDocsURL(href);
-  return store.fetchJSON(href, ['default', 'chapters', 'topics']);
+  return store.fetchJSON(href, ['default', 'chapters', 'topics'], { limit: 10000 });
 }
 
 /**
