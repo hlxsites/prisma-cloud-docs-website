@@ -1,6 +1,6 @@
-import { PATH_PREFIX, loadLottie, parseFragment, render } from '../../scripts/scripts.js';
-import { showRoute } from '../intro/utils.js';
-import { collapseSection, expandSection } from './utils.js';
+import {
+  PATH_PREFIX, collapseSection, loadLottie, parseFragment, render, showRoute,
+} from '../../scripts/scripts.js';
 
 const TEMPLATE_BUTTON = `
 <div slot="category-button" class="ops-accordion-item">
@@ -61,6 +61,27 @@ const LOTTIE_PATHS = {
 };
 
 const LOTTIE_TEMPLATE = '<lottie-player loop mode="normal"></lottie-player>';
+
+const expandSection = (element) => {
+  // Get the height of the element's inner content, regardless of its actual size
+  const sectionHeight = element.scrollHeight;
+
+  // Have the element transition to the height of its inner content
+  element.style.height = `${sectionHeight}px`;
+
+  // When the next css transition finishes (which should be the one we just triggered)
+  element.addEventListener('transitionend', () => {
+    // Remove this event listener so it only gets triggered once
+    // eslint-disable-next-line no-caller, no-restricted-properties, no-undef
+    element.removeEventListener('transitionend', arguments.callee);
+
+    // Remove "height" from the element's inline styles, so it can return to its initial value
+    element.style.height = null;
+  });
+
+  // Mark the section as "currently not collapsed"
+  element.setAttribute('data-collapsed', 'false');
+};
 
 function toNodeList(arrayOfNodes, fragment) {
   let items = [];

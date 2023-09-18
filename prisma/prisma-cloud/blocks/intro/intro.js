@@ -1,8 +1,8 @@
 import {
-    PATH_PREFIX,
-    loadLottie, parseFragment, playLottie, render,
+  PATH_PREFIX,
+  fadeOut,
+  loadLottie, parseFragment, playLottie, removeActive, render, showRoute,
 } from '../../scripts/scripts.js';
-import { fadeOut, removeActive, showRoute } from './utils.js';
 
 // Lottie animations for each categoiry
 const LOTTIE_PATHS = [`${window.hlx.codeBasePath}/assets/lottie-infrastructure.json`, `${window.hlx.codeBasePath}/assets/lottie-code.json`, `${window.hlx.codeBasePath}/assets/lottie-runtime.json`];
@@ -34,6 +34,7 @@ const TEMPLATE = /* html */ `
 
 let activeId = 'overview';
 let isAnimating = false;
+let targetSection = null;
 
 function isMobile() {
   return window.innerWidth < 1024;
@@ -88,9 +89,7 @@ async function renderContent(block) {
     // Add events
     const player = category.querySelector('lottie-player');
     player.addEventListener('rendered', () => {
-      // Load via URL
       player.load(LOTTIE_PATHS[index]);
-      console.log('LOTTIE_PATHS[index]: ', LOTTIE_PATHS[index]);
     });
 
     root.addEventListener('mouseenter', (e) => {
@@ -100,33 +99,36 @@ async function renderContent(block) {
       loadLottie();
       const targetEl = e.target.closest('button');
       const targetId = targetEl.getAttribute('data-category-id');
-      //   console.group();
-      //   console.log('targetId: ', targetId);
-      //   console.log('activeId: ', activeId);
-      //   console.log('isAnimating: ', isAnimating);
-      //   console.groupEnd();
-      if (activeId === targetId && !isAnimating) {
+      // console.group();
+      // console.log('targetId: ', targetId);
+      // console.log('activeId: ', activeId);
+      // console.log('isAnimating: ', isAnimating);
+      // console.groupEnd();
+      if (activeId === targetId) {
         return;
       }
       activeId = targetId;
       isAnimating = true;
+      // Get the currently active section that we want to transition out
       const activeSection = headerSlot.querySelector('.is-active');
 
+      // Trigger transition out CSS animation on current section
       activeSection.style.opacity = 0;
 
       playLottie(player);
 
+      targetSection = headerSlot.querySelector(
+        `[data-category-id="${targetId}"]`,
+      );
+
       const transitionOut = () => {
-        console.log('transitionOut', targetId);
+        // console.log('transitionOut', targetId);
+        // Remove active class from transitioned out section
         activeSection.classList.remove('is-active');
 
-        const target = headerSlot.querySelector(
-          `[data-category-id="${targetId}"]`,
-        );
-
         if (targetId === activeId) {
-          target.classList.add('is-active');
-          target.style.opacity = 1;
+          targetSection.classList.add('is-active');
+          targetSection.style.opacity = 1;
         }
 
         // Remove this event listener so it only gets triggered once
@@ -134,7 +136,7 @@ async function renderContent(block) {
         isAnimating = false;
       };
 
-      activeSection.addEventListener('transitionend', transitionOut);
+      activeSection.addEventListener('transitionend', transitionOut, false);
     });
   });
 
@@ -144,7 +146,8 @@ async function renderContent(block) {
     }
     isAnimating = true;
 
-    const activeSection = headerSlot.querySelector('.is-active');
+    // const activeSection = headerSlot.querySelector('.is-active');
+    const activeSection = targetSection;
     activeSection.style.opacity = 0;
 
     const player = activeSection.querySelector('lottie-player');
@@ -152,21 +155,22 @@ async function renderContent(block) {
       player.pause();
     }
 
+    targetSection = headerSlot.querySelector('[data-category-id="overview"]');
+
     const transitionOut = () => {
       activeSection.classList.remove('is-active');
 
-      const target = headerSlot.querySelector('[data-category-id="overview"]');
       activeId = 'overview';
 
-      target.classList.add('is-active');
-      target.style.opacity = 1;
+      targetSection.classList.add('is-active');
+      targetSection.style.opacity = 1;
 
       // Remove this event listener so it only gets triggered once
       activeSection.removeEventListener('transitionend', transitionOut);
       isAnimating = false;
     };
 
-    activeSection.addEventListener('transitionend', transitionOut);
+    activeSection.addEventListener('transitionend', transitionOut, false);
   });
 
   buttonsSlot.addEventListener('click', (e) => {
