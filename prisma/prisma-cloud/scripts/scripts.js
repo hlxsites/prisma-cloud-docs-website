@@ -546,7 +546,7 @@ export function render(template, fragment) {
  */
 export async function loadBook(href) {
   assertValidDocsURL(href);
-  return store.fetchJSON(href, ['default', 'chapters', 'topics']);
+  return store.fetchJSON(href, ['default', 'chapters', 'topics'], { limit: 10000 });
 }
 
 /**
