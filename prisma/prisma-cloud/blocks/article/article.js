@@ -13,7 +13,7 @@ import {
 } from '../../scripts/scripts.js';
 
 import {
-  getMetadata, loadBlock, loadBlocks, updateSectionsStatus,
+  getMetadata, loadBlocks, updateSectionsStatus,
 } from '../../scripts/lib-franklin.js';
 
 const TEMPLATE_ICON_COPY = /* html */ `
@@ -512,7 +512,7 @@ async function renderContent(block, hrefOrRes, rerender = false) {
   // Load sidenav, once
   if (!rerender) {
     renderSidenav(block);
-    loadBlock('theme-toggle');
+    await import('../theme-toggle/theme-toggle.js');
     await import('../../scripts/scroll-spy.js');
   }
 
