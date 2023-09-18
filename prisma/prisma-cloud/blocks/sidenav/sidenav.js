@@ -745,7 +745,7 @@ function initAdditionalBooks(block, container) {
     async () => {
       container.querySelectorAll('[data-additional-book-href]').forEach((list) => {
         store
-          .fetchJSON(list.dataset.additionalBookHref, ['default', 'chapters', 'topics'])
+          .fetchJSON(list.dataset.additionalBookHref, ['default', 'chapters', 'topics'], { limit: 10000 })
           .then((data) => {
             const sorted = sortBook(data);
             renderTOC(container, sorted, false, list);
