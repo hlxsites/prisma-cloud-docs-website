@@ -213,6 +213,10 @@ async function renderContent(block) {
     if (rowsOfContent > 1) {
       root.classList.add('accordion-active');
       root.addEventListener('click', (e) => {
+        const anchorEl = e.target.closest('a');
+        if (anchorEl) {
+          return;
+        }
         const rootEl = e.target.closest('[slot="category-button"]');
         const isCollapsed = rootEl.getAttribute('data-collapsed') === 'true';
 
@@ -227,6 +231,11 @@ async function renderContent(block) {
     }
 
     index += 1;
+  }
+
+  // Make all links open in new tab
+  for (const anchorLink of template.querySelectorAll('a')) {
+    anchorLink.setAttribute('target', '_blank');
   }
 
   // Add events
