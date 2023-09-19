@@ -20,7 +20,7 @@
   min-height: 100vh;
 }
 
-.operationalize p {
+.operationalize .ops-intro-header p {
   color: var(--color-neutral-100);
   margin: 0;
   padding-top: var(--spacing--4);
@@ -125,10 +125,12 @@
 }
 
 .ops-intro .header-section {
-  display: none;
+  display: flex;
   flex-direction: column;
   opacity: 0;
-  transition: opacity 0.5s ease;
+  position: absolute;
+  transition: visibility 0s linear 0.5s, opacity 0.5s ease;
+  visibility: hidden;
 }
 
 .ops-intro .header-section:first-child {
@@ -145,6 +147,8 @@
 .ops-intro .header-section.is-active {
   display: flex;
   opacity: 1;
+  transition-delay: 0s;
+  visibility: visible;
 }
 
 .ops-intro .header-section:not(:first-child) {
@@ -313,6 +317,11 @@
     padding-top: var(--spacing--18);
   }
 
+  .ops-intro .header-section {
+    display: none;
+    position: static;
+  }
+  
   .ops-intro-header h1 {
     font-size: var(--heading-font-size--h4);
     line-height: var(--heading-line-height--h4);

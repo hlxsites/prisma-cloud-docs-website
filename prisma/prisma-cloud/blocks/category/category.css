@@ -147,7 +147,7 @@
 }
 
 .ops-category .ops-accordion-item:hover {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.3);
 }
 
 .ops-category.stagger-transitions .ops-accordion-item {
@@ -189,7 +189,7 @@
   content: '';
   pointer-events: none;
   position: absolute;
-  right: 0;
+  right: var(--spacing--6);
   top: auto;
   transition: background-color 0.3s ease-in-out, background 0.3s ease-in-out;
   height: var(--spacing--8);
@@ -348,11 +348,12 @@
   line-height: 11.2px;
   padding: var(--spacing--2) 0 var(--spacing--2) var(--spacing--4);
   text-transform: uppercase;
-  transition: opacity 0.3s ease, background-color 0.3s ease;
+  transition: opacity 0.3s ease, background-color 0.3s ease, color 0.3s ease;
   width: 33.33%;
 }
 
 .ops-category-nav-buttons a:before {
+  color: var(--color-neutral-white);
   counter-increment: section;
   content: counter(section, decimal-leading-zero);
   font-size: 32px;
@@ -362,6 +363,10 @@
 
 .ops-category-nav-buttons a.is-active {
   background-color: var(--color-blue-dark--700);
+}
+
+.ops-category-nav-buttons a:hover:not(.is-active) {
+  color: var(--color-blue-dark--500);
 }
 
 .ops-category-nav-mobile,
@@ -401,6 +406,7 @@
   align-items: center;
   background: transparent;
   border: none;
+  color: var(--color-neutral-white);
   display: inline-flex;
   justify-content: space-between;
   font-family: var(--body-font-family);
@@ -469,10 +475,6 @@
     /* Allow unequal button sizes so that text doesnt overflow */
     width: auto;
   }
-
-  .ops-accordion .button-container:after {
-    right: 0;
-  }
 }
 
 @media only screen and (max-width: 1024px) {
@@ -518,7 +520,8 @@
 
 @media only screen and (max-width: 908px) {
   .category-container {
-    background: radial-gradient(50% 50% at 55% 15%, #9532C3 0%, rgba(70, 0, 219, 0.00) 100%);
+    background: radial-gradient(50% 50% at 55% 15%, #9532C3 0%, rgba(70, 0, 219, 0.00) 100%) 0 0 no-repeat;
+    background-size: 125vw 125vw;
     padding: 0 var(--spacing--20);
   }
 
@@ -575,6 +578,18 @@
     transform: translate(20%, 5%);
     position: static;
     width: 100%;
+  }
+
+  .ops-accordion .row .button-container:after {
+    right: var(--spacing--1);
+  }
+
+  .ops-category .ops-accordion-item {
+    padding: var(--spacing--6) var(--spacing--4) var(--spacing--10) var(--spacing--4);
+  }
+
+  .ops-accordion-item ol, .ops-accordion-item ul {
+    padding-right: 0;
   }
 }
 

@@ -1,7 +1,7 @@
 import {
   PATH_PREFIX,
   fadeOut,
-  loadLottie, parseFragment, playLottie, removeActive, render, showRoute
+  loadLottie, parseFragment, playLottie, removeActive, render, showRoute,
 } from '../../scripts/scripts.js';
 
 // Lottie animations for each categoiry
