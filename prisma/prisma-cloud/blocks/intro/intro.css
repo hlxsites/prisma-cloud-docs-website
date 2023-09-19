@@ -73,7 +73,7 @@
 .operationalize .intro-wrapper:before {
   background: radial-gradient(50% 50% at 50% 50%, #3D50FF 0%, rgba(175, 39, 209, 0.00) 100%);
   left: -224px;
-  transform: translate(0, -20%);
+  transform: translate(calc(var(--x)* 0.05px), calc(var(--y)* 0.1px - 20%));
   height: 740px;
   width: 740px;
 }
@@ -83,7 +83,7 @@
   opacity: 0.3;
   right: 162px;
   top: 0;
-  transform: translate(0, -50%);
+  transform: translate(calc(var(--x)* -0.025px), calc(var(--y)* -0.1px - 50%));
   height: 500px;
   width: 500px;
 }
@@ -93,7 +93,7 @@
   bottom: 0;
   opacity: 0.5;
   right: 181px;
-  transform: translateY(60%);
+  transform: translate(calc(var(--x) * -0.02px), calc(var(--y) * -0.025px + 50%));
   height: 406px;
   width: 406px;
 }

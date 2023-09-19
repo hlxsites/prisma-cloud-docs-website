@@ -70,7 +70,7 @@
   flex-direction: column;
   max-width: 34%;
   position: sticky;
-  top: var(--nav-height);
+  top: calc(var(--nav-height) + 102.5px);
 }
 
 .ops-category .overview h1 {
@@ -189,7 +189,7 @@
   content: '';
   pointer-events: none;
   position: absolute;
-  right: var(--spacing--6);
+  right: 0;
   top: auto;
   transition: background-color 0.3s ease-in-out, background 0.3s ease-in-out;
   height: var(--spacing--8);

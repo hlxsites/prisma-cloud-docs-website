@@ -1,7 +1,7 @@
 import {
   PATH_PREFIX,
   fadeOut,
-  loadLottie, parseFragment, playLottie, removeActive, render, showRoute,
+  loadLottie, parseFragment, playLottie, removeActive, render, showRoute
 } from '../../scripts/scripts.js';
 
 // Lottie animations for each categoiry
@@ -225,6 +225,15 @@ function addEvents() {
     },
     false,
   );
+
+  // Get mouse coords
+  window.addEventListener('mousemove', (e) => {
+    const x = e.changedTouches ? e.changedTouches[0].clientX : e.clientX;
+    const y = e.changedTouches ? e.changedTouches[0].clientY : e.clientY;
+
+    document.documentElement.style.setProperty('--x', x);
+    document.documentElement.style.setProperty('--y', y);
+  });
 }
 
 /**
