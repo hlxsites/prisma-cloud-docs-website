@@ -1072,9 +1072,17 @@ export const fadeIn = (element, targetClass = 'is-current-route') => {
   }, 100);
 };
 
+// Lottie animations for each categoiry
+const LOTTIE_PATHS = {
+  'secure-the-infrastructure': `${window.hlx.codeBasePath}/assets/lottie-infrastructure.json`,
+  'secure-the-code': `${window.hlx.codeBasePath}/assets/lottie-code.json`,
+  'secure-the-runtime': `${window.hlx.codeBasePath}/assets/lottie-runtime.json`,
+};
+
 export const showRoute = (hash) => {
   let targetCategory = null;
   if (!hash) {
+    // Show intro
     targetCategory = document.querySelector('.intro-container');
     const headers = document.querySelectorAll('.header-section');
     if (headers) {
@@ -1089,6 +1097,7 @@ export const showRoute = (hash) => {
     }
     window.scrollTo({ top: 0 });
   } else {
+    // Show category
     const categoriesContainer = document.querySelector('.category-container');
     targetCategory = document.querySelector(`[data-route="${hash}"]`);
 
@@ -1113,7 +1122,22 @@ export const showRoute = (hash) => {
 
     // Play animation
     if (targetCategory) {
+      loadLottie();
       const player = targetCategory.querySelector('lottie-player');
+      if (!player.classList.contains('has-loaded')) {
+        const categoryRouteId = hash.substring(1, hash.length);
+        try {
+          // Load via URL
+          player.load(LOTTIE_PATHS[categoryRouteId]);
+          player.classList.add('has-loaded');
+        } catch {
+          player.addEventListener('rendered', () => {
+            // Load via URL
+            player.load(LOTTIE_PATHS[categoryRouteId]);
+            player.classList.add('has-loaded');
+          });
+        }
+      }
       playLottie(player);
     }
 

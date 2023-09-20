@@ -39,6 +39,47 @@ function isMobile() {
   return window.innerWidth < 1024;
 }
 
+function addEvents() {
+  window.addEventListener(
+    'hashchange',
+    () => {
+      const { hash } = window.location;
+      // Fade out current view
+      const currentRoute = document.querySelector('.is-current-route');
+
+      const player = currentRoute.querySelector('lottie-player');
+
+      if (player) {
+        player.pause();
+      }
+
+      fadeOut(currentRoute, () => {
+        // Fade in new view
+        showRoute(hash);
+        // Reset to default state
+        activeId = 'overview';
+      });
+
+      if (!hash) {
+        // fade out category container
+        const categoriesContainer = document.querySelector('.category-container');
+        fadeOut(categoriesContainer, null, 'is-active');
+        removeActive('.ops-category-nav-buttons');
+      }
+    },
+    false,
+  );
+
+  // Get mouse coords
+  window.addEventListener('mousemove', (e) => {
+    const x = e.changedTouches ? e.changedTouches[0].clientX : e.clientX;
+    const y = e.changedTouches ? e.changedTouches[0].clientY : e.clientY;
+
+    document.documentElement.style.setProperty('--x', x);
+    document.documentElement.style.setProperty('--y', y);
+  });
+}
+
 /**
  * @param {HTMLElement} block the container element
  */
@@ -79,11 +120,38 @@ async function renderContent(block) {
     // Wrap data in franklin in container element
     categoryContentWrapper.append(parseFragment(category.innerHTML));
     category.innerHTML = '';
-    // Add lottie player
-    const lottieTemplate = parseFragment(LOTTIE_TEMPLATE);
-    category.append(lottieTemplate);
     category.append(categoryContentWrapper);
     headerSlot.append(category);
+  });
+
+  buttonsSlot.addEventListener('click', (e) => {
+    const targetEl = e.target.closest('button');
+    const targetId = targetEl.getAttribute('data-category-id');
+
+    window.location.hash = targetId;
+    return null;
+  });
+
+  // const template = parseFragment(TEMPLATE);
+  const fragment = document.createElement('div');
+
+  const backButton = template.querySelector('.back');
+  backButton.href = `${PATH_PREFIX}/${lang}`;
+
+  // Render with slots
+  render(template, fragment);
+  // Clear out generated HTML
+  block.innerHTML = '';
+  block.append(template);
+
+  // Post-render
+
+  // Add Lottie after first render
+  categories.forEach((category, index) => {
+    const root = document.querySelector(`.ops-nav-item:nth-child(${index + 1})`);
+    // Add lottie player
+    const lottieTemplate = parseFragment(LOTTIE_TEMPLATE);
+    category.prepend(lottieTemplate);
 
     // Add events
     const player = category.querySelector('lottie-player');
@@ -98,11 +166,7 @@ async function renderContent(block) {
       loadLottie();
       const targetEl = e.target.closest('button');
       const targetId = targetEl.getAttribute('data-category-id');
-      // console.group();
-      // console.log('targetId: ', targetId);
-      // console.log('activeId: ', activeId);
-      // console.log('isAnimating: ', isAnimating);
-      // console.groupEnd();
+
       if (activeId === targetId) {
         return;
       }
@@ -168,75 +232,15 @@ async function renderContent(block) {
     activeSection.addEventListener('transitionend', transitionOut, false);
   });
 
-  buttonsSlot.addEventListener('click', (e) => {
-    const targetEl = e.target.closest('button');
-    const targetId = targetEl.getAttribute('data-category-id');
-
-    window.location.hash = targetId;
-    return null;
-  });
-
-  // const template = parseFragment(TEMPLATE);
-  const fragment = document.createElement('div');
-
-  const backButton = template.querySelector('.back');
-  backButton.href = `${PATH_PREFIX}/${lang}`;
-
-  // Render with slots
-  render(template, fragment);
-  // Clear out generated HTML
-  block.innerHTML = '';
-  block.append(template);
-}
-
-function addEvents() {
-  window.addEventListener(
-    'hashchange',
-    () => {
-      const { hash } = window.location;
-      // Fade out current view
-      const currentRoute = document.querySelector('.is-current-route');
-
-      const player = currentRoute.querySelector('lottie-player');
-
-      if (player) {
-        player.pause();
-      }
-
-      fadeOut(currentRoute, () => {
-        // Fade in new view
-        showRoute(hash);
-        // Reset to default state
-        activeId = 'overview';
-      });
-
-      if (!hash) {
-        // fade out category container
-        const categoriesContainer = document.querySelector('.category-container');
-        fadeOut(categoriesContainer, null, 'is-active');
-        removeActive('.ops-category-nav-buttons');
-      }
-    },
-    false,
-  );
-
-  // Get mouse coords
-  window.addEventListener('mousemove', (e) => {
-    const x = e.changedTouches ? e.changedTouches[0].clientX : e.clientX;
-    const y = e.changedTouches ? e.changedTouches[0].clientY : e.clientY;
-
-    document.documentElement.style.setProperty('--x', x);
-    document.documentElement.style.setProperty('--y', y);
-  });
+  // Get current hash, render that view
+  const { hash } = window.location;
+  showRoute(hash);
+  addEvents();
 }
 
 /**
  * @param {HTMLDivElement} block
  */
 export default async function decorate(block) {
-  await renderContent(block);
-  // Get current hash, render that view
-  const { hash } = window.location;
-  showRoute(hash);
-  addEvents();
+  renderContent(block);
 }

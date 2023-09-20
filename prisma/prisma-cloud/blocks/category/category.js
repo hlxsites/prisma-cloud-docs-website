@@ -1,5 +1,6 @@
 import {
-  PATH_PREFIX, collapseSection, loadLottie, parseFragment, render, showRoute,
+  PATH_PREFIX, collapseSection,
+  parseFragment, render, showRoute,
 } from '../../scripts/scripts.js';
 
 const TEMPLATE_BUTTON = `
@@ -52,13 +53,6 @@ const TEMPLATE_MOBILE_NAV = `
     </button>
 </div>
 `;
-
-// Lottie animations for each categoiry
-const LOTTIE_PATHS = {
-  'secure-the-infrastructure': `${window.hlx.codeBasePath}/assets/lottie-infrastructure.json`,
-  'secure-the-code': `${window.hlx.codeBasePath}/assets/lottie-code.json`,
-  'secure-the-runtime': `${window.hlx.codeBasePath}/assets/lottie-runtime.json`,
-};
 
 const LOTTIE_TEMPLATE = '<lottie-player loop mode="normal"></lottie-player>';
 
@@ -238,14 +232,6 @@ async function renderContent(block) {
     anchorLink.setAttribute('target', '_blank');
   }
 
-  // Add events
-  loadLottie();
-  const player = template.querySelector('lottie-player');
-  player.addEventListener('rendered', () => {
-    // Load via URL
-    player.load(LOTTIE_PATHS[categoryRouteId]);
-  });
-
   const toggleDrawer = mobileNav.querySelector('.selected');
 
   toggleDrawer.addEventListener('click', () => {
@@ -261,14 +247,24 @@ async function renderContent(block) {
   block.innerHTML = '';
   block.append(template);
   // localize(block);
+
+  // Post-render
+  // Add events
+  // loadLottie();
+  // const player = block.querySelector('lottie-player');
+  // player.addEventListener('rendered', () => {
+  //   // Load via URL
+  //   player.load(LOTTIE_PATHS[categoryRouteId]);
+  // });
+
+  // Get current hash, render that view
+  const { hash } = window.location;
+  showRoute(hash);
 }
 
 /**
  * @param {HTMLDivElement} block
  */
 export default async function decorate(block) {
-  await renderContent(block);
-  // Get current hash, render that view
-  const { hash } = window.location;
-  showRoute(hash);
+  renderContent(block);
 }
