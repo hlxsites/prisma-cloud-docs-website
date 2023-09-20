@@ -49,7 +49,7 @@ function addEvents() {
 
       const player = currentRoute.querySelector('lottie-player');
 
-      if (player) {
+      if (player && player?.pause) {
         player.pause();
       }
 
