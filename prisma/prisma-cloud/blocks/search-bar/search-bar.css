@@ -231,6 +231,7 @@ search-bar {
   text-decoration: none;
   display: block;
   cursor: pointer;
+  text-transform: capitalize;
 }
 
 .search-bar .dropdown a:hover,

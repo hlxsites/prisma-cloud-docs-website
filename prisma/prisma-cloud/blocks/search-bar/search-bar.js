@@ -51,6 +51,11 @@ function getCoveoConfig() {
   }
 }
 
+// Remove all hyphens from a string
+function cleanString(string = '') {
+  return string.replace(/-/g, ' ');
+}
+
 export class SearchBar extends HTMLElement {
   constructor() {
     super();
@@ -90,7 +95,7 @@ export class SearchBar extends HTMLElement {
         html += `<a class="coveo-dropdown-item coveo-dropdown-custom-option ${
           i === 0 ? 'selected' : ''
         }" 
-        data-label="${option.label}" 
+        data-label="${cleanString(option.label)}" 
         data-value="${option.category}==('${option.value}')">
         ${option.label}
         </a>
@@ -105,11 +110,11 @@ export class SearchBar extends HTMLElement {
       if (!booknameMeta) {
         this.querySelector('.coveo-dropdown-item.selected').classList.remove('selected');
         docSetOption.classList.add('selected');
-        this.querySelector('.dropbtn').textContent = `All ${productMeta} books`;
+        this.querySelector('.dropbtn').textContent = `All ${cleanString(productMeta)} books`;
       }
-      docSetOption.setAttribute('data-label', `All ${productMeta} books`);
+      docSetOption.setAttribute('data-label', `All ${cleanString(productMeta)} books`);
       docSetOption.setAttribute('data-value', `@td_docsetid==("${docsetMeta}")`);
-      docSetOption.append(`All ${productMeta} books`);
+      docSetOption.append(`All ${cleanString(productMeta)} books`);
       appendDropdown.prepend(docSetOption);
     }
     if (booknameMeta) {
@@ -118,7 +123,7 @@ export class SearchBar extends HTMLElement {
       bookOption.classList.add('coveo-dropdown-item');
       bookOption.classList.add('selected');
       this.querySelector('.dropbtn').textContent = booknameMeta;
-      bookOption.setAttribute('data-label', booknameMeta);
+      bookOption.setAttribute('data-label', cleanString(booknameMeta));
       bookOption.setAttribute('data-value', `@panbookname==("${booknameMeta}")`);
       bookOption.append(booknameMeta);
       appendDropdown.prepend(bookOption);
