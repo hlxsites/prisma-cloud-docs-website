@@ -327,7 +327,8 @@
 
 .ops-category-nav-buttons {
   backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  /* Needed for older versions of safari */
+  -webkit-backdrop-filter: blur(12px); /* stylelint-disable-line */
   counter-reset: section;
   display: flex;
   padding: var(--spacing--6) 0 var(--spacing--3);

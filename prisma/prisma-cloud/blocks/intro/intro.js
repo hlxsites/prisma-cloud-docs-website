@@ -4,7 +4,7 @@ import {
   loadLottie, parseFragment, playLottie, removeActive, render, showRoute,
 } from '../../scripts/scripts.js';
 
-// Lottie animations for each categoiry
+// Lottie animations for each category
 const LOTTIE_PATHS = [`${window.hlx.codeBasePath}/assets/lottie-infrastructure.json`, `${window.hlx.codeBasePath}/assets/lottie-code.json`, `${window.hlx.codeBasePath}/assets/lottie-runtime.json`];
 
 const TEMPLATE_BUTTON = `
@@ -33,7 +33,6 @@ const TEMPLATE = /* html */ `
 `;
 
 let activeId = 'overview';
-let isAnimating = false;
 let targetSection = null;
 
 function isMobile() {
@@ -108,7 +107,6 @@ async function renderContent(block) {
         return;
       }
       activeId = targetId;
-      isAnimating = true;
       // Get the currently active section that we want to transition out
       const activeSection = headerSlot.querySelector('.is-active');
 
@@ -133,7 +131,6 @@ async function renderContent(block) {
 
         // Remove this event listener so it only gets triggered once
         activeSection.removeEventListener('transitionend', transitionOut);
-        isAnimating = false;
       };
 
       activeSection.addEventListener('transitionend', transitionOut, false);
@@ -144,7 +141,6 @@ async function renderContent(block) {
     if (isMobile()) {
       return;
     }
-    isAnimating = true;
 
     // const activeSection = headerSlot.querySelector('.is-active');
     const activeSection = targetSection;
@@ -167,7 +163,6 @@ async function renderContent(block) {
 
       // Remove this event listener so it only gets triggered once
       activeSection.removeEventListener('transitionend', transitionOut);
-      isAnimating = false;
     };
 
     activeSection.addEventListener('transitionend', transitionOut, false);
@@ -213,7 +208,6 @@ function addEvents() {
         showRoute(hash);
         // Reset to default state
         activeId = 'overview';
-        isAnimating = false;
       });
 
       if (!hash) {

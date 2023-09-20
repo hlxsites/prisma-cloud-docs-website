@@ -19,6 +19,11 @@
   --mobile-drawer-header-padding-horz: var(--spacing--4);
   --mobile-drawer-header-padding-vert: var(--spacing--7);
   --mobile-link-active-text-color: var(--color-blue--600);
+
+  align-items: center;
+  display: flex;
+  height: 100%;
+  position: relative;
 }
 
 .header .search-bar {
@@ -64,13 +69,6 @@
   position: sticky;
   top: 0;
   width: 100%;
-}
-
-.header {
-  align-items: center;
-  display: flex;
-  height: 100%;
-  position: relative;
 }
 
 /* Mobile */
