@@ -548,10 +548,6 @@
     display: none;
   }
 
-  .ops-category .overview {
-    overflow-x: hidden;
-  }
-
   .ops-category {
     flex-direction: column;
     gap: var(--spacing--10);
@@ -564,6 +560,7 @@
 
   .ops-category .overview {
     max-width: 100%;
+    overflow-x: hidden;
     padding-top: 30vw;
     position: relative;
     top: 0;
