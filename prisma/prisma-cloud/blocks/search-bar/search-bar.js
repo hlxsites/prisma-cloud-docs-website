@@ -105,11 +105,11 @@ export class SearchBar extends HTMLElement {
       if (!booknameMeta) {
         this.querySelector('.coveo-dropdown-item.selected').classList.remove('selected');
         docSetOption.classList.add('selected');
-        this.querySelector('.dropbtn').textContent = `All ${productMeta} books`;
+        this.querySelector('.dropbtn').textContent = `All ${productMeta} Books`;
       }
-      docSetOption.setAttribute('data-label', `All ${productMeta} books`);
+      docSetOption.setAttribute('data-label', `All ${productMeta} Books`);
       docSetOption.setAttribute('data-value', `@td_docsetid==("${docsetMeta}")`);
-      docSetOption.append(`All ${productMeta} books`);
+      docSetOption.append(`All ${productMeta} Books`);
       appendDropdown.prepend(docSetOption);
     }
     if (booknameMeta) {
