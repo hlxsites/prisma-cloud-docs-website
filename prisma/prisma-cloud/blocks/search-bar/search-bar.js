@@ -75,7 +75,7 @@ export class SearchBar extends HTMLElement {
 
   init() {
     const booknameMeta = getMetadata('book-name');
-    const productMeta = getMetadata('product');
+    const productMeta = getMetadata('docset-title');
     const docsetMeta = getMetadata('docset-id');
 
     const appendDropdown = this.querySelector('.dropdown-content');
