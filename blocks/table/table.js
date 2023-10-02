@@ -131,11 +131,13 @@ export default async function decorate(block) {
     const cells = [...row.querySelectorAll(':scope > div')];
     const tr = html` <table>
       <tr>
-        ${cells.map((cell) => `<td>${cell.innerHTML}</td>`).join('\n')}
+        ${cells.map((cell) => {
+    decoratePills(cell);
+    return `<td>${cell.innerHTML}</td>`;
+  }).join('\n')
+}
       </tr>
     </table>`.firstElementChild.firstElementChild;
     tbody.appendChild(tr);
   });
-
-  decoratePills(table);
 }

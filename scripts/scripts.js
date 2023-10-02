@@ -783,29 +783,31 @@ export function convertCodeIconsToText(main) {
   });
 }
 
-export function decoratePills(main) {
-  main.querySelectorAll('p,td').forEach((p) => {
-    const matches = [...p.innerText.matchAll(/tt:\[([^\]]*)\]/g)];
-    if (!matches.length) return;
+export function decoratePill(p) {
+  const matches = [...p.innerText.matchAll(/tt:\[([^\]]*)\]/g)];
+  if (!matches.length) return;
 
-    const nodes = [];
-    let text = p.innerText;
-    matches.forEach((match) => {
-      const [left, ...rights] = text.split(match[0]);
-      if (left) {
-        nodes.push(left);
-      }
-      nodes.push(html`<span class="pill">${match[1]}</span>`);
-      text = rights.join(match[0]);
-    });
-    if (text) {
-      nodes.push(text);
+  const nodes = [];
+  let text = p.innerText;
+  matches.forEach((match) => {
+    const [left, ...rights] = text.split(match[0]);
+    if (left) {
+      nodes.push(left);
     }
-
-    const parent = p.parentElement;
-    p.remove();
-    parent.append(...nodes);
+    nodes.push(html`<span class="pill">${match[1]}</span>`);
+    text = rights.join(match[0]);
   });
+  if (text) {
+    nodes.push(text);
+  }
+
+  const parent = p.parentElement;
+  p.remove();
+  parent.append(...nodes);
+}
+
+export function decoratePills(main) {
+  main.querySelectorAll('p,td').forEach(decoratePill);
 }
 
 /**
