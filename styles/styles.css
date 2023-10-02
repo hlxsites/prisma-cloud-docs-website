@@ -396,8 +396,8 @@ body.landing-division .section:not(.parallax-container) {
 
 @media only screen and (max-width: 900px) {
   body.landing-division {
-    background: url('/prisma/prisma-cloud/assets/landing-left-graphic.webp') 0 -50px no-repeat,
-      url('/prisma/prisma-cloud/assets/landing-right-graphic.webp') 100% 150px no-repeat,
+    background: url('/assets/landing-left-graphic.webp') 0 -50px no-repeat,
+      url('/assets/landing-right-graphic.webp') 100% 150px no-repeat,
       radial-gradient(
         122.54% 78.81% at 99.38% 0.59%,
         rgba(61, 155, 255, 0.2) 0%,
@@ -907,7 +907,7 @@ main .breadcrumbs-container[data-section-status='loaded'] {
 }
 
 .book:after {
-  background: url('/prisma/prisma-cloud/assets/article-outline-background.webp') 0 0 no-repeat;
+  background: url('/assets/article-outline-background.webp') 0 0 no-repeat;
   content: '';
   opacity: 0.6;
   pointer-events: none;

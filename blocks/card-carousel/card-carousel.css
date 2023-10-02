@@ -9,7 +9,7 @@
 }
 
 .card-carousel .card {
-  background: url("/prisma/prisma-cloud/assets/card-background.jpg") 0 0
+  background: url("/assets/card-background.jpg") 0 0
     no-repeat;
   background-size: cover;
   border-radius: var(--spacing--5);

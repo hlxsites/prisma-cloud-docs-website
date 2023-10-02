@@ -50,7 +50,7 @@
 }
 
 [data-user-theme='dark'] .book .header .nav-logo a {
-  background: url('/prisma/prisma-cloud/assets/techdocs-logo-dark-mode.webp') 0 0 no-repeat;
+  background: url('/assets/techdocs-logo-dark-mode.webp') 0 0 no-repeat;
   background-size: contain;
 }
 
@@ -898,7 +898,7 @@
 /* .pan-banner::before,
 .pan-banner::after {
   pointer-events: none;
-  background-image: url("/prisma/prisma-cloud/assets/sase-cns-pattern.webp");
+  background-image: url("/assets/sase-cns-pattern.webp");
 } */
 
 .pan-banner::before,
@@ -908,7 +908,7 @@
 }
 
 .pan-banner::after {
-  background: url('/prisma/prisma-cloud/assets/landing-right-graphic.webp') 0 0 no-repeat;
+  background: url('/assets/landing-right-graphic.webp') 0 0 no-repeat;
   content: '';
   display: block;
   position: absolute;

@@ -26,7 +26,7 @@ const range = document.createRange();
 
 export const SPA_NAVIGATION = true;
 export const REDIRECTED_ARTICLE_KEY = 'redirected-article';
-export const PATH_PREFIX = '/prisma/prisma-cloud';
+export const PATH_PREFIX = '';
 const LCP_BLOCKS = ['article']; // add your LCP blocks to the list
 window.hlx.RUM_GENERATION = 'prisma-cloud-docs-website'; // add your RUM generation information here
 
@@ -254,7 +254,7 @@ const store = new (class {
       book = this.bookPath.split('/').pop();
     }
     const versionedSheet = version === 'not-applicable' ? product : `${product}--${version}`;
-    const data = await this.fetchJSON('/prisma/prisma-cloud/languages', [
+    const data = await this.fetchJSON('/languages', [
       'default',
       versionedSheet,
     ]);
@@ -284,7 +284,7 @@ const store = new (class {
   }
 
   async getNonBookLocalizationInfo() {
-    const data = await this.fetchJSON('/prisma/prisma-cloud/languages', ['default']);
+    const data = await this.fetchJSON('/languages', ['default']);
 
     const { languages, langMap } = (data.data || []).reduce(
       (prev, row) => {

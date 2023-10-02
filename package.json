@@ -7,9 +7,9 @@
     "test": "wtr \"./test/**/*.test.js\" --node-resolve --port=2000 --coverage",
     "test:watch": "npm test -- --watch",
     "lint:js": "eslint .",
-    "lint:css": "stylelint prisma/prisma-cloud/blocks/**/*.css prisma/prisma-cloud/styles/*.css",
+    "lint:css": "stylelint blocks/**/*.css styles/*.css",
     "lint": "npm run lint:js && npm run lint:css",
-    "dev": "npx @adobe/helix-cli up --open /prisma/prisma-cloud/en"
+    "dev": "npx @adobe/helix-cli up --open /en"
   },
   "repository": {
     "type": "git",

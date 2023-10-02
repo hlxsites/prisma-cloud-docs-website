@@ -1,12 +1,12 @@
 sitemaps:
   website:
-    origin: https://docs.paloaltonetworks.com
+    origin: https://docs.prismacloud.io
     languages:
       en:
-        source: /prisma/prisma-cloud/en/query-index.json
-        destination: /prisma/prisma-cloud/en/sitemap.xml
+        source: /en/query-index.json
+        destination: /en/sitemap.xml
         hreflang: en
       jp:
-        source: /prisma/prisma-cloud/jp/query-index.json
-        destination: /prisma/prisma-cloud/jp/sitemap.xml
+        source: /jp/query-index.json
+        destination: /jp/sitemap.xml
         hreflang: jp
