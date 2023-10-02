@@ -8,6 +8,7 @@ import {
   html,
   isMobile,
   loadArticle,
+  loadBook,
   parseFragment,
   render,
 } from '../../scripts/scripts.js';
@@ -508,6 +509,7 @@ function sortBook(book) {
   const topics = book.topics.data;
   topics.forEach(({ chapter, parent, ...topic }) => {
     let parentItem = data.chapters.find(({ key }) => key === chapter);
+
     if (parent) {
       const parts = parent.split('/');
       while (parts.length) {
@@ -519,6 +521,7 @@ function sortBook(book) {
     parentItem.children = parentItem.children || [];
     parentItem.children.push(topic);
   });
+
   return data;
 }
 
@@ -614,6 +617,8 @@ function bookToList(book) {
 
       if (topic.children && topic.children.length) {
         if (hasSubtopics(topic)) {
+          const prevTopicList = current;
+
           addSubList(
             topic.name,
             `${book.path}/${chapter.key}/${parentKey ? `${parentKey}/` : ''}${topic.key}/${
@@ -621,6 +626,7 @@ function bookToList(book) {
             }`,
             topic.key,
           );
+
           topic.children.forEach((subtopic) => {
             processTopic(
               subtopic,
@@ -629,6 +635,9 @@ function bookToList(book) {
               }`,
             );
           });
+
+          // revert to previous list level
+          current = prevTopicList;
         } else {
           // has children, but not subtopics to render
           // this means the link on the parent is actually the child's link
@@ -744,8 +753,7 @@ function initAdditionalBooks(block, container) {
     'mouseenter',
     async () => {
       container.querySelectorAll('[data-additional-book-href]').forEach((list) => {
-        store
-          .fetchJSON(list.dataset.additionalBookHref, ['default', 'chapters', 'topics'], { limit: 10000 })
+        loadBook(list.dataset.additionalBookHref)
           .then((data) => {
             const sorted = sortBook(data);
             renderTOC(container, sorted, false, list);
