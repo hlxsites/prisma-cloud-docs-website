@@ -1,0 +1,307 @@
+.search-bar {
+  --search-background-color: var(--color-neutral-white);
+  --search-border-radius: 24px;
+  --search-border-color: var(--color-neutral-100);
+  --search-height: var(--spacing--12);
+  --search-text-color: var(--color-neutral-black);
+  --search-placeholder: var(--color-neutral-200);
+
+  --search-autosuggest-border-radius: var(--spacing--4);
+  --search-autosuggest-background-hover: var(--color-neutral-050);
+
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+[data-user-theme="dark"] .book .search-bar {
+  --search-background-color: var(--color-neutral-black);
+  --search-border-color: var(--color-neutral-dark-600);
+  --search-text-color: var(--color-neutral-white);
+  --search-placeholder: var(--color-neutral-600);
+
+  --search-autosuggest-background-hover: var(--color-neutral-dark-900);
+}
+
+search-bar {
+  display: flex;
+  width: 100%;
+}
+
+.search-bar .searchbox {
+  order: 1;
+  width: 100%;
+  min-width: auto;
+}
+
+.search-bar #coveo-searchbox {
+  display: flex;
+}
+
+.search-bar #coveo-searchbox .magic-box {
+  border: none;
+  border-radius: 0;
+  order: 2;
+}
+
+.search-bar #coveo-searchbox .magic-box .magic-box-input {
+  background: var(--search-background-color);
+  border-top: 1px solid var(--search-border-color);
+  border-bottom: 1px solid var(--search-border-color);
+  border-radius: 0;
+  height: var(--search-height);
+  margin-left: -1px;
+}
+
+.search-bar #coveo-searchbox .magic-box .magic-box-input > input {
+  background: var(--search-background-color);
+  color: var(--search-text-color);
+  font-family: var(--body-font-family);
+  font-size: var(--control-font-size--sm);
+  line-height: var(--control-line-height--sm);
+  height: var(--search-height);
+  padding-left: 1px; /* Allow browser blinking cursor to show */
+  padding-right: var(--spacing--4);
+}
+
+.search-bar #coveo-searchbox .magic-box .magic-box-input > input::placeholder {
+  color: var(--search-placeholder);
+}
+
+.search-bar #coveo-searchbox .magic-box .magic-box-clear {
+  padding-right: var(--spacing--4);
+}
+
+.search-bar #coveo-searchbox .magic-box .magic-box-clear .magic-box-icon,
+.search-bar #coveo-searchbox .magic-box .magic-box-clear {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.search-bar #coveo-searchbox .magic-box .magic-box-clear .magic-box-icon {
+  align-items: center;
+}
+
+.search-bar #coveo-searchbox .magic-box .magic-box-clear-svg {
+  color: var(--search-text-color);
+  fill: var(--search-text-color);
+}
+
+.search-bar #coveo-searchbox .magic-box .magic-box-clear-svg .ring {
+  stroke: var(--search-text-color);
+}
+
+.search-bar #coveo-searchbox .coveo-accessible-button {
+  height: var(--search-height);
+  width: 43px;
+  border: none;
+  background: var(--search-background-color);
+}
+
+.search-bar #coveo-searchbox .CoveoSearchButton {
+  border-top: 1px solid var(--search-border-color);
+  border-bottom: 1px solid var(--search-border-color);
+  border-left: 1px solid var(--search-border-color);
+  border-radius: 0;
+  border-top-left-radius: var(--search-border-radius);
+  border-bottom-left-radius: var(--search-border-radius);
+}
+
+.search-bar .dropdown-arrow {
+  color: var(--search-text-color);
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  right: var(--spacing--6);
+  transform: translate(0, -50%);
+}
+
+.search-bar .dropdown.is-active .dropdown-arrow {
+  transform: translate(0, -50%) scaleY(-1);
+}
+
+.search-bar select.ui.dropdown {
+  padding: 15px;
+}
+
+.search-bar .searchbox #coveo-searchbox {
+  margin-top: 0;
+  position: relative;
+}
+
+.searchbox #coveo-searchbox:before {
+  border: 2px solid transparent;
+  border-top-left-radius: var(--search-border-radius);
+  border-bottom-left-radius: var(--search-border-radius);
+  content: "";
+  left: 0;
+  top: 0;
+  position: absolute;
+  pointer-events: none;
+  transition: border-color var(--action-ease-duration)
+    var(--action-ease-function);
+  height: calc(100% - 4px);
+  width: calc(100% - 4px);
+  z-index: 5;
+}
+
+.searchbox.is-focused #coveo-searchbox:before {
+  border-color: var(--book-focus-border-color);
+}
+
+.search-bar .dropdown {
+  order: 2;
+  position: relative;
+  display: flex;
+}
+
+.search-bar .dropbtn {
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  background: var(--search-background-color);
+  color: var(--search-text-color);
+  height: var(--search-height); /* TODO: Adjust this  */
+  border-top: 1px solid var(--search-border-color);
+  border-bottom: 1px solid var(--search-border-color);
+  border-left: 1px solid var(--search-border-color);
+  border-radius: 0;
+  border-top-right-radius: var(--search-border-radius);
+  border-bottom-right-radius: var(--search-border-radius);
+  font-family: var(--body-font-family);
+  font-size: var(--control-font-size--sm);
+  line-height: var(--control-line-height--sm);
+  /* Account for spacing & width of absolute positioned arrow */
+  padding: 0 calc(var(--spacing--6) + var(--spacing--4) + var(--spacing--4)) 0
+    var(--spacing--6);
+}
+
+.search-bar a.coveo-dropdown-item:hover {
+  text-decoration: none;
+  cursor: pointer;
+  background-size: 100% 100%;
+}
+
+.search-bar a.coveo-dropdown-item {
+  color: black;
+  text-decoration: none;
+  padding: 0;
+  background: linear-gradient(to right, #ffcb26, #fff0c8 70%, #0000);
+  background-repeat: no-repeat;
+  background-position: 0 0.85em;
+  transition: background-size 0.2s;
+  background-size: 0% 100%;
+  white-space: nowrap;
+}
+
+.search-bar .coveo-search-button-svg {
+  color: var(--search-text-color);
+  width: var(--spacing--4);
+  height: var(--spacing--4);
+}
+
+.search-bar .coveo-accessible-button:hover .coveo-magnifier-circle-svg {
+  fill: var(--search-text-color);
+}
+
+.search-bar .dropdown-content {
+  display: none;
+  position: absolute;
+  overflow: auto;
+  z-index: 1;
+  top: 100%;
+  max-width: calc(100vw - var(--spacing--8));
+  left: auto;
+  right: 0;
+  margin: 0;
+  padding: 25px;
+  text-align: left;
+  transform: translateY(var(--spacing--2));
+}
+
+.search-bar .dropdown-content a {
+  color: black;
+
+  /* padding: 12px 16px; */
+  text-decoration: none;
+  display: block;
+  cursor: pointer;
+}
+
+.search-bar .dropdown a:hover,
+.search-bar .magic-box .magic-box-suggestions .magic-box-suggestion:hover {
+  background-color: var(--search-autosuggest-background-hover);
+}
+
+.search-bar .magic-box .magic-box-suggestions {
+  background: transparent;
+  font-family: var(--body-font-family);
+  font-size: var(--control-font-size--sm);
+  line-height: var(--control-line-height--sm);
+  padding-top: var(--spacing--2);
+}
+
+.search-bar
+  .magic-box.magic-box-hasFocus
+  .magic-box-suggestions.magic-box-hasSuggestion
+  .coveo-magicbox-suggestions,
+.search-bar
+  .magic-box.magic-box-hasFocus
+  .magic-box-suggestions.magic-box-hasSuggestion
+  .coveo-suggestion-container,
+.search-bar .magic-box .magic-box-suggestions .coveo-magicbox-suggestions {
+  border: none;
+}
+
+.search-bar .dropdown-content,
+.search-bar
+  .magic-box
+  .magic-box-suggestions.magic-box-hasSuggestion
+  .coveo-magicbox-suggestions {
+  background: var(--search-background-color);
+  border-radius: var(--search-autosuggest-border-radius);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  padding: var(--spacing--4) var(--spacing--6);
+}
+
+.search-bar .dropdown-content a,
+.search-bar .magic-box .magic-box-suggestions .magic-box-suggestion {
+  background: transparent;
+  border-top: none;
+  border-radius: var(--spacing--2);
+  color: var(--search-text-color);
+  font-size: var(--control-font-size--sm);
+  line-height: var(--control-line-height--sm);
+  padding: 11px var(--spacing--2);
+}
+
+.search-bar .dropdown-content a:not(:last-child),
+.search-bar
+  .magic-box
+  .magic-box-suggestions
+  .magic-box-suggestion:not(:last-child) {
+  margin-bottom: var(--spacing--1);
+}
+
+.search-bar .dropdown-content .coveo-dropdown-hero-search {
+  display: none;
+}
+
+@media (max-width: 560px) {
+  .search-bar .dropbtn {
+    color: transparent;
+    font-size: 1px;
+    padding-right: var(--spacing--6);
+  }
+
+  .search-bar #coveo-searchbox {
+    max-width: 100%;
+    margin-right: 0;
+  }
+}

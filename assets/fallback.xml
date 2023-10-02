@@ -1,0 +1,869 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+    xmlns:content="http://purl.org/rss/1.0/modules/content/"
+    xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:atom="http://www.w3.org/2005/Atom"
+    xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+    xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+    
+	xmlns:georss="http://www.georss.org/georss"
+	xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#"
+	    >
+
+<channel>
+    <title>Cloud Native Security - Palo Alto Networks Blog</title>
+    <atom:link href="https://www.paloaltonetworks.com/blog/prisma-cloud/feed/" rel="self" type="application/rss+xml" />
+    <link>https://www.paloaltonetworks.com/blog/prisma-cloud/</link>
+    <description>Palo Alto Networks Blog</description>
+    <lastBuildDate>Wed, 09 Aug 2023 12:03:44 +0000</lastBuildDate>
+    <language>en-US</language>
+    <sy:updatePeriod>
+	hourly    </sy:updatePeriod>
+    <sy:updateFrequency>
+	1    </sy:updateFrequency>
+    <generator>https://wordpress.org/?v=6.1.1</generator>
+    <item>
+	<title>Deloitte Safeguards Software Development Lifecycle</title>
+	<link>https://www.paloaltonetworks.com/blog/2023/08/deloitte-safeguards-software-development-lifecycle/</link>
+	    		<comments>https://www.paloaltonetworks.com/blog/2023/08/deloitte-safeguards-software-development-lifecycle/#respond</comments>
+	    
+	<dc:creator><![CDATA[Joe Rogalski]]></dc:creator>
+	<pubDate>Thu, 10 Aug 2023 13:00:20 +0000</pubDate>
+	<readTime>6</readTime>
+	<featuredImage>https://www.paloaltonetworks.com/blog/wp-content/uploads/2023/08/cq5dam.web_.1280.1280-3.jpeg</featuredImage>
+	    		<category><![CDATA[Announcement]]></category>
+		<category><![CDATA[Partners]]></category>
+		<category><![CDATA[Cortex XSOAR]]></category>
+		<category><![CDATA[deloitte]]></category>
+		<category><![CDATA[Prisma Cloud]]></category>
+		<category><![CDATA[SSDL]]></category>
+	<guid isPermaLink="false">https://www.paloaltonetworks.com/blog/?p=300026</guid>
+
+	    		<description><![CDATA[<p>Palo Alto Networks and Deloitte have a new SSDL offering to reinforce customers' cloud environments with enhanced security measures from code to cloud.</p>
+<p>The post <a rel="nofollow" href="https://www.paloaltonetworks.com/blog/2023/08/deloitte-safeguards-software-development-lifecycle/">Deloitte Safeguards Software Development Lifecycle</a> appeared first on <a rel="nofollow" href="https://www.paloaltonetworks.com/blog">Palo Alto Networks Blog</a>.</p>
+]]></description>
+						<content:encoded><![CDATA[<p>As cloud computing continues to increase in popularity, businesses should consider remaining vigilant in protecting their information. Enterprises are accelerating public and hybrid cloud initiatives and the release cycle for code deployment frequency is often exponentiating. Palo Alto Networks and Deloitte have expanded their strategic alliance with a new SSDL offering to reinforce their customers' cloud environments with enhanced security measures from code to cloud.</p>
+<p>The expansion enables the customer to mitigate risks and promote a secure development and deployment lifecycle that adheres to their unique cloud security and compliance requirements. In the <a href="/state-of-cloud-native-security">State of Cloud-Native Security 2023</a> survey from Palo Alto Networks, 55% of respondents indicated that they’re deploying code to production daily or multiple times a day. When the code release cycle increases, so does the risk of vulnerabilities and errors being included in the deployment.</p>
+<p><img decoding="async" loading="lazy" class="alignnone wp-image-301892 size-full" src="/blog/wp-content/uploads/2023/08/word-image-300026-1-1.png" alt="Frequency of deployment of code." width="910" height="372" /></p>
+<p>The expanded use of the cloud and open-source software, as well as the increased frequency of software deployment, create a complicated environment that increases risk to the enterprise. A developer may easily include a package that contains a vulnerability (Log4j, for example) exposing the cloud environment to intrusion, and potentially compromising customer data, code, as well as the uptime for the application.</p>
+<h4><a id="post-300026-_heading=h.bghnlupdrfuh"></a>Top Five Security Incidents</h4>
+<ol>
+<li>Risk introduced early in application development</li>
+<li>Workload images with vulnerabilities or malware</li>
+<li>Vulnerable web applications and APIs</li>
+<li>Unrestricted network access between workloads</li>
+<li>Downtime due to misconfiguration</li>
+</ol>
+<p>The security team must prevent this, but they are outnumbered by developers and must keep up with release cycles without causing delays.</p>
+<h2><a id="post-300026-_heading=h.c2y3263dl0r6"></a>Shifting Left in the Cloud</h2>
+<p>With the right strategies, enterprises could maintain a secure cloud environment while taking advantage of the benefits of cloud-based services. A leading strategy that businesses should consider is shifting left. Shift left security is a proactive approach that emphasizes the early detection and resolution of vulnerabilities and errors during the development cycle before they are deployed into production.</p>
+<h4><a id="post-300026-_heading=h.j5cxj9agkku"></a>Top Challenges Providing Overarching Security</h4>
+<ol>
+<li>Managing holistic security across teams</li>
+<li>Embedding security across the cloud-native development lifecycle</li>
+<li>Training IT/development/security staff to use security tools</li>
+<li>Lack of visibility into security vulnerabilities across cloud resources</li>
+<li>Finding the correct tools to address security requirements</li>
+</ol>
+<p>The core concept of shift left security involves integrating security tools effectively within the DevOps lifecycle, allowing developers to work in their familiar environments while receiving alerts to potential issues.</p>
+<p>Adopting a shift left security approach empowers development teams to take ownership of security and promotes a proactive security mindset. It allows developers to build secure and resilient applications from the outset. This minimizes the chances of vulnerabilities slipping through the cracks before it reaches production environments. By prioritizing security early in the development process, organizations can significantly reduce the potential impact of security incidents and establish that their applications are strong and secure from the ground up.</p>
+<p>DevOps teams can conduct various security activities as part of the shift left approach — infrastructure-as-code scanning, container image scanning, secrets scanning and software composition analysis. But, implementing these processes in a complex multicloud environment can prove challenging.</p>
+<h2><a id="post-300026-_heading=h.iu8r02phhrfs"></a>Streamlining Cloud Security</h2>
+<p>Safeguarding your cloud environments requires a standardized approach to ensure your cloud environments are resilient, compliant and secure. You can achieve this by streamlining account provisioning, facilitating secure build and deployment practices, implementing strong logging and monitoring mechanisms, enforcing custom guardrails and automate remediations.</p>
+<p>When effectively executed, SSDL incorporates shift left security into the DevSecOps pipeline, scanning code early in the process to identify vulnerabilities and other issues. This fosters a culture of secure-by-design and promotes transparency of security vulnerabilities. With the early identification of issues, this encourages tight collaboration between the dev, ops and security teams, and it drives agility and automation. The primary cybersecurity goal of the SSDL model is to reduce or remove manual controls that have historically impeded business and IT teams, such as cycle time issues, false positives and inefficient output.</p>
+<p>These challenges have also contributed to the problem of identifying defects later in the development cycle when they’re more costly and difficult to remediate. SSDL utilizes cutting-edge technologies, such as Prisma Cloud, Cortex XSOAR, proprietary custom code and integrated workflows to help you effectively address your distinctive requirements.</p>
+<p>Whether you’re implementing a design strategy, tactically building, deploying or need ongoing observability through assessments, SSDL can be effectively integrated as part of the overall solution. Or, it can be integrated within an existing cloud security and compliance ecosystem. Moreover, SSDL is designed to be highly scalable, accommodating diverse multicloud platforms regardless of your cloud journey.</p>
+<p><img decoding="async" loading="lazy" width="1836" height="785" class="wp-image-301906" src="/blog/wp-content/uploads/2023/08/word-image-300026-2-1.png" alt="Development security controls and operational security controls. " /></p>
+<p>SSDL enforces security at every stage: code and build, deploy and run. The SSDL accelerators facilitate faster delivery of thoroughly assessed and securely configured infrastructure and applications into your cloud environments. This means you can continuously monitor deployed infrastructure for configuration drift while also enforcing automated, actionable workflows to ensure ongoing security and compliance. By integrating security into the development process from the beginning, you can effectively address vulnerabilities and risks, facilitating secure and efficient multicloud operations.</p>
+<p style="padding-left: 80px;"><em>When building SSDL, Deloitte chose to collaborate with Palo Alto Networks as they provide market leading technology that provides the recognized outcomes for our clients. Transitioning to an SSDL empowered by Prisma Cloud and Cortex XSOAR is a strategic and iterative approach that yields manifold benefits. These potential benefits include enhanced security measures, heightened operational efficiency, improved product quality, alignment with industry standards, fostered collaboration among teams, cost reduction, and strides toward achieving a strong and future-proof security posture.<br />
+– </em>Jane Chung, Managing Director, Deloitte &amp; Touche LLP</p>
+<p>Leveraging a shift left security approach and proactively monitoring for potential threats keeps critical data secure while still taking full advantage of the benefits offered by cloud services. With SSDL, potential issues may be identified early and resolved before serious damage occurs. In addition, it helps clients keep their team focused on other important tasks. If you're looking for ways to improve your cloud strategy, considering shift left and managed cloud security may be worth exploring.</p>
+<p>Learn more about <a href="https://www2.deloitte.com/content/dam/Deloitte/us/Documents/risk/zero-trust-solutions-secure-software-development-lifecycle.pdf" rel="nofollow,noopener" >Deloitte and SSDL</a> and what <a href="https://start.paloaltonetworks.com/gartner-report-cloud-native-application-protection.html?utm_source=google-jg-amer-prisma_cloud&amp;utm_medium=paid_search&amp;utm_term=prisma%20cloud&amp;utm_campaign=google-prisma_cloud-cnapp-amer-multi-lead_gen-en&amp;utm_content=gs-16994480386-136033040579-635091330195&amp;sfdcid=7014u000001hBJYAA2&amp;gclid=EAIaIQobChMIn-HYjtaf_gIVGiitBh0HnQtsEAAYAiAAEgJVk_D_BwE">Prisma Cloud</a> can do for you.</p>
+<p><span style="font-size: 10pt;">This blog contains general information only and Deloitte and Palo Alto Networks are not, by means of this blog, rendering accounting, business, financial, investment, legal, tax, or other professional advice or services. This blog is not a substitute for such professional advice or services, nor should it be used as a basis for any decision or action that may affect your business. Before making any decision or taking any action that may affect your business, you should consult a qualified professional advisor. </span><br />
+<span style="font-size: 10pt;">  </span><br />
+<span style="font-size: 10pt;">Deloitte and Palo Alto Networks shall not be responsible for any loss sustained by any person who relies on this blog.</span></p>
+<p><span style="font-size: 10pt;">As used in this blog, “Deloitte” means Deloitte &amp; Touche LLP, a subsidiary of Deloitte LLP. Please see www.deloitte.com/us/about for a detailed description of our legal structure. Certain services may not be available to attest clients under the rules and regulations of public accounting.</span></p>
+<p>The post <a rel="nofollow" href="https://www.paloaltonetworks.com/blog/2023/08/deloitte-safeguards-software-development-lifecycle/">Deloitte Safeguards Software Development Lifecycle</a> appeared first on <a rel="nofollow" href="https://www.paloaltonetworks.com/blog">Palo Alto Networks Blog</a>.</p>
+]]></content:encoded>
+			    
+	    		<wfw:commentRss>https://www.paloaltonetworks.com/blog/2023/08/deloitte-safeguards-software-development-lifecycle/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+	    
+	    
+	        </item>
+        <item>
+	<title>The Evolution of Cloud-Native Application Security</title>
+	<link>https://www.paloaltonetworks.com/blog/prisma-cloud/evolution-cloud-native-application-security/</link>
+	    
+	<dc:creator><![CDATA[Steve Giguere]]></dc:creator>
+	<pubDate>Wed, 09 Aug 2023 12:00:13 +0000</pubDate>
+	<readTime>7</readTime>
+	<featuredImage>https://www.paloaltonetworks.com/blog/wp-content/uploads/2022/11/Skyscraper2-2.jpg</featuredImage>
+	    		<category><![CDATA[Application Security]]></category>
+		<category><![CDATA[CI/CD Security]]></category>
+	<guid isPermaLink="false">https://www.paloaltonetworks.com/blog/?post_type=cloud_sec_post&#038;p=301876</guid>
+
+	    		<description><![CDATA[<p>Discover how application security has evolved and learn how to adapt your AppSec program to address cloud-native security issues relating to code, container, cluster, and CI/CD pipeline security.</p>
+<p>The post <a rel="nofollow" href="https://www.paloaltonetworks.com/blog/prisma-cloud/evolution-cloud-native-application-security/">The Evolution of Cloud-Native Application Security</a> appeared first on <a rel="nofollow" href="https://www.paloaltonetworks.com/blog">Palo Alto Networks Blog</a>.</p>
+]]></description>
+						<content:encoded><![CDATA[<p>Application security refers to the practices and strategies that protect software applications from vulnerabilities, threats and unauthorized access so that organizations can ensure the confidentiality, integrity and availability of their application and its data.</p>
+<p>AppSec’s primary goal centers on identifying and mitigating risks that can arise due to design flaws, coding errors or malicious attacks targeting the application. By applying security controls throughout the application's development lifecycle, you can identify and address them as early as possible to minimize the potential impact on security.</p>
+<p>At its core, <a href="/blog/prisma-cloud/appsec-engineering-ecosystem/">application security</a> is a people, process and technology problem. All too often, we focus our attention on the technology piece of AppSec, hoping that tools and automation will save us. But what if the tools and automation are part of our application’s attack surface?</p>
+<p>To understand and address this problem, we first need to look at how AppSec has evolved.</p>
+<h2>Application Security from 2000-2015</h2>
+<p>Between 2005 and 2015, organizations moved away from desktop applications and toward web-based applications. As vulnerabilities like cross-site scripting (XSS), SQL injection and cross-site request forgery (CSRF) emerged, web application security became a hot topic.</p>
+<p>To address these new vulnerabilities, security testing tools — such as <a href="/cyberpedia/what-is-sast-static-application-security-testing">static application security testing (SAST)</a>, dynamic application security testing (DAST) and interactive application security testing (IAST) — became more sophisticated and popular.</p>
+<p>At the same time, the definition of AppSec expanded beyond perimeter-based security measures to capture the need for a more proactive and holistic approach to security. The OWASP Top 10 project reflected these changes and included new vulnerabilities. Insecure direct object references (IDOR) and CSRF made the <a href="https://github.com/owasp-top/owasp-top-2007" rel="nofollow,noopener" >2007 OWASP list</a>, for example.</p>
+<h2>2015 Onward: Secure Deployment in the Cloud Era</h2>
+<p>The migration to the cloud significantly changed the <a href="/blog/prisma-cloud/ci-cd-pipeline-security-strategy/">definition of AppSec</a>. It now encompasses multiple areas — threat modeling and secure design, secure coding, incident response and a plethora of other forms of application security testing. One core component of AppSec, secure deployment, saw a complete overhaul.</p>
+<p>Before 2015, the industry defined secure deployment as the implementation of secure deployment practices. This involved the secure configuration of servers and networks, secure transmission of data and proper access controls. While the definition served its purpose before organizations migrated to the cloud, we now need a new definition to modernize current practices and move away from an outdated approach to secure deployment.</p>
+<p>But why do we need to rethink how we define secure deployment?</p>
+<p>In traditional on-premises environments, organizations had full control over the infrastructure stack, including hardware, operating system and application layers. But in cloud computing, cloud service providers (CSPs) and cloud users operate within a <a href="/cyberpedia/cloud-security-is-a-shared-responsibility">shared responsibility model</a>. The CSP assumes responsibility for securing the underlying infrastructure, while the cloud user remains responsible for securing their applications and data. This shift has transformed AppSec into a joint effort between customer and CSP.</p>
+<p>Due to the shared nature of infrastructure and resources, cloud environments introduce a new attack surface. The cloud user’s applications and data can be vulnerable to attacks exploiting misconfigurations in the cloud environment or targeting other tenants. AppSec now needs to address not only traditional vulnerabilities but also cloud-specific threats and risks.</p>
+<p>To address these new cloud-specific threats, we need to precisely define what counts as an application in our modern cloud environments.</p>
+<h2>Defining the Modern Application</h2>
+<p>The goal for modern AppSec remains the same — ensure that an organization’s applications adhere to the CIA triad. This triad combines the three key security principles of confidentiality, integrity and availability of high-value data, whether the data pertains to the customers or the organization.</p>
+<p>Unfortunately, the definition of “application” isn’t as clear. What constitutes an application? Is it just the code we write, or does it include the third-party dependencies that developers leverage to accelerate time to market?</p>
+<p>When we talk about the application lifecycle, we tend to overlook anything that isn’t directly part of the application. We forget about the tools and automation — even the people — that create and move the traditional “application” from conception to the cloud.</p>
+<p>But overlooking components of the application lifecycle prevents organizations from taking a modern approach to cloud AppSec. Because the <a href="/prisma/unit42-cloud-threat-research">cloud threat landscape</a> has changed dramatically — with a significant rise in attacks targeting the software supply chain — the way we define applications needs to also capture the full value stream of that application.</p>
+<p>In practice, as we secure an application, we need to consider how each of its building blocks, including all application dependencies, work together to create a unique and valuable application. An application’s building blocks entail everything from proprietary and third-party code to the <a href="https://kubernetes.io/docs/concepts/security/overview/" rel="nofollow,noopener" >four Cs of cloud-native security</a> — the code, the container, the cluster and the cloud.</p>
+<p>But as we seek to modernize our approach to AppSec, we need to add a fifth “C” — the continuous integration and continuous delivery (CI/CD) pipeline.</p>
+<figure id="attachment_301877" aria-describedby="caption-attachment-301877" style="width: 1720px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-301877" src="/blog/wp-content/uploads/2023/08/word-image-301876-1.png" alt="" width="1720" height="992" /><figcaption id="caption-attachment-301877" class="wp-caption-text">Figure 1: The four Cs of cloud-native security, as illustrated by <a href="https://kubernetes.io/docs/concepts/security/overview/" rel="nofollow,noopener" >Kubernetes documentation</a>.</figcaption></figure>
+<h2>CI/CD Pipelines: The Fifth “C” of Cloud-Native Security</h2>
+<p>All infrastructure and application code passes through a <a href="/cyberpedia/what-is-the-ci-cd-pipeline-and-ci-cd-security">CI/CD pipeline</a>, commonly used to streamline application development and deployment. An AppSec program will integrate security into this process by leveraging automated security testing, code analysis and vulnerability scanning tools.</p>
+<p>Developers should treat security as code and build it into the development pipeline so they can detect and address security issues early in the development lifecycle. Additionally, security must protect the development pipeline. Both the <a href="https://owasp.org/Top10/" rel="nofollow,noopener" >OWASP Top 10 2021 edition</a> and the <a href="https://owasp.org/www-project-top-10-ci-cd-security-risks/" rel="nofollow,noopener" >OWASP Top 10 CI/CD Security Risks</a> outline steps AppSec practitioners should take to adopt a more risk-centric approach to pipeline weaknesses and security misconfigurations.</p>
+<h2>Tips to Get Started with CI/CD Security</h2>
+<p>To <a href="/prisma/cloud/ci-cd-security">protect your pipelines</a> from potential vulnerabilities, threats and unauthorized access, you’ll need to adopt several best practices.</p>
+<p><strong>Secure access controls:</strong> Make sure to implement proper access controls to your CI/CD tools, repositories and infrastructure. Only authorized individuals should have access to the pipeline components. You’ll also need to enforce strong authentication mechanisms such as multifactor authentication.</p>
+<p><strong>Code and artifact integrity:</strong> Code and artifacts being deployed through the CI/CD pipeline need to be protected against tampering and unauthorized modifications. You can do this by implementing code signing, checksum verification, secure artifact repositories and other mechanisms.</p>
+<p><strong>Secure configuration management:</strong> Apply secure configuration practices to your CI/CD pipeline components, including build servers, version control systems and deployment tools. Regularly review and update configurations to align with security best practices and guidelines.</p>
+<p><strong>Automated security testing:</strong> Integrate automated security testing into your CI/CD pipeline to identify security vulnerabilities and weaknesses early in the development process. This may include static code analysis, DAST, <a href="/blog/prisma-cloud/software-composition-analysis-sca-how-does-it-help-keep-cloud-applications-secure/">software composition analysis (SCA)</a> and vulnerability scanning.</p>
+<p><strong>Dependency management:</strong> Manage and secure third-party dependencies used in the application. Regularly update and patch dependencies to mitigate known vulnerabilities and reduce the risk of supply chain attacks.</p>
+<p><strong>Secrets management:</strong> Properly handle and <a href="/blog/prisma-cloud/exposed-credentials-across-the-devsecops-pipeline/">protect sensitive information</a>, such as API keys, credentials and encryption keys used in the CI/CD pipeline. Use secure storage and encryption mechanisms to safeguard secrets and minimize the risk of unauthorized access.</p>
+<h2>Modern AppSec for the Cloud</h2>
+<p>Now that we’ve expanded our definition of AppSec to include securing your CI/CD pipeline, one question remains. How would we approach application security if we could start from scratch?</p>
+<p>Let’s walk through an analogy. Imagine you’re building a car — i.e., an application. Building a car is a complex process involving many engineers, designers and automation specialists who work together to ensure the car is secure and safe to drive. But you can’t drive the car if you don’t also have well-paved roads — i.e., CI/CD pipelines securely configured.</p>
+<p>Given that you need safe and secure roads to drive a car, why build the car before we build the roads? And even if we build the most secure car and the most well-paved roads, have we taken the time to secure our destination — i.e., the cloud?</p>
+<p>Application security is everything, and everything is application security. To secure our applications, we have to start by first securing the pipeline (i.e., the road) and then securing the cloud (i.e., our destination) so we can be confident that our application code is secure.</p>
+<p>If you’re looking for more practical tips to help you protect your CI/CD pipelines, download the <a href="https://start.paloaltonetworks.com/cicd-security-checklist.html">CI/CD Security Checklist</a>.</p>
+<p>The post <a rel="nofollow" href="https://www.paloaltonetworks.com/blog/prisma-cloud/evolution-cloud-native-application-security/">The Evolution of Cloud-Native Application Security</a> appeared first on <a rel="nofollow" href="https://www.paloaltonetworks.com/blog">Palo Alto Networks Blog</a>.</p>
+]]></content:encoded>
+			    
+	    
+	    
+	        </item>
+        <item>
+	<title>Anomaly Detection Policies for Unusual Workload Credential Usage</title>
+	<link>https://www.paloaltonetworks.com/blog/prisma-cloud/anomaly-detection-policies-workload-credential/</link>
+	    
+	<dc:creator><![CDATA[Bar Schwartz and Ruben Torres Guerra]]></dc:creator>
+	<pubDate>Thu, 03 Aug 2023 13:00:55 +0000</pubDate>
+	<readTime>5</readTime>
+	<featuredImage>https://www.paloaltonetworks.com/blog/wp-content/uploads/2023/07/word-image-298208-2.jpeg</featuredImage>
+	    		<category><![CDATA[Threat Detection]]></category>
+	<guid isPermaLink="false">https://www.paloaltonetworks.com/blog/?post_type=cloud_sec_post&#038;p=300355</guid>
+
+	    		<description><![CDATA[<p>Anomaly policies built into CIEM and designed to detect anomalous use of workload credentials is essential to securing sensitive data and infrastructure.</p>
+<p>The post <a rel="nofollow" href="https://www.paloaltonetworks.com/blog/prisma-cloud/anomaly-detection-policies-workload-credential/">Anomaly Detection Policies for Unusual Workload Credential Usage</a> appeared first on <a rel="nofollow" href="https://www.paloaltonetworks.com/blog">Palo Alto Networks Blog</a>.</p>
+]]></description>
+						<content:encoded><![CDATA[<p>Cloud computing is an essential component of modern business operations, providing numerous benefits — scalability, flexibility and cost-efficiency among them. But cloud computing comes with risks, particularly in terms of security and privacy. Sensitive data and critical applications can become compromised through breach and unauthorized access.</p>
+<p>Detecting malicious behavior in cloud environments, however, is challenged by the tendency for malicious activities to be logged merely on the control plane level — without recording traces in traditional log sources. Unwanted data movements between cloud services or accounts appear only in cloud-native logs like AWS CloudTrail or AWS Config and not in network or operating system logs.</p>
+<h2>Risks of Exfiltrating Temporary Credentials from Compute Instances</h2>
+<p>Cloud computing resources, such as EC2 instances, require appropriate authentication and authorization to perform tasks. In AWS, for example, you’d typically assign a role to the compute resource during deployment. The role comes with a set of temporary credentials, which the instance will renew every period. The temporary credentials are stored in the instance metadata service (IMDS), which can be accessed through a REST API call from the EC2 instance.</p>
+<p>If an attacker manages to trigger a REST API call to the IMDS service from the target EC2 instance, they can exfiltrate the credentials and use them from a different instance or even a machine external to the AWS cloud. This would give the attacker full privileges of the EC2 instance from where the credentials were extracted.</p>
+<figure id="attachment_300356" aria-describedby="caption-attachment-300356" style="width: 967px" class="wp-caption alignnone"><img decoding="async" loading="lazy" class="wp-image-300356" src="/blog/wp-content/uploads/2023/08/word-image-300355-1.png" alt="Anatomy of a credential compromise from EC2 instances" width="967" height="404" /><figcaption id="caption-attachment-300356" class="wp-caption-text">Figure 1: Anatomy of a credential compromise from EC2 instances</figcaption></figure>
+<h2>Detecting Suspicious Workload Credential Use with Prisma Cloud</h2>
+<p>To effectively secure sensitive data and infrastructure from attacks stemming from unauthorized credential use, Prisma Cloud has added to its <a href="/cyberpedia/what-is-ciem">cloud infrastructure entitlement management (CIEM)</a> capabilities with the release of two anomaly policies designed to detect anomalous use of workload credentials.</p>
+<p>The two policies are designed to identify when a credential assigned to a workload resource is used outside of the resource context. This behavior could indicate an attack or, in the least, unusual use of resource credentials. These policies are classified under the MITRE ATT&amp;CK framework, a globally recognized knowledge base of adversary tactics and techniques.</p>
+<h2>Overview of the New Policies</h2>
+<p>We designed the unusual usage of workload credentials anomaly policies to detect when a credential assigned to a workload is used by a different workload or device. To achieve this goal, the policies required the collection of all IP addresses assigned to an EC2 instance. Then, if a WRITE audit event is triggered using the EC2 instance credentials, but from an IP address unassociated with the instance, an alert will be generated. To facilitate the interpretation of the anomalous behavior, we created two policies:</p>
+<ol>
+<li><strong>Unusual Usage of Workload Credential from Outside the Cloud</strong>: This policy detects when the anomalous IP address is outside the IP address space of the cloud provider.</li>
+<li><strong>Unusual Usage of Workload Credential from Inside the Cloud</strong>: This policy detects the case when the anomalous IP address is inside the IP address space of the cloud provider.</li>
+</ol>
+<p>The policies are classified under the Mitre Att&amp;ck framework as:</p>
+<p><img decoding="async" loading="lazy" width="1580" height="444" class="wp-image-300370" src="/blog/wp-content/uploads/2023/08/word-image-300355-2.png" /></p>
+<h2>Anomaly Detection Technique</h2>
+<p>The two policies for unusual usage of workload credentials work similarly. Both use a two-phases approach to identify incidents that will generate alerts for a customer.</p>
+<p><strong>Learning</strong></p>
+<p>We first look for AssumeRole events, which indicate an instance requesting a new set of credentials. This event makes the logic add the instance and corresponding role to a model of normal behavior. After we see the first activity from an instance, we will record the IP address. In addition, we will augment this data with other IP addresses for the instance, which will come from the metadata that we’ve collected (e.g., there could be multiple IP addresses per interface, multiple interfaces for the instance, or changes in the IP assignment). At the end of this process, we’ll have a collection of IP addresses per instance.</p>
+<p>Note that if there is no activity from an instance, all the state for it will be deleted. This is because it’s common for instances to last a short period, especially in environments where autoscaling is enabled. The purging process will keep our state table small.</p>
+<p><strong>Detection</strong></p>
+<p>The policies compare the source IP address from where a WRITE audit event is generated to the IP addresses of the instances in the state table. If there’s a discrepancy, an alert will be raised. If the offending IP address is outside the IP address space of the cloud provider, an unusual usage of workload credential from outside the cloud alert will be triggered. If the offending IP address is within the cloud provider’s IP address space, an unusual usage of workload credential from inside the cloud alert will be triggered</p>
+<h2>Policies in Action</h2>
+<p>Figures 2 and 3 show an example of an unusual usage of workload credentials from outside of the AWS cloud detected by Prisma Cloud. As depicted in figure 2, the resource named dnd-lilit-credcomp-generation is expected to use IP address 172.31.95.202 to communicate with AWS services. But in figure 3, we can observe that a new IP address is using the credentials of the resource. The anomalous IP 43.19.65.207, which is outside of the AWS IP address space, triggers the anomalous behavior.</p>
+<figure id="attachment_300384" aria-describedby="caption-attachment-300384" style="width: 1600px" class="wp-caption alignnone"><img decoding="async" loading="lazy" class="wp-image-300384" src="/blog/wp-content/uploads/2023/08/word-image-300355-3.png" alt="Anomaly Details section shows the expected source IP." width="1600" height="498" /><figcaption id="caption-attachment-300384" class="wp-caption-text">Figure 2: The Anomaly Details section shows the expected source IP.</figcaption></figure>
+<figure id="attachment_300398" aria-describedby="caption-attachment-300398" style="width: 1600px" class="wp-caption alignnone"><img decoding="async" loading="lazy" class="wp-image-300398" src="/blog/wp-content/uploads/2023/08/word-image-300355-4.png" alt="Credential Access section shows the unusual IP address." width="1600" height="471" /><figcaption id="caption-attachment-300398" class="wp-caption-text">Figure 3: The Credential Access section shows the unusual IP address.</figcaption></figure>
+<p>The unusual usage of workload credentials anomaly policies are an essential tool for detecting compromised credentials used in cloud computing environments. With the use of these policies, organizations can better protect their resources against possible attacks and unauthorized access.</p>
+<h2>Learn More</h2>
+<p>Learn more about the <a href="/prisma/cloud/cloud-infrastructure-entitlement-mgmt">CIEM</a> and <a href="/prisma/cloud/cloud-threat-detection">Threat Detection</a> capabilities of Prisma Cloud and take it for a <a href="/prisma/request-a-prisma-cloud-trial">free 30-day test drive</a> to experience the advantages firsthand.</p>
+<p>The post <a rel="nofollow" href="https://www.paloaltonetworks.com/blog/prisma-cloud/anomaly-detection-policies-workload-credential/">Anomaly Detection Policies for Unusual Workload Credential Usage</a> appeared first on <a rel="nofollow" href="https://www.paloaltonetworks.com/blog">Palo Alto Networks Blog</a>.</p>
+]]></content:encoded>
+			    
+	    
+	    
+	        </item>
+        <item>
+	<title>Next Week in Las Vegas With Prisma Cloud</title>
+	<link>https://www.paloaltonetworks.com/blog/prisma-cloud/prismacloud-blackhat-2023/</link>
+	    
+	<dc:creator><![CDATA[Cameron Hyde]]></dc:creator>
+	<pubDate>Wed, 02 Aug 2023 12:00:33 +0000</pubDate>
+	<readTime>8</readTime>
+	<featuredImage>https://www.paloaltonetworks.com/blog/wp-content/uploads/2023/04/Woman-with-Laptop.jpg</featuredImage>
+	    		<category><![CDATA[Event]]></category>
+		<category><![CDATA[Black Hat]]></category>
+		<category><![CDATA[BSides]]></category>
+		<category><![CDATA[DEFCON]]></category>
+	<guid isPermaLink="false">https://www.paloaltonetworks.com/blog/?post_type=cloud_sec_post&#038;p=299964</guid>
+
+	    		<description><![CDATA[<p>Blackhat, BSides and Defcon 2023 – don’t miss breakout sessions, demos, CTF games, parties, prizes and networking. Come to Las Vegas.</p>
+<p>The post <a rel="nofollow" href="https://www.paloaltonetworks.com/blog/prisma-cloud/prismacloud-blackhat-2023/">Next Week in Las Vegas With Prisma Cloud</a> appeared first on <a rel="nofollow" href="https://www.paloaltonetworks.com/blog">Palo Alto Networks Blog</a>.</p>
+]]></description>
+						<content:encoded><![CDATA[<p>Don’t miss the breakout and theater sessions, demos, CTF games, parties, prizes and more. Come to Las Vegas — as we showcase the industry’s most comprehensive cloud-native application protection platform (CNAPP) at Black Hat, BSides and Defcon.</p>
+<figure id="attachment_299965" aria-describedby="caption-attachment-299965" style="width: 1640px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-299965" src="/blog/wp-content/uploads/2023/08/word-image-299964-1.png" alt="" width="1640" height="860" /><figcaption id="caption-attachment-299965" class="wp-caption-text">Fight Unfairly. At Palo Alto Networks, we innovate to outpace cyberthreats so you can prevent, detect and respond to any threat, anytime, anywhere.</figcaption></figure>
+<p>Prisma Cloud is sponsoring three events during the week of August 7 in Las Vegas, Nevada:</p>
+<ul>
+<li style="list-style-type: none;">
+<ul>
+<li>BSidesLV, August 8-9</li>
+<li>Black Hat, August 9-10</li>
+<li>Defcon, August 11-13</li>
+</ul>
+</li>
+</ul>
+<h2><strong>Secure from Code to Cloud</strong></h2>
+<p>Prisma Cloud secures applications from code to cloud across multicloud environments. The platform delivers comprehensive security with both continuous visibility and proactive threat prevention throughout the application lifecycle. Prisma Cloud enables security and DevOps teams to effectively collaborate to accelerate secure cloud-native application development and deployment.</p>
+<h2><strong>BSides Las Vegas: August 8-9</strong></h2>
+<p>Kick the week off at BSidesLV. Prisma Cloud by Palo Alto Networks is a Gold Sponsor. Stop by the Tuscany Suites and Casino Hotel to chat with our experts and enter our raffle for a chance to win a pair of customized Nike By You shoes.</p>
+<h4>Speaking Sessions</h4>
+<h5>The GitHub Actions Worm: Compromising GitHub Repositories Through the Actions Dependency Tree</h5>
+<p><em>Tuesday, August 8 at 4:00 PM</em></p>
+<p>Presenter: Asi Greenholts, Security Researcher, Palo Alto Networks</p>
+<p>How wide can a GitHub Actions worm spread?</p>
+<p>In this talk, I’ll demonstrate how a worm can crawl through actions and projects, infecting them with malware.</p>
+<p>We will explore the ways in which actions are loosely and implicitly dependent on other actions and create a graph-based dependency tree for GitHub actions. This map will set the path for the worm searching its way to infecting as many action dependencies and GitHub projects as possible.</p>
+<p>Join this talk to learn about the methods our worm uses to make its way toward other actions, to get familiar with the high profile open-source projects we could hijack, and to see this worm demoed in action.</p>
+<h5>Actions Have Consequences: The Overlooked Security Risks in Third-Party GitHub Actions</h5>
+<p><em>Wednesday, August 9 at 2:30 PM</em></p>
+<p>Presenter: Yaron Avital, Security Researcher, Palo Alto Networks</p>
+<p>After reviewing the build logs of public CI pipelines, I noticed security issues related to permissions and build integrity. To investigate the extent of the problem, I analyzed the build logs of the top 2,000 starred repositories on GitHub, and the results surprised even me.</p>
+<p>In this talk, I’ll share my findings on how the world's most popular repositories fail to manage their build permissions — and how these failures can lead to severe consequences, such as creating tokens to access cloud resources or introducing malware to repository code and artifacts.</p>
+<p>Next, I’ll uncover the existence of "unpinnable actions." We’ll challenge a highly recommended countermeasure for protecting against compromised third-party actions — pinning. Pinning supposedly assures that the action's code can’t be tampered with, but new malicious code can still sneak into your pipeline, even when pinned. I’lll share conditions that make an action unpinnable and reveal how the world's most popular actions we all use and pin are actually unpinnable.</p>
+<h2><strong>Black Hat USA: August 9-10</strong></h2>
+<p>Palo Alto Networks is a Platinum Sponsor of Black Hat 2023 and is delivering live speaker sessions, as well as in-booth theater presentations with demos and after-hours fun.</p>
+<p>Visit <strong>Booth #1332</strong> at the <strong>Mandalay Bay </strong>convention center in Las Vegas to chat with Prisma Cloud experts. Attend in-booth presentations and breakout sessions and experience personalized demos of Prisma Cloud. When you get your badge scanned at both booths, you’re automatically entered into our daily raffle to win a pair of Apple Airpods Max!</p>
+<p>Join Prisma Cloud for coffee on Wednesday, August 9 from 10:00 a.m. to 2:00 p.m. in the Palo Alto Networks booth (#1332). Open to attendees.</p>
+<p><strong>Related</strong>: <a href="https://www.blackhat.com/sponsor-interview/07122023.html#palo-alto-networks" rel="nofollow,noopener" >Black Hat Executive Q&amp;A with Wendi Whitmore</a>, Senior Vice President, Unit 42, Palo Alto Networks</p>
+<h4>Speaking Sessions</h4>
+<h5>What You Don’t Know CAN Hurt You: Unit 42 Global Attack Surface Findings</h5>
+<p><em>Thursday, August 10 from 11:30 AM - 12:20 PM</em></p>
+<p>Presented by: Josh Costa, Director, Product Marketing, Palo Alto Networks</p>
+<p>If you don’t know about a problem, you don’t have to worry about it, right? Well, not when it comes to your unknown internet-accessible attack surface. We've discovered that attackers initiate attacks within hours of a CVE publication. It’s important that you find and fix those security risks before they become an incident. Join this session to hear about the most common attack surface exposures we’ve found on the global attack surface of large enterprises and national governments. You’ll also learn best practices for managing your dynamic attack surface and how to fight back.</p>
+<h5>When a Zero-Day and Access Keys Collide in the Cloud: Responding to the SugarCRM 0-Day Vulnerability</h5>
+<p><em>Thursday, August 10 from 2:30 - 3:00 PM</em></p>
+<p>Presented by: Margaret Zimmermann, Consultant, Palo Alto Networks Unit 42</p>
+<p>How could a zero-day web vulnerability lead to a near complete compromise within an AWS environment? Pretty easily actually.</p>
+<p>While the SugarCRM CVE-2023-22952 0-day authentication bypass and remote code execution vulnerability might seem like a typical zero day, the infrastructure behind the scenes of the web application causes the most concern and potential for mayhem if not secured correctly. When a threat actor shows signs of AWS knowledge, the sky's the limit for what they can accomplish with the right permissions.</p>
+<p>This presentation maps out various attacks against AWS environments following the MITRE ATTACK Matrix framework, and wraps up with the multiple prevention mechanisms an organization can put in place to protect themselves. The complexity of the attacks details how seemingly innocuous AWS API calls lead to more daunting — and not always traceable — activity. One size does not fit all in cloud security, but these attacks highlight key areas to focus on to make sure you're ready to defend against those attacks when they come.</p>
+<h4>Prisma Cloud In-Booth Presentations:</h4>
+<ul>
+<li><strong>Keys to Effective Web Application and API Security</strong> by Ben Nicholson on 8/9 at 10:15 AM</li>
+<li><strong>Finding Sarah Connor - Supply Chain Weakest Links</strong> by Stephen Giguere on 8/9 at 2:45 PM</li>
+<li><strong>Real DevSecOps - Easy Developer Centric Security</strong> by Stephen Giguere on 8/10 at 11:15 PM</li>
+<li><strong>Build Better Roads Before Better Cars</strong> by Stephen Giguere on 8/10 at 2:45 PM</li>
+</ul>
+<h4>Executive Meeting Requests: Visit with Prisma Cloud at Black Hat</h4>
+<p>Customer and partner engagement is important to us because it’s the building block of your experience and our relationship. If you’d like to <a href="https://paloaltonetworks.jifflenow.com/external-request/blackhat2023/meeting-request?token=3f50cc7983f17212d179" rel="nofollow,noopener" >schedule a meeting with Prisma Cloud</a> subject matter experts, executives or sales reps, we’ll be available.</p>
+<h4>Join Us for a Sushi and Spirits SOCial on August 9 at Black Hat 2023</h4>
+<p>Please join Palo Alto Networks on August 9 for a night of excitement and networking at KUMI Japanese Restaurant + Bar, right in Mandalay Bay. The sushi, spirits and music start flowing when doors open at 5:00 p.m. This is an exclusive event, so I urge you to <a href="https://register.paloaltonetworks.com/socialbypaloaltonetworks">register now</a> to get on the list.</p>
+<h2><strong>DEF CON 31: August 11-13</strong></h2>
+<p>Wrap the week up at DEFCON 2023 where Prisma Cloud by Palo Alto Networks is sponsoring the Capture the Flag activity. Participate in an interactive workshop for a chance to win multiple prizes! Our team of experts will be onsite to guide you along the way.</p>
+<h5>The GitHub Actions Worm: Compromising GitHub Repositories Through the Actions Dependency Tree</h5>
+<p><em>Saturday, August 12 at 1:30 PM</em></p>
+<p>Presented by: Asi Greenholts, Security Researcher, Palo Alto Networks</p>
+<p>GitHub is the most popular platform to host open-source projects. Not surprisingly, the popularity of their CI/CD platform, GitHub Actions, is rising, making it an attractive target for attackers.</p>
+<p>In this talk I’ll show you, using a demo of POC worm, how an attacker can take advantage of the Custom GitHub actions ecosystem by infecting one action to spread malicious code to other actions and projects.</p>
+<p>We’ll start by exploring the ways in which actions are loosely and implicitly dependent on other actions. This will allow us to create a dependency tree of actions that starts from a project we want to attack and hopefully ends in a vulnerable action we can take control of.</p>
+<p>We’ll then dive into how GitHub Actions is working under the hood. I’ll show you how an attacker in control of an action can utilize the mechanism of the GitHub Actions Runner to infect other actions dependent on their action and eventually infect the targeted project.</p>
+<p>Finally, after we’ve gained all the theoretical knowledge, I’ll show you a demo with POC malware spreading through actions, and we’ll talk on how to defend against this kind of attack.</p>
+<h3><strong>See you in Las Vegas!</strong></h3>
+<p>The post <a rel="nofollow" href="https://www.paloaltonetworks.com/blog/prisma-cloud/prismacloud-blackhat-2023/">Next Week in Las Vegas With Prisma Cloud</a> appeared first on <a rel="nofollow" href="https://www.paloaltonetworks.com/blog">Palo Alto Networks Blog</a>.</p>
+]]></content:encoded>
+			    
+	    
+	    
+	        </item>
+        <item>
+	<title>Protecting Your Delivery Pipeline: Extensive CI/CD Security with Prisma Cloud</title>
+	<link>https://www.paloaltonetworks.com/blog/prisma-cloud/announcing-ci-cd-security-with-prisma-cloud/</link>
+	    
+	<dc:creator><![CDATA[Jonathan Bregman]]></dc:creator>
+	<pubDate>Thu, 27 Jul 2023 11:00:46 +0000</pubDate>
+	<readTime>5</readTime>
+	<featuredImage>https://www.paloaltonetworks.com/blog/wp-content/uploads/2020/12/Man-Pointing.jpg</featuredImage>
+	    		<category><![CDATA[Application Security]]></category>
+		<category><![CDATA[CI/CD Security]]></category>
+	<guid isPermaLink="false">https://www.paloaltonetworks.com/blog/?post_type=cloud_sec_post&#038;p=299088</guid>
+
+	    		<description><![CDATA[<p>Learn how Prisma Cloud’s CI/CD Security enables organizations with pipeline posture management, visibility into their engineering ecosystem, attack path analysis and more.</p>
+<p>The post <a rel="nofollow" href="https://www.paloaltonetworks.com/blog/prisma-cloud/announcing-ci-cd-security-with-prisma-cloud/">Protecting Your Delivery Pipeline: Extensive CI/CD Security with Prisma Cloud</a> appeared first on <a rel="nofollow" href="https://www.paloaltonetworks.com/blog">Palo Alto Networks Blog</a>.</p>
+]]></description>
+						<content:encoded><![CDATA[<p>With the rise in attacks on continuous integration and continuous delivery (CI/CD) environments, it’s no surprise that the U.S. Government recently released guidance to <a href="https://www.cisa.gov/news-events/alerts/2023/06/28/cisa-and-nsa-release-joint-guidance-defending-continuous-integrationcontinuous-delivery-cicd" rel="nofollow,noopener" >help organizations understand their risks and defend their pipelines</a>. CI/CD pipelines are critical to cloud-native software development and host highly sensitive data and credentials. But they often exist outside the purview of traditional AppSec teams.</p>
+<p>To help AppSec practitioners secure their pipelines, we’re excited to announce CI/CD Security by Prisma Cloud.</p>
+<p>With <a href="/prisma/cloud/ci-cd-security/">graph-based CI/CD security</a> in the industry’s most comprehensive code-to-cloud cloud-native application protection platform (CNAPP), Prisma Cloud gives you:</p>
+<ul>
+<li>Unmatched visibility into your engineering ecosystem</li>
+<li>Protection from the OWASP Top 10 CI/CD Risks</li>
+<li>Pipeline Posture Management</li>
+<li>Attack Path Analysis via the Cloud Application Graph™</li>
+</ul>
+<p>Let’s dive into the details.</p>
+<h2>Unmatched Visibility into the Engineering Ecosystem</h2>
+<p>As developers commit code to source control, most organizations have deployed various types of code scanners to detect misconfigurations in templates, vulnerabilities in open-source packages, exposed secrets and other issues. The best tools provide granular fix guidance directly for developers, but given the diversity of code and supporting scanners, <a href="/blog/prisma-cloud/appsec-engineering-ecosystem/">AppSec</a> teams are left with a fragmented view of risk spread across multiple siloed tools.</p>
+<p>What’s more, most organizations lack visibility into developers contributing to trusted artifact registries, which technologies and frameworks are in use, and how to export a <a href="/blog/prisma-cloud/full-stack-visibility-with-software-bill-of-materials-generation/">software bill of materials (SBOM)</a> of the environment.</p>
+<p>Prisma Cloud’s new Application Security dashboard unifies visibility across the engineering ecosystem. From a single pane, AppSec teams gain visibility across code repositories, contributors, technologies used and pipelines connected, along with specific code risks. By understanding which repositories and pipelines connect to production, teams can easily prioritize risk with full infrastructure context.</p>
+<figure id="attachment_299575" aria-describedby="caption-attachment-299575" style="width: 2048px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-299575" src="/blog/wp-content/uploads/2023/07/word-image-299088-1.png" alt="" width="2048" height="982" /><figcaption id="caption-attachment-299575" class="wp-caption-text">Figure 1: The Application Security dashboard provides a centralized view of your entire engineering ecosystem.</figcaption></figure>
+<h2>Defending Against the OWASP Top 10 CI/CD Risks</h2>
+<p><a href="https://events.dzone.com/dzone/CI-CD-Attack-Scenarios-How-to-Protect-Your-Production-Environment" rel="nofollow,noopener" >Attacks that seek to breach delivery pipelines</a> are far too common, and up until recently no industry-recognized framework was available. To provide guidance on attack vectors and best practices to mitigate them, Prisma Cloud’s world-class AppSec researchers developed and published a formally recognized industry benchmark — the <a href="https://owasp.org/www-project-top-10-ci-cd-security-risks/" rel="nofollow,noopener" >OWASP Top 10 CI/CD Security Risks</a> project.</p>
+<p>Organizations can benefit from the project at any stage in their CI/CD security journey. For example, it’s easy for teams to use the project’s guidance to help identify misconfigurations for version control systems (VCS) and <a href="/cyberpedia/what-is-the-ci-cd-pipeline-and-ci-cd-security">CI/CD pipelines</a>. Those misconfigurations could easily lead to code tampering, credential theft and ultimately a runtime breach.</p>
+<figure id="attachment_299589" aria-describedby="caption-attachment-299589" style="width: 1920px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-299589" src="/blog/wp-content/uploads/2023/07/word-image-299088-2.jpeg" alt="" width="1920" height="1080" /><figcaption id="caption-attachment-299589" class="wp-caption-text">Figure 2: The OWASP Top 10 CI/CD Security Risks</figcaption></figure>
+<h2>Pipeline Posture Management</h2>
+<p>To embrace <a href="/cyberpedia/what-is-devsecops">DevSecOps</a>, it’s essential to observe the posture of your delivery pipeline, ensure it’s protected against the Top 10 CI/CD risks and then report your findings to leadership. Prisma Cloud’s new dashboard provides continuous visibility across the critical pipeline issues with added context like system risks and both the number and frequency of events to accurately measure and alert on criticality.</p>
+<figure id="attachment_299603" aria-describedby="caption-attachment-299603" style="width: 2048px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-299603" src="/blog/wp-content/uploads/2023/07/word-image-299088-3.png" alt="" width="2048" height="1131" /><figcaption id="caption-attachment-299603" class="wp-caption-text">Figure 3: Prisma Cloud provides continuous pipeline posture management against the OWASP Top 10 CI/CD Risks.</figcaption></figure>
+<h2>Attack Path Analysis via the Cloud Application Graph™</h2>
+<p>The <a href="/blog/prisma-cloud/visualizing-ci-cd-ecosystem-from-attackers-perspective/">power that graph databases bring to contextualizing security</a> insights can’t be overstated. The ability to correlate multiple risk signals simultaneously to map an attacker's pathway to a breach is critical to delivering high fidelity alerts for AppSec teams. The Prisma Cloud Application Graph™ provides a dynamic visualization of your engineering ecosystem that allows you to better understand and analyze the environment and relationships between all artifacts from code to deployment.</p>
+<p>By effectively modeling every asset, you can map attack paths. This is critical as you protect your delivery pipelines from today’s sophisticated attacks. For example, cross-platform misconfigurations like <a href="/blog/prisma-cloud/poisoned-pipeline-execution-deep-dive">poisoned pipeline execution (PPE) </a>are only discoverable with graph-based analysis, which is why Prisma Cloud’s CI/CD Security is built off of the world’s first Application Graph.</p>
+<figure id="attachment_299617" aria-describedby="caption-attachment-299617" style="width: 2048px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-299617" src="/blog/wp-content/uploads/2023/07/word-image-299088-4.png" alt="" width="2048" height="1286" /><figcaption id="caption-attachment-299617" class="wp-caption-text">Figure 4: The Prisma Cloud Application Graph™ helps customers uncover breach paths.</figcaption></figure>
+<h2>CI/CD Security and AppSec: Looking to the Future</h2>
+<p>In this modern threat landscape, <a href="https://start.paloaltonetworks.com/gartner-devsecops-tools-for-secure-software-delivery.html">protecting the delivery pipeline</a> is more important than ever. Going forward, security and risk leaders must prioritize hardening CI/CD systems and processes as they begin to <a href="/blog/prisma-cloud/ci-cd-pipeline-security-strategy/">rearchitect their AppSec programs</a> to account for the evolving threat landscape.</p>
+<p>Since its inception, Prisma Cloud has been at the forefront of delivering solutions for the most pressing cloud security challenges. With the industry’s only code-to-cloud CNAPP, customers can now protect their delivery pipeline with graph-based CI/CD security.</p>
+<p>To watch a live demo of CI/CD Security by Prisma Cloud, visit us at booth #1332 at BlackHat USA 2023. We’ll also highlight our research with related talks at BSidesLV and DEFCON this year:</p>
+<ul>
+<li><em>Actions Have Consequences: The Overlooked Security Risks in Third-Party GitHub Actions</em></li>
+</ul>
+<p style="padding-left: 40px;">Wednesday, August 9 at 2:30pm PDT, <a href="https://bsideslv.org/talks#AYWS3V" rel="nofollow,noopener" >BSidesLV</a></p>
+<ul>
+<li><em>The GitHub Actions Worm: Compromising GitHub Repositories Through the Actions Dependency Tree</em></li>
+</ul>
+<p style="padding-left: 40px;">Tuesday, August 8 at 5:00pm PDT, <a href="https://bsideslv.org/talks#HWCBP7" rel="nofollow,noopener" >BSidesLV</a></p>
+<p style="padding-left: 40px;">Saturday, August 12 at 1:30pm PDT, <a href="https://defcon.org/" rel="nofollow,noopener" >DEFCON</a></p>
+<p>And if you want to learn which attack vectors you should prioritize at the start of your CI/CD security journey, read this technical guide on the <a href="/resources/whitepapers/top-10-cicd-security-risks">Top 10 CI/CD Security Risks</a>.</p>
+<p>The post <a rel="nofollow" href="https://www.paloaltonetworks.com/blog/prisma-cloud/announcing-ci-cd-security-with-prisma-cloud/">Protecting Your Delivery Pipeline: Extensive CI/CD Security with Prisma Cloud</a> appeared first on <a rel="nofollow" href="https://www.paloaltonetworks.com/blog">Palo Alto Networks Blog</a>.</p>
+]]></content:encoded>
+			    
+	    
+	    
+	        </item>
+        <item>
+	<title>Securing Golden Images at Build Using Prisma Cloud</title>
+	<link>https://www.paloaltonetworks.com/blog/prisma-cloud/securing-golden-images-hashicorp-packer/</link>
+	    
+	<dc:creator><![CDATA[Dennis Schmidt, Kyle Butler and Dan Barr]]></dc:creator>
+	<pubDate>Wed, 26 Jul 2023 12:00:26 +0000</pubDate>
+	<readTime>11</readTime>
+	<featuredImage>https://www.paloaltonetworks.com/blog/wp-content/uploads/2022/06/Tablet-Scrolling.jpg</featuredImage>
+	    		<category><![CDATA[Announcement]]></category>
+		<category><![CDATA[HashiCorp]]></category>
+	<guid isPermaLink="false">https://www.paloaltonetworks.com/blog/?post_type=cloud_sec_post&#038;p=299364</guid>
+
+	    		<description><![CDATA[<p>Learn how to secure your golden images using HashiCorp Packer and Prisma Cloud in this hands-on technical tutorial. Get practical tips to help you shift security left as you build golden images. </p>
+<p>The post <a rel="nofollow" href="https://www.paloaltonetworks.com/blog/prisma-cloud/securing-golden-images-hashicorp-packer/">Securing Golden Images at Build Using Prisma Cloud</a> appeared first on <a rel="nofollow" href="https://www.paloaltonetworks.com/blog">Palo Alto Networks Blog</a>.</p>
+]]></description>
+						<content:encoded><![CDATA[<p>Organizations often have a preferred base image from which they create virtual machines or instances. Base images are generally made up of a specific OS build and patch level, along with any software, configuration and security settings required by the organization or a specific use case.</p>
+<p>These base images are bundled into a “golden image” and shared as a standard across the organization. As time goes on, the requirements may change — security patches need to be applied or configuration settings have been updated. Tools exist to help manage the creation of these images, and DevOps teams have been leveraging their skills with automation to ensure a consistent and efficient build process.</p>
+<p>Security can’t be an afterthought when creating golden images. It’s a best practice to scan images during the build process. If vulnerabilities or compliance issues are found, the image pipeline should be abandoned before the image is published. Shifting left and scanning for compliance issues and vulnerabilities in the image build process can help eliminate runtime issues when instances are instantiated.</p>
+<p>Let’s walk through a tutorial and see how we can secure golden images built by a popular system and container build automation tool: <a href="https://www.packer.io/" rel="nofollow,noopener" >HashiCorp Packer</a>.</p>
+<h2>Securing Builds with HashiCorp Packer</h2>
+<p>HashiCorp Packer is a utility that allows for the creation of identical images across multiple platforms using a single-source configuration. This could be your organization’s tool of choice if you have a multicloud deployment. Packer can easily integrate with different CI/CD software to create a build pipeline for golden images. It is extensible and can be integrated with custom utilities.</p>
+<p>Packer can execute from a central build server, either in your data center or in the cloud.</p>
+<figure id="attachment_299365" aria-describedby="caption-attachment-299365" style="width: 836px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-299365" src="/blog/wp-content/uploads/2023/07/word-image-299364-1.jpeg" alt="" width="836" height="631" /><figcaption id="caption-attachment-299365" class="wp-caption-text">Figure 1. HashiCorp Packer’s process to create a build pipeline for golden images.</figcaption></figure>
+<p>As shown in figure 1, when the build process begins, Packer first connects to <a href="https://www.vaultproject.io/" rel="nofollow,noopener" >HashiCorp Vault</a> to get the Prisma Cloud credentials and other sensitive information. Then, Packer determines the latest Amazon Linux 2 AMI and creates an Amazon EC2 instance to perform the build. Once the instance has been created, Packer connects to it via SSH and executes the build scripts.</p>
+<p>Once the build scripts complete, Packer executes the Scan script — which will connect to Prisma Cloud — downloads and installs the Defender, executes a scan and evaluates the results. Then, it compares the results to a policy to see if the compliance or vulnerability threshold was crossed. If the scan results don’t meet the predefined thresholds, the build fails and no image is created. If the scan succeeds, a golden image is created. Then the build instance is terminated.</p>
+<p>Let’s walk through a demo of how you can use <a href="/prisma/environments/hashicorp">Prisma Cloud and HashiCorp</a> Packer to secure your golden images.</p>
+<h2>Getting Started with Prisma Cloud and HashiCorp Packer</h2>
+<p>To work through the demo on your own, follow these steps to ensure you have all necessary prerequisites:</p>
+<p><strong>Step 1: </strong>Obtain access key credentials from Prisma Cloud. If you don’t already have a key, open the Prisma Cloud console and then navigate to Settings → Access Control → Access Keys to create one.</p>
+<p><strong>Step 2:</strong> Locate the Prisma Cloud Compute Console URL by navigating to the Prisma Cloud console and then to Compute → System → Utilities. Use the value for “Path to Console” as the Console URL.</p>
+<p>Note: For the purposes of this blog, you’ll need the ability to install software either on your local workstation or a build server, depending on where you are testing.</p>
+<p><strong>Step 3:</strong> Make sure that you have network connectivity from your local laptop or build server to AWS, and then from AWS to Prisma Cloud. Packer will create a host in the default VPC; there should be an outbound network path to Prisma Cloud if you are using the AWS-created default VPC. If you want to use a nondefault VPC, we’ll cover how to do that later in the demo.</p>
+<p><strong>Step 4: </strong>Ensure the build user has the appropriate permission in AWS. You’ll need to create a user — or assume a role — that has the permissions documented <a href="https://developer.hashicorp.com/packer/plugins/builders/amazon#iam-task-or-instance-role" rel="nofollow,noopener" >here</a>. Additionally, you’ll need to configure your AWS CLI profile with the appropriate credentials.</p>
+<h2>Tutorial: Securing Your Golden Images</h2>
+<p>To start, we’ll need to configure Prisma Cloud. First, we want to create a Collection in Prisma Cloud so that we can limit the scope of the vulnerability and compliance policy rules to only the instance that Packer manages.</p>
+<p>Create a collection by following these steps:</p>
+<ol>
+<li>Log in to Prisma Cloud.</li>
+<li>Navigate to Compute → Manage → Collections and Tags.</li>
+<li>Click “Add collection.”</li>
+<li>Give the collection a name — for example, “packer-demo-collection” — and description.</li>
+<li>Change the “Hosts” field to specify the hosts that Packer will create. The Packer build file specifies these will be named “packer-demo-build” — specify the Hosts field as “packer-demo-*.”</li>
+<li>Click Save.</li>
+</ol>
+<p>Now, we want to create a vulnerability rule. The vulnerability threshold for the Packer build process will be set in the Prisma Cloud console. This provides for separation of duties so that the security operations team can identify the appropriate threshold for the build to fail, and the build administrators can create and execute builds that automatically adhere to that policy.</p>
+<p>To create a vulnerability rule that identifies the failure threshold, we’ll need to:</p>
+<ol>
+<li>Log in to Prisma Cloud.</li>
+<li>Navigate to Compute → Defend → Vulnerabilities → Hosts.</li>
+<li>Click “Add Rule.”</li>
+<li>Name “packer-host-vulnerability-rule".</li>
+<li>Scope it to the collection created above.</li>
+<li>Select a severity threshold: Off, Low, Medium, High or Critical.</li>
+<li>Click Save.</li>
+</ol>
+<p>Once we’ve created the vulnerability rule, we can create a compliance policy in the Prisma Cloud console. This enables the security operations team to identify critical configuration checks that will fail the build if they’re missing. To create a compliance policy, we need to:</p>
+<ol>
+<li>Log in to Prisma Cloud.</li>
+<li>Navigate to Compute → Defend → Compliance → Hosts.</li>
+<li>Click “Add Rule.”</li>
+<li>Name “packer-host-compliance-policy."</li>
+<li>Scope it to the collection created above.</li>
+<li>Under compliance actions, select the appropriate checks and related action: “Ignore” or “Alert” will disregard the check and “Block” will fail the build.</li>
+<li>Click Save.</li>
+</ol>
+<p>Now we can configure the build. To start, we need to <a href="https://securing-images-at-build-prisma-cloud-hcl-packer-blog.s3.amazonaws.com/prisma-cloud-and-packer.tar.gz" rel="nofollow,noopener" >download the artifacts</a> for this blog and extract them to our build server. Then, we can install HashiCorp Packer and HashiCorp Vault according to the instructions for your build server’s platform.</p>
+<p>Then, we can install the latest AWS CLI and ensure a profile is created with the appropriate AWS credentials: <code>aws configure --profile packer-demo</code>. Once we’ve created that profile, we can start the Vault server. Since this is a demonstration, run Vault in development mode with command: <code>vault server -dev</code>. Note the Root Token value displayed as output.</p>
+<p>Then, we need to open a new terminal and set the VAULT_ADDR and VAULT_TOKEN environment variables:</p>
+<p><img decoding="async" loading="lazy" class="alignnone size-full wp-image-299379" src="/blog/wp-content/uploads/2023/07/Screenshot-2023-07-25-at-12.06.04-PM.png" alt="" width="1194" height="118" /></p>
+<p>Now, we can add the Prisma Cloud credentials to the local Vault. First, create a file named secret.json with the template below — replace with your Prisma Cloud access information:</p>
+<p><img decoding="async" loading="lazy" class="alignnone size-full wp-image-299393" src="/blog/wp-content/uploads/2023/07/Screenshot-2023-07-25-at-12.06.48-PM.png" alt="" width="1090" height="222" /></p>
+<p>Then, add the secret data to the vault: <code>vault kv put secret/prisma_cloud @secret.json</code> and delete the file containing the secret data: <code>rm secret.json</code>.</p>
+<p>In the command prompt, navigate to the directory containing the downloaded artifacts and validate the Packer file using the command: <code>packer validate goldenimage.pkr.hcl</code>.</p>
+<p><img decoding="async" loading="lazy" class="alignnone size-full wp-image-299421" src="/blog/wp-content/uploads/2023/07/Screenshot-2023-07-25-at-12.07.33-PM.png" alt="" width="1188" height="108" /></p>
+<p>Now we can review the variables within the goldenimage.pkr.hcl file:</p>
+<ul>
+<li><strong>aws_profile</strong> — the name of the profile used when configuring the AWS CLI. The default is packer-demo.</li>
+<li><strong>region</strong> — the AWS region in which to source and build the image in. The default is us-east-1.</li>
+<li><strong>vulnerability_rule_name</strong> — the name of the vulnerability rule we created earlier. The default is packer-host-vulnerability-rule.</li>
+<li><strong>compliance_policy_name</strong> — the name of the compliance policy we created earlier, with a default name of packer-host-compliance-policy.</li>
+<li><strong>scratch_dir</strong> — the temporary directory for file downloads, script execution and scan results. The default is /var/tmp/scan.</li>
+<li><strong>vpc_id</strong> — the VPC in which to place the build server. If blank, Packer will attempt to place it in the default VPC. Note that if vpc-id is set, subnet-id must also be set. The default is blank.</li>
+<li><strong>subnet_id</strong> — the subnet in which to place the build server. If blank, Packer will attempt to pick the most available subnet. The default is blank.</li>
+<li><strong>show_scan_output</strong> — set this to yes to display the full results of the host scan. The default is no.</li>
+</ul>
+<p>These can be modified within the file or on the command line. To override the default variable values on the command line, use the -var flag as in the example below.</p>
+<p>To start a packer build, execute the command <code>packer build goldenimage.pkr.hcl</code>:</p>
+<p><img decoding="async" loading="lazy" class="alignnone size-full wp-image-299435" src="/blog/wp-content/uploads/2023/07/Screenshot-2023-07-25-at-12.08.23-PM.png" alt="" width="1282" height="68" /></p>
+<p>After running the command above, a build should begin:</p>
+<p><img decoding="async" loading="lazy" class="alignnone size-full wp-image-299449" src="/blog/wp-content/uploads/2023/07/Screenshot-2023-07-25-at-12.09.05-PM.png" alt="" width="1286" height="914" /></p>
+<p>If the build is successful, an AMI will be created:</p>
+<p><img decoding="async" loading="lazy" class="alignnone size-full wp-image-299463" src="/blog/wp-content/uploads/2023/07/Screenshot-2023-07-25-at-12.09.43-PM.png" alt="" width="1284" height="606" /></p>
+<h3>Using a Custom VPC</h3>
+<p>The configuration provided above will use the default VPC in AWS. Many organizations prefer a different VPC for testing. If your organization has a dedicated VPC that meets the networking requirements listed above, pass in the appropriate subnet ID in the variable “subnet-id” when executing the build — e.g., <code>-var "subnet_id=subnet-123456"</code>.</p>
+<p>Packer supplies many different options for the EBS-backed AMI builder, including AMI naming and tagging, AMI distribution and encryption. Check out <a href="https://developer.hashicorp.com/packer/plugins/builders/amazon/ebs" rel="nofollow,noopener" >the documentation</a> to learn more about different builder options.</p>
+<h2>Customizing Compliance Checks</h2>
+<p>The predefined Prisma Cloud compliance checks cover a wide range of configurations, but your organization may have custom configurations that need to be enforced at build time.</p>
+<p>Prisma Cloud enables you to <a href="https://docs.paloaltonetworks.com/prisma/prisma-cloud/prisma-cloud-admin-compute/compliance/custom_compliance_checks">create custom compliance checks</a> to help ensure golden images meet your compliance requirements. The custom compliance checks will run against the instance that Packer creates before an AMI is created. Let’s walk through how to enable custom compliance checks.</p>
+<p>To configure custom compliance checks for hosts, follow these steps:</p>
+<ol>
+<li>Log in to Prisma Cloud.</li>
+<li>Navigate to Compute → Manage → Defenders → Settings.</li>
+<li>Enable “Custom compliance checks for host.”</li>
+</ol>
+<p>Once the option is enabled, any Defenders that require custom checks must be reinstalled. No action is required for the build process described for this solution. But if existing Defenders in the environment want to make use of custom compliance checks, they need to be reinstalled.</p>
+<p>To define a custom compliance check, we’ll need to do the following:</p>
+<ol>
+<li>Log in to Prisma Cloud.</li>
+<li>Navigate to Compute → Defend → Compliance.</li>
+<li>Select the Custom tab.</li>
+<li>Click Add Check.</li>
+<li>Specify name, description and severity.</li>
+<li>Add a script. The script’s exit code determines the result of the check, where zero is pass and one is fail. For example, the script below returns an error if a particular file exists:</li>
+</ol>
+<p><img decoding="async" loading="lazy" class="alignnone size-full wp-image-299477" src="/blog/wp-content/uploads/2023/07/Screenshot-2023-07-25-at-12.10.43-PM.png" alt="" width="1280" height="228" /></p>
+<p>To attach a custom compliance check to a host’s policy, we’ll need to:</p>
+<ol>
+<li>Log in to Prisma Cloud.</li>
+<li>Navigate to Compute → Defend → Compliance.</li>
+<li>Select the Hosts tab.</li>
+<li>Modify the “packer-host-compliance-rule” created above.</li>
+<li>In the Compliance actions section, search for the custom compliance check and set the action to “Block.”</li>
+<li>Click Save.</li>
+</ol>
+<h3>Testing the Custom Compliance Check</h3>
+<p>Now we can rerun the Packer build to execute the custom compliance check. We’ll need to review the build output to ensure the compliance check is being evaluated. For example, if the custom compliance check described above successfully executes, the build will fail and the log will look like this:</p>
+<p><img decoding="async" loading="lazy" class="alignnone size-full wp-image-299505" src="/blog/wp-content/uploads/2023/07/Screenshot-2023-07-25-at-12.11.27-PM.png" alt="" width="1288" height="188" /></p>
+<h2>Wrapping up the Demo</h2>
+<p>Now that we’re done with the demo, we need to undo the changes we made. To start, we recommend that you remove any AMIs that were used for testing because they could incur cost. The AMIs created during testing are named “packer-demo-*.”</p>
+<p>To deregister them, follow these steps:</p>
+<ol>
+<li>Log in to the AWS console.</li>
+<li>Navigate to EC2.</li>
+<li>Select AMIs under the Images heading.</li>
+<li>Ensure the “Owned by me” filter is set and search for “packer-demo.”</li>
+<li>Select the images, click Actions, then Deregister AMI and then confirm.</li>
+<li>Delete any snapshots associated with the deleted AMIs.</li>
+</ol>
+<p>Now, we can remove the scripts that we downloaded earlier and delete the binaries and path entries from your build server. To do this, uninstall Packer and Vault from your system using the appropriate package removal procedures for your platform and installation method.</p>
+<p>Then, delete the AWS CLI profile by editing your ~/.aws/config and ~/.aws/credentials files. Once that’s done, we need to go back into the Prisma Cloud console and remove or delete the following:</p>
+<ul>
+<li>Compliance policy “packer-host-compliance-rule”</li>
+<li>Vulnerability rule “packer-host-vulnerability-rule”</li>
+<li>Collection “packer-demo-collection”</li>
+<li>Any Defenders named “packer-build-*”</li>
+<li>The access key created as a prerequisite for this process</li>
+</ul>
+<h2>Next Steps</h2>
+<p>Now that you have your secure image, you are ready to start deploying instances across your environment. You have effectively “shifted left” and added security to your golden image pipeline. However, please keep in mind that shifting left and enabling security in the build process isn’t enough. Organizations need to be vigilant and ensure visibility for vulnerabilities and compliance during runtime as well. <a href="/prisma/cloud">Prisma Cloud</a> can help achieve this with both agentless and agent-based solutions.</p>
+<p>We hope you have enjoyed this post on integrating HashiCorp Packer with Prisma Cloud for scanning images in the build pipeline. Stay tuned for more ideas and demos on how to integrate Prisma Cloud and HashiCorp technologies to help secure your environment.</p>
+<p>The post <a rel="nofollow" href="https://www.paloaltonetworks.com/blog/prisma-cloud/securing-golden-images-hashicorp-packer/">Securing Golden Images at Build Using Prisma Cloud</a> appeared first on <a rel="nofollow" href="https://www.paloaltonetworks.com/blog">Palo Alto Networks Blog</a>.</p>
+]]></content:encoded>
+			    
+	    
+	    
+	        </item>
+        <item>
+	<title>LLM in the Cloud — Advantages and Risks</title>
+	<link>https://www.paloaltonetworks.com/blog/2023/07/llm-in-the-cloud/</link>
+	    		<comments>https://www.paloaltonetworks.com/blog/2023/07/llm-in-the-cloud/#respond</comments>
+	    
+	<dc:creator><![CDATA[Daniel Prizmant and Jay Chen]]></dc:creator>
+	<pubDate>Thu, 20 Jul 2023 15:00:58 +0000</pubDate>
+	<readTime>6</readTime>
+	<featuredImage>https://www.paloaltonetworks.com/blog/wp-content/uploads/2023/07/NetSec-Adhoc-Updated-Blog-Image-Resize-508484039-1.png</featuredImage>
+	    		<category><![CDATA[Company & Culture]]></category>
+		<category><![CDATA[Points of View]]></category>
+		<category><![CDATA[AI]]></category>
+		<category><![CDATA[cloud]]></category>
+		<category><![CDATA[LLM]]></category>
+		<category><![CDATA[ML]]></category>
+	<guid isPermaLink="false">https://www.paloaltonetworks.com/blog/?p=298905</guid>
+
+	    		<description><![CDATA[<p>The development of large language models (LLMs) has shown great promise in enhancing cloud security. </p>
+<p>The post <a rel="nofollow" href="https://www.paloaltonetworks.com/blog/2023/07/llm-in-the-cloud/">LLM in the Cloud — Advantages and Risks</a> appeared first on <a rel="nofollow" href="https://www.paloaltonetworks.com/blog">Palo Alto Networks Blog</a>.</p>
+]]></description>
+						<content:encoded><![CDATA[<h2><a id="post-298905-_n1qkdqathrt0"></a>LLM and Cloud Security</h2>
+<p>Let’s explore the relationship between LLMs and cloud security, discussing how these advanced models can be dangerous, as well as leveraged to improve the overall security posture of cloud-based systems. Simply put, a large language model (LLM) is an artificial intelligence program designed to understand and generate human language. It is trained on vast amounts of text data from the internet, learning grammar, facts and reasoning abilities. With this knowledge, an LLM can answer questions, generate text and even hold a conversation with users. Examples of LLMs include OpenAI's ChatGPT, Google’s Bard and Microsoft's new Bing search engine.</p>
+<p>As cloud computing continues to dominate the technology landscape, it has become more important than ever to ensure robust security for the services and data residing in the cloud. The development of large language models (LLMs) has shown great promise in enhancing cloud security.</p>
+<h2><a id="post-298905-_m8ibnjcsfhcn"></a>Risks of LLM</h2>
+<p>As revolutionary as the LLM technology can be, it is still in its infancy, and there are known issues and limitations that AI researchers have yet to conquer. These issues may be the showstoppers for some applications. And, like any tool accessible to the public, LLM can be used for benign, as well as malign purposes. While generative AI can produce helpful and accurate content for society, it can also create misinformation that deludes the content for consumers.</p>
+<h2><a id="post-298905-_g5v8ofm1ujsy"></a>Risky Characteristics</h2>
+<h4><a id="post-298905-_samjprfhlghs"></a>Hallucination</h4>
+<p>LLM may generate output that cannot be grounded by the input context or the knowledge of the model. It means that the language model generates text that is not logically consistent with the input, or is semantically incorrect but still sounds plausible to a human reader.</p>
+<h4><a id="post-298905-_sogv7of8ui4p"></a>Bias</h4>
+<p>Most LLM applications rely on pretrained models because creating a model from scratch is too expensive for most organizations. However, there is no perfectly balanced training data, and thus every model will always be biased in certain aspects. For example, the training data may contain more English texts than Chinese texts or more knowledge about liberalism than conservatism. When humans rely on the recommendations from these models, their biases can result in unfair or discriminatory decisions.</p>
+<h4><a id="post-298905-_hu7ya565nghy"></a>Consistency</h4>
+<p>LLM may not always generate the same outputs that are given the same inputs. Under the hood, LLMs are probabilistic models that continue to predict the next word based on certain probability distributions.</p>
+<h4><a id="post-298905-_flgfci9i9pcr"></a>Filter Bypass</h4>
+<p>LLM tools are typically built with security filters to prevent the models from generating unwanted content, such as adult, violent or proprietary content. Such filters, however, can sometimes be bypassed by manipulating the inputs (e.g., prompt injection). Researchers have demonstrated various <a href="https://www.jailbreakchat.com/" rel="nofollow,noopener" >techniques</a> to successfully instruct ChatGPT to generate offensive texts or make ungrounded predictions.</p>
+<h4><a id="post-298905-_nt1yjyem9svv"></a>Data Privacy</h4>
+<p>By design, LLM can only take unencrypted inputs and generate unencrypted output. When a proprietary LLM is offered as a service like OpenAI, the service providers hoard a large amount of sensitive or classified information. The outcome of a data breach incident can be catastrophic, as seen in the recent <a href="https://www.securityweek.com/openai-patches-account-takeover-vulnerabilities-in-chatgpt/" rel="nofollow,noopener" >account takeover</a> and <a href="https://www.bleepingcomputer.com/news/security/openai-chatgpt-payment-data-leak-caused-by-open-source-bug/?mc_cid=0abe1de3f3&amp;mc_eid=a48de14a58" rel="nofollow,noopener" >leaked queries</a> incidents.</p>
+<h2><a id="post-298905-_ekidkjr7kay1"></a>Malicious Usages</h2>
+<h4><a id="post-298905-_28wve129oyl9"></a>Misinformation and Disinformation</h4>
+<p>With their advanced language generation capabilities, LLMs can create convincing, but false content. This contributes to the spread of fake news, conspiracy theories or malicious narratives.</p>
+<h4><a id="post-298905-_tazksguscle6"></a>Social Engineering Attacks</h4>
+<p>Malicious actors can weaponize LLMs to create sophisticated social engineering attacks, such as spear phishing emails and deep fake content.</p>
+<h4><a id="post-298905-_tewypz9a9ali"></a>Intellectual Property Infringement</h4>
+<p>LLMs can be used to generate content that closely resembles copyrighted or proprietary material. This poses a risk to organizations that rely on intellectual property to maintain a competitive advantage.</p>
+<h4><a id="post-298905-_oo37x7w2unz7"></a>Offensive Tools Creation</h4>
+<p>Generative AI has been used for auditing source code and writing new code. Researchers demonstrated it could also write malicious code like <a href="https://www.malwarebytes.com/blog/news/2023/03/chatgpt-happy-to-write-ransomware-just-really-bad-at-it" rel="nofollow,noopener" >ransomware</a>. There are also <a href="https://arstechnica.com/information-technology/2023/01/chatgpt-is-enabling-script-kiddies-to-write-functional-malware/" rel="nofollow,noopener" >reports</a> showing that cybercriminals use ChatGPT to create offensive scripts.</p>
+<h2><a id="post-298905-_eol2a9gsr0nx"></a>LLM Use Cases in Cloud Security</h2>
+<p>However, if used correctly, LLM can also be leveraged to improve cloud security.</p>
+<h4><a id="post-298905-_rw206qgfmloh"></a>Automating Threat Detection and Response</h4>
+<p>One of the most significant benefits of LLMs in the context of cloud security is their ability to streamline threat detection and response processes. By incorporating natural language understanding and machine learning, LLMs can identify potential threats hidden in large volumes of data and user behavior patterns. By continuously learning from new data, LLMs can adapt to emerging threats and provide real-time threat information, enabling organizations to respond quickly and efficiently to security incidents.</p>
+<h4><a id="post-298905-_i0k6lnigzv5y"></a>Enhancing Security Compliance</h4>
+<p>As regulatory frameworks continue to evolve, organizations face the challenge of <em>maintaining compliance</em> with various security standards and requirements. LLMs can be used to analyze and interpret regulatory texts, allowing organizations to understand and implement necessary security controls easily. By automating compliance management, LLMs can significantly reduce the burden on security teams and enable them to focus on other critical tasks.</p>
+<p>This is extremely relevant to compliance-heavy products, such as Prisma Cloud, and even more relevant when the customer managing the product is trying to comply with certain regulations.</p>
+<h4><a id="post-298905-_no80vqf9unv5"></a>Social Engineering Attack Prevention</h4>
+<p>Social engineering attacks, such as phishing and pretexting, are among the most prevalent threats to cloud security. By utilizing LLMs to analyze communication patterns and identify potential threats, organizations can proactively detect and block social engineering attacks. With advanced language understanding capabilities, LLMs can discern the subtle differences between legitimate and malicious communications, providing an additional layer of protection for cloud-based systems.</p>
+<h4><a id="post-298905-_ibqemf9zt9gz"></a>Improving Incident Response Communication</h4>
+<p>Effective communication is a critical aspect of incident response in cloud security. LLMs can be used to generate accurate and timely reports, making it easier for security teams to understand the nature of incidents and coordinate their response efforts. Additionally, LLMs can be employed to create clear and concise communications with stakeholders, helping organizations manage the reputational risks associated with security breaches.</p>
+<h2><a id="post-298905-_yahxlvxozd9o"></a>Prisma Cloud and AI</h2>
+<p>LLM, AI and ML aren’t strangers to Prisma Cloud. We are currently leveraging those technologies to improve our customers’ cloud security in several ways. For example, Prisma Cloud provides a rich set of machine-learning-based UEBA anomaly policies to help customers <a href="/blog/prisma-cloud/threat-detection-using-tor-networks/">identify attacks launched against their cloud environments</a>. The <a href="https://docs.paloaltonetworks.com/prisma/prisma-cloud/prisma-cloud-admin/prisma-cloud-policies/anomaly-policies">policies continuously inspect</a> the event logs generated from the activity of the existing subjects in each environment and look for any mischievous activity.</p>
+<figure id="attachment_298936" aria-describedby="caption-attachment-298936" style="width: 1288px" class="wp-caption alignnone"><img decoding="async" loading="lazy" class="wp-image-298936" src="/blog/wp-content/uploads/2023/07/word-image-298905-1.png" alt="List of Prisma Cloud anomalies by policy name, policy type and severity." width="1288" height="888" /><figcaption id="caption-attachment-298936" class="wp-caption-text">Some Prisma Cloud Anomalies</figcaption></figure>
+<p>Prisma Cloud is committed to being at the forefront of technological advancements, enabling us to anticipate and proactively address emerging threats and risks in the era of generative AI. We persistently leverage the power of AI to streamline security operations, identify novel threats, and efficiently close security gaps. Recognizing the limitations and risks of generative AI, we will proceed with utmost caution and prioritize our customers' security and privacy.</p>
+<p>The post <a rel="nofollow" href="https://www.paloaltonetworks.com/blog/2023/07/llm-in-the-cloud/">LLM in the Cloud — Advantages and Risks</a> appeared first on <a rel="nofollow" href="https://www.paloaltonetworks.com/blog">Palo Alto Networks Blog</a>.</p>
+]]></content:encoded>
+			    
+	    		<wfw:commentRss>https://www.paloaltonetworks.com/blog/2023/07/llm-in-the-cloud/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+	    
+	    
+	        </item>
+        <item>
+	<title>Top 3 IAM Risks in Your GitHub Organization</title>
+	<link>https://www.paloaltonetworks.com/blog/prisma-cloud/prevent-inadequate-iam-github-organization/</link>
+	    
+	<dc:creator><![CDATA[Omer Gil and Yaron Avital]]></dc:creator>
+	<pubDate>Tue, 18 Jul 2023 12:00:57 +0000</pubDate>
+	<readTime>7</readTime>
+	<featuredImage>https://www.paloaltonetworks.com/blog/wp-content/uploads/2022/01/Taking-a-Call.jpg</featuredImage>
+	    		<category><![CDATA[Secure the Cloud]]></category>
+		<category><![CDATA[CI/CD Security]]></category>
+		<category><![CDATA[GitHub]]></category>
+		<category><![CDATA[IAM]]></category>
+	<guid isPermaLink="false">https://www.paloaltonetworks.com/blog/?post_type=cloud_sec_post&#038;p=298890</guid>
+
+	    		<description><![CDATA[<p>Learn the top 3 IAM risks for GitHub Organizations, and discover practical tips to protect your organization with IAM for your source control management system.</p>
+<p>The post <a rel="nofollow" href="https://www.paloaltonetworks.com/blog/prisma-cloud/prevent-inadequate-iam-github-organization/">Top 3 IAM Risks in Your GitHub Organization</a> appeared first on <a rel="nofollow" href="https://www.paloaltonetworks.com/blog">Palo Alto Networks Blog</a>.</p>
+]]></description>
+						<content:encoded><![CDATA[<p>Identity and access management (IAM) has always been an area of focus for organizations, particularly when it comes to source control management systems (SCM). And rightly so — inadequate identity and access management is one of the <a href="https://start.paloaltonetworks.com/top-10-cicd-security-risks.html">top 10 CI/CD security risks</a>.</p>
+<p><a href="/cyberpedia/what-is-identity-and-access-management">IAM</a> focuses on properly managing the large number of both human and programmatic identities existing in an organization’s ecosystem. Within the context of IAM for their SCM — such as GitHub — organizations need to optimize their security and governance over all identities in their SCM. In doing so, they can ensure they’re protected from account compromise, which bad actors can leverage to access the production environment.</p>
+<p>Many organizations integrate GitHub with single sign-on (SSO) and use that as a primary control to address IAM risks within their GitHub organizations. But this practice isn’t as straightforward as it seems. To start, SSO is only available for organizations using the GitHub Enterprise license. And while SSO is a strong control, it must be configured properly and must exist alongside additional controls to properly protect organizations from IAM risks.</p>
+<h2>Single Sign-On (SSO) in GitHub</h2>
+<p>GitHub organizations are shared accounts that enable simultaneous collaboration and administration across multiple repositories. Both business and open-source project maintainers use these organizations because of their valuable functionality. GitHub organizations enable centrally managed configurations that impact all of the organization’s repositories and members — such as branch settings, labels and organization webhooks. They also create a security baseline by configuring permissions, setting repository visibility and enforcing two-factor authentication (2FA) on user accounts.</p>
+<p>GitHub organizations also enable the ability to manage access controls across multiple projects through features like SSO. With SSO, organization members can securely authenticate across multiple platforms by using one set of credentials through an identity provider (IdP).</p>
+<p>Companies can also combine SSO with a system for cross-domain identity management (SCIM) layer. Adding SCIM on top of SSO allows you to automatically add, manage and deprovision organization members’ access to a GitHub Enterprise.</p>
+<p>Managing members through SSO and SCIM helps organizations to set and control a password policy, configure and enforce a 2FA mechanism aligned with the company’s standards, provide users with a single password and other security tasks. Implementing SSO also helps restrict user access to a corporate ecosystem by requiring authentication via the company’s email address.</p>
+<p>While SSO is an important tool for IAM, it’s only available in the premium GitHub Enterprise plan. Other widely-used licenses, like GitHub Team, don’t support SSO, which introduces important security considerations that teams must consider as they adopt IAM best practices in their organization.</p>
+<p>Let’s dive into the top three IAM risks associated with GitHub organizations. Along the way, we’ll cover IAM best practices to keep your organization secure.</p>
+<h2>Private Email Addresses in GitHub Accounts</h2>
+<p>Because GitHub is the most popular SCM and is used extensively by developers, it’s common for developers to have pre-existing GitHub user accounts for their private use. Developers typically prefer to use their private accounts while doing work for their company because it’s easier to centralize and manage their projects and work under one user account. But this isn’t a best practice, as private email addresses introduce a host of security concerns.</p>
+<p>When employees use private email addresses, the security of an employee’s GitHub account is highly dependent on the security of the external private email account to which it’s assigned. The baseline security level of the organization and its connected assets — such as code, artifacts and CI/CD integrations — will be set to the security level of the employees’ private email addresses, rather than the organization’s security level.</p>
+<p>If attackers gain control over the user’s private email account, they can use GitHub’s password recovery mechanism to set a new GitHub password and use it to log in. From there, they can compromise the GitHub account and instigate an attack on the GitHub organization.</p>
+<p>To protect your organization from these risks, follow key best practices. First, establish an employee onboarding protocol where new hires create a dedicated GitHub account tied to their corporate email address.</p>
+<p>You’ll also want to enforce two-factor authentication (2FA) in your GitHub organization, which is made available on all GitHub’s licensing plans.</p>
+<h2>Ghost GitHub Accounts</h2>
+<p>Another GitHub IAM risk arises when offboarding an employee. As a part of the offboarding process, you’ll want to ensure all their user accounts are disabled or deleted to prevent future access to the organizations’ systems.</p>
+<p>When GitHub organizations are integrated with the corporate SSO authentication solution, users can no longer access company systems once the user account is disabled in the IdP. This process maintains IAM best practices.</p>
+<p>But if your GitHub organization’s authentication is based solely on GitHub-based identities and not SSO, disabling the user accounts of offboarded employees in the IdP won’t affect their GitHub user accounts. This means that offboarded employees will retain access to their user accounts.</p>
+<p>To remove members from the organization, the organization owner will need to manually identify members by their username and remove them from the organization during offboarding. If this practice isn’t consistently applied during the offboarding process, and private email accounts are allowed to access GitHub, then your organization is vulnerable to IAM-based attacks.</p>
+<p>Don’t discount how challenging — and time-consuming — it is to completely disable offboarded employees’ user accounts. To reduce your attack surface, enable SSO.</p>
+<p>If your GitHub license doesn’t support SSO, you’ll need to carefully maintain an external inventory of accounts storing all organization accounts’ usernames and email addresses. Without this inventory, you’ll need to manually remove or disable private user accounts — or use custom scripts to do so. User accounts can otherwise fall through the cracks, leaving them to remain an indefinite part of the GitHub organization.</p>
+<h2>Is The User Fully Offboarded?</h2>
+<p>In the two risks detailed above, we described issues that originate from managing GitHub users without SSO.</p>
+<p>Companies that manage their users through SSO might believe the employee lifecycle, from onboarding to offboarding, can be thoroughly managed through the IdP. But even with SSO, the organization is still exposed to IAM risk if it hasn’tproperly implemented SCIM.</p>
+<p>According to <a href="https://docs.github.com/en/enterprise-cloud@latest/authentication/authenticating-with-saml-single-sign-on/authorizing-a-personal-access-token-for-use-with-saml-single-sign-on#:~:text=After%20you%20authorize,defined%20during%20creation." rel="nofollow,noopener" >GitHub documentation</a>, while the creation of SSH keys or personal access tokens (PATs) require authorization through SSO, these credentials persist even if the associated user is deactivated in the IdP. In fact, deactivating the user in the IdP only prevents the user from reauthenticating to GitHub’s website. This means that the GitHub user will remain an organization member and have full access through any of their SSH keys and PATs.</p>
+<p>These stale programmatic credentials expose your organization to risks associated with insufficient credential hygiene — yet another <a href="https://start.paloaltonetworks.com/top-10-cicd-security-risks.html">top 10 CI/CD security risk</a>. To revoke these credentials, the organization owner will be required to manually remove the user account from the GitHub organization.</p>
+<p>Implementing SCIM on top of SSO ensures that user deactivation through the IdP will automatically deprovision the GitHub user from the GitHub organization, restricting any types of existing and future access.</p>
+<figure id="attachment_298891" aria-describedby="caption-attachment-298891" style="width: 1024px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-298891" src="/blog/wp-content/uploads/2023/07/word-image-298890-1.png" alt="" width="1024" height="623" /><figcaption id="caption-attachment-298891" class="wp-caption-text">Figure 1: User credentials often persist even after the onboarding process deactivates the user in the IdP.</figcaption></figure>
+<h2>Addressing IAM Risks in Your GitHub Organization</h2>
+<p><a href="/prisma/cloud/cloud-infrastructure-entitlement-mgmt">Identity and access management risks</a> are a high priority for any security team responsible for protecting the organization’s SCM.</p>
+<p>Because SCM is the gateway to a corporate’s entire CI/CD ecosystem, inadequate<a href="/blog/prisma-cloud/customizing-iam-access-control-policies/"> IAM practices</a> in the SCM can lead to the compromise of not only the assets stored in a GitHub Enterprise, but in other systems as well — including production.</p>
+<p>That’s why it’s important to integrate GitHub with SSO while also adopting other best practices to protect your organization from IAM-based risks.</p>
+<h2>Learn More</h2>
+<p>With customized IAM policies, organizations can ensure that users have appropriate access, comply with regulatory requirements, reduce the risk of insider threats, and simplify the access management process.</p>
+<p>If you’d like to learn about the CIEM capabilities of <a href="/prisma/cloud/cloud-infrastructure-entitlement-mgmt">Prisma Cloud</a>, take it for a <a href="/prisma/request-a-prisma-cloud-trial">free 30-day test drive</a>.</p>
+<p>The post <a rel="nofollow" href="https://www.paloaltonetworks.com/blog/prisma-cloud/prevent-inadequate-iam-github-organization/">Top 3 IAM Risks in Your GitHub Organization</a> appeared first on <a rel="nofollow" href="https://www.paloaltonetworks.com/blog">Palo Alto Networks Blog</a>.</p>
+]]></content:encoded>
+			    
+	    
+	    
+	        </item>
+        <item>
+	<title>Abusing Repository Webhooks to Access Internal CI/CD Systems at Scale</title>
+	<link>https://www.paloaltonetworks.com/blog/prisma-cloud/repository-webhook-abuse-access-ci-cd-systems-at-scale/</link>
+	    
+	<dc:creator><![CDATA[Omer Gil and Asi Greenholts]]></dc:creator>
+	<pubDate>Thu, 13 Jul 2023 12:00:37 +0000</pubDate>
+	<readTime>15</readTime>
+	<featuredImage>https://www.paloaltonetworks.com/blog/wp-content/uploads/2021/10/Should-be-Mac.jpg</featuredImage>
+	    		<category><![CDATA[DevSecOps]]></category>
+		<category><![CDATA[CI/CD Security]]></category>
+		<category><![CDATA[Jenkins]]></category>
+		<category><![CDATA[VCS Security]]></category>
+	<guid isPermaLink="false">https://www.paloaltonetworks.com/blog/?post_type=cloud_sec_post&#038;p=298621</guid>
+
+	    		<description><![CDATA[<p>Learn how attackers abuse repository webhooks to gain access to Jenkins instances and discover CI/CD security tips to protect your pipelines from attack.</p>
+<p>The post <a rel="nofollow" href="https://www.paloaltonetworks.com/blog/prisma-cloud/repository-webhook-abuse-access-ci-cd-systems-at-scale/">Abusing Repository Webhooks to Access Internal CI/CD Systems at Scale</a> appeared first on <a rel="nofollow" href="https://www.paloaltonetworks.com/blog">Palo Alto Networks Blog</a>.</p>
+]]></description>
+						<content:encoded><![CDATA[<p>With the increasing adoption of CI/CD systems, organizations tend to adopt a common CI/CD architecture. This architecture combines SaaS-based source control management systems — such as GitHub and GitLab — with an internal, self-hosted CI/CD solution like Jenkins.</p>
+<p>Many organizations using this architecture allow their <a href="/cyberpedia/what-is-the-ci-cd-pipeline-and-ci-cd-security">CI/CD environment</a> to receive webhook events from the SaaS source control vendors to trigger pipeline jobs. For the webhook requests to pass through the organization's firewall and access the internally hosted CI/CD system, SaaS-based source control management (SCM) vendors need to supply the IP ranges from which their webhook requests originate.</p>
+<p>On the surface, these repository webhooks seem secure. But we recently tested these webhooks to identify security issues and discovered that anyone on the internet can overcome the IP restriction, access data and execute code on internal CI/CD pipelines at scale.</p>
+<p>Let’s walk through how we abused repository webhooks and then discuss practical ways you can protect yourself from this <a href="https://start.paloaltonetworks.com/top-10-cicd-security-risks.html">CI/CD security risk</a>.</p>
+<h2>Source Control Management Webhooks Are Common Targets</h2>
+<p>The IP range of the SaaS SCM webhook service is shared between all organizations using the SCM. Any webhook event sent from the SCM, regardless of the tenant, will have a source IP in this range. Bad actors see this as an opportunity to successfully send packets through any firewall allowing this IP range via webhook events.</p>
+<p style="text-align: center;"><iframe loading="lazy" width="560" height="315" src="//www.youtube.com/embed/ntFjdiYJ9K8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="allowfullscreen"></iframe></p>
+<p style="text-align: center;"><sup>Learn how attackers abuse repository webhooks to trigger pipelines, send malicious payloads, and access hundreds of internal CI systems in scale.</sup></p>
+<p>The structure and contents of SCM webhook events are strict. Each event is sent as an HTTP POST request with predefined headers and a structured JSON in the body of the request. Users are limited in their ability to modify the content of the webhook event. They’re only allowed to set the URL of the event target, modify specific non-harmful headers and control some of the JSON field values without changing its structure.</p>
+<p>Because of this limited flexibility, there aren’t many opportunities for exploitation. One known attack scenario includes triggering CI/CD systems from the internet by sending a request from a foreign SCM organization. But this type of attack can be easily mitigated because the configuration of a pipeline is usually bound within a specific SCM repository and organization. If not, a secret can be attached to the webhook and verified when the pipeline executes.</p>
+<p>Adversaries who attempt to manipulate webhook events face multiple limitations, including:</p>
+<ul>
+<li>Minimal control around the content and structure of the event</li>
+<li>Dedicated IP ranges used exclusively — or nearly exclusively — by the SCM webhook service in <a href="https://api.github.com/meta" rel="nofollow,noopener" >GitHub</a> and <a href="https://docs.gitlab.com/ee/user/gitlab_com/#ip-range" rel="nofollow,noopener" >GitLab</a></li>
+<li>Protections in the pipeline systems around pipeline triggers</li>
+</ul>
+<p>Most organizations feel comfortable allowing their internal CI/CD systems to receive webhook events from the SaaS SCM providers.</p>
+<p>A skilled adversary, however, can bypass these limitations. Let’s discover how.</p>
+<h2>Unauthorized Access to CI/CD Endpoints</h2>
+<p>Because organizations typically have countermeasures to prevent bad actors from triggering pipelines, more advanced attackers will take a different approach to <a href="/blog/prisma-cloud/common-software-supply-chain-weaknesses/">access internal CI/CD systems</a>. Let’s pretend we’re a bad actor who wants to find an alternative way to abuse repository webhooks.</p>
+<p>The IP range of the SCM vendor webhook service was opened in the organization’s firewall to allow webhook requests to trigger pipelines. But webhook requests can still be directed toward other CI/CD endpoints besides the ones regularly listening to webhook events. We can try to access these endpoints to view valuable data like users, pipelines, console output of pipeline jobs.</p>
+<p>Or, if we’re lucky enough to fall on an instance that grants admin privileges to unauthenticated users — yes, it happens — we can access the configurations and credentials sections.</p>
+<figure id="attachment_298636" aria-describedby="caption-attachment-298636" style="width: 2040px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-298636" src="/blog/wp-content/uploads/2023/07/word-image-298621-2.png" alt="" width="2040" height="1100" /><figcaption id="caption-attachment-298636" class="wp-caption-text">Figure 1: Webhook events bypass the firewall to access the organization’s Jenkins instance.</figcaption></figure>
+<p>In Jenkins, the endpoints can be accessed using the HTTP GET method to retrieve data and the POST to add or modify resources.</p>
+<p><strong>GET: </strong>Webhooks only allow us to send POST requests, which isn’t helpful for us.</p>
+<p><strong>POST: </strong>We can send POST requests using webhooks, but we face two other challenges. We can’t control the body of the request. As well, Jenkins requires adding a CSRF token to POST requests, but we don’t have the CSRF token.</p>
+<p>So where do we go from here?</p>
+<h2>How to Abuse Jenkins Login</h2>
+<p>Let’s look for a way to get around the roadblocks we discovered above, starting with the Jenkins login page. We can try to brute force user credentials for one key reason. It’s common to see Jenkins users managed in its own user database or other user management methods. The other methods typically lack basic protections, such as a password policy or protections against automations, which gives us an opportunity to abuse the login.</p>
+<p>The login requires us to send a POST request. Choosing to target the login endpoint solves the challenge of holding CSRF tokens because this request doesn’t require a token. We’re still limited in our ability to modify the body of the request, though.</p>
+<p>A Jenkins login request looks as follows:</p>
+<figure id="attachment_298650" aria-describedby="caption-attachment-298650" style="width: 2026px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-298650" src="/blog/wp-content/uploads/2023/07/word-image-298621-3.png" alt="" width="2026" height="576" /><figcaption id="caption-attachment-298650" class="wp-caption-text">Figure 2: An example of a Jenkins login request.</figcaption></figure>
+<p>We need to send the credentials we brute force somehow. Fortunately, the Jenkins login endpoint accepts a POST request with the fields sent as query parameters:</p>
+<figure id="attachment_298664" aria-describedby="caption-attachment-298664" style="width: 2026px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-298664" src="/blog/wp-content/uploads/2023/07/word-image-298621-4.png" alt="" width="2026" height="756" /><figcaption id="caption-attachment-298664" class="wp-caption-text">Figure 3: The Jenkin login endpoint will accept a POST request.</figcaption></figure>
+<p>Let’s create a new webhook in GitHub and set the Jenkins login request URL as the payload URL. We can then create an automation using the GitHub API to brute force the user account’s password by modifying the password field, triggering the webhook and inspecting the response in the repository webhook event log.</p>
+<figure id="attachment_298678" aria-describedby="caption-attachment-298678" style="width: 1592px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-298678" src="/blog/wp-content/uploads/2023/07/word-image-298621-5.png" alt="" width="1592" height="916" /><figcaption id="caption-attachment-298678" class="wp-caption-text">Figure 4: We first set up a new webhook in GitHub.</figcaption></figure>
+<figure id="attachment_298692" aria-describedby="caption-attachment-298692" style="width: 2026px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-298692" src="/blog/wp-content/uploads/2023/07/word-image-298621-6.png" alt="" width="2026" height="414" /><figcaption id="caption-attachment-298692" class="wp-caption-text">Figure 5: Then we can brute force the user’s password by modifying the password field.</figcaption></figure>
+<p>Then we can fire off the webhook. All SCM vendors display the HTTP request and response sent through the webhook in their UI. If the login attempt fails, we’re redirected to the login error page.</p>
+<figure id="attachment_298706" aria-describedby="caption-attachment-298706" style="width: 1636px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-298706" src="/blog/wp-content/uploads/2023/07/word-image-298621-7.png" alt="" width="1636" height="794" /><figcaption id="caption-attachment-298706" class="wp-caption-text">Figure 6: If the login attempt fails, we’ll see this login error.</figcaption></figure>
+<p>A successful login will set a session cookie<sup>1</sup> and direct us to the main Jenkins page.</p>
+<figure id="attachment_298720" aria-describedby="caption-attachment-298720" style="width: 1636px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-298720" src="/blog/wp-content/uploads/2023/07/word-image-298621-8.png" alt="" width="1636" height="794" /><figcaption id="caption-attachment-298720" class="wp-caption-text">Figure 7: A successful login attempt gives us a session cookie.</figcaption></figure>
+<p>While we did get a session cookie, we can only send one stateless request each time, and the cookie can’t be attached to our request because we can’t control the headers.</p>
+<p>Is there a way to skirt this limitation?</p>
+<p>We could obtain a Jenkins access token, which can be attached in the URL and used to send POST requests to Jenkins without the need of adding a CSRF token. This option is more complex because it requires an attacker to somehow find both a self-hosted CI/CD system only accessible from SCM IP ranges and a valid access token to that CI/CD. For this exercise, we’ll focus on more practical scenarios.</p>
+<h2>Abusing GitLab Webhooks</h2>
+<p>Now let’s send the same request using GitLab. Like GitHub, we have limited control over the content of the payload sent in the webhook event, so we send the same POST request and add the credentials as query parameters.</p>
+<figure id="attachment_298734" aria-describedby="caption-attachment-298734" style="width: 1972px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-298734" src="/blog/wp-content/uploads/2023/07/word-image-298621-9.png" alt="" width="1972" height="428" /><figcaption id="caption-attachment-298734" class="wp-caption-text">Figure 8: Sending a POST request in GitLab.</figcaption></figure>
+<p>We trigger the request, but the response is 200. As with our previous example, we used GitLab’s webhook service to brute force a user and obtain a session cookie. This time, the contents of Jenkin’s response were relayed back to the GitLab UI, providing us with the full content of the Jenkins main page:</p>
+<figure id="attachment_298748" aria-describedby="caption-attachment-298748" style="width: 2020px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-298748" src="/blog/wp-content/uploads/2023/07/word-image-298621-10.png" alt="" width="2020" height="1250" /><figcaption id="caption-attachment-298748" class="wp-caption-text">Figure 9: The 200 response from GitLab when we try to brute force a user to obtain a session cookie.</figcaption></figure>
+<p>So what happened? When a webhook sent from GitLab returns a 302 response code, GitLab automatically follows the redirection. Because GET requests follow 302 redirections, we’re able to leverage GitLab to bypass the POST request limitation and send GET requests to targets from the GitLab webhook service. We couldn’t do that with GitHub.</p>
+<p>We send the next event with the cookies set in the first response. As you can see, the response we received contains internal Jenkins data, such as the pipelines and their execution status.</p>
+<p>In summary, we can:</p>
+<ul>
+<li>Brute force users and discover valid credentials</li>
+<li>Use the valid credentials against the login page to log in successfully</li>
+<li>Get the contents of the internal Jenkins main page</li>
+</ul>
+<figure id="attachment_298762" aria-describedby="caption-attachment-298762" style="width: 1600px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-298762" src="/blog/wp-content/uploads/2023/07/word-image-298621-11.png" alt="" width="1600" height="863" /><figcaption id="caption-attachment-298762" class="wp-caption-text">Figure 10: A visualization showing how a bad actor can brute force access to an organization’s Jenkins instance.</figcaption></figure>
+<p>Like many other login mechanisms, Jenkins login accepts the redirection parameter “from.” This parameter redirects users to the page they aimed to reach after they log in. But the parameter also serves as a feature we can abuse to send a GET request attached with a session cookie to an internal Jenkins page of our choice. Let’s see how.</p>
+<p><strong>Step 1: </strong>Set a webhook with the following URL:</p>
+<figure id="attachment_298776" aria-describedby="caption-attachment-298776" style="width: 2026px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-298776" src="/blog/wp-content/uploads/2023/07/word-image-298621-12.png" alt="" width="2026" height="414" /><figcaption id="caption-attachment-298776" class="wp-caption-text">Figure 11: We start by using this URL to set the webhook and send a POST request.</figcaption></figure>
+<p>A POST request is sent to Jenkins, and the authentication succeeds.</p>
+<p><strong>Step 2: </strong>We get a 302 redirect response with a session cookie and a redirection to the job console output page.</p>
+<p><strong>Step 3:</strong> The GitLab webhook service automatically follows the redirection with a GET request sent to the job console output page. The session cookie is added to the request:</p>
+<figure id="attachment_298790" aria-describedby="caption-attachment-298790" style="width: 2026px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-298790" src="/blog/wp-content/uploads/2023/07/word-image-298621-13.png" alt="" width="2026" height="240" /><figcaption id="caption-attachment-298790" class="wp-caption-text">Figure 12: GitLab follows the redirect and adds a session cookie.</figcaption></figure>
+<p><strong>Step 4: </strong>Job console output is sent back and presented in the attacker’s GitLab webhook event log.</p>
+<figure id="attachment_298804" aria-describedby="caption-attachment-298804" style="width: 2020px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-298804" src="/blog/wp-content/uploads/2023/07/word-image-298621-14.png" alt="" width="2020" height="1250" /><figcaption id="caption-attachment-298804" class="wp-caption-text">Figure 13: GitLab’s webhook event log.</figcaption></figure>
+<p>Keep in mind that Jenkins can be configured to allow access to internal components without authentication, or in a way that restricts access to authenticated users. How does that affect us?</p>
+<ul>
+<li>If there’s no authentication configured, we can make the GitLab webhook service access any internal page in the CI/CD system, capture the response and present it to us.</li>
+<li>If authentication is configured, we can try to brute force a user. We can then use the credentials to access any internal page, as described in the bullet above.</li>
+</ul>
+<h2>Vulnerability Exploitation: Another Access Path</h2>
+<p>We can’t always obtain an access token or password, but it’s still possible to gain access via vulnerability exploitation.</p>
+<p>Jenkins is an ecosystem of plugins — with each plugin created by a different maintainer — which means that one vulnerable plugin has the potential to affect the entire system. That’s why hackers scour Jenkins for <a href="https://www.jenkins.io/security/advisories/" rel="nofollow,noopener" >new vulnerabilities</a>.</p>
+<p>And because organizations use Jenkins for sensitive operations — building, testing and deploying to production systems — maintaining up-to-date patches and updating to secure core and plugin versions is challenging. These updates can sometimes affect the system’s stability or availability, so active production Jenkins installations frequently have unpatched and out-of-date Jenkins plugins or Jenkins core versions. Additionally, Jenkins typically resides inside the perimeter, creating a false sense of security that can lull organizations to further deprioritize Jenkins security.</p>
+<p>As we explore Jenkins security, one question comes up: how much damage can an attacker inflict on Jenkins through a simple webhook request?</p>
+<p>In 2019, Orange Tsai discovered a <a href="https://blog.orange.tw/2019/02/abusing-meta-programming-for-unauthenticated-rce.html" rel="nofollow,noopener" >vulnerability in Jenkins</a> that allowed executing code by sending one unauthenticated request. At a high level, the attacker triggers Jenkins to download a jar file from a remote location, leading to code execution on the instance.</p>
+<p>Let’s set up a malicious webhook to exploit an unexposed vulnerable Jenkins instance located behind a firewall. Our goal is to establish a reverse shell on that instance.</p>
+<p>The exploit payload is sent as a GET request and requires an attacker to do the following:</p>
+<p><strong>Step 1:</strong> Set a server that will:</p>
+<ul>
+<li>Receive a POST request with a redirection parameter and respond with a 302 redirection.</li>
+<li>Host the malicious jar file that is fetched by the Jenkins instance.</li>
+<li>Listen to the traffic arriving from the reverse shell we’ll run on the Jenkins instance.</li>
+</ul>
+<figure id="attachment_298818" aria-describedby="caption-attachment-298818" style="width: 2026px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-298818" src="/blog/wp-content/uploads/2023/07/word-image-298621-15.png" alt="" width="2026" height="846" /><figcaption id="caption-attachment-298818" class="wp-caption-text">Figure 14: Abusing GitLab webhooks to access a vulnerable Jenkins instance.</figcaption></figure>
+<p><strong>Step 2:</strong> Create a webhook in a GitLab project and set its URL as the attacker’s server, with the redirection parameter containing the payload:</p>
+<p><strong>Step 3: </strong>Trigger the webhook to send an event.</p>
+<p><strong>Step 4: </strong>The webhook event arrives at the attacker’s server, which responds with a 302 redirection to the Jenkins instance along with the payload.</p>
+<p><strong>Step 5: </strong>The GitLab webhook follows the redirection with a GET request containing the payload that is sent to the Jenkins instance.</p>
+<p><strong>Step 6: </strong>The exploitation process starts. The Jenkins instance downloads the jar file from the attacker’s server, which runs a reverse shell on the instance and allows the attacker to execute commands remotely.</p>
+<h2>Accessing Internal Jenkins Instances at Scale</h2>
+<p>So far, we’ve discovered that even internal Jenkins instances can be accessed from the internet through SCM webhooks. We also know it’s possible to gain full control over a Jenkins instance with a single webhook event. A natural question emerges — how many Jenkins instances are susceptible via abused webhooks?</p>
+<p>We scanned a fraction of the internet to identify Jenkins instances not accessible from the public internet but accessible from the GitLab webhook service. Though not as common as GitHub and other vendors, we chose GitLab because it allows more flexibility, which can be used to abuse an instance.</p>
+<p>This was our approach:</p>
+<p><strong>Step 1:</strong> Use passive DNS services to discover potential Jenkins subdomains. We used a set of 900,000 records. For obvious reasons, many of those records were invalid, meaning they’re not real records or there was no Jenkins — or any other service — behind them.</p>
+<p><strong>Step 2:</strong> Verify which of these addresses can be resolved and filter out inactive subdomains.</p>
+<p><strong>Step 3:</strong> Access all subdomains from a standard IP address through HTTP[S] and keep the inaccessible ones.</p>
+<p><strong>Step 4: </strong>Send a request to each of the 800,000 subdomains we have left through the GitLab webhooks service. It’s safe to assume that the vast majority of these subdomains were not Jenkins instances.</p>
+<p>From this list, we found 115 Jenkins instances accessible through the GitLab webhook service. We didn’t attempt to perform any action against them, but all of the earlier techniques to extract information or execute code are potentially valid for these instances.</p>
+<p>We assume it’s possible to identify hundreds of additional Jenkins instances through the GitLab webhook service — and more through popular vendors. After all, plenty of self-hosted CI/CD vendors and other types of systems are accessible from these webhook services — artifact registries, for example — and can potentially be accessed and abused.</p>
+<h2>How to Protect Your Environment from Malicious Webhooks</h2>
+<p>You can <a href="/blog/prisma-cloud/shift-left-ci-cd-security-for-your-software-supply-chain/">harden your environment </a>against malicious webhooks using one of several methods, as well as in layers, depending on your organization’s needs.</p>
+<p>One solution involves denying inbound traffic from the SCM webhook’s IP range and stopping the reception of webhook events directly from the SCM. Alternatively, you could periodically poll changes by the CI/CD system or implement a proxy between the SCM and CI/CD system. Both of these methods, though, can involve high start-up costs and may fail to meet engineering needs.</p>
+<p>If you need to keep receiving webhooks directly from the SCM, make sure to follow these guidelines:</p>
+<ul>
+<li>Only allow the inbound traffic to reach the CI/CD system and not any additional internal service.</li>
+<li>If possible, only allow inbound traffic to reach specific endpoints of the CI/CD system.</li>
+<li>Implement a secure authentication mechanism in the CI/CD pipeline that provides security controls aligned with industry best practices, such as integrating with the organization’s single sign-on (SSO) solution.</li>
+<li>Update your CI/CD system and its installed plugins to the latest available version.</li>
+<li>Disable anonymous access to the CI/CD pipeline.</li>
+<li>Enable an audit log in the target system and send all relevant logs to your <a href="/company/press/2022/palo-alto-networks-introduces-the-autonomous-security-platform--cortex-xsiam--to-reimagine-siem-and-soc-analytics">security information and event management (SIEM)</a>, or alternative logging aggregation solution, to identify malicious actions.</li>
+</ul>
+<h2>Getting Started with CI/CD Security</h2>
+<p>Because of the data they store and the workloads they run, CI/CD systems are among the most critical and sensitive assets in your organization. Don’t rely on your SCM vendor’s webhook services to protect them. Safeguarding your delivery pipelines requires a comprehensive approach to CI/CD security</p>
+<p>If you’re interested in learning more practical tips to get started with CI/CD security, read the <a href="https://start.paloaltonetworks.com/cicd-security-checklist.html">CI/CD Security Checklist</a>. You’ll find six best practices to help you embrace CI/CD security and harden your pipelines over time.</p>
+<p><span style="font-size: 10pt;">We’d like to thank Yaron Avital, Tyler Welton and Daniel Krivelevich for their contribution to this research.</span></p>
+<p><span style="font-size: 10pt;">References</span></p>
+<ol>
+<li><span style="font-size: 10pt;">In Jenkins version 2.266 the Acegi security library used for authentication was replaced by Spring Security. The Spring library provides indication on successful login attempts when logging in by sending a POST request with the credentials attached as query parameters, however it doesn’t return the session cookie. According to Jenkins statistics, around 30% of all instances use prior versions to 2.266.</span></li>
+</ol>
+<p>The post <a rel="nofollow" href="https://www.paloaltonetworks.com/blog/prisma-cloud/repository-webhook-abuse-access-ci-cd-systems-at-scale/">Abusing Repository Webhooks to Access Internal CI/CD Systems at Scale</a> appeared first on <a rel="nofollow" href="https://www.paloaltonetworks.com/blog">Palo Alto Networks Blog</a>.</p>
+]]></content:encoded>
+			    
+	    
+	    
+	        </item>
+        <item>
+	<title>Cloud Compliance: Protecting Your Data and Maintaining Trust</title>
+	<link>https://www.paloaltonetworks.com/blog/prisma-cloud/cloud-compliance-protecting-your-data-and-maintaining-trust/</link>
+	    
+	<dc:creator><![CDATA[Chanchal Sutradhar]]></dc:creator>
+	<pubDate>Fri, 07 Jul 2023 12:00:20 +0000</pubDate>
+	<readTime>7</readTime>
+	<featuredImage>https://www.paloaltonetworks.com/blog/wp-content/uploads/2023/01/Fog-upon-City-1.jpg</featuredImage>
+	    		<category><![CDATA[Data Security]]></category>
+		<category><![CDATA[cloud compliance]]></category>
+		<category><![CDATA[Risk and governance]]></category>
+	<guid isPermaLink="false">https://www.paloaltonetworks.com/blog/?post_type=cloud_sec_post&#038;p=298080</guid>
+
+	    		<description><![CDATA[<p>The industries are shifting toward cloud computing to get several advantages, including increased scalability, cost-effectiveness, flexibility, and improved efficiency. But, because of the misconfiguration or not following the regulatory requirements, we have heard of a lot of data breach incidents. So the following blog educates the users about cloud compliance and why it is so important. Also it will cover what is the role of Prisma Cloud in cloud compliance.</p>
+<p>The post <a rel="nofollow" href="https://www.paloaltonetworks.com/blog/prisma-cloud/cloud-compliance-protecting-your-data-and-maintaining-trust/">Cloud Compliance: Protecting Your Data and Maintaining Trust</a> appeared first on <a rel="nofollow" href="https://www.paloaltonetworks.com/blog">Palo Alto Networks Blog</a>.</p>
+]]></description>
+						<content:encoded><![CDATA[<p>Over the last decade, we’ve seen a significant shift in the industry toward cloud computing, as many businesses opt to use cloud-native services. This shift has allowed organizations to take advantage of infrastructure as a service (IaaS), platform as a service (PaaS), and software as a service (SaaS) — all of which deliver increased scalability, cost-effectiveness, flexibility and improved efficiency.</p>
+<p>While customers use various cloud service providers, their primary concern remains data security. In the current landscape, failure is unacceptable, and noncompliance with regulations leads to stiff penalties. Most critically, noncompliance erodes customer trust, which businesses can’t afford to lose.</p>
+<h2>Cloud Compliance Defined</h2>
+<p>Cloud compliance refers to the process of ensuring that an organization's use of cloud-based services, resources and technologies adheres to relevant laws and regulations governing data privacy, security and management. Achieving cloud compliance helps organizations mitigate risks and protect sensitive information.</p>
+<p>For example, the Payment Card Industry Data Security Standard (PCI DSS), which is used to ensure security for payments made with debit or credit cards, has requirements for cloud deployments. The same goes for the Health Insurance Portability and Accountability Act (HIPAA) in the healthcare industry.</p>
+<h2>Ensuring Security in a Shared Responsibility Model</h2>
+<p>Security breach headlines continue to roll out, reminding us of the importance of cloud compliance. Consider the <a href="https://www.zdnet.com/article/hacker-selling-data-of-538-million-weibo-users/" rel="nofollow,noopener" >Sina Weibo breach</a>, for example. After hackers infiltrated the social media platform, they sold the personal data of approximately 538 million users — names, site usernames, gender, location, phone numbers — on the dark web. U.S. voters took a hit with the S3 bucket breach that resulted in the <a href="https://www.forbes.com/sites/thomasbrewster/2015/12/28/us-voter-database-leak/?sh=1ba00aa85b98" rel="nofollow,noopener" >exposure of personal data of nearly 198 million Americans</a>. And just last month,<a href="https://arstechnica.com/information-technology/2023/05/t-mobile-discloses-2nd-data-breach-of-2023-this-one-leaking-account-pins-and-more/" rel="nofollow,noopener" > T-Mobile suffered its second data breach of 2023</a> after a data leak revealed the PINs, full names and phone numbers of over 800 customers. Incidents like these often result from poorly implemented cloud compliance policies.</p>
+<p>It's imperative to realize that, while the foundational data infrastructure provided by the cloud service provider is secure, the customer assumes responsibility for data security and compliance assurance.</p>
+<figure id="attachment_298081" aria-describedby="caption-attachment-298081" style="width: 921px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-298081" src="/blog/wp-content/uploads/2023/07/word-image-298080-1.png" alt="" width="921" height="468" /><figcaption id="caption-attachment-298081" class="wp-caption-text">Figure 1: Simplified shared responsibility model for cloud security</figcaption></figure>
+<p>Cloud service providers follow a shared responsibility model, where they take care of the security of the cloud infrastructure, including the physical data centers, network and hardware. But customers retain responsibility for securing their data and configuring compliance controls within the cloud services they use, such as S3 buckets, virtual machines or databases.</p>
+<p>For example, when creating an S3 bucket on AWS, the default settings may not be compliant with specific regulations or security requirements. It’s the customer's responsibility to configure the appropriate access controls, encryption, logging and other security measures to ensure the S3 bucket meets their compliance needs.</p>
+<h2>Key Factors of Cloud Compliance</h2>
+<p>Implementing an effective cloud compliance policy is crucial for organizations to ensure the security and regulatory adherence of their cloud environments. Let's explore some of these key factors:</p>
+<ul>
+<li><strong>Compliance Governance</strong>: Organizations should establish clear compliance objectives aligned with industry regulations and their specific business requirements. This includes understanding the data protection and privacy regulations that apply to their industry and ensuring compliance with those regulations.</li>
+<li><strong>Risk Assessment and Mitigation</strong>: Conducting a comprehensive risk assessment helps identify potential security risks and compliance gaps. Organizations should evaluate potential threats, vulnerabilities and associated risks to their cloud environment. This assessment helps in prioritizing security controls and taking necessary steps to mitigate identified risks.</li>
+<li><strong>Policies and Procedures</strong>: Developing well-defined and documented policies and procedures is essential. These policies should cover areas such as access controls, encryption, data handling, incident response and data breach notification. Regularly review and update these policies to ensure they reflect the current regulatory landscape and emerging threats.</li>
+<li><strong>Monitoring and Auditing</strong>: The continuous monitoring of the cloud environment helps identify and rectify any noncompliance issues or security incidents promptly. Implementing robust monitoring solutions can detect anomalies, unauthorized access attempts, or policy violations. Regular audits assess the effectiveness of security controls and pinpoint areas for improvement.</li>
+<li><strong>Incident Response and Remediation</strong>: Develop an incident response plan that outlines the steps to take in the event of a security incident or data breach. Ensure the plan includes procedures for containment, investigation, notification and recovery. Regularly test and update the plan to address emerging threats and lessons learned from previous incidents.</li>
+</ul>
+<h2>The Role of Prisma Cloud in Cloud Compliance</h2>
+<p>Prisma Cloud provides the <a href="https://docs.paloaltonetworks.com/prisma/prisma-cloud/prisma-cloud-admin/prisma-cloud-compliance">industry's broadest security compliance coverage</a> for infrastructure, workloads and applications throughout the development lifecycle and across hybrid and multicloud environments.</p>
+<p>Helping executive teams and security engineers effectively manage and maintain compliance, Prisma Cloud provides the following capabilities:</p>
+<p><strong>Continuous Monitoring</strong></p>
+<p>Prisma Cloud continuously monitors cloud resources and assesses their compliance status in real time. It automatically detects changes that impact compliance and can alert security teams to take corrective actions.</p>
+<figure id="attachment_298095" aria-describedby="caption-attachment-298095" style="width: 1600px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-298095" src="/blog/wp-content/uploads/2023/07/word-image-298080-2.png" alt="" width="1600" height="299" /><figcaption id="caption-attachment-298095" class="wp-caption-text">Figure 2: Urgent risk and incident details</figcaption></figure>
+<figure id="attachment_298109" aria-describedby="caption-attachment-298109" style="width: 1600px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-298109" src="/blog/wp-content/uploads/2023/07/word-image-298080-3.png" alt="" width="1600" height="402" /><figcaption id="caption-attachment-298109" class="wp-caption-text">Figure 3: Alert information based on different policies</figcaption></figure>
+<p><strong>Granular Visibility</strong></p>
+<p>Prisma Cloud offers granular visibility into cloud resources, providing detailed information about individual assets and their compliance status. This allows security teams to drill down into specific assets to understand the exact reasons behind noncompliance.</p>
+<figure id="attachment_298123" aria-describedby="caption-attachment-298123" style="width: 1600px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-298123" src="/blog/wp-content/uploads/2023/07/word-image-298080-4.png" alt="" width="1600" height="221" /><figcaption id="caption-attachment-298123" class="wp-caption-text">Figure 4: Different compliance posture details with Passed and Failed asset count</figcaption></figure>
+<figure id="attachment_298137" aria-describedby="caption-attachment-298137" style="width: 1600px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-298137" src="/blog/wp-content/uploads/2023/07/word-image-298080-5.png" alt="" width="1600" height="732" /><figcaption id="caption-attachment-298137" class="wp-caption-text">Figure 5: Failed asset details of one of the secure control framework compliance</figcaption></figure>
+<p><strong>Compliance Reporting</strong></p>
+<p>Prisma Cloud generates compliance reports that provide a comprehensive view of the compliance status of assets in the cloud environment. These reports highlight noncompliant resources, misconfigurations and policy violations, enabling organizations to identify and address compliance gaps.</p>
+<figure id="attachment_298151" aria-describedby="caption-attachment-298151" style="width: 1600px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-298151" src="/blog/wp-content/uploads/2023/07/word-image-298080-6.png" alt="" width="1600" height="679" /><figcaption id="caption-attachment-298151" class="wp-caption-text">Figure 6: Granular compliance information with asset details in graph format</figcaption></figure>
+<p><strong>Remediation Recommendations</strong></p>
+<p>Prisma Cloud provides actionable recommendations and remediation steps to address compliance issues. It suggests specific configuration changes or security controls that organizations should implement to bring assets into compliance with industry regulations and organizational policies.</p>
+<figure id="attachment_298165" aria-describedby="caption-attachment-298165" style="width: 1600px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-298165" src="/blog/wp-content/uploads/2023/07/word-image-298080-7.png" alt="" width="1600" height="445" /><figcaption id="caption-attachment-298165" class="wp-caption-text">Figure 7: Recommendations steps for a policy</figcaption></figure>
+<figure id="attachment_298179" aria-describedby="caption-attachment-298179" style="width: 1600px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-298179" src="/blog/wp-content/uploads/2023/07/word-image-298080-8.png" alt="" width="1600" height="668" /><figcaption id="caption-attachment-298179" class="wp-caption-text">Figure 8: Remediation command details</figcaption></figure>
+<p>Prisma Cloud helps customers to achieve and maintain compliance within their cloud environments. Significant regulations supported by Prisma Cloud include:</p>
+<ol>
+<li><strong>CIS Controls</strong>: Prioritized safeguards known as CIS controls help to counter the most common cyberattacks against systems and networks. Derived from the consensus list of security controls, experts in security consider CIS Controls the top defensive techniques to prevent data breaches and lessen the damage caused by cyberattacks.</li>
+<li><strong>NIST Cybersecurity Framework</strong>: The Framework outlines various methods for data protection, contributing to a more secure organization. It employs a consistent procedure to ensure assets are adequately shielded from malicious actors and code. Ideally, the Framework comprises five steps: identify, protect, detect, respond, recover.</li>
+<li><strong>ISO/IEC 27001</strong>: Recognized globally as the standard for information security management systems (ISMS), ISO/IEC 27001 is essential. Any company handling sensitive data should seriously think about incorporating <a href="https://hyperproof.io/iso-27001/" rel="nofollow,noopener" >ISO 27001</a> into their compliance portfolio.</li>
+<li><strong>Hitrust CSF</strong>: The healthcare sector generally drives and controls HITRUST enforcement, while HIPAA establishes specific consequences for data security violations. The industry, including hospitals and payer requiring certification, has seen swift adoption of HITRUST and it is gaining ground as an expectation for service providers and vendors.</li>
+</ol>
+<figure id="attachment_298193" aria-describedby="caption-attachment-298193" style="width: 1600px" class="wp-caption aligncenter"><img decoding="async" loading="lazy" class="wp-image-298193" src="/blog/wp-content/uploads/2023/07/word-image-298080-9.png" alt="" width="1600" height="853" /><figcaption id="caption-attachment-298193" class="wp-caption-text">Figure 9: CIS control v8 compliance requirement details containing different policies mapped to it</figcaption></figure>
+<p>Bottom line: Cloud compliance is a crucial aspect of adopting and using cloud services securely and responsibly. It involves adhering to regulatory requirements, industry standards and best practices to ensure the protection of sensitive data and build trust with customers.</p>
+<h2>Achieve Compliance from a Single Solution</h2>
+<p>Get real-time and historical views into your compliance status for hosts, containers and serverless functions with Prisma Cloud. Start your free <a href="/prisma/request-a-prisma-cloud-trial">30-day test drive</a> today — and learn how customers have used <a href="/resources/ebooks/customer-spotlight-visibility-and-compliance">Prisma Cloud to improve the security posture</a> of their organizations.</p>
+<p>The post <a rel="nofollow" href="https://www.paloaltonetworks.com/blog/prisma-cloud/cloud-compliance-protecting-your-data-and-maintaining-trust/">Cloud Compliance: Protecting Your Data and Maintaining Trust</a> appeared first on <a rel="nofollow" href="https://www.paloaltonetworks.com/blog">Palo Alto Networks Blog</a>.</p>
+]]></content:encoded>
+			    
+	    
+	    
+	        </item>
+    </channel>
+</rss>
+
+<!--
+Performance optimized by W3 Total Cache. Learn more: https://www.boldgrid.com/w3-total-cache/
+
+Object Caching 389/390 objects using disk
+Page Caching using disk: enhanced (Requested URI is rejected) 
+Database Caching 33/33 queries in 0.003 seconds using disk
+
+Served from: www.paloaltonetworks.com @ 2023-08-14 14:32:58 by W3 Total Cache
+-->

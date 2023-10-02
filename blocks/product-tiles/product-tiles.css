@@ -1,0 +1,47 @@
+.product-tiles-container {
+  margin: var(--spacing--20) auto;
+  max-width: calc(1032px + var(--padding--mobile) + var(--padding--mobile));
+  padding: var(--padding--mobile);
+}
+
+.product-tiles-container .default-content-wrapper h4 {
+  color: var(--landing-heading-color);
+}
+
+.product-tiles > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing--8);
+  padding-top: var(--spacing--12);
+  width: 100%;
+}
+
+.product-tiles > div > div {
+  order: 1;
+  text-align: center;
+}
+
+/* Currently this is a one off CTA style, refactor if it becomes used in other places */
+.product-tiles a {
+  align-items: center;
+  border: 1px solid var(--color-neutral-100);
+  border-radius: var(--spacing--2);
+  color: var(--color-neutral-700);
+  display: inline-flex;
+  justify-content: center;
+  padding: 20px var(--spacing--6);
+  text-decoration: none;
+  width: 100%;
+}
+
+.product-tiles > div h3 {
+  font-size: var(--control-font-size--reg);
+  line-height: var(--control-line-height--reg);
+  letter-spacing: var(--letter-spacing-neg--s);
+}
+
+@media only screen and (max-width: 560px) {
+  .product-tiles > div {
+    flex-direction: column;
+  }
+}

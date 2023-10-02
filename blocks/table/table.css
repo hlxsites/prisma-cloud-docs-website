@@ -1,0 +1,106 @@
+.table {
+  --table-even-background: var(--color-neutral-050);
+  --table-border-color: var(--color-neutral-200);
+  --table-border-radius: var(--spacing--4);
+  --table-head-text-color: var(--color-neutral-900);
+
+  --cell-horizontal-padding: var(--spacing--6);
+}
+
+/* Dark Mode */
+
+[data-user-theme="dark"] .table {
+  --table-even-background: var(--color-neutral-dark-500);
+  --table-border-color: var(--color-neutral-dark-400);
+  --table-head-text-color: var(--color-neutral-dark-100);
+}
+
+.table table {
+  border-spacing: 0;
+  font-size: var(--body-font-size--p3);
+  letter-spacing: var(--letter-spacing-neg--s);
+  line-height: var(--body-line-height--p3);
+  margin-top: var(--spacing--10);
+  margin-bottom: var(--spacing--16);
+  table-layout: fixed;
+  width: 100%;
+}
+
+.table thead th {
+  color: var(--table-head-text-color);
+  background-color: var(--table-even-background);
+  border-bottom: 1px solid var(--table-border-color);
+  border-top: 1px solid var(--table-border-color);
+  padding: 20px var(--cell-horizontal-padding);
+  text-align: left;
+  transition: background-color var(--action-ease-duration)
+      var(--action-ease-function),
+    border-color var(--action-ease-duration) var(--action-ease-function),
+    color var(--action-ease-duration) var(--action-ease-function);
+}
+
+.table thead th:first-child,
+.table table > tbody:first-child tr:first-child td:first-child {
+  border-top-left-radius: var(--table-border-radius);
+  border-left: 1px solid var(--table-border-color);
+}
+
+.table thead th:last-child,
+.table table > tbody:first-child tr:first-child td:last-child {
+  border-top-right-radius: var(--table-border-radius);
+  border-right: 1px solid var(--table-border-color);
+}
+
+/* Handle use case for when there's no actual table header */
+.table table > tbody:first-child tr:first-child td {
+  border-top: 1px solid var(--table-border-color);
+}
+
+.table tbody tr:nth-of-type(even) td {
+  background-color: var(--table-even-background);
+}
+
+.table tbody tr td {
+  border-bottom: 1px solid var(--table-border-color);
+  padding: var(--spacing--4) var(--cell-horizontal-padding);
+  transition: background-color var(--action-ease-duration)
+      var(--action-ease-function),
+    border-color var(--action-ease-duration) var(--action-ease-function);
+  vertical-align: top;
+  word-wrap: break-word;
+}
+
+.table tbody tr td ul,
+.table tbody tr td ol {
+  padding-left: var(--spacing--4);
+}
+
+/* Allow for content to be vertically aligned top */
+/* .table tbody tr td *:first-child:not(button) {
+  margin-top: 0;
+  padding-top: 0;
+} */
+
+.table tbody tr td:first-child {
+  border-left: 1px solid var(--table-border-color);
+}
+
+.table tbody tr td:last-child {
+  border-right: 1px solid var(--table-border-color);
+}
+
+.table tbody tr:last-child td:first-child {
+  border-bottom-left-radius: var(--table-border-radius);
+}
+
+.table tbody tr:last-child td:last-child {
+  border-right: 1px solid var(--table-border-color);
+  border-bottom-right-radius: var(--table-border-radius);
+}
+
+/* Mobile Styles */
+@media only screen and (max-width: 560px) {
+  .table {
+    --cell-horizontal-padding: var(--spacing--4);
+  }
+}

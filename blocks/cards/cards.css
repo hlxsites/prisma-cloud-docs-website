@@ -1,0 +1,140 @@
+.landing-product {
+  --background-color: #fff;
+}
+
+.landing-product .cards {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+  margin: 20px 0;
+  color: #141414;
+  background-color: var(--background-color);
+}
+
+@media (min-width: 992px) {
+  .landing-product .cards {
+    margin: 20px -15px 20px -115px;
+  }
+}
+
+.landing-product .cards-item {
+  max-width: 277px;
+  margin-bottom: 10px;
+  border-top: 1px solid #f4f4f2;
+  border-right: 1px solid #f4f4f2;
+  border-left: 1px solid #f4f4f2;
+  border-bottom: 4px solid #00c0e8;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  padding: 25px 20px;
+}
+
+.landing-product .cards.large .cards-item {
+  max-width: 360px;
+}
+
+.landing-product .cards.resources .cards-item {
+  background-color: #f4f4f2;
+}
+
+.landing-product .cards-item div {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.landing-product .cards-item h4 {
+  font-size: 20px;
+  margin: 0;
+  text-transform: initial;
+  font-weight: 600;
+}
+
+.landing-product .cards-item hr {
+  border-top: 4px solid #00c0e8;
+  width: 25px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: 0;
+}
+
+.landing-product .cards-item .cards-item-text {
+  flex-grow: 1;
+  font-size: 12px;
+  margin-top: 0;
+  margin-bottom: 25px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
+  line-height: 20px;
+  max-height: 100px;
+}
+
+.landing-product .cards-item .button-container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  margin: 0;
+  justify-content: flex-end;
+}
+
+.landing-product .cards-item a {
+  max-width: 180px;
+  display: block;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 10px;
+  background-image: linear-gradient(to right, black 0%, black 100%);
+  background-size: 0 100%;
+  background-repeat: no-repeat;
+  border: 1px solid black;
+  transition: background-size 0.2s;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: black;
+}
+
+.landing-product .cards-item .button-container a:hover {
+  background-size: 101% 101%;
+  text-decoration: none;
+  color: white;
+}
+
+.landing-product .cards-item .yt-container {
+  position: relative;
+  width: 100%;
+  height: 200px;
+}
+
+.landing-product .cards-item .yt-preview {
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  object-fit: cover;
+}
+
+.landing-product .cards-item .yt-button {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 68px;
+  height: 48px;
+  margin-left: -34px;
+  margin-top: -24px;
+  background: transparent;
+  border: none;
+}
+
+.landing-product .cards-item .yt-player {
+  display: none;
+  width: 100%;
+  border: none;
+}
+
+.landing-product .cards-item .yt-player.is-playing {
+  display: block;
+}

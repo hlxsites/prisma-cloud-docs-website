@@ -1,18 +1,6 @@
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <sitemap>
     <loc>
-      https://main--prisma-cloud-docs--hlxsites.hlx.live/prisma/prisma-cloud/docs/sitemaps/sitemap-en.xml</loc>
-  </sitemap>
-  <sitemap>
-    <loc>
-      https://main--prisma-cloud-docs--hlxsites.hlx.live/prisma/prisma-cloud/docs/sitemaps/sitemap-jp.xml</loc>
-  </sitemap>
-  <sitemap>
-    <loc>
-      https://main--prisma-cloud-docs-website--hlxsites.hlx.live/prisma/prisma-cloud/en/sitemap.xml</loc>
-  </sitemap>
-  <sitemap>
-    <loc>
-      https://main--prisma-cloud-docs-website--hlxsites.hlx.live/prisma/prisma-cloud/jp/sitemap.xml</loc>
+      https://main--prisma-cloud-docs--hlxsites.hlx.live/docs/sitemaps/sitemap-en.xml</loc>
   </sitemap>
 </sitemapindex>

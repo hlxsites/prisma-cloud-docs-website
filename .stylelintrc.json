@@ -1,6 +1,19 @@
 {
   "extends": ["stylelint-config-standard"],
   "rules": {
-    "no-descending-specificity": null
+    "alpha-value-notation": null,
+    "at-rule-empty-line-before": null,
+		"at-rule-no-unknown": null,
+    "color-function-notation": null,
+		"comment-empty-line-before": null,
+    "custom-property-pattern": null,
+    "custom-property-empty-line-before": null,
+		"font-weight-notation": null,
+		"max-line-length": null,
+		"no-descending-specificity": null,
+		"rule-empty-line-before": null,
+		"selector-class-pattern": null,
+    "selector-pseudo-element-colon-notation": null,
+		"value-keyword-case": null
   }
 }
