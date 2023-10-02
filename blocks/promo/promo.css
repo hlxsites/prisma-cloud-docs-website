@@ -1,7 +1,7 @@
 .promo-wrapper {
-  background: url("/prisma/prisma-cloud/assets/promo-left-graphic.webp") 5% -125%
-      no-repeat,
-    url("/prisma/prisma-cloud/assets/promo-right-graphic.webp") 100% 0 no-repeat,
+  background: url("/assets/promo-left-graphic.webp") 5% -125%
+    no-repeat,
+    url("/assets/promo-right-graphic.webp") 100% 0 no-repeat,
     #242c38;
   background-size: 256px 256px, 274px 209px, auto;
   color: var(--color-neutral-white);

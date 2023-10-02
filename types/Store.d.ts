@@ -22,7 +22,7 @@ type BookDescriptor = {
 interface LocalizationInfo {
   /**
    * language code -> language title
-   * from /prisma/prisma-cloud/languages sheet
+   * from /languages sheet
    */
   langMap: Record<string, string>;
 

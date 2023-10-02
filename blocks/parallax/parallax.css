@@ -17,7 +17,7 @@
 }
 
 .parallax__layer__0 .item {
-  background: url("/prisma/prisma-cloud/assets/landing-left-graphic.webp") 0 0
+  background: url("/assets/landing-left-graphic.webp") 0 0
     no-repeat;
   background-size: contain;
   width: 198px;
@@ -31,7 +31,7 @@
 }
 
 .parallax__layer__1 .item {
-  background: url("/prisma/prisma-cloud/assets/landing-right-graphic.webp") 0 0
+  background: url("/assets/landing-right-graphic.webp") 0 0
     no-repeat;
   background-size: contain;
   width: 280px;

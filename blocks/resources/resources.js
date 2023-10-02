@@ -34,7 +34,7 @@ async function renderXMLAsCards(url) {
       const background = featuredImage[0].textContent;
       const backgroundStyle = background
         ? `url(${featuredImage[0].textContent}) center center no-repeat`
-        : 'url(/prisma/prisma-cloud/assets/card-background.jpg) 0 0 no-repeat';
+        : 'url(/assets/card-background.jpg) 0 0 no-repeat';
       const _pubDate = new Date(pubDate?.[0]?.textContent);
       const pubDateToLocale = _pubDate.toLocaleString('default', {
         month: 'long',
