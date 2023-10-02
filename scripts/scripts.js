@@ -784,7 +784,7 @@ export function convertCodeIconsToText(main) {
 }
 
 export function decoratePills(main) {
-  main.querySelectorAll('p').forEach((p) => {
+  main.querySelectorAll('p,td').forEach((p) => {
     const matches = [...p.innerText.matchAll(/tt:\[([^\]]*)\]/g)];
     if (!matches.length) return;
 
@@ -804,7 +804,6 @@ export function decoratePills(main) {
 
     const parent = p.parentElement;
     p.remove();
-    console.log('nodes: ', nodes);
     parent.append(...nodes);
   });
 }

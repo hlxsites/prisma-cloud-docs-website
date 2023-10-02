@@ -746,6 +746,18 @@ a.button-primary--blue:hover,
   background-color: var(--primary-action-active-background-color);
 }
 
+span.pill {
+  background: #000;
+  color: #fff;
+  border-radius: 14px;
+  margin: 0 -5px;
+  padding: 2px 5px;
+}
+
+td > span.pill {
+  margin-right: 0;
+}
+
 .drawer {
   background: var(--drawer-background-color);
   border-radius: var(--spacing--4);
