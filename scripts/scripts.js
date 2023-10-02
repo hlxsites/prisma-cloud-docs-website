@@ -801,9 +801,15 @@ export function decoratePill(p) {
     nodes.push(text);
   }
 
-  const parent = p.parentElement;
-  p.remove();
-  parent.append(...nodes);
+  if (p.tagName === 'p') {
+    const parent = p.parentElement;
+    p.remove();
+    parent.append(...nodes);
+  } else {
+    // td
+    p.innerHTML = '';
+    p.append(...nodes);
+  }
 }
 
 export function decoratePills(main) {
