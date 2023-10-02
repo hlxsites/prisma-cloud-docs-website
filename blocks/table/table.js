@@ -1,4 +1,6 @@
-import { html, isValidDocsURL, isValidWebURL } from '../../scripts/scripts.js';
+import {
+  decoratePills, html, isValidDocsURL, isValidWebURL,
+} from '../../scripts/scripts.js';
 
 /**
  * @param {HTMLElement} block
@@ -134,4 +136,6 @@ export default async function decorate(block) {
     </table>`.firstElementChild.firstElementChild;
     tbody.appendChild(tr);
   });
+
+  decoratePills(table);
 }
