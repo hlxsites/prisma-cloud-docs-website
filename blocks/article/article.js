@@ -380,16 +380,16 @@ async function renderContent(block, res, rerender = false) {
     }
   }
 
+  const isGdoc = res.source === 'gdoc';
   const template = parseFragment(TEMPLATE);
   const fragment = document.createElement('div');
 
   const docTitle = document.createElement('a');
   docTitle.setAttribute('slot', 'document');
   docTitle.href = window.location.href.split('/').slice(0, -2).join('/');
-  docTitle.textContent = store.mainBook.title;
+  docTitle.textContent = isGdoc ? document.title : store.mainBook.title;
   fragment.append(docTitle);
 
-  const isGdoc = res.source === 'gdoc';
   block.classList.remove(`source-${isGdoc ? 'adoc' : 'gdoc'}`);
   block.classList.add(`source-${isGdoc ? 'gdoc' : 'adoc'}`);
 
