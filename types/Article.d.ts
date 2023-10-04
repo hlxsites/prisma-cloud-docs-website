@@ -15,4 +15,5 @@ export interface ArticleResponse {
   status: number;
   html: string;
   info: ArticleInfo;
+  source: 'adoc' | 'gdoc';
 }

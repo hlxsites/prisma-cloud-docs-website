@@ -24,11 +24,17 @@ polyfill();
 
 const range = document.createRange();
 
+export const BRANCH_ORIGIN = 'https://prisma-cloud-docs-production.adobeaem.workers.dev';
 export const SPA_NAVIGATION = true;
 export const REDIRECTED_ARTICLE_KEY = 'redirected-article';
 export const PATH_PREFIX = '';
 const LCP_BLOCKS = ['article']; // add your LCP blocks to the list
-window.hlx.RUM_GENERATION = 'prisma-cloud-docs-website'; // add your RUM generation information here
+const SITE_REPO_OWNER = 'hlxsites';
+const SITE_REPO_NAME = 'prisma-cloud-docs-website';
+const DOCS_REPO_OWNER = 'hlxsites';
+const DOCS_REPO_NAME = 'prisma-cloud-docs';
+
+window.hlx.RUM_GENERATION = SITE_REPO_NAME; // add your RUM generation information here
 
 const lang = getMetadata('lang')
   || window.location.pathname.substring(PATH_PREFIX.length).split('/').slice(1)[0]
@@ -37,21 +43,19 @@ document.documentElement.lang = lang;
 
 export const WEB_ORIGINS = {
   dev: 'http://localhost:3000',
-  // dev: 'https://main--prisma-cloud-docs-website--hlxsites.hlx.page',
-  preview: 'https://main--prisma-cloud-docs-website--hlxsites.hlx.page',
-  publish: 'https://main--prisma-cloud-docs-website--hlxsites.hlx.live',
+  // dev: `https://main--${SITE_REPO_NAME}--${SITE_REPO_OWNER}.hlx.page`,
+  preview: `https://main--${SITE_REPO_NAME}--${SITE_REPO_OWNER}.hlx.page`,
+  publish: `https://main--${SITE_REPO_NAME}--${SITE_REPO_OWNER}.hlx.live`,
   prod: '',
 };
 
 export const DOCS_ORIGINS = {
   dev: 'http://127.0.0.1:3001',
-  // dev: 'https://main--prisma-cloud-docs--hlxsites.hlx.page',
-  preview: 'https://main--prisma-cloud-docs--hlxsites.hlx.page',
-  publish: 'https://main--prisma-cloud-docs--hlxsites.hlx.live',
+  // dev: `https://main--${DOCS_REPO_NAME}--${DOCS_REPO_OWNER}.hlx.page`,
+  preview: `https://main--${DOCS_REPO_NAME}--${DOCS_REPO_OWNER}.hlx.page`,
+  publish: `https://main--${DOCS_REPO_NAME}--${DOCS_REPO_OWNER}.hlx.live`,
   prod: '',
 };
-
-export const BRANCH_ORIGIN = 'https://prisma-cloud-docs-production.adobeaem.workers.dev';
 
 export function getPlaceholders() {
   return fetchPlaceholders(`${PATH_PREFIX}/${lang}`);
@@ -126,8 +130,10 @@ const store = new (class {
     this.pageTemplate = getMetadata('template');
     this.additionalBooks = [];
     if (this.pageTemplate === 'book') {
-      this.initBook();
+      this.article = {};
+      const adocArticle = getMetadata('adoc-article') !== 'false';
       this.initSPANavigation();
+      this.initBook(adocArticle);
     }
 
     // allow setting body class from page metadata
@@ -171,12 +177,12 @@ const store = new (class {
     return this._emitted[ev] !== undefined;
   }
 
-  initBook() {
+  initBook(adocArticle = true) {
     this.bookPath = getMetadata('book');
     this.version = getMetadata('version');
     this.product = getMetadata('product');
-    this.docPath = `${PATH_PREFIX}/docs${window.location.pathname.substring(PATH_PREFIX.length)}`;
-    this.articleHref = `${this.docsOrigin}${this.docPath}`;
+    this.docPath = adocArticle ? `${PATH_PREFIX}/docs${window.location.pathname.substring(PATH_PREFIX.length)}` : null;
+    this.articleHref = adocArticle ? `${this.docsOrigin}${this.docPath}` : null;
 
     try {
       this.redirectedArticle = !!sessionStorage.getItem(REDIRECTED_ARTICLE_KEY);
@@ -634,42 +640,6 @@ export function renderSidenav(contentBlock) {
   });
 }
 
-function buildArticleBlock(articleHref) {
-  const link = document.createElement('a');
-  link.href = articleHref;
-  link.textContent = articleHref;
-  return buildBlock('article', { elems: [link] });
-}
-
-/**
- * Builds sidenav and article blocks and prepends to main in a new section.
- * @param {Element} main The container element
- */
-function buildBookSection(main) {
-  if (store.pageTemplate !== 'book') return;
-
-  const docMain = document.documentElement.querySelector('main');
-  if (main !== docMain) return;
-
-  const section = document.createElement('div');
-  section.append(buildArticleBlock(store.articleHref));
-  main.prepend(section);
-}
-
-/**
- * Builds all synthetic blocks in a container element.
- * @param {Element} main The container element
- */
-function buildAutoBlocks(main) {
-  try {
-    buildHeroBlock(main);
-    buildBookSection(main);
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error('Auto Blocking failed', error);
-  }
-}
-
 /**
  * Load article as HTML string
  * @param {string} href
@@ -689,7 +659,10 @@ export async function loadArticle(href) {
   setBranch(url);
 
   const resp = await fetch(url.toString(), store.branch ? { cache: 'reload' } : undefined);
-  if (!resp.ok) return resp;
+  if (!resp.ok) {
+    store.article = resp;
+    return resp;
+  }
   try {
     const lastModified = resp.headers.get('last-modified') !== 'null'
       ? new Date(resp.headers.get('last-modified'))
@@ -701,7 +674,9 @@ export async function loadArticle(href) {
         lastModified,
       },
       html: await resp.text(),
+      source: 'adoc',
     };
+    store.article = data;
     store.emit('article:fetched', data);
     return data;
   } catch (e) {
@@ -710,6 +685,76 @@ export async function loadArticle(href) {
       ...resp,
       ok: false,
     };
+  }
+}
+
+/**
+ * @param {HTMLElement} main
+ * @param {string|null} articleHref
+ * @returns {Promise<HTMLElement>}
+ */
+async function buildArticleBlock(main, articleHref) {
+  /** @type {ArticleResponse} */
+  let res;
+
+  if (articleHref === null) {
+    // using content from main, `adoc-article` metadata set to `false`
+    const content = main.innerHTML;
+    main.innerHTML = '';
+    res = {
+      html: content,
+      info: {
+        title: document.title,
+        lastModified: null,
+      },
+      ok: true,
+      status: 200,
+      source: 'gdoc',
+    };
+    store.article = res;
+    store.emit('article:fetched', res);
+  } else if (typeof articleHref === 'string') {
+    // regular adoc article
+    let href = articleHref;
+    if (store.branch) {
+      const url = new URL(articleHref);
+      setBranch(url, store.branch);
+      href = url.toString();
+    }
+    res = await loadArticle(href);
+  } else {
+    console.error('invalid articleHref: ', articleHref);
+  }
+
+  return buildBlock('article', res.html || '');
+}
+
+/**
+ * Builds sidenav and article blocks and prepends to main in a new section.
+ * @param {Element} main The container element
+ */
+async function buildBookSection(main) {
+  if (store.pageTemplate !== 'book') return;
+
+  const docMain = document.documentElement.querySelector('main');
+  if (main !== docMain) return;
+
+  const section = document.createElement('div');
+  section.append(await buildArticleBlock(main, store.articleHref));
+  main.prepend(section);
+}
+
+/**
+ * Builds all synthetic blocks in a container element.
+ * @param {Element} main The container element
+ */
+async function buildAutoBlocks(main) {
+  try {
+    buildHeroBlock(main);
+    await buildBookSection(main);
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error('Auto Blocking failed', error);
   }
 }
 
@@ -834,13 +879,13 @@ function decorateSectionIds(main) {
  * @param {Element} main The main element
  */
 // eslint-disable-next-line import/prefer-default-export
-export function decorateMain(main) {
+export async function decorateMain(main) {
   // hopefully forward compatible button decoration
   decorateButtons(main);
   convertCodeIconsToText(main);
   // decorateIcons(main);
   decoratePills(main);
-  buildAutoBlocks(main);
+  await buildAutoBlocks(main);
   decorateSections(main);
   decorateSectionIds(main);
   decorateLandingSections(main);
@@ -865,7 +910,7 @@ async function loadEager(doc) {
         }
       });
     }
-    decorateMain(main);
+    await decorateMain(main);
     document.body.classList.add('appear');
     await waitForLCP(LCP_BLOCKS);
   }

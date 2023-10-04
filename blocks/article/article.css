@@ -192,9 +192,9 @@
   top: 50%;
   text-decoration: none;
   transition: background-color var(--theme-transition-ease-duration)
-      var(--theme-transition-ease-function),
+    var(--theme-transition-ease-function),
     opacity var(--theme-transition-ease-duration)
-      var(--theme-transition-ease-function);
+    var(--theme-transition-ease-function);
   height: var(--spacing--8);
   width: var(--spacing--8);
 }
@@ -225,12 +225,13 @@ article [data-docs-heading] span {
 }
 
 .pan-article .last-updated {
-  display: none;
+  display: flex;
+  opacity: 0;
   color: var(--last-updated-text-color);
 }
 
 .pan-article .last-updated.is-visible {
-  display: flex;
+  opacity: 1;
 }
 
 .pan-article .banner {
@@ -290,12 +291,16 @@ article [data-docs-heading] span {
 }
 
 .pan-article .edit-github {
-  display: flex;
+  display: none;
   justify-content: flex-end;
   margin: 0;
   /* position: absolute;
   right: 49px;
   top: 36px; */
+}
+
+.source-adoc .pan-article .edit-github {
+  display: flex;
 }
 
 .pan-article .edit-github a {
@@ -523,9 +528,9 @@ article [data-docs-heading] span {
 }
 
 .pan-article
-  .version-dropdown-menu.is-active
-  + .version-button
-  .icon-container {
+.version-dropdown-menu.is-active
++ .version-button
+.icon-container {
   transform: scale(-1);
 }
 
