@@ -1,3 +1,4 @@
+import { loadCSS } from '../../scripts/lib-franklin.js';
 import { html, renderParallax } from '../../scripts/scripts.js';
 import '../search-bar/search-bar.js';
 
@@ -5,6 +6,7 @@ import '../search-bar/search-bar.js';
  * @param {HTMLDivElement} block
  */
 export default function decorate(block) {
+  loadCSS(`${window.hlx.codeBasePath}/blocks/search-bar/search-bar.css`);
   block.append(html`
     <div>
       <div class="search-bar-container">
@@ -51,9 +53,7 @@ export default function decorate(block) {
 <rect width="120" height="30.3154" fill="white"/>
 </clipPath>
 </defs>
-</svg>
-
-  `;
+</svg>`;
 
   const section = block.closest('div.section');
   const wrapper = section.querySelector('.hero-search-wrapper');
