@@ -2,6 +2,7 @@
   margin: 0 auto;
   max-width: calc(1032px + var(--padding--mobile) + var(--padding--mobile));
   padding: var(--padding--mobile);
+  overflow: hidden;
 }
 
 .card-carousel .splide__track {
