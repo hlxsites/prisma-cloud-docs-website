@@ -4,7 +4,6 @@ import {
   SPA_NAVIGATION,
   decorateMain,
   getPlaceholders,
-  loadArticle,
   loadBook,
   parseFragment,
   render,
@@ -338,7 +337,7 @@ const decorateTitles = (block) => {
   outlineSlot.replaceWith(pageOutline.cloneNode(true));
 
   // Only show outline if there are headings in the article
-  if (articleTitles?.length > 0) {
+  if (articleTitles.length > 0) {
     const pageOutlineContainer = document.querySelector('.article-outline');
     pageOutlineContainer.classList.add('is-visible');
   }
@@ -349,7 +348,7 @@ const decorateTitles = (block) => {
     scrollSpy.setAttribute('ready', true);
   }
 
-  const hash = window.location?.hash;
+  const { hash } = window.location;
   if (hash) {
     const target = block.querySelector(`${hash}`);
 
@@ -363,16 +362,14 @@ const decorateTitles = (block) => {
 
 /**
  * @param {HTMLElement} block the container element
- * @param {string} hrefOrRes href on render, html string on rerender
- * @param {*} rerender whether this is a rerender
+ * @param {ArticleResponse} res defined on rerender
+ * @param {boolean} rerender whether this is a rerender
  */
-async function renderContent(block, hrefOrRes, rerender = false) {
+async function renderContent(block, res, rerender = false) {
   let articleFound = true;
   block.innerHTML = '';
 
-  let res = hrefOrRes;
   if (!rerender) {
-    res = await loadArticle(hrefOrRes);
     if (!res || !res.ok) {
       console.error(`failed to load article (${res.status}): `, res);
       if (res.status === 404 && shouldRedirectMissing()) {
@@ -383,21 +380,25 @@ async function renderContent(block, hrefOrRes, rerender = false) {
     }
   }
 
+  const isGdoc = res.source === 'gdoc';
   const template = parseFragment(TEMPLATE);
   const fragment = document.createElement('div');
 
   const docTitle = document.createElement('a');
   docTitle.setAttribute('slot', 'document');
   docTitle.href = window.location.href.split('/').slice(0, -2).join('/');
-  docTitle.textContent = store?.mainBook?.title;
+  docTitle.textContent = isGdoc ? document.title : store.mainBook.title;
   fragment.append(docTitle);
+
+  block.classList.remove(`source-${isGdoc ? 'adoc' : 'gdoc'}`);
+  block.classList.add(`source-${isGdoc ? 'gdoc' : 'adoc'}`);
 
   if (articleFound) {
     const { html, info } = res;
     const article = parseFragment(html);
 
     // Set last updated
-    const lastUpdated = res?.info?.lastModified;
+    const lastUpdated = res.info.lastModified;
     if (lastUpdated) {
       const lastUpdatedLocale = lastUpdated.toLocaleString('default', {
         month: 'long',
@@ -461,12 +462,14 @@ async function renderContent(block, hrefOrRes, rerender = false) {
   localize(block);
 
   // Post render
-  block.querySelector(
-    '.edit-github a',
-  ).href = `https://github.com/hlxsites/prisma-cloud-docs/blob/main/${window.location.pathname.replace(
-    PATH_PREFIX,
-    'docs',
-  )}.adoc`;
+  if (!isGdoc) {
+    block.querySelector(
+      '.edit-github a',
+    ).href = `https://github.com/hlxsites/prisma-cloud-docs/blob/main/${window.location.pathname.replace(
+      PATH_PREFIX,
+      'docs',
+    )}.adoc`;
+  }
 
   // update dropdown links
   const versionMenu = block.querySelector('.version-dropdown-menu');
@@ -485,14 +488,14 @@ async function renderContent(block, hrefOrRes, rerender = false) {
   // Add link to division landing
   const backHomeLink = block.querySelector('.back-home a');
   if (backHomeLink) {
-    const locale = window.location.pathname.split('/')?.[3];
+    const locale = window.location.pathname.split('/')[3];
     const divisionLandingUrl = `${window.location.origin}${window.hlx.codeBasePath}/${locale}`;
     backHomeLink.setAttribute('href', divisionLandingUrl);
   }
 
   // Show last updated if it exisxts
-  const lastUpdated = res?.info?.lastModified;
-  if (lastUpdated) {
+  const hasLastMod = res && res.info && res.info.lastModified;
+  if (hasLastMod) {
     const lastUpdatedWrapper = document.querySelector('.last-updated');
     lastUpdatedWrapper.classList.add('is-visible');
   }
@@ -512,14 +515,14 @@ async function renderContent(block, hrefOrRes, rerender = false) {
   // Load sidenav, once
   if (!rerender) {
     renderSidenav(block);
-    await import('../theme-toggle/theme-toggle.js');
-    await import('../../scripts/scroll-spy.js');
+    import('../theme-toggle/theme-toggle.js');
+    import('../../scripts/scroll-spy.js');
   }
 
   if (articleFound) {
     const bookContent = block.querySelector('.book-content div[slot="content"]');
     if (bookContent) {
-      decorateMain(bookContent);
+      await decorateMain(bookContent);
       await loadBlocks(bookContent);
       updateSectionsStatus(bookContent);
 
@@ -540,29 +543,9 @@ const renderCurrentVersion = (block) => {
 
 /** @param {HTMLDivElement} block */
 export default async function decorate(block) {
-  const link = block.querySelector('a');
-
-  if (link) {
-    try {
-      const href = link.getAttribute('href') || link.innerText;
-      if (href) {
-        if (store.branch) {
-          const url = new URL(href);
-          setBranch(url, store.branch);
-
-          await renderContent(block, url.toString());
-          renderCurrentVersion(block);
-          initVersionDropdown(block);
-        } else {
-          await renderContent(block, href);
-          renderCurrentVersion(block);
-          initVersionDropdown(block);
-        }
-      }
-    } catch (e) {
-      console.error(e);
-    }
-  }
+  await renderContent(block, store.article);
+  renderCurrentVersion(block);
+  initVersionDropdown(block);
 
   if (SPA_NAVIGATION) {
     store.on('spa:navigate:article', async (res) => {

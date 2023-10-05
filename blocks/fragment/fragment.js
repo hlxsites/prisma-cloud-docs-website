@@ -78,7 +78,7 @@ async function loadFragment(path, fromDocs) {
     }
   }
 
-  decorateMain(main);
+  await decorateMain(main);
   await loadBlocks(main);
   updateSectionsStatus(main);
   return main;

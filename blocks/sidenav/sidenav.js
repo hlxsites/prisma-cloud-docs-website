@@ -142,7 +142,7 @@ function handleSPANavigation(state) {
 
   // update modified date
   const dateEl = banner.querySelector('.book-detail-banner-info slot[name="date"]');
-  if (dateEl) {
+  if (dateEl && state.info.lastModified) {
     dateEl.textContent = formatDate(state.info.lastModified);
   }
 
@@ -799,7 +799,7 @@ export default async function decorate(block) {
 
   store.once('article:loaded', (info) => {
     block.querySelector('slot[name="title"]').textContent = info.title;
-    block.querySelector('slot[name="date"]').textContent = formatDate(info.lastModified);
+    block.querySelector('slot[name="date"]').textContent = info.lastModified ? formatDate(info.lastModified) : '';
   });
 
   store.once('book:loaded', (book) => {
