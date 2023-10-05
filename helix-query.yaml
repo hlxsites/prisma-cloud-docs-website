@@ -7,6 +7,9 @@ indices:
     exclude:
       - '**/Document.*'
       - '**/fragments/**'
+      - '*/footer'
+      - '*/nav'
+      - '*/product/book-default'
     target: /en/query-index
     properties:
       title:
@@ -25,28 +28,9 @@ indices:
         select: none
         value: |
           parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
-  jp: &default
+  jp:
+    <<: *default
     include:
       - '/jp'
       - '/jp/**'
-    exclude:
-      - '**/Document.*'
-      - '**/fragments/**'
     target: /jp/query-index
-    properties:
-      title:
-        select: head > meta[property="og:title"]
-        value: |
-          attribute(el, 'content')
-      image:
-        select: head > meta[property="og:image"]
-        value: |
-          match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
-      description:
-        select: head > meta[name="description"]
-        value: |
-          attribute(el, 'content')
-      lastModified:
-        select: none
-        value: |
-          parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
