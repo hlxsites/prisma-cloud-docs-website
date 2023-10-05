@@ -38,6 +38,56 @@ search-bar {
   display: flex;
 }
 
+.search-bar #coveo-searchbox #placeholder-searchbox {
+  flex-grow: 1;
+  display: flex;
+}
+
+.search-bar #coveo-searchbox #placeholder-searchbox div {
+  border-top: 1px solid var(--search-border-color);
+  border-bottom: 1px solid var(--search-border-color);
+  border-left: 1px solid var(--search-border-color);
+  border-radius: 0;
+  border-top-left-radius: var(--search-border-radius);
+  border-bottom-left-radius: var(--search-border-radius);
+  height: var(--search-height);
+  width: 43px;
+  min-width: 43px;
+  background: var(--search-background-color);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.search-bar #coveo-searchbox #placeholder-searchbox input {
+  background: var(--search-background-color);
+  color: var(--search-text-color);
+  font-family: var(--body-font-family);
+  font-size: var(--control-font-size--sm);
+  line-height: var(--control-line-height--sm);
+  padding: 13px 16px 11px 1px;
+  padding-right: var(--spacing--4);
+  border: none;
+  resize: none;
+  outline: 0;
+  margin: 0;
+  border-top: 1px solid var(--search-border-color);
+  border-bottom: 1px solid var(--search-border-color);
+  border-radius: 0;
+  height: var(--search-height);
+  margin-left: -1px;
+  flex-grow: 1;
+}
+
+.search-bar #coveo-searchbox #placeholder-searchbox input::placeholder {
+  color: var(--search-placeholder);
+  padding-top: 10px;
+}
+
+.search-bar.coveo-ready #coveo-searchbox #placeholder-searchbox {
+  display: none;
+}
+
 .search-bar #coveo-searchbox .magic-box {
   border: none;
   border-radius: 0;
@@ -247,22 +297,22 @@ search-bar {
 }
 
 .search-bar
-  .magic-box.magic-box-hasFocus
-  .magic-box-suggestions.magic-box-hasSuggestion
-  .coveo-magicbox-suggestions,
+.magic-box.magic-box-hasFocus
+.magic-box-suggestions.magic-box-hasSuggestion
+.coveo-magicbox-suggestions,
 .search-bar
-  .magic-box.magic-box-hasFocus
-  .magic-box-suggestions.magic-box-hasSuggestion
-  .coveo-suggestion-container,
+.magic-box.magic-box-hasFocus
+.magic-box-suggestions.magic-box-hasSuggestion
+.coveo-suggestion-container,
 .search-bar .magic-box .magic-box-suggestions .coveo-magicbox-suggestions {
   border: none;
 }
 
 .search-bar .dropdown-content,
 .search-bar
-  .magic-box
-  .magic-box-suggestions.magic-box-hasSuggestion
-  .coveo-magicbox-suggestions {
+.magic-box
+.magic-box-suggestions.magic-box-hasSuggestion
+.coveo-magicbox-suggestions {
   background: var(--search-background-color);
   border-radius: var(--search-autosuggest-border-radius);
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.08);
@@ -283,9 +333,9 @@ search-bar {
 
 .search-bar .dropdown-content a:not(:last-child),
 .search-bar
-  .magic-box
-  .magic-box-suggestions
-  .magic-box-suggestion:not(:last-child) {
+.magic-box
+.magic-box-suggestions
+.magic-box-suggestion:not(:last-child) {
   margin-bottom: var(--spacing--1);
 }
 

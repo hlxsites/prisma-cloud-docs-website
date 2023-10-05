@@ -404,7 +404,7 @@
   z-index: 100;
   top: 0;
   height: 0;
-  width: 100%;
+  width: 100vw;
   transition: opacity var(--action-ease-duration) var(--action-ease-function);
   visibility: hidden;
   display: flex;
