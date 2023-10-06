@@ -33,6 +33,7 @@ const SITE_REPO_OWNER = 'hlxsites';
 const SITE_REPO_NAME = 'prisma-cloud-docs-website';
 const DOCS_REPO_OWNER = 'hlxsites';
 const DOCS_REPO_NAME = 'prisma-cloud-docs';
+const PROD_DOMAIN = 'https://docs-preview.prismacloud.io';
 
 window.hlx.RUM_GENERATION = SITE_REPO_NAME; // add your RUM generation information here
 
@@ -46,7 +47,7 @@ export const WEB_ORIGINS = {
   // dev: `https://main--${SITE_REPO_NAME}--${SITE_REPO_OWNER}.hlx.page`,
   preview: `https://main--${SITE_REPO_NAME}--${SITE_REPO_OWNER}.hlx.page`,
   publish: `https://main--${SITE_REPO_NAME}--${SITE_REPO_OWNER}.hlx.live`,
-  prod: '',
+  prod: PROD_DOMAIN,
 };
 
 export const DOCS_ORIGINS = {
@@ -54,7 +55,7 @@ export const DOCS_ORIGINS = {
   // dev: `https://main--${DOCS_REPO_NAME}--${DOCS_REPO_OWNER}.hlx.page`,
   preview: `https://main--${DOCS_REPO_NAME}--${DOCS_REPO_OWNER}.hlx.page`,
   publish: `https://main--${DOCS_REPO_NAME}--${DOCS_REPO_OWNER}.hlx.live`,
-  prod: '',
+  prod: PROD_DOMAIN,
 };
 
 export function getPlaceholders() {
