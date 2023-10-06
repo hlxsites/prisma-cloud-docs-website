@@ -387,6 +387,8 @@ body.landing-division {
     ),
     #fff;
   background-size: auto;
+  min-height: 100vh;
+  max-width: 100vw;
 }
 
 body.landing-division .section:not(.parallax-container) {

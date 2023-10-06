@@ -8,11 +8,7 @@ import {
   isMobile,
   parseFragment,
   render,
-  renderBreadCrumbs,
 } from '../../scripts/scripts.js';
-import '../language-selector/language-selector.js';
-import '../search-bar/search-bar.js';
-import '../theme-toggle/theme-toggle.js';
 
 // <search-bar data-default-option="all"></search-bar>
 const TEMPLATE = /* html */ `    
@@ -372,16 +368,19 @@ function addEventListeners(block) {
   );
 
   /* Search */
+  const emitLoadSearch = (() => {
+    let sent = false;
+    return () => {
+      if (sent) return false;
+      sent = true;
+      store.emit('load:search');
+      return true;
+    };
+  })();
   const searchButtonOpen = desktopNav.querySelector('.nav-search-button');
   const searchButtonClose = searchPanel.querySelector('.search-panel-close');
 
-  // searchButtonOpen.addEventListener(
-  //   "mouseenter",
-  //   () => {
-  //     import("../search-bar/search-bar.js");
-  //   },
-  //   { once: true }
-  // );
+  searchButtonOpen.addEventListener('mouseenter', emitLoadSearch, { once: true });
 
   const focusSearchInput = () => {
     // Check for searchbar
@@ -395,15 +394,23 @@ function addEventListeners(block) {
     }
   };
 
+  const openSearch = () => {
+    // delay to load search before opening first time
+    const delay = emitLoadSearch('load:search') ? 150 : 1;
+    setTimeout(() => {
+      searchPanel.classList.add('active');
+
+      // Focus on search input
+      focusSearchInput();
+    }, delay);
+  };
+
   window.addEventListener('keydown', (e) => {
     const { key } = e;
     const searchIsActive = searchPanel.classList.contains('active');
 
     if (key === '/' && !searchIsActive) {
-      searchPanel.classList.add('active');
-
-      // Focus on search input
-      focusSearchInput();
+      openSearch();
     }
 
     if (key === 'Escape' && searchIsActive) {
@@ -412,10 +419,7 @@ function addEventListeners(block) {
   });
 
   searchButtonOpen.addEventListener('click', () => {
-    searchPanel.classList.add('active');
-
-    // Focus on search input
-    focusSearchInput();
+    openSearch();
   });
 
   searchButtonClose.addEventListener('click', () => {
@@ -626,6 +630,11 @@ export default async function decorate(block) {
   if (!isMobile()) {
     // renderBreadCrumbs();
   } else {
-    store.once('delayed:loaded', renderBreadCrumbs);
+    // store.once('delayed:loaded', renderBreadCrumbs);
   }
+
+  // load custom elements
+  import('../language-selector/language-selector.js');
+  import('../search-bar/search-bar.js');
+  import('../theme-toggle/theme-toggle.js');
 }
