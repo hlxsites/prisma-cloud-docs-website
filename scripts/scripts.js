@@ -650,7 +650,7 @@ export async function loadArticle(href) {
   assertValidDocsURL(href);
 
   // change href to point to docs origin on lower envs
-  if (store.env !== 'prod' && href.startsWith('/')) {
+  if (href.startsWith('/')) {
     // eslint-disable-next-line no-param-reassign
     href = `${DOCS_ORIGINS[store.env]}${href}`;
   }
