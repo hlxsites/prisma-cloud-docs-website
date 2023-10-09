@@ -423,7 +423,7 @@ async function renderContent(block, res, rerender = false) {
           image.src = imageURL.toString();
         } else {
           // add /docs/ prefix if missing
-          const path = imageURL.pathname.startsWith('/docs/') ? imageURL.pathname : `/docs/${imageURL.pathname}`;
+          const path = imageURL.pathname.startsWith('/docs/') ? imageURL.pathname : `/docs${imageURL.pathname}`;
           image.src = `${store.docsOrigin}${path}${imageURL.search}`;
         }
 
