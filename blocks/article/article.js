@@ -414,21 +414,25 @@ async function renderContent(block, res, rerender = false) {
     }
 
     // Fixup images src
-    for (const image of article.querySelectorAll('img')) {
-      const imageURL = new URL(image.src);
+    if (!isGdoc) {
+      for (const image of article.querySelectorAll('img')) {
+        const imageURL = new URL(image.src);
 
-      if (store.branch) {
-        setBranch(imageURL, store.branch);
-        image.src = imageURL.toString();
-      } else {
-        image.src = `${store.docsOrigin}${imageURL.pathname}`;
-      }
+        if (store.branch) {
+          setBranch(imageURL, store.branch);
+          image.src = imageURL.toString();
+        } else {
+          // add /docs/ prefix if missing
+          const path = imageURL.pathname.startsWith('/docs/') ? imageURL.pathname : `/docs/${imageURL.pathname}`;
+          image.src = `${store.docsOrigin}${path}${imageURL.search}`;
+        }
 
-      const picture = image.parentElement;
-      if (picture.tagName === 'PICTURE') {
-        for (const source of picture.querySelectorAll('source')) {
-          const search = source.srcset.split('?')[1];
-          source.srcset = `${image.src}?${search}`;
+        const picture = image.parentElement;
+        if (picture.tagName === 'PICTURE') {
+          for (const source of picture.querySelectorAll('source')) {
+            const search = source.srcset.split('?')[1];
+            source.srcset = `${image.src}?${search}`;
+          }
         }
       }
     }
