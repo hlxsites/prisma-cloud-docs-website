@@ -1074,9 +1074,10 @@ export const fadeIn = (element, targetClass = 'is-current-route') => {
 
 // Lottie animations for each categoiry
 const LOTTIE_PATHS = {
-  'secure-the-infrastructure': `${window.hlx.codeBasePath}/assets/lottie-infrastructure.json`,
-  'secure-the-code': `${window.hlx.codeBasePath}/assets/lottie-code.json`,
   'secure-the-runtime': `${window.hlx.codeBasePath}/assets/lottie-runtime.json`,
+  'secure-the-source': `${window.hlx.codeBasePath}/assets/lottie-code.json`,
+  'secure-the-infrastructure': `${window.hlx.codeBasePath}/assets/lottie-infrastructure.json`,
+  
 };
 
 export const showRoute = (hash) => {
@@ -1126,6 +1127,7 @@ export const showRoute = (hash) => {
       const player = targetCategory.querySelector('lottie-player');
       if (!player.classList.contains('has-loaded')) {
         const categoryRouteId = hash.substring(1, hash.length);
+        console.log('categoryRouteId: ', categoryRouteId);
         try {
           // Load via URL
           player.load(LOTTIE_PATHS[categoryRouteId]);

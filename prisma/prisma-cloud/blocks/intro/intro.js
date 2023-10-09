@@ -5,7 +5,7 @@ import {
 } from '../../scripts/scripts.js';
 
 // Lottie animations for each category
-const LOTTIE_PATHS = [`${window.hlx.codeBasePath}/assets/lottie-infrastructure.json`, `${window.hlx.codeBasePath}/assets/lottie-code.json`, `${window.hlx.codeBasePath}/assets/lottie-runtime.json`];
+const LOTTIE_PATHS = [`${window.hlx.codeBasePath}/assets/lottie-code.json`, `${window.hlx.codeBasePath}/assets/lottie-infrastructure.json`, `${window.hlx.codeBasePath}/assets/lottie-runtime.json`];
 
 const TEMPLATE_BUTTON = `
 <button slot="category-button" class="ops-nav-item">

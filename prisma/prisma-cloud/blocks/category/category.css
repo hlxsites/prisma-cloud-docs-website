@@ -316,11 +316,16 @@
   line-height: var(--heading-line-height--h4);
 }
 
+.ops-accordion p,
 .ops-accordion-item ol,
 .ops-accordion-item ul {
   font-family: var(--body-font-family);
   font-size: var(--body-font-size--p2);
   line-height: var(--body-line-height--p2);
+}
+
+.ops-accordion-item ol,
+.ops-accordion-item ul {
   padding-right: var(--spacing--12);
 }
 
