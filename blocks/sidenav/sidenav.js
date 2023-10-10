@@ -230,7 +230,6 @@ const initProductDropdown = async (wrapper) => {
   });
 
   const json = await store.fetchJSON(`${window.location.origin}${PATH_PREFIX}/products`);
-  console.log('product json: ',  json);
 
   if (!json) return;
 
