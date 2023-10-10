@@ -1013,6 +1013,14 @@ export const collapseSection = (element) => {
   const elementTransition = element.style.transition;
   element.style.transition = '';
 
+  // Scroll back to top of parent
+  const parent = element.closest('.ops-accordion-item');
+  const top = parent.getBoundingClientRect()?.top;
+  window.scrollTo({
+    top,
+    behavior: 'smooth',
+  });
+
   /**
    * On the next frame (as soon as the previous style change has taken effect),
    * explicitly set the element's height to its current pixel height, so we
@@ -1074,10 +1082,9 @@ export const fadeIn = (element, targetClass = 'is-current-route') => {
 
 // Lottie animations for each categoiry
 const LOTTIE_PATHS = {
-  'secure-the-runtime': `${window.hlx.codeBasePath}/assets/lottie-runtime.json`,
   'secure-the-source': `${window.hlx.codeBasePath}/assets/lottie-code.json`,
   'secure-the-infrastructure': `${window.hlx.codeBasePath}/assets/lottie-infrastructure.json`,
-  
+  'secure-the-runtime': `${window.hlx.codeBasePath}/assets/lottie-runtime.json`,
 };
 
 export const showRoute = (hash) => {
