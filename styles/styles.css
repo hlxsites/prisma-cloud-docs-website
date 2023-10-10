@@ -703,7 +703,7 @@ main blockquote p::after {
 main picture,
 main img {
   max-width: 100%;
-  width: auto;
+  /* width: auto; */
   height: auto;
 }
 
