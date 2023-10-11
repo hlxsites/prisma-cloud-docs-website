@@ -29,7 +29,7 @@ function extractColSpans(block) {
     return [];
   }
 
-  const cols = firstCol.nextElementSibling.textContent.split(',');
+  const cols = firstCol.nextElementSibling.textContent.split(';').map((row) => row.split(','));
   firstRow.remove();
   return cols;
 }
@@ -111,11 +111,12 @@ export default async function decorate(block) {
     const head = rows.shift();
     if (!head) return;
 
+    const spans = colSpans.shift() || [];
     const cells = [...head.querySelectorAll(':scope > div')];
     const thead = html` <table>
       <thead>
         <tr>
-          ${cells.map((cell, i) => `<th${colSpans[i] ? ` colspan="${colSpans[i]}"` : ''}>${cell.innerHTML}</th>`).join('\n')}
+          ${cells.map((cell, i) => `<th${spans[i] ? ` colspan="${spans[i]}"` : ''}>${cell.innerHTML}</th>`).join('\n')}
         </tr>
       </thead>
     </table>`.firstElementChild;
@@ -128,10 +129,12 @@ export default async function decorate(block) {
   table.appendChild(tbody);
 
   rows.forEach((row) => {
+    const spans = colSpans.shift() || [];
     const cells = [...row.querySelectorAll(':scope > div')];
+
     const tr = html` <table>
       <tr>
-        ${cells.map((cell) => `<td>${cell.innerHTML}</td>`).join('\n')}
+        ${cells.map((cell, i) => `<td${spans[i] ? ` colspan="${spans[i]}"` : ''}>${cell.innerHTML}</td>`).join('\n')}
       </tr>
     </table>`.firstElementChild.firstElementChild;
     tbody.appendChild(tr);
