@@ -13,10 +13,7 @@ function extractColWidths(block) {
   }
 
   const cols = firstCol.nextElementSibling.textContent.split(',');
-  console.log('extractColWidths cols: ', cols);
   const maxVal = parseInt([...cols].sort().reverse()[0], 10);
-  console.log('extractColWidths maxVal: ', maxVal);
-
   const widths = cols.map((swid) => Math.round((100 * parseInt(swid, 10)) / maxVal));
   firstRow.remove();
   return widths;
@@ -33,8 +30,6 @@ function extractColSpans(block) {
   }
 
   const cols = firstCol.nextElementSibling.textContent.split(';').map((row) => row.split(','));
-  console.log('extractColSpans cols: ', cols);
-
   firstRow.remove();
   return cols;
 }
