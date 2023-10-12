@@ -11,7 +11,8 @@
  */
 
 import type { EventHandler, EventMap, OffEventFn } from "./Events";
-import { FilterPrivate } from "./util";
+import type { ArticleResponse } from "./Article";
+import type { FilterPrivate } from "./util";
 
 type BookDescriptor = {
   title: string;
@@ -22,7 +23,7 @@ type BookDescriptor = {
 interface LocalizationInfo {
   /**
    * language code -> language title
-   * from /prisma/prisma-cloud/languages sheet
+   * from /languages sheet
    */
   langMap: Record<string, string>;
 
@@ -38,6 +39,11 @@ type RemoveFn = () => void;
 declare class StoreImpl {
   /** Fetched JSON, by filename */
   _json: Record<string, JSONData>;
+
+  /**
+   * Current article response
+   */
+  article: ArticleResponse;
 
   /**
    * Current environment

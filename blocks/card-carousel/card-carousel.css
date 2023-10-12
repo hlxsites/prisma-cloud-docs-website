@@ -1,0 +1,161 @@
+.card-carousel {
+  margin: 0 auto;
+  max-width: calc(1032px + var(--padding--mobile) + var(--padding--mobile));
+  padding: var(--padding--mobile);
+}
+
+.card-carousel .splide__track {
+  overflow: visible;
+}
+
+.card-carousel .card {
+  background: url("/assets/card-background.jpg") 0 0
+    no-repeat;
+  background-size: cover;
+  border-radius: var(--spacing--5);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+  padding: var(--spacing--8);
+  text-decoration: none;
+}
+
+.card-carousel .card * {
+  position: relative;
+  z-index: 1;
+}
+
+.card-carousel .card.has-custom-background .title {
+  color: var(--color-neutral-white);
+}
+
+.card-carousel .card.has-custom-background:before {
+  background: linear-gradient(
+    360deg,
+    rgba(10, 20, 41, 0.92) 0%,
+    rgba(121, 121, 121, 0) 100%,
+    rgba(10, 20, 41, 0) 100%
+  );
+  border-radius: var(--spacing--5);
+  content: '';
+  left: 0;
+  top: 0;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
+.card-carousel .card .title,
+.card-carousel .chip {
+  color: var(--color-neutral-900);
+}
+
+.card-carousel .chip {
+  align-self: flex-start;
+  background: var(--color-neutral-dark-050);
+  border-radius: var(--spacing--6);
+  padding: var(--spacing--2) var(--spacing--4);
+}
+
+.card-carousel .card .title {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-carousel .card .date {
+  font-size: var(--body-font-size--p2);
+  line-height: var(--body-line-height--p2);
+  margin-top: var(--spacing--2);
+}
+
+.card-carousel .card .eyebrow {
+  color: var(--color-neutral-700);
+  font-size: var(--control-font-size--sm);
+  line-height: var(--control-line-height--sm);
+  letter-spacing: var(--letter-spacing-neg--xs);
+  padding-bottom: var(--spacing--2);
+}
+
+.card-carousel .splide__arrows {
+  display: flex;
+  gap: var(--spacing--3);
+  justify-content: flex-end;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  transform: translateY(calc(-100% - var(--spacing--4)));
+}
+
+.card-carousel .splide__arrow {
+  align-items: center;
+  background: var(--icon-action--background-color);
+  border: 1px solid var(--icon-action--border-color);
+  border-radius: 50%;
+  color: var(--icon-action--text-color);
+  display: flex;
+  justify-content: center;
+  padding: 0;
+  height: var(--spacing--12);
+  width: var(--spacing--12);
+}
+
+.card-carousel .splide__arrow:hover {
+  cursor: pointer;
+}
+
+.card-carousel .splide__arrow[disabled] {
+  background: var(--icon-action--active-background-color);
+  border: 1px solid var(--icon-action--disabled-border-color);
+  color: var(--icon-action--disabled-text-color);
+  cursor: default;
+  pointer-events: none;
+}
+
+.card-carousel .splide__arrow svg {
+  stroke: currentColor;
+  fill: currentColor;
+  height: var(--spacing--4);
+  width: var(--spacing--4);
+}
+
+.card-carousel .splide__arrow--prev svg {
+  position: relative;
+  transform: scaleX(-1);
+}
+
+.card-carousel .splide__pagination {
+  display: flex;
+  gap: var(--spacing--2);
+  margin-top: 35px;
+  padding: var(--spacing--4) 0;
+}
+
+.card-carousel .splide__pagination li {
+  line-height: 0;
+}
+
+.card-carousel .splide__pagination__page {
+  background-color: var(--color-neutral-200);
+  border-radius: var(--spacing--1);
+  border: none;
+  padding: 0;
+  height: 2px;
+  width: var(--spacing--8);
+}
+
+.card-carousel .splide__pagination__page.is-active {
+  background-color: var(--color-blue--400);
+}
+
+@media only screen and (max-width: 560px) {
+  .card-carousel .splide__pagination {
+    display: none;
+  }
+}
+
+@media (max-width: 1100px) {
+  .card-carousel {
+    overflow: hidden;
+  }
+}

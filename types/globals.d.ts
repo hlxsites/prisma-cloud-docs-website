@@ -11,6 +11,7 @@
  */
 
 import type * as StoreT from './Store';
+import type * as ArticleT from './Article';
 
 /**
  * Export types in global namespace for convenience in JS
@@ -22,6 +23,8 @@ export interface FranklinGlobals {
 
 declare global {
   export type Store = StoreT.Store;
+  export type ArticleResponse = ArticleT.ArticleResponse;
+
   var store: Store;
 
   export interface Window extends FranklinGlobals { }

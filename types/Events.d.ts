@@ -14,6 +14,7 @@ import { ArticleInfo, ArticleResponse } from "./Article";
 import { BookDefinition } from "./Book";
 
 export interface EventMap {
+  "load:search": void;
   "delayed:loaded": void;
   "book:loaded": BookDefinition;
   "article:fetched": ArticleResponse;

@@ -12,7 +12,7 @@ document.head.innerHTML = await readFile({ path: './head.html' });
 
 describe('Utils methods', () => {
   before(async () => {
-    blockUtils = await import('../../prisma/prisma-cloud/scripts/lib-franklin.js');
+    blockUtils = await import('../../scripts/lib-franklin.js');
     document.body.innerHTML = await readFile({ path: './body.html' });
   });
 

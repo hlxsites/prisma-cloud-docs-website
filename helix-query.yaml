@@ -2,12 +2,15 @@ version: 1
 indices:
   en: &default
     include:
-      - '/prisma/prisma-cloud/en'
-      - '/prisma/prisma-cloud/en/**'
+      - '/en'
+      - '/en/**'
     exclude:
       - '**/Document.*'
       - '**/fragments/**'
-    target: /prisma/prisma-cloud/en/query-index
+      - '*/footer'
+      - '*/nav'
+      - '*/product/book-default'
+    target: /en/query-index
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -25,28 +28,9 @@ indices:
         select: none
         value: |
           parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
-  jp: &default
+  jp:
+    <<: *default
     include:
-      - '/prisma/prisma-cloud/jp'
-      - '/prisma/prisma-cloud/jp/**'
-    exclude:
-      - '**/Document.*'
-      - '**/fragments/**'
-    target: /prisma/prisma-cloud/jp/query-index
-    properties:
-      title:
-        select: head > meta[property="og:title"]
-        value: |
-          attribute(el, 'content')
-      image:
-        select: head > meta[property="og:image"]
-        value: |
-          match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
-      description:
-        select: head > meta[name="description"]
-        value: |
-          attribute(el, 'content')
-      lastModified:
-        select: none
-        value: |
-          parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+      - '/jp'
+      - '/jp/**'
+    target: /jp/query-index
