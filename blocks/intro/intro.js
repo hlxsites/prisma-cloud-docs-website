@@ -34,120 +34,90 @@ const TEMPLATE = /* html */ `
 
 let activeId = 'overview';
 let targetSection = null;
+let hasLoaded = false;
+let categoriesRef = null;
+let headerSlotRef = null;
+let buttonsSlotRef = null;
 
 function isMobile() {
   return window.innerWidth < 1024;
 }
 
-function addEvents() {
-  window.addEventListener(
-    'hashchange',
-    () => {
-      const { hash } = window.location;
-      // Fade out current view
-      const currentRoute = document.querySelector('.is-current-route');
-
-      const player = currentRoute.querySelector('lottie-player');
-
-      if (player && player?.pause) {
-        player.pause();
-      }
-
-      fadeOut(currentRoute, () => {
-        // Fade in new view
-        showRoute(hash);
-        // Reset to default state
-        activeId = 'overview';
-      });
-
-      if (!hash) {
-        // fade out category container
-        const categoriesContainer = document.querySelector('.category-container');
-        fadeOut(categoriesContainer, null, 'is-active');
-        removeActive('.ops-category-nav-buttons');
-      }
-    },
-    false,
-  );
-
-  // Get mouse coords
-  window.addEventListener('mousemove', (e) => {
-    const x = e.changedTouches ? e.changedTouches[0].clientX : e.clientX;
-    const y = e.changedTouches ? e.changedTouches[0].clientY : e.clientY;
-
-    document.documentElement.style.setProperty('--x', x);
-    document.documentElement.style.setProperty('--y', y);
-  });
-}
-
 /**
  * @param {HTMLElement} block the container element
  */
-async function renderContent(block) {
-  const { lang } = document.documentElement;
-  const rows = [...block.querySelectorAll(':scope > div')];
-  const overview = rows[0].querySelector(':scope > div');
-  const categories = rows[1].querySelectorAll(':scope > div');
+async function renderContent(block, buildDom = true) {
+  if (buildDom) {
+    const { lang } = document.documentElement;
+    const rows = [...block.querySelectorAll(':scope > div')];
+    const overview = rows[0].querySelector(':scope > div');
+    const categories = rows[1].querySelectorAll(':scope > div');
+    categoriesRef = categories;
 
-  const template = parseFragment(TEMPLATE);
-  const buttonsSlot = template.querySelector('[slot="buttons"]');
-  const headerSlot = template.querySelector('.ops-intro-header');
+    const template = parseFragment(TEMPLATE);
+    const buttonsSlot = template.querySelector('[slot="buttons"]');
+    buttonsSlotRef = buttonsSlot;
+    const headerSlot = template.querySelector('.ops-intro-header');
+    headerSlotRef = headerSlot;
 
-  overview.setAttribute('data-category-id', 'overview');
-  overview.classList.add('header-section', 'is-active');
-  headerSlot.append(overview);
+    overview.setAttribute('data-category-id', 'overview');
+    overview.classList.add('header-section', 'is-active');
+    headerSlot.append(overview);
 
-  categories.forEach((category, index) => {
-    const _fragment = parseFragment(TEMPLATE_BUTTON);
-    const root = _fragment.querySelector('.ops-nav-item');
-    const title = category.querySelector('h1');
-    const id = title.getAttribute('id');
-    title.setAttribute('id', ''); // Remvove id so hash anchor link doesnt trigger
+    categories.forEach((category, index) => {
+      const _fragment = parseFragment(TEMPLATE_BUTTON);
+      const root = _fragment.querySelector('.ops-nav-item');
+      const title = category.querySelector('h1');
+      const id = title.getAttribute('id');
+      title.setAttribute('id', ''); // Remvove id so hash anchor link doesnt trigger
 
-    root.setAttribute('data-category-id', id);
-    const titleSpan = _fragment.querySelector('.ops-nav-item-title');
-    titleSpan.textContent = title.textContent;
-    buttonsSlot.append(_fragment);
+      root.setAttribute('data-category-id', id);
+      const titleSpan = _fragment.querySelector('.ops-nav-item-title');
+      titleSpan.textContent = title.textContent;
+      buttonsSlot.append(_fragment);
 
-    category.setAttribute('data-category-id', id);
-    category.classList.add('header-section');
-    const position = document.createElement('span');
-    position.classList.add('position');
-    position.append(`0${index + 1}`);
-    category.prepend(position);
-    const categoryContentWrapper = document.createElement('div');
-    categoryContentWrapper.classList.add('content-wrapper');
-    // Wrap data in franklin in container element
-    categoryContentWrapper.append(parseFragment(category.innerHTML));
-    category.innerHTML = '';
-    category.append(categoryContentWrapper);
-    headerSlot.append(category);
-  });
+      category.setAttribute('data-category-id', id);
+      category.classList.add('header-section');
+      const position = document.createElement('span');
+      position.classList.add('position');
+      position.append(`0${index + 1}`);
+      category.prepend(position);
+      const categoryContentWrapper = document.createElement('div');
+      categoryContentWrapper.classList.add('content-wrapper');
+      // Wrap data in franklin in container element
+      categoryContentWrapper.append(parseFragment(category.innerHTML));
+      category.innerHTML = '';
+      category.append(categoryContentWrapper);
+      headerSlot.append(category);
+    });
 
-  buttonsSlot.addEventListener('click', (e) => {
-    const targetEl = e.target.closest('button');
-    const targetId = targetEl.getAttribute('data-category-id');
+    buttonsSlot.addEventListener('click', (e) => {
+      const targetEl = e.target.closest('button');
+      const targetId = targetEl.getAttribute('data-category-id');
 
-    window.location.hash = targetId;
-    return null;
-  });
+      window.location.hash = targetId;
+      return null;
+    });
 
-  // const template = parseFragment(TEMPLATE);
-  const fragment = document.createElement('div');
+    // const template = parseFragment(TEMPLATE);
+    const fragment = document.createElement('div');
 
-  const backButton = template.querySelector('.back');
-  backButton.href = `${PATH_PREFIX}/${lang}`;
+    const backButton = template.querySelector('.back');
+    backButton.href = `${PATH_PREFIX}/${lang}`;
 
-  // Render with slots
-  render(template, fragment);
-  // Clear out generated HTML
-  block.innerHTML = '';
-  block.append(template);
+    // Render with slots
+    render(template, fragment);
+    // Clear out generated HTML
+    block.innerHTML = '';
+    block.append(template);
+
+    return;
+  }
 
   // Post-render
 
   // Add Lottie after first render
-  categories.forEach((category, index) => {
+  categoriesRef.forEach((category, index) => {
     const root = document.querySelector(`.ops-nav-item:nth-child(${index + 1})`);
     // Add lottie player
     const lottieTemplate = parseFragment(LOTTIE_TEMPLATE);
@@ -172,14 +142,14 @@ async function renderContent(block) {
       }
       activeId = targetId;
       // Get the currently active section that we want to transition out
-      const activeSection = headerSlot.querySelector('.is-active');
+      const activeSection = headerSlotRef.querySelector('.is-active');
 
       // Trigger transition out CSS animation on current section
       activeSection.style.opacity = 0;
 
       playLottie(player);
 
-      targetSection = headerSlot.querySelector(
+      targetSection = headerSlotRef.querySelector(
         `[data-category-id="${targetId}"]`,
       );
 
@@ -201,7 +171,7 @@ async function renderContent(block) {
     });
   });
 
-  buttonsSlot.addEventListener('mouseleave', () => {
+  buttonsSlotRef.addEventListener('mouseleave', () => {
     if (isMobile()) {
       return;
     }
@@ -215,7 +185,7 @@ async function renderContent(block) {
       player.pause();
     }
 
-    targetSection = headerSlot.querySelector('[data-category-id="overview"]');
+    targetSection = headerSlotRef.querySelector('[data-category-id="overview"]');
 
     const transitionOut = () => {
       activeSection.classList.remove('is-active');
@@ -231,11 +201,50 @@ async function renderContent(block) {
 
     activeSection.addEventListener('transitionend', transitionOut, false);
   });
+}
 
-  // Get current hash, render that view
-  const { hash } = window.location;
-  showRoute(hash);
-  addEvents();
+function addEvents() {
+  window.addEventListener(
+    'hashchange',
+    () => {
+      const { hash } = window.location;
+      // Fade out current view
+      const currentRoute = document.querySelector('.is-current-route');
+
+      const player = currentRoute.querySelector('lottie-player');
+
+      if (player && player?.pause) {
+        player.pause();
+      }
+
+      fadeOut(currentRoute, () => {
+        // Fade in new view
+        showRoute(hash);
+        // Reset to default state
+        activeId = 'overview';
+      });
+
+      if (!hash) {
+        if (!hasLoaded) {
+          renderContent(document.querySelector('.intro'), false);
+        }
+        // fade out category container
+        const categoriesContainer = document.querySelector('.category-container');
+        fadeOut(categoriesContainer, null, 'is-active');
+        removeActive('.ops-category-nav-buttons');
+      }
+    },
+    false,
+  );
+
+  // Get mouse coords
+  window.addEventListener('mousemove', (e) => {
+    const x = e.changedTouches ? e.changedTouches[0].clientX : e.clientX;
+    const y = e.changedTouches ? e.changedTouches[0].clientY : e.clientY;
+
+    document.documentElement.style.setProperty('--x', x);
+    document.documentElement.style.setProperty('--y', y);
+  });
 }
 
 /**
@@ -243,4 +252,12 @@ async function renderContent(block) {
  */
 export default async function decorate(block) {
   renderContent(block);
+  // Get current hash, render that view
+  const { hash } = window.location;
+  showRoute(hash);
+  if (!hash) {
+    hasLoaded = true;
+    renderContent(block, false);
+  }
+  addEvents();
 }
