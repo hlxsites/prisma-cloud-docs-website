@@ -259,7 +259,7 @@ async function renderContent(block) {
 
   // Get current hash, render that view
   const { hash } = window.location;
-  showRoute(hash);
+  showRoute(hash, `#${categoryRouteId}`);
 }
 
 /**

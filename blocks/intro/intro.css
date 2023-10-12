@@ -35,7 +35,7 @@
 }
 
 .header-section > p:first-child:before {
-  background: url('/prisma/prisma-cloud/assets/cloud-logo.png') 0 0 no-repeat;
+  background: url('/assets/cloud-logo.png') 0 0 no-repeat;
   background-size: contain;
   content: '';
   display: inline-flex;
@@ -380,17 +380,17 @@
   }
 
   .ops-nav-item:first-child:before {
-    background: url('/prisma/prisma-cloud/assets/ops-infrastructure.png') 0 0 no-repeat;
+    background: url('/assets/ops-infrastructure.png') 0 0 no-repeat;
     background-size: contain;
   }
 
   .ops-nav-item:nth-child(2):before {
-    background: url('/prisma/prisma-cloud/assets/ops-code.png') 0 0 no-repeat;
+    background: url('/assets/ops-code.png') 0 0 no-repeat;
     background-size: contain;
   }
 
   .ops-nav-item:nth-child(3):before {
-    background: url('/prisma/prisma-cloud/assets/ops-runtime.png') 0 0 no-repeat;
+    background: url('/assets/ops-runtime.png') 0 0 no-repeat;
     background-size: contain;
   }
 

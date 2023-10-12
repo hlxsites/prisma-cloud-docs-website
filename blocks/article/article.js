@@ -301,7 +301,7 @@ const decorateTitles = (block) => {
     articleTitle.setAttribute('data-docs-heading', true);
 
     articleTitle.innerHTML = `
-          <div class="anchor" style="height: 50px"></div>
+          <div class="anchor"></div>
           ${title}
           <button class="button-copy button-copy-link">
             <span>

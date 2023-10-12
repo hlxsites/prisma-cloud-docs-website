@@ -1133,14 +1133,14 @@ export const fadeIn = (element, targetClass = 'is-current-route') => {
   }, 100);
 };
 
-// Lottie animations for each categoiry
-const LOTTIE_PATHS = {
-  'secure-the-source': `${window.hlx.codeBasePath}/assets/lottie-code.json`,
-  'secure-the-infrastructure': `${window.hlx.codeBasePath}/assets/lottie-infrastructure.json`,
-  'secure-the-runtime': `${window.hlx.codeBasePath}/assets/lottie-runtime.json`,
-};
+export const showRoute = (hash, targetCategoryId) => {
+  // Lottie animations for each categoiry
+  const LOTTIE_PATHS = {
+    'secure-the-source': `${window.hlx.codeBasePath}/assets/lottie-code.json`,
+    'secure-the-infrastructure': `${window.hlx.codeBasePath}/assets/lottie-infrastructure.json`,
+    'secure-the-runtime': `${window.hlx.codeBasePath}/assets/lottie-runtime.json`,
+  };
 
-export const showRoute = (hash) => {
   let targetCategory = null;
   if (!hash) {
     // Show intro
@@ -1180,9 +1180,9 @@ export const showRoute = (hash) => {
         targetButton.classList.add('is-active');
       }
     }
-
+    const targetCategoryHash = targetCategoryId || hash;
     // Play animation
-    if (targetCategory) {
+    if (targetCategory && targetCategoryHash === targetCategory.getAttribute('data-route')) {
       loadLottie();
       const player = targetCategory.querySelector('lottie-player');
       if (!player.classList.contains('has-loaded')) {
