@@ -1071,7 +1071,7 @@ export const collapseSection = (element) => {
   const top = parent.getBoundingClientRect()?.top;
   window.scrollTo({
     top,
-    behavior: 'smooth',
+    // behavior: 'smooth',
   });
 
   /**
