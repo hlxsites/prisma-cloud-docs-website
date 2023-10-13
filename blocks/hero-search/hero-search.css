@@ -6,6 +6,10 @@
   padding: var(--spacing--20) var(--padding--mobile) 0 var(--padding--mobile);
 }
 
+search-bar {
+  margin-top: var(--spacing--7);
+}
+
 .hero-search-wrapper {
   position: relative;
 }
@@ -90,4 +94,5 @@
   .hero-search .search-bar-container {
     margin: var(--spacing--8) 0;
   }
+}
 }
