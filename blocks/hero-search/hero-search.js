@@ -1,23 +1,18 @@
-import { loadCSS } from '../../scripts/lib-franklin.js';
+import {
+  loadBlock, buildBlock, decorateBlock,
+} from '../../scripts/lib-franklin.js';
 import { html, renderParallax } from '../../scripts/scripts.js';
-import '../search-bar/search-bar.js';
 
 /**
  * @param {HTMLDivElement} block
  */
-export default function decorate(block) {
-  loadCSS(`${window.hlx.codeBasePath}/blocks/search-bar/search-bar.css`);
-  block.append(html`
-    <div>
-      <div class="search-bar-container">
-        <search-bar
-          data-default-option="@td_docsetid==('50f6a03f40793d69545a4286255f64d3')"
-          data-default-options='[{"label": "Enterprise Edition", "category": "@td_docsetid", "value": "50f6a03f40793d69545a4286255f64d3"}, {"label": "Compute Edition", "category": "@td_docsetid", "value": "662a784654b1f7313d35c5af7501870c"}]'
-        >
-        </search-bar>
-      </div>
-    </div>
-  `);
+export default async function decorate(block) {
+  const searchbar = buildBlock('search-bar', [
+    ['default-option', '@td_docsetid==(\'50f6a03f40793d69545a4286255f64d3\')'],
+    ['default-options', '[{"label": "Enterprise Edition", "category": "@td_docsetid", "value": "50f6a03f40793d69545a4286255f64d3"}, {"label": "Compute Edition", "category": "@td_docsetid", "value": "662a784654b1f7313d35c5af7501870c"}]'],
+  ]);
+  block.append(searchbar);
+  decorateBlock(searchbar);
 
   const ICON = `
   <svg class="icon-cloud-logo" width="120" height="31" viewBox="0 0 120 31" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -61,5 +56,6 @@ export default function decorate(block) {
   wrapper.append(html`<div class="hero-search-background"></div>`);
   wrapper.prepend(html`${ICON}`);
 
+  await loadBlock(searchbar);
   renderParallax();
 }
