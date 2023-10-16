@@ -33,7 +33,8 @@ const SITE_REPO_OWNER = 'hlxsites';
 const SITE_REPO_NAME = 'prisma-cloud-docs-website';
 const DOCS_REPO_OWNER = 'hlxsites';
 const DOCS_REPO_NAME = 'prisma-cloud-docs';
-const PROD_DOMAIN = 'https://docs-preview.prismacloud.io';
+const STAGE_DOMAIN = 'https://docs-preview.prismacloud.io';
+const PROD_DOMAIN = 'https://docs.prismacloud.io';
 
 window.hlx.RUM_GENERATION = SITE_REPO_NAME; // add your RUM generation information here
 
@@ -47,6 +48,7 @@ export const WEB_ORIGINS = {
   // dev: `https://main--${SITE_REPO_NAME}--${SITE_REPO_OWNER}.hlx.page`,
   preview: `https://main--${SITE_REPO_NAME}--${SITE_REPO_OWNER}.hlx.page`,
   publish: `https://main--${SITE_REPO_NAME}--${SITE_REPO_OWNER}.hlx.live`,
+  stage: STAGE_DOMAIN,
   prod: PROD_DOMAIN,
 };
 
@@ -55,6 +57,7 @@ export const DOCS_ORIGINS = {
   // dev: `https://main--${DOCS_REPO_NAME}--${DOCS_REPO_OWNER}.hlx.page`,
   preview: `https://main--${DOCS_REPO_NAME}--${DOCS_REPO_OWNER}.hlx.page`,
   publish: `https://main--${DOCS_REPO_NAME}--${DOCS_REPO_OWNER}.hlx.live`,
+  stage: STAGE_DOMAIN,
   prod: PROD_DOMAIN,
 };
 
@@ -68,10 +71,11 @@ export function isMobile() {
 
 function getEnv() {
   const { hostname } = window.location;
-  if (['localhost', '127.0.0.1'].includes(hostname)) return 'dev';
+  if (PROD_DOMAIN.endsWith(hostname)) return 'prod';
+  if (STAGE_DOMAIN.endsWith(hostname)) return 'stage';
   if (hostname.endsWith('hlx.page')) return 'preview';
   if (hostname.endsWith('hlx.live')) return 'publish';
-  return 'prod';
+  return 'dev';
 }
 
 const addClasses = (element, classes) => {
