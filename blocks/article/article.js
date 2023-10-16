@@ -119,8 +119,7 @@ function initVersionDropdown(wrapper) {
   const versionButton = versionsDropdown.querySelector('.version-button');
   const versionsDropdownMenuContainer = versionsContainer.querySelector('.version-dropdown-menu');
   const curVersionKey = getMetadata('version');
-
-  if (!store.product || curVersionKey === 'not-applicable') {
+  if (!store.product || curVersionKey === 'not-applicable' || !curVersionKey) {
     versionsContainer.remove();
     return;
   }
