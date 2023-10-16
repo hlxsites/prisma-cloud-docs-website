@@ -391,9 +391,11 @@ async function renderContent(block, res, rerender = false) {
   const fragment = document.createElement('div');
 
   const docTitle = document.createElement('a');
+  // eslint-disable-next-line no-nested-ternary
+  const titleText = isGdoc ? document.title : store.mainBook ? store.mainBook.title : undefined;
   docTitle.setAttribute('slot', 'document');
   docTitle.href = window.location.href.split('/').slice(0, -2).join('/');
-  docTitle.textContent = isGdoc ? document.title : store.mainBook.title;
+  docTitle.textContent = titleText;
   fragment.append(docTitle);
 
   block.classList.remove(`source-${isGdoc ? 'adoc' : 'gdoc'}`);
