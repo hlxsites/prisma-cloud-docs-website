@@ -119,8 +119,6 @@ function initVersionDropdown(wrapper) {
   const versionButton = versionsDropdown.querySelector('.version-button');
   const versionsDropdownMenuContainer = versionsContainer.querySelector('.version-dropdown-menu');
   const curVersionKey = getMetadata('version');
-  console.log('curVersionKey: ', curVersionKey);
-  console.log('store.product: ', store.product);
   if (!store.product || curVersionKey === 'not-applicable' || !curVersionKey) {
     versionsContainer.remove();
     return;
@@ -149,7 +147,6 @@ function initVersionDropdown(wrapper) {
         store.product,
       );
 
-      console.log('json: ', json);
       if (!json) return;
 
       const curVersion = json.data.find((row) => row.Key === curVersionKey);
