@@ -6,6 +6,7 @@ import { getMetadata } from '../../scripts/lib-franklin.js';
 import {
   PATH_PREFIX,
   isMobile,
+  isTouchDevice,
   parseFragment,
   render,
 } from '../../scripts/scripts.js';
@@ -626,6 +627,10 @@ export default async function decorate(block) {
 
   document.body.querySelector('header').classList.add('loaded');
   store.emit('header:loaded');
+
+  if (isTouchDevice()) {
+    document.body.classList.add('is-touch');
+  }
 
   if (!isMobile()) {
     // renderBreadCrumbs();

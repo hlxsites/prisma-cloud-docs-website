@@ -1035,3 +1035,202 @@ export function lerp(start, end, amt) {
 export function truncate(value, decimals) {
   return parseFloat(value.toFixed(decimals));
 }
+
+export function loadLottie() {
+  const BUNDLE_PATH = `${window.hlx.codeBasePath}/scripts/lottie.min.js`;
+
+  const scriptLoaded = document.querySelector('.js-lottie');
+  if (!scriptLoaded) {
+    const script = document.createElement('script');
+    script.src = BUNDLE_PATH;
+    script.classList.add('js-lottie');
+    document.body.append(script);
+  }
+}
+
+export function playLottie(player) {
+  if (player) {
+    try {
+      player.play();
+    } catch {
+      const play = () => {
+        player.play();
+        player.removeEventListener('ready', play);
+      };
+      player.addEventListener('ready', play);
+    }
+  }
+}
+
+export const collapseSection = (element) => {
+  // Get the height of the element's inner content, regardless of its actual size
+  const sectionHeight = element.scrollHeight;
+
+  // Temporarily disable all css transitions
+  const elementTransition = element.style.transition;
+  element.style.transition = '';
+
+  // Scroll back to top of parent
+  const parent = element.closest('.ops-accordion-item');
+  const top = parent.getBoundingClientRect()?.top;
+  window.scrollTo({
+    top,
+    // behavior: 'smooth',
+  });
+
+  /**
+   * On the next frame (as soon as the previous style change has taken effect),
+   * explicitly set the element's height to its current pixel height, so we
+   * aren't transitioning out of 'auto'
+   */
+  requestAnimationFrame(() => {
+    element.style.height = `${sectionHeight}px`;
+    element.style.transition = elementTransition;
+
+    /**
+     * On the next frame (as soon as the previous style change has taken effect),
+     * have the element transition to height: 0
+     */
+    requestAnimationFrame(() => {
+      element.style.height = '0px';
+    });
+  });
+
+  // Mark the section as "currently collapsed"
+  element.setAttribute('data-collapsed', 'true');
+};
+
+export const removeActive = (targetClass) => {
+  const activeButton = document.querySelector(`${targetClass} .is-active`);
+  if (activeButton) {
+    activeButton.classList.remove('is-active');
+  }
+};
+
+export const fadeOut = (element, callback, targetClass = 'is-current-route') => {
+  element.style.opacity = 0;
+
+  const transitionOut = () => {
+    element.classList.remove(targetClass);
+    element.classList.remove('stagger-transitions');
+
+    // Remove this event listener so it only gets triggered once
+    element.removeEventListener('transitionend', transitionOut);
+
+    if (callback) {
+      callback();
+    }
+  };
+
+  element.addEventListener('transitionend', transitionOut);
+};
+
+export const fadeIn = (element, targetClass = 'is-current-route') => {
+  if (!element) {
+    return;
+  }
+  element.classList.add(targetClass);
+
+  setTimeout(() => {
+    element.style.opacity = 1;
+    element.classList.add('stagger-transitions');
+  }, 100);
+};
+
+export const showRoute = (hash, targetCategoryId) => {
+  // Lottie animations for each categoiry
+  const LOTTIE_PATHS = {
+    'secure-the-source': `${window.hlx.codeBasePath}/assets/lottie-code.json`,
+    'secure-the-infrastructure': `${window.hlx.codeBasePath}/assets/lottie-infrastructure.json`,
+    'secure-the-runtime': `${window.hlx.codeBasePath}/assets/lottie-runtime.json`,
+  };
+
+  let targetCategory = null;
+  if (!hash) {
+    // Show intro
+    targetCategory = document.querySelector('.intro-container');
+    const headers = document.querySelectorAll('.header-section');
+    if (headers) {
+      // Rest to intial page state
+      headers.forEach((item, i) => {
+        item.removeAttribute('style');
+        item.classList.remove('is-active');
+        if (i === 0) {
+          item.classList.add('is-active');
+        }
+      });
+    }
+    window.scrollTo({ top: 0 });
+  } else {
+    // Show category
+    const categoriesContainer = document.querySelector('.category-container');
+    targetCategory = document.querySelector(`[data-route="${hash}"]`);
+
+    // Reset accordions
+    const openAccordions = categoriesContainer.querySelectorAll('[slot="category-button"][data-collapsed="false"]');
+    if (openAccordions.length > 0) {
+      openAccordions.forEach((item) => {
+        const detailsSlot = item.querySelector('.accordion-details');
+        collapseSection(detailsSlot);
+        item.setAttribute('data-collapsed', true);
+      });
+    }
+
+    removeActive('.ops-category-nav-buttons');
+    const desktopNav = document.querySelector('.ops-category-nav');
+    if (desktopNav) {
+      const targetButton = desktopNav.querySelector(`[data-category-nav-route="${hash}"]`);
+      if (targetButton) {
+        targetButton.classList.add('is-active');
+      }
+    }
+    const targetCategoryHash = targetCategoryId || hash;
+    // Play animation
+    if (targetCategory && targetCategoryHash === targetCategory.getAttribute('data-route')) {
+      loadLottie();
+      const player = targetCategory.querySelector('lottie-player');
+      if (!player.classList.contains('has-loaded')) {
+        const categoryRouteId = hash.substring(1, hash.length);
+        console.log('categoryRouteId: ', categoryRouteId);
+        try {
+          // Load via URL
+          player.load(LOTTIE_PATHS[categoryRouteId]);
+          player.classList.add('has-loaded');
+        } catch {
+          player.addEventListener('rendered', () => {
+            // Load via URL
+            player.load(LOTTIE_PATHS[categoryRouteId]);
+            player.classList.add('has-loaded');
+          });
+        }
+      }
+      playLottie(player);
+    }
+
+    // Update mobile nav
+    const mobileNav = categoriesContainer.querySelector('.ops-category-nav-mobile');
+    if (mobileNav) {
+      const drawer = mobileNav.querySelector('.drawer');
+      const nodes = Array.prototype.slice.call(drawer.children);
+      const targetItem = mobileNav.querySelector(`[data-category-nav-route="${hash}"]`);
+      if (targetItem) {
+        const nodeIndex = nodes.indexOf(targetItem);
+        const title = mobileNav.querySelector('.title');
+        title.textContent = targetItem.textContent;
+        title.setAttribute('data-index', `0${nodeIndex + 1}`);
+        drawer.classList.remove('is-active');
+      }
+    }
+
+    fadeIn(categoriesContainer, 'is-active');
+    window.scrollTo({ top: 0 });
+  }
+  fadeIn(targetCategory);
+};
+
+/*
+  Checks if the device has a touch screen. It checks for the touchstart event,
+  as well as the maxTouchPoints property on the navigator object. It also checks the
+  msMaxTouchPoints property, which is specific to Microsoft browsers.
+*/
+export const isTouchDevice = () => ('ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0);

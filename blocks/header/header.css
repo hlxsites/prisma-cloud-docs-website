@@ -1,4 +1,4 @@
-:root {
+.header  {
   --desktop-bottom-padding: var(--spacing--3);
   --desktop-drawer-top-distance: var(--spacing--6);
 
@@ -19,12 +19,18 @@
   --mobile-drawer-header-padding-horz: var(--spacing--4);
   --mobile-drawer-header-padding-vert: var(--spacing--7);
   --mobile-link-active-text-color: var(--color-blue--600);
+
+  align-items: center;
+  display: flex;
+  height: 100%;
+  position: relative;
 }
 
 .header .search-bar {
   --search-height: var(--spacing--10);
 }
 
+.operationalize .header,
 [data-user-theme='dark'] .book .header {
   --header-primary-text-color: var(--color-neutral-dark-200);
   --header-search-text-color: var(--color-neutral-200);
@@ -45,27 +51,24 @@
   --search-text-color: var(--color-neutral-white);
 }
 
+.operationalize .header .nav-logo picture,
 [data-user-theme='dark'] .book .header .nav-logo picture {
   opacity: 0;
 }
 
+.operationalize .header .nav-logo a,
 [data-user-theme='dark'] .book .header .nav-logo a {
   background: url('/assets/techdocs-logo-dark-mode.webp') 0 0 no-repeat;
   background-size: contain;
 }
+
+
 
 .header-wrapper {
   left: 0;
   position: sticky;
   top: 0;
   width: 100%;
-}
-
-.header {
-  align-items: center;
-  display: flex;
-  height: 100%;
-  position: relative;
 }
 
 /* Mobile */
