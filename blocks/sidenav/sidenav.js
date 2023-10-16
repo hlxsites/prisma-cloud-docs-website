@@ -739,8 +739,22 @@ function initAdditionalBooks(block, container) {
             <li data-key="" aria-expanded="false">
               <div>
                 <a>${book.title}</a>
-                <span>
-                  <i class="icon"> ${getIcon('chevron-right')} </i>
+                <span class="icon-toggle">
+                <svg
+                    class="icon icon-arrow"
+                    focusable="false"
+                    aria-label="Expand"
+                    version="1.1"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="32"
+                    height="32"
+                    viewBox="0 0 32 32"
+                  >
+                    <title>Right Arrow</title>
+                    <path
+                      d="M7.527 0.669c-0.893 0.893-0.893 2.34 0 3.232l11.29 11.29c0.446 0.446 0.446 1.17 0 1.616l-11.29 11.29c-0.893 0.893-0.893 2.34 0 3.232s2.34 0.893 3.232 0l13.714-13.714c0.893-0.893 0.893-2.34 0-3.232l-13.714-13.714c-0.893-0.893-2.34-0.893-3.232 0z"
+                    ></path>
+                  </svg>
                 </span>
               </div>
             </li>
