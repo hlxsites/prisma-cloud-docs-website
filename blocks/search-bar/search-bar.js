@@ -296,9 +296,7 @@ export class SearchBar extends HTMLElement {
 }
 
 export default function decorate(block) {
-  console.log('decorate search-bar: ', block);
   const config = readBlockConfig(block);
-  console.log('config: ', config);
   block.innerHTML = `<search-bar \
 ${config['default-option'] ? `default-option="${config['default-option']}"` : ''}\
 ${config['default-options'] ? `default-options="${config['default-options']}"` : ''}></search-bar>`;
