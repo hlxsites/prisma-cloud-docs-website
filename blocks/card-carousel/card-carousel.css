@@ -5,7 +5,7 @@
 }
 
 .card-carousel .splide__track {
-  overflow: visible;
+  overflow: hidden;
 }
 
 .card-carousel .card {
