@@ -270,6 +270,13 @@ const decorateCodeBlocks = (block) => {
 const decorateImages = (block) => {
   // Wrap images in div
   for (const image of block.querySelectorAll('img')) {
+    const pic = image.parentElement;
+    const parent = pic.parentElement;
+    // ignore both picture and img tags in tables
+    if (pic.tagName === 'TD' || parent.tagName === 'TD') {
+      return;
+    }
+
     const imageWrapper = document.createElement('div');
     // Use data selector to prevent franklin from automatically trying to load a block
     imageWrapper.setAttribute('data-class', 'image-wrapper');

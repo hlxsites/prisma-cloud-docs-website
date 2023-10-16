@@ -21,17 +21,26 @@ function extractColWidths(block) {
 
 /**
  * @param {HTMLElement} block
+ * @param {string} type
  */
-function extractColSpans(block) {
+function extractColRowSpans(block, type) {
   const firstRow = block.querySelector('div');
   const firstCol = firstRow.querySelector('div');
-  if (firstCol.innerText !== 'col-spans') {
+  if (firstCol.innerText !== `${type}-spans`) {
     return [];
   }
 
-  const cols = firstCol.nextElementSibling.textContent.split(';').map((row) => row.split(','));
+  const spans = firstCol.nextElementSibling.textContent.split(';').map((row) => row.split(','));
   firstRow.remove();
-  return cols;
+  return spans;
+}
+
+function extractColSpans(block) {
+  return extractColRowSpans(block, 'col');
+}
+
+function extractRowSpans(block) {
+  return extractColRowSpans(block, 'row');
 }
 
 async function sheetToDivTable(path) {
@@ -75,6 +84,7 @@ async function sheetToDivTable(path) {
  */
 export default async function decorate(block) {
   const headless = block.classList.contains('headless');
+  const rowSpans = extractRowSpans(block);
   const colSpans = extractColSpans(block);
   const colWidths = extractColWidths(block);
 
@@ -111,12 +121,18 @@ export default async function decorate(block) {
     const head = rows.shift();
     if (!head) return;
 
-    const spans = colSpans.shift() || [];
+    const cspans = colSpans.shift() || [];
+    const rspans = rowSpans.shift() || [];
+
     const cells = [...head.querySelectorAll(':scope > div')];
     const thead = html` <table>
       <thead>
         <tr>
-          ${cells.map((cell, i) => `<th${spans[i] ? ` colspan="${spans[i]}"` : ''}>${cell.innerHTML}</th>`).join('\n')}
+          ${cells.map((cell, i) => {
+    const cspan = cspans[i] ? ` colspan="${cspans[i]}"` : '';
+    const rspan = rspans[i] ? ` rowspan="${rspans[i]}"` : '';
+    return `<th${cspan}${rspan}>${cell.innerHTML}</th>`;
+  }).join('\n')}
         </tr>
       </thead>
     </table>`.firstElementChild;
@@ -129,12 +145,18 @@ export default async function decorate(block) {
   table.appendChild(tbody);
 
   rows.forEach((row) => {
-    const spans = colSpans.shift() || [];
+    const cspans = colSpans.shift() || [];
+    const rspans = rowSpans.shift() || [];
+
     const cells = [...row.querySelectorAll(':scope > div')];
 
     const tr = html` <table>
       <tr>
-        ${cells.map((cell, i) => `<td${spans[i] ? ` colspan="${spans[i]}"` : ''}>${cell.innerHTML}</td>`).join('\n')}
+        ${cells.map((cell, i) => {
+    const cspan = cspans[i] ? ` colspan="${cspans[i]}"` : '';
+    const rspan = rspans[i] ? ` rowspan="${rspans[i]}"` : '';
+    return `<td${cspan}${rspan}>${cell.innerHTML}</td>`;
+  }).join('\n')}
       </tr>
     </table>`.firstElementChild.firstElementChild;
     tbody.appendChild(tr);
