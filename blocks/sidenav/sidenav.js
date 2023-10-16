@@ -591,11 +591,11 @@ function bookToList(book) {
     // add the chapter
     const chapterUl = addSubList(
       chapter.name,
-      `${book.path}/${chapter.key}/${chapter.key}`,
+      `${book.path}/${chapter.key}`,
       chapter.key,
     );
 
-    const makeHref = (topic, parentKey) => `${book.path}/${chapter.key}/${parentKey ? `${parentKey}/` : ''}${topic.key}`;
+    const makeHref = (topic, parentKey) => `${book.path}/${chapter.key}/${parentKey ? (`${parentKey}${parentKey.endsWith(`/${topic.key}`) ? '' : `/${topic.key}`}`) : topic.key}`;
 
     // then the topics recursively
     const processTopic = (topic, parentKey) => {
@@ -621,18 +621,19 @@ function bookToList(book) {
 
           addSubList(
             topic.name,
-            `${book.path}/${chapter.key}/${parentKey ? `${parentKey}/` : ''}${topic.key}/${
-              topic.key
-            }`,
+            makeHref(topic, parentKey),
             topic.key,
           );
 
           topic.children.forEach((subtopic) => {
+            if (subtopic.key === topic.key && !subtopic.children) {
+              // uncomment to omit entries in sidenav with same link as parent
+              // return;
+            }
+
             processTopic(
               subtopic,
-              `${parentKey ? `${parentKey}/` : ''}${topic.key}${
-                subtopic.parent ? `/${subtopic.parent}` : ''
-              }`,
+              `${parentKey ? `${parentKey}/` : ''}${topic.key}`,
             );
           });
 
