@@ -24,8 +24,8 @@ polyfill();
 
 const range = document.createRange();
 
-// export const BRANCH_ORIGIN = 'https://prisma-cloud-docs-production.adobeaem.workers.dev';
-export const BRANCH_ORIGIN = 'http://127.0.0.1:3001';
+export const BRANCH_ORIGIN = 'https://prisma-cloud-docs-production.adobeaem.workers.dev';
+// export const BRANCH_ORIGIN = 'http://127.0.0.1:3001';
 
 export const SPA_NAVIGATION = true;
 export const REDIRECTED_ARTICLE_KEY = 'redirected-article';
