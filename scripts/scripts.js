@@ -24,8 +24,8 @@ polyfill();
 
 const range = document.createRange();
 
-export const BRANCH_ORIGIN = 'https://prisma-cloud-docs-production.adobeaem.workers.dev';
-// export const BRANCH_ORIGIN = 'http://127.0.0.1:3001';
+// export const BRANCH_ORIGIN = 'https://prisma-cloud-docs-production.adobeaem.workers.dev';
+export const BRANCH_ORIGIN = 'http://127.0.0.1:3001';
 
 export const SPA_NAVIGATION = true;
 export const REDIRECTED_ARTICLE_KEY = 'redirected-article';
@@ -329,6 +329,9 @@ const store = new (class {
       url = new URL(`${path}.json`);
     } catch (_) {
       url = new URL(`${window.location.origin}${path}.json`);
+    }
+    if (url.pathname.endsWith('.json.json')) {
+      url.pathname = url.pathname.replace(/\.json\.json$/, '.json');
     }
 
     if (sheets) {
