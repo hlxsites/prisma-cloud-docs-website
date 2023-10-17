@@ -221,6 +221,10 @@ const store = new (class {
         return book;
       });
 
+    if (!this.mainBook) {
+      console.warn('page configured as book, but missing main book; possible metadata sheet issue');
+    }
+
     // exclude main book from additionalBooks
     this.additionalBooks = this.allBooks.filter((b) => !b.mainBook);
   }
