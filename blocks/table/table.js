@@ -1,4 +1,5 @@
 import {
+  WEB_ORIGINS,
   decoratePills, html, isValidDocsURL, isValidWebURL,
 } from '../../scripts/scripts.js';
 
@@ -58,7 +59,9 @@ async function sheetToDivTable(path) {
     }
   }
 
-  const json = await store.fetchJSON(href);
+  const url = new URL(href, WEB_ORIGINS[store.env]);
+  const json = await store.fetchJSON(url.pathname, url.searchParams.getAll('sheet'));
+
   if (!json || !json.data) {
     return null;
   }
