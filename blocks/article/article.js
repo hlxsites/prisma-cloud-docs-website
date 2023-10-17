@@ -276,11 +276,12 @@ const decorateImages = (block) => {
       return;
     }
 
+    const picEl = pic.tagName === 'PICTURE' ? pic : image;
     const imageWrapper = document.createElement('div');
     // Use data selector to prevent franklin from automatically trying to load a block
     imageWrapper.setAttribute('data-class', 'image-wrapper');
-    image.insertAdjacentElement('afterend', imageWrapper);
-    imageWrapper.append(image);
+    picEl.insertAdjacentElement('afterend', imageWrapper);
+    imageWrapper.append(picEl);
   }
 };
 
@@ -437,9 +438,10 @@ async function renderContent(block, res, rerender = false) {
 
         const picture = image.parentElement;
         if (picture.tagName === 'PICTURE') {
+          const [baseUrl] = image.src.split('?');
           for (const source of picture.querySelectorAll('source')) {
             const search = source.srcset.split('?')[1];
-            source.srcset = `${image.src}?${search}`;
+            source.srcset = `${baseUrl}?${search}`;
           }
         }
       }
