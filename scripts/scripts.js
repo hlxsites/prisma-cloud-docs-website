@@ -1200,7 +1200,6 @@ export const showRoute = (hash, targetCategoryId) => {
       const player = targetCategory.querySelector('lottie-player');
       if (!player.classList.contains('has-loaded')) {
         const categoryRouteId = hash.substring(1, hash.length);
-        console.log('categoryRouteId: ', categoryRouteId);
         try {
           // Load via URL
           player.load(LOTTIE_PATHS[categoryRouteId]);
