@@ -1,4 +1,4 @@
-import { readBlockConfig } from '../../scripts/lib-franklin.js';
+import { readBlockConfig, decorateIcons } from '../../scripts/lib-franklin.js';
 import { PATH_PREFIX, decorateImageLinkAlts } from '../../scripts/scripts.js';
 import '../theme-toggle/theme-toggle.js';
 /**
@@ -25,7 +25,7 @@ export default async function decorate(block) {
   // decorate footer DOM
   const footer = document.createElement('div');
   footer.innerHTML = html;
-  // decorateIcons(footer);
+  decorateIcons(footer);
 
   const classes = ['links', 'socials', 'legal'];
   classes.forEach((c, i) => {
