@@ -59,8 +59,12 @@ footer .footer .footer-links > ul > li > ul::before {
   background: var(--footer-text-color);
 }
 
+footer .footer .footer-links > ul > li > ul > li {
+  margin: 6px 0;
+}
+
 footer .footer .footer-links ul a {
-  padding: 8px 8px 8px 0;
+  padding: 2px 2px 2px 0;
 }
 
 footer .footer .footer-links a {
