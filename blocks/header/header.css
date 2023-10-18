@@ -3,7 +3,7 @@
   --desktop-drawer-top-distance: var(--spacing--6);
 
   --header-primary-text-color: var(--color-neutral-700);
-  --header-search-text-color: var(--color-neutral-400);
+  --header-search-text-color: var(--color-neutral-600);
   --header-search-key-background-color: var(--color-neutral-050);
   --header-search-close-background-color: var(--color-neutral-white);
   --header-search-close-border-color: var(--color-neutral-100);

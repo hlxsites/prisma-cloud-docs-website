@@ -4,7 +4,7 @@
   --search-border-color: var(--color-neutral-100);
   --search-height: var(--spacing--12);
   --search-text-color: var(--color-neutral-black);
-  --search-placeholder: var(--color-neutral-200);
+  --search-placeholder: var(--color-neutral-600);
 
   --search-autosuggest-border-radius: var(--spacing--4);
   --search-autosuggest-background-hover: var(--color-neutral-050);
