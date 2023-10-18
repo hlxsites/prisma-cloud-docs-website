@@ -1,5 +1,5 @@
 import { readBlockConfig } from '../../scripts/lib-franklin.js';
-import { PATH_PREFIX } from '../../scripts/scripts.js';
+import { PATH_PREFIX, decorateImageLinkAlts } from '../../scripts/scripts.js';
 import '../theme-toggle/theme-toggle.js';
 /**
  * loads and decorates the footer
@@ -42,6 +42,8 @@ export default async function decorate(block) {
     wrap.append(...legal.children);
     legal.replaceChildren(wrap);
   }
+
+  decorateImageLinkAlts(footer);
 
   block.append(footer);
 }

@@ -5,6 +5,7 @@
 import { getMetadata } from '../../scripts/lib-franklin.js';
 import {
   PATH_PREFIX,
+  decorateImageLinkAlts,
   isMobile,
   isTouchDevice,
   parseFragment,
@@ -34,11 +35,10 @@ const TEMPLATE = /* html */ `
               </button>
               <ol class="breadcrumb">
                   <li class="active">
-                      <a href="#home" class="locale-home"></a>
+                      <a href="#" class="locale-home" title="home" focusable="false"></a>
                   </li>
               </ol>
           </div>
-
       </div>
 
       <div class="nav-inner">
@@ -260,7 +260,7 @@ function addEventListeners(block) {
 
       const newBreadcrumbItemLink = newBreadcrumbItem.querySelector('a');
       newBreadcrumbItemLink.textContent = target.textContent;
-      newBreadcrumbItemLink.href = `#${target.textContent.trim().replace(/\s/g, '-')}`;
+      newBreadcrumbItemLink.href = `#${target.textContent.trim().replace(/\s*/g, '-')}`;
       breadcrumbItemHome.classList.remove('active');
       mobileBreadcrumb.append(newBreadcrumbItem);
       mobileNavBreadcrumb.classList.add('has-back-btn');
@@ -323,7 +323,7 @@ function addEventListeners(block) {
       const inactive = block.querySelector('.pan-mobile-nav .nav-menu-expanded.inactive');
 
       // Home
-      if (li.querySelector('a[href="#home"]')) {
+      if (li.querySelector('a[href="#"]')) {
         mobileBreadcrumb.innerHTML = '';
         mobileBreadcrumb.append(li);
         mobileNavBreadcrumb.classList.remove('has-back-btn');
@@ -514,6 +514,7 @@ export default async function decorate(block) {
   const { nav, template } = res;
 
   // "Slotify"
+  decorateImageLinkAlts(nav);
   nav.querySelector('a').setAttribute('slot', 'logo');
   nav.querySelector('ul').setAttribute('slot', 'logo-menu');
 
@@ -525,7 +526,7 @@ export default async function decorate(block) {
   menuDropdown.setAttribute('slot', 'menu-dropdown');
   nav.append(menuDropdown);
 
-  // NOTE: not using nth-child due to safari not lacking support for elements without a parent
+  // NOTE: not using nth-child due to safari lacking support for elements without a parent
   nav.querySelectorAll('div > ul:not([slot="logo-menu"]) > li').forEach((menuItem) => {
     // Move the text node inside a span
     const span = document.createElement('span');
@@ -586,9 +587,11 @@ export default async function decorate(block) {
 
   for (const navMobileRootMenuItem of navMobileRootMenuItems) {
     navMobileRootMenuItem.append(navMobileMenuExpand.cloneNode(true));
+    const ul = document.createElement('ul');
     const li = document.createElement('li');
     li.append(navMobileRootMenuItem);
-    navMobileRootMenu.append(li);
+    ul.append(li);
+    navMobileRootMenu.append(ul);
   }
 
   for (const navMobileMenuDetailsItem of navMobileMenuDetailsItems) {

@@ -267,7 +267,11 @@
   opacity: 0;
   padding: 0 var(--spacing--6);
   will-change: transform, opacity;
-  /* transition: transform 0.25s ease-in-out, opacity 0.25s ease-in-out; */
+}
+
+.pan-mobile-nav .nav-menu-section .nav-menu.root-menu ul {
+  margin: 0;
+  padding-inline: 0;
 }
 
 .pan-mobile-nav .nav-menu-section .nav-menu li {
