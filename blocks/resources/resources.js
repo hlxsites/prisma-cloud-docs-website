@@ -2,8 +2,8 @@ import { html } from '../../scripts/scripts.js';
 import '../card-carousel/card-carousel.js';
 
 const FEED_URL = `${window.hlx.codeBasePath}/assets/fallback.xml`;
-//TODO - Fix
-//const FEED_URL = store.env === 'prod'
+// TODO - Fix
+// const FEED_URL = store.env === 'prod'
 //  ? 'https://www.paloaltonetworks.com/blog/prisma-cloud/feed/'
 //  : `${window.hlx.codeBasePath}/assets/fallback.xml`;
 

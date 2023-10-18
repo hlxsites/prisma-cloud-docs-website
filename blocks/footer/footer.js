@@ -1,5 +1,5 @@
-import { readBlockConfig } from '../../scripts/lib-franklin.js';
-import { PATH_PREFIX } from '../../scripts/scripts.js';
+import { readBlockConfig, decorateIcons } from '../../scripts/lib-franklin.js';
+import { PATH_PREFIX, decorateImageLinkAlts } from '../../scripts/scripts.js';
 import '../theme-toggle/theme-toggle.js';
 /**
  * loads and decorates the footer
@@ -25,7 +25,7 @@ export default async function decorate(block) {
   // decorate footer DOM
   const footer = document.createElement('div');
   footer.innerHTML = html;
-  // decorateIcons(footer);
+  decorateIcons(footer);
 
   const classes = ['links', 'socials', 'legal'];
   classes.forEach((c, i) => {
@@ -42,6 +42,8 @@ export default async function decorate(block) {
     wrap.append(...legal.children);
     legal.replaceChildren(wrap);
   }
+
+  decorateImageLinkAlts(footer);
 
   block.append(footer);
 }

@@ -876,6 +876,43 @@ export function decoratePills(main) {
 }
 
 /**
+ * Apply alt attrs from images/icons to parent elements, if
+ * the parent is a link & the link doesn't already have an alt.
+ * @param {HTMLElement} main
+ */
+export function decorateImageLinkAlts(main) {
+  main.querySelectorAll('img,span.icon').forEach((img) => {
+    let altTitle = img.getAttribute('alt');
+    let attr = 'alt';
+
+    if (img.tagName === 'SPAN') {
+      attr = 'title';
+      if (!altTitle) {
+        const iconCls = [...img.classList].find((c) => c.startsWith('icon-'));
+        if (!iconCls) {
+          return;
+        }
+        altTitle = iconCls.split('icon-')[1].split('-').join(' ');
+      }
+    }
+    if (!altTitle) {
+      return;
+    }
+
+    let parent = img.parentElement;
+    if (parent.tagName === 'PICTURE') {
+      parent = parent.parentElement;
+    }
+
+    if (parent.tagName !== 'A' || parent.hasAttribute(attr)) {
+      return;
+    }
+
+    parent.setAttribute(attr, altTitle);
+  });
+}
+
+/**
  * apply section metadata `id` to first heading in the section
  * @param {HTMLElement} main
  */

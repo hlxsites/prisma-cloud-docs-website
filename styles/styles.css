@@ -496,34 +496,31 @@ h6 {
   scroll-margin: calc(var(--nav-height) + 1em);
 }
 
-h1 {
+h1, .h1 {
   font-size: var(--heading-font-size--h1);
   line-height: var(--heading-line-height--h1);
   letter-spacing: var(--letter-spacing-neg--lg);
 }
 
-h2 {
+h2, .h2 {
   font-size: var(--heading-font-size--h2);
 }
 
-h3 {
+h3, .h3 {
   font-size: var(--heading-font-size--h3);
   line-height: var(--heading-line-height--h3);
   letter-spacing: var(--letter-spacing-neg--m);
 }
 
-.article h3,
-h4 {
+.article h3, h4, .h4 {
   font-size: var(--heading-font-size--h4);
 }
 
-.article h4,
-h5 {
+.article h4, h5, .h5 {
   font-size: var(--heading-font-size--h5);
 }
 
-.article h5,
-h6 {
+.article h5, h6, .h6 {
   font-size: 18px;
 }
 
