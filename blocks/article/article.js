@@ -502,7 +502,7 @@ async function renderContent(block, res, rerender = false) {
   // Add link to division landing
   const backHomeLink = block.querySelector('.back-home a');
   if (backHomeLink) {
-    const locale = window.location.pathname.split('/')[3];
+    const locale = window.location.pathname.split('/')[0];
     const divisionLandingUrl = `${window.location.origin}${window.hlx.codeBasePath}/${locale}`;
     backHomeLink.setAttribute('href', divisionLandingUrl);
   }
