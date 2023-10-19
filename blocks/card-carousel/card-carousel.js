@@ -2,25 +2,26 @@ import { loadCSS } from '../../scripts/lib-franklin.js';
 
 const TAG_NAME = 'card-carousel';
 const BUNDLE_PATH = (ext) => `${window.hlx.codeBasePath}/blocks/card-carousel/splide.min.${ext}`;
-const TEMPLATE = /* html */ `
+// NOTE: using divs instead of lists due to an a11y bug in splide
+// see: https://github.com/radix-ui/primitives/issues/1703
+const TEMPLATE = /* html */ `\
 <div class="card-carousel">
-<section class="splide">
- <div class="splide__track">
-<ul class="splide__list">
-<li class="splide__slide">
-        <a href="/" class="card">
-          <span class="chip">Blog</span>
-          <h5 class="title">
-            <span class="eyebrow">Research Report</span>
-            AppSec for the Modern Engineering Ecosystem
-          </h5>
-        </a>
-      </li>
-</ul>
-  </div>
-</section>
-</div>
-`;
+  <section class="splide">
+    <div class="splide__track">
+      <div class="splide__list">
+        <div class="splide__slide">
+          <a href="/" class="card">
+            <span class="chip">Blog</span>
+            <h5 class="title">
+              <span class="eyebrow">Research Report</span>
+              AppSec for the Modern Engineering Ecosystem
+            </h5>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </section>
+</div>`;
 
 const SPLIDE_CONFIG = {
   arrowPath:
@@ -97,6 +98,7 @@ export class CardCarousel extends HTMLElement {
     if (loaded && splideRoot) {
       const splide = new window.Splide(splideRoot, SPLIDE_CONFIG);
       splide.mount();
+
       // Wait a tick and then trigger a refresh on the size
       setTimeout(() => {
         splide.refresh();
