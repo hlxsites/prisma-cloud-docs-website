@@ -6,6 +6,7 @@ import {
   getPlaceholders,
   isMobile,
   loadBook,
+  makeHeadersSequential,
   parseFragment,
   render,
   renderSidenav,
@@ -234,6 +235,22 @@ async function redirectToFirstChapter() {
     redirect += `#${REDIRECTED_ARTICLE_KEY}`;
   }
   window.location.href = redirect;
+}
+
+/**
+ * @param {HTMLElement} block
+ */
+function decorateInlineLinks(block) {
+  block.querySelectorAll('p:not(.button-container) > a').forEach((a) => {
+    const isInline = [
+      a.previousSibling ? a.previousSibling.nodeType : -1,
+      a.nextSibling ? a.nextSibling.nodeType : -1,
+    ].includes(Node.TEXT_NODE);
+
+    if (isInline) {
+      a.classList.add('inline-link');
+    }
+  });
 }
 
 const decorateCodeBlocks = (block) => {
@@ -531,6 +548,8 @@ async function renderContent(block, res, rerender = false) {
     const bookContent = block.querySelector('.book-content div[slot="content"]');
     if (bookContent) {
       await decorateMain(bookContent);
+      makeHeadersSequential(bookContent);
+      decorateInlineLinks(bookContent);
       await loadBlocks(bookContent);
       updateSectionsStatus(bookContent);
 

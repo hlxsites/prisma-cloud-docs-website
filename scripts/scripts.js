@@ -259,6 +259,8 @@ const store = new (class {
 
     window.addEventListener('popstate', (ev) => {
       const { state } = ev;
+      if (!state) return;
+
       index = state.index;
       this.emit('spa:navigate:article', state);
       ev.preventDefault();
@@ -651,6 +653,32 @@ export function renderSidenav(contentBlock) {
   decorateBlock(sidenav);
   loadBlock(sidenav).then(() => {
     updateSectionsStatus(document.querySelector('main'));
+  });
+}
+
+function swapHeadingLevel(heading, newLvl) {
+  const cls = heading.tagName.toLowerCase();
+  const newHeading = document.createElement(typeof newLvl === 'string' ? newLvl : `h${newLvl}`);
+  newHeading.textContent = heading.textContent;
+  newHeading.id = heading.id;
+  newHeading.classList.add(cls);
+  heading.replaceWith(newHeading);
+}
+
+/**
+ * @param {HTMLElement} main
+ */
+export function makeHeadersSequential(main) {
+  let curLevel = 1;
+  let prevTag;
+  main.querySelectorAll('h1,h2,h3,h4,h5,h6').forEach((heading) => {
+    if (heading.tagName[1] !== curLevel) {
+      swapHeadingLevel(heading, curLevel);
+    }
+    if (prevTag !== heading.tagName) {
+      curLevel += 1;
+    }
+    prevTag = heading.tagName;
   });
 }
 

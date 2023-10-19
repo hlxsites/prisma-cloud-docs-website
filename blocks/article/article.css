@@ -363,20 +363,20 @@ article [data-docs-heading] span {
   letter-spacing: var(--letter-spacing-neg--s);
 }
 
-.book-content h1 {
+.book-content h1, .book-content .h1 {
   font-size: 28px;
   line-height: 28px;
 }
-.book-content h2 {
+.book-content h2, .book-content .h2 {
   font-size: 24px;
   line-height: 24px;
 }
-.book-content h3 {
+.book-content h3, .book-content .h3 {
   font-size: 20px;
   line-height: 20px;
 }
-.book-content h4,
-.book-content h5 {
+.book-content h4, .book-content .h4,
+.book-content h5, .book-content .h5 {
   font-size: 18px;
   line-height: 18px;
 }
@@ -424,6 +424,10 @@ article [data-docs-heading] span {
   word-break: break-all;
   /* Instead use this non-standard one: */
   word-break: break-word;
+}
+
+.pan-article .book-content a.inline-link {
+  text-decoration: underline;
 }
 
 .pan-article .book-content pre {
