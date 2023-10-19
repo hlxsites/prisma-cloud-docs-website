@@ -44,20 +44,21 @@ async function renderXMLAsCards(url) {
         year: 'numeric',
       });
 
-      cards += `
-    <li class="splide__slide">
-        <a href="${link[0].textContent}" class="card ${
+      // NOTE: using divs instead of lists due to an a11y bug in splide
+      // see: https://github.com/radix-ui/primitives/issues/1703
+      cards += `\
+    <div class="splide__slide">
+      <a href="${link[0].textContent}" class="card ${
   background && 'has-custom-background'
 }" style="background: ${backgroundStyle}; background-size: cover;">
-            <span class="chip">${readTime[0].textContent} min. read</span>
-            <h5 class="title">
-                <span class="eyebrow"></span>
-                ${title[0].textContent}
-                ${pubDate && `<span class='date'>${pubDateToLocale}</span>`}
-            </h5>
-        </a>
-    </li>
-    `;
+        <span class="chip">${readTime[0].textContent} min. read</span>
+        <h5 class="title">
+          <span class="eyebrow"></span>
+            ${title[0].textContent}
+            ${pubDate && `<span class='date'>${pubDateToLocale}</span>`}
+        </h5>
+      </a>
+    </div>`;
     }
 
     const carouselList = document.querySelector(
