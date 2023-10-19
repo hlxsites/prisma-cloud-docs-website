@@ -4,6 +4,7 @@ import {
   SPA_NAVIGATION,
   decorateMain,
   getPlaceholders,
+  isMobile,
   loadBook,
   parseFragment,
   render,
@@ -526,13 +527,6 @@ async function renderContent(block, res, rerender = false) {
     });
   }
 
-  // Load sidenav, once
-  if (!rerender) {
-    renderSidenav(block);
-    import('../theme-toggle/theme-toggle.js');
-    import('../../scripts/scroll-spy.js');
-  }
-
   if (articleFound) {
     const bookContent = block.querySelector('.book-content div[slot="content"]');
     if (bookContent) {
@@ -545,6 +539,11 @@ async function renderContent(block, res, rerender = false) {
       decorateImages(block);
       decorateCodeBlocks(block);
     }
+  }
+
+  // Load sidenav, once
+  if (!rerender) {
+    renderSidenav(block);
   }
 }
 
@@ -568,5 +567,17 @@ export default async function decorate(block) {
       renderCurrentVersion(block);
       initVersionDropdown(block);
     });
+  }
+
+  // load theme toggle
+
+  import('../theme-toggle/theme-toggle.js');
+
+  // scroll spy only works on desktop
+  // still load it on mobile, incase of tablet portrait/landscape change, but delay it
+  if (isMobile()) {
+    store.once('delayed:loaded', () => import('../../scripts/scroll-spy.js'));
+  } else {
+    import('../../scripts/scroll-spy.js');
   }
 }
