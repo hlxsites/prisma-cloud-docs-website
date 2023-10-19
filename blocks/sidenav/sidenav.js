@@ -543,7 +543,7 @@ function bookToList(book) {
     const div = document.createElement('div');
     const link = document.createElement('a');
     link.innerText = title;
-    link.href = href || '';
+    link.href = href || '#';
     link.addEventListener('click', navigateArticleSPA);
 
     div.append(link);
@@ -738,7 +738,7 @@ function initAdditionalBooks(block, container) {
         : html` <ul data-additional-book-href="${book.href}">
             <li data-key="" aria-expanded="false">
               <div>
-                <a>${book.title}</a>
+                <a href="${book.href}" >${book.title}</a>
                 <span class="icon-toggle">
                 <svg
                     class="icon icon-arrow"

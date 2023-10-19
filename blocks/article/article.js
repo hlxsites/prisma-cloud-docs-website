@@ -474,6 +474,18 @@ async function renderContent(block, res, rerender = false) {
       span.textContent = info.title;
       articleTitle.remove();
       fragment.append(span);
+
+      // add meta description
+      const meta = document.createElement('meta');
+      meta.setAttribute('name', 'description');
+      meta.setAttribute('content', document.title);
+
+      const existing = document.head.querySelector('meta[name="description"]');
+      if (existing) {
+        existing.replaceWith(meta);
+      } else {
+        document.head.appendChild(meta);
+      }
     }
 
     const content = document.createElement('div');
