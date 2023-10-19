@@ -11,3 +11,7 @@
 .resources-container .default-content-wrapper h4 {
   color: var(--landing-heading-color);
 }
+
+.resources.block:not(.in-view) .splide__slide a {
+  background: none!important;
+}
