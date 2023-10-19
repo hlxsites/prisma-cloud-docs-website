@@ -3,7 +3,7 @@ import { loadCSS } from '../../scripts/lib-franklin.js';
 const TAG_NAME = 'card-carousel';
 const BUNDLE_PATH = (ext) => `${window.hlx.codeBasePath}/blocks/card-carousel/splide.min.${ext}`;
 // NOTE: using divs instead of lists due to an a11y bug in splide
-// see: https://github.com/radix-ui/primitives/issues/1703
+// see: https://github.com/Splidejs/splide/issues/1241
 const TEMPLATE = /* html */ `\
 <div class="card-carousel">
   <section class="splide">

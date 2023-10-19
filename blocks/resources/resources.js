@@ -45,7 +45,7 @@ async function renderXMLAsCards(url) {
       });
 
       // NOTE: using divs instead of lists due to an a11y bug in splide
-      // see: https://github.com/radix-ui/primitives/issues/1703
+      // see: https://github.com/Splidejs/splide/issues/1241
       cards += `\
     <div class="splide__slide">
       <a href="${link[0].textContent}" class="card ${
