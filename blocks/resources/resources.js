@@ -88,7 +88,7 @@ export default async function decorate(block) {
     </div>
   `);
 
-  await import('../card-carousel/card-carousel.js');
   imageAppear(block);
-  await renderXMLAsCards(FEED_URL);
+  await import('../card-carousel/card-carousel.js');
+  renderXMLAsCards(FEED_URL);
 }
