@@ -4,7 +4,9 @@ import {
   SPA_NAVIGATION,
   decorateMain,
   getPlaceholders,
+  isMobile,
   loadBook,
+  makeHeadersSequential,
   parseFragment,
   render,
   renderSidenav,
@@ -235,6 +237,22 @@ async function redirectToFirstChapter() {
   window.location.href = redirect;
 }
 
+/**
+ * @param {HTMLElement} block
+ */
+function decorateInlineLinks(block) {
+  block.querySelectorAll('p:not(.button-container) > a').forEach((a) => {
+    const isInline = [
+      a.previousSibling ? a.previousSibling.nodeType : -1,
+      a.nextSibling ? a.nextSibling.nodeType : -1,
+    ].includes(Node.TEXT_NODE);
+
+    if (isInline) {
+      a.classList.add('inline-link');
+    }
+  });
+}
+
 const decorateCodeBlocks = (block) => {
   // Add copy code button
   for (const pre of block.querySelectorAll('pre')) {
@@ -456,6 +474,18 @@ async function renderContent(block, res, rerender = false) {
       span.textContent = info.title;
       articleTitle.remove();
       fragment.append(span);
+
+      // add meta description
+      const meta = document.createElement('meta');
+      meta.setAttribute('name', 'description');
+      meta.setAttribute('content', document.title);
+
+      const existing = document.head.querySelector('meta[name="description"]');
+      if (existing) {
+        existing.replaceWith(meta);
+      } else {
+        document.head.appendChild(meta);
+      }
     }
 
     const content = document.createElement('div');
@@ -526,17 +556,12 @@ async function renderContent(block, res, rerender = false) {
     });
   }
 
-  // Load sidenav, once
-  if (!rerender) {
-    renderSidenav(block);
-    import('../theme-toggle/theme-toggle.js');
-    import('../../scripts/scroll-spy.js');
-  }
-
   if (articleFound) {
     const bookContent = block.querySelector('.book-content div[slot="content"]');
     if (bookContent) {
       await decorateMain(bookContent);
+      makeHeadersSequential(bookContent);
+      decorateInlineLinks(bookContent);
       await loadBlocks(bookContent);
       updateSectionsStatus(bookContent);
 
@@ -545,6 +570,11 @@ async function renderContent(block, res, rerender = false) {
       decorateImages(block);
       decorateCodeBlocks(block);
     }
+  }
+
+  // Load sidenav, once
+  if (!rerender) {
+    renderSidenav(block);
   }
 }
 
@@ -568,5 +598,17 @@ export default async function decorate(block) {
       renderCurrentVersion(block);
       initVersionDropdown(block);
     });
+  }
+
+  // load theme toggle
+
+  import('../theme-toggle/theme-toggle.js');
+
+  // scroll spy only works on desktop
+  // still load it on mobile, incase of tablet portrait/landscape change, but delay it
+  if (isMobile()) {
+    store.once('delayed:loaded', () => import('../../scripts/scroll-spy.js'));
+  } else {
+    import('../../scripts/scroll-spy.js');
   }
 }

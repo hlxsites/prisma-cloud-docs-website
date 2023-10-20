@@ -124,7 +124,7 @@ export class SearchBar extends HTMLElement {
       let html = '';
       const options = JSON.parse(defaultOptions);
       options.forEach((option, i) => {
-        html += `<a class="coveo-dropdown-item coveo-dropdown-custom-option ${
+        html += `<a href="#" class="coveo-dropdown-item coveo-dropdown-custom-option ${
           i === 0 ? 'selected' : ''
         }" 
         data-label="${option.label}" 
@@ -138,6 +138,7 @@ export class SearchBar extends HTMLElement {
     }
     if (docsetMeta && productMeta) {
       const docSetOption = document.createElement('a');
+      docSetOption.href = '#';
       docSetOption.classList.add('coveo-dropdown-item');
       if (!booknameMeta) {
         this.querySelector('.coveo-dropdown-item.selected').classList.remove('selected');
@@ -151,6 +152,7 @@ export class SearchBar extends HTMLElement {
     }
     if (booknameMeta) {
       const bookOption = document.createElement('a');
+      bookOption.href = '#';
       this.querySelector('.coveo-dropdown-item.selected').classList.remove('selected');
       bookOption.classList.add('coveo-dropdown-item');
       bookOption.classList.add('selected');
