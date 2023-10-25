@@ -240,7 +240,7 @@ const initProductDropdown = async (wrapper) => {
     curProductBtn.textContent = curProduct.Product;
   }
 
-  const makeHref = (url) => `${PATH_PREFIX}/${lang}${url ? `${url}/` : ''}`;
+  const makeHref = (url) => `${PATH_PREFIX}/${lang}${url ? `${url}` : ''}`;
 
   const newProducts = json.data
     .map((row) => {
