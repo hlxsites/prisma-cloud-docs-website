@@ -12,7 +12,6 @@ import {
   loadCSS,
   loadFooter,
   loadHeader,
-  loadLanguageSelector,
   sampleRUM,
   toClassName,
   updateSectionsStatus,
@@ -24,6 +23,7 @@ polyfill();
 
 const range = document.createRange();
 
+export const LANGUAGE_SELECTOR_ENABLED = false;
 export const BRANCH_ORIGIN = 'https://prisma-cloud-docs-production.adobeaem.workers.dev';
 // export const BRANCH_ORIGIN = 'http://127.0.0.1:3001';
 
@@ -1013,6 +1013,18 @@ export function addFavIcon(href) {
 }
 
 /**
+ * Loads a block named 'language selector' just above the footer
+ * @param footer footer element
+ * @returns {Promise}
+ */
+function loadLanguageSelector(footer) {
+  const languageSelectorBlock = buildBlock('language-selector', '');
+  footer.append(languageSelectorBlock);
+  decorateBlock(languageSelectorBlock);
+  return loadBlock(languageSelectorBlock);
+}
+
+/**
  * Loads everything that doesn't need to be delayed.
  * @param {Element} doc The container element
  */
@@ -1026,7 +1038,9 @@ async function loadLazy(doc) {
   if (hash && element) element.scrollIntoView();
 
   loadHeader(doc.querySelector('header'));
-  loadLanguageSelector(doc.querySelector('footer'));
+  if (LANGUAGE_SELECTOR_ENABLED) {
+    loadLanguageSelector(doc.querySelector('footer'));
+  }
   loadFooter(doc.querySelector('footer'));
 
   if (doc.body.classList.contains('book')) {
