@@ -672,18 +672,6 @@ export function loadFooter(footer) {
 }
 
 /**
- * Loads a block named 'language selector' just above the footer
- * @param footer footer element
- * @returns {Promise}
- */
-export function loadLanguageSelector(footer) {
-  const languageSelectorBlock = buildBlock('language-selector', '');
-  footer.append(languageSelectorBlock);
-  decorateBlock(languageSelectorBlock);
-  return loadBlock(languageSelectorBlock);
-}
-
-/**
  * Setup block utils.
  */
 export function setup() {

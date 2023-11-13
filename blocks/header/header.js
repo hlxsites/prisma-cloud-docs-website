@@ -10,6 +10,7 @@ import {
   isTouchDevice,
   parseFragment,
   render,
+  LANGUAGE_SELECTOR_ENABLED,
 } from '../../scripts/scripts.js';
 
 // <search-bar data-default-option="all"></search-bar>
@@ -642,7 +643,10 @@ export default async function decorate(block) {
   }
 
   // load custom elements
-  import('../language-selector/language-selector.js');
+
+  if (LANGUAGE_SELECTOR_ENABLED) {
+    import('../language-selector/language-selector.js');
+  }
   import('../search-bar/search-bar.js');
   import('../theme-toggle/theme-toggle.js');
 }
