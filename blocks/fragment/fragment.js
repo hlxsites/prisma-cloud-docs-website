@@ -65,14 +65,17 @@ async function loadFragment(path, fromDocs) {
         setBranch(imageURL, store.branch);
         image.src = imageURL.toString();
       } else {
-        image.src = `${store.docsOrigin}${imageURL.pathname}`;
+        // add /docs/ prefix if missing
+        const path = imageURL.pathname.startsWith('/docs/') ? imageURL.pathname : `/docs${imageURL.pathname}`;
+        image.src = `${store.docsOrigin}${path}${imageURL.search}`;
       }
 
       const picture = image.parentElement;
       if (picture.tagName === 'PICTURE') {
+        const [baseUrl] = image.src.split('?');
         for (const source of picture.querySelectorAll('source')) {
           const search = source.srcset.split('?')[1];
-          source.srcset = `${image.src}?${search}`;
+          source.srcset = `${baseUrl}?${search}`;
         }
       }
     }
