@@ -66,8 +66,8 @@ async function loadFragment(path, fromDocs) {
         image.src = imageURL.toString();
       } else {
         // add /docs/ prefix if missing
-        const path = imageURL.pathname.startsWith('/docs/') ? imageURL.pathname : `/docs${imageURL.pathname}`;
-        image.src = `${store.docsOrigin}${path}${imageURL.search}`;
+        const pathname = imageURL.pathname.startsWith('/docs/') ? imageURL.pathname : `/docs${imageURL.pathname}`;
+        image.src = `${store.docsOrigin}${pathname}${imageURL.search}`;
       }
 
       const picture = image.parentElement;
