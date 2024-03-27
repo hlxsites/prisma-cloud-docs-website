@@ -3,6 +3,12 @@
     <loc>https://main--prisma-cloud-docs--hlxsites.hlx.live/docs/sitemaps/sitemap-en-0.xml</loc>
   </sitemap>
   <sitemap>
+    <loc>https://main--prisma-cloud-docs--hlxsites.hlx.live/docs/sitemaps/sitemap-jp-0.xml</loc>
+  </sitemap>
+  <sitemap>
     <loc>https://main--prisma-cloud-docs-website--hlxsites.hlx.live/en/sitemap.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://main--prisma-cloud-docs-website--hlxsites.hlx.live/jp/sitemap.xml</loc>
   </sitemap>
 </sitemapindex>
