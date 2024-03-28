@@ -198,6 +198,13 @@ async function navigateArticleSPA(ev) {
   handleSPANavigation(state);
 }
 
+function disableProductButton(button) {
+  const buttonDownArrow = button.querySelector('.icon-container');
+
+  button.setAttribute('disabled', true);
+  buttonDownArrow.setAttribute('hidden', true);
+}
+
 /**
  * Add product dropdown
  * @param {Element} wrapper
@@ -229,7 +236,7 @@ const initProductDropdown = async (wrapper) => {
     }
   });
 
-  const json = await store.fetchJSON(`${window.location.origin}${PATH_PREFIX}/products`);
+  const json = await store.fetchJSON(`${window.location.origin}${PATH_PREFIX}/${lang}/products`);
 
   if (!json) return;
 
@@ -261,7 +268,11 @@ const initProductDropdown = async (wrapper) => {
     })
     .filter((item) => !!item);
 
-  productsDropdownMenu.append(...newProducts);
+  if (newProducts.length) {
+    productsDropdownMenu.append(...newProducts);
+  } else {
+    disableProductButton(productButton);
+  }
 };
 
 /**
