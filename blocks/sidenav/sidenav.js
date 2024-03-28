@@ -198,6 +198,13 @@ async function navigateArticleSPA(ev) {
   handleSPANavigation(state);
 }
 
+function disableProductButton(button) {
+  const buttonDownArrow = button.querySelector('.icon-container');
+
+  button.setAttribute('disabled', true);
+  buttonDownArrow.setAttribute('hidden', true);
+}
+
 /**
  * Add product dropdown
  * @param {Element} wrapper
@@ -267,13 +274,6 @@ const initProductDropdown = async (wrapper) => {
     disableProductButton(productButton);
   }
 };
-
-function disableProductButton(button) {
-  const buttonDownArrow = button.querySelector('.icon-container');
-
-  button.setAttribute('disabled', true);
-  buttonDownArrow.setAttribute('hidden', true);
-}
 
 /**
  * Add version dropdown
