@@ -130,9 +130,8 @@ class ThemeToggle extends HTMLElement {
       ? 'dark'
       : 'light';
     // Attempts to load the setting from local storage
-    const currentSetting = passedSetting
-      || localStorage.getItem(this.STORAGE_KEY)
-      || browserSetting;
+    const currentSetting = passedSetting || localStorage.getItem(this.STORAGE_KEY)
+    || browserSetting;
 
     if (currentSetting) {
       this.setToggleSwitchStatus(currentSetting);
