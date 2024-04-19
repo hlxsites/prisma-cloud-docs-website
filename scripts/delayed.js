@@ -19,4 +19,4 @@ store.emit('delayed:loaded');
 
 loadCSS(`${window.hlx.codeBasePath}/styles/icons.css`);
 
-await loadAdobeLaunch();
+loadAdobeLaunch();
