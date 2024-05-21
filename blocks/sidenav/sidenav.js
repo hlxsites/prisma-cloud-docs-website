@@ -394,9 +394,7 @@ function addEventListeners(wrapper) {
     let parent = el.parentElement.closest('li');
     while (parent) {
       parent.ariaExpanded = toggle;
-      if (parent.dataset.key) {
-        parent.hidden = !toggle;
-      }
+      parent.hidden = !toggle;
       parent = parent.parentElement.closest('li');
     }
   };
@@ -413,13 +411,10 @@ function addEventListeners(wrapper) {
       const find = (link) => link.textContent.toLowerCase().includes(query);
 
       links.forEach((link) => {
-        if (!find(link)) {
-          const { textContent } = link;
-          link.textContent = textContent;
-          link.textContent = link.innerHTML.replaceAll('&nbsp;', ' ');
-
-          toggleExpanded(link, false);
-        }
+        const { textContent } = link;
+        link.textContent = textContent;
+        link.textContent = link.innerHTML.replaceAll('&nbsp;', ' ');
+        toggleExpanded(link, false);
       });
 
       links.forEach((link) => {
@@ -427,7 +422,6 @@ function addEventListeners(wrapper) {
           link.innerHTML = link.textContent
             .replace(new RegExp(`(${value})`, 'gi'), '<mark>$1</mark>')
             .replaceAll(' ', '&nbsp;');
-
           toggleExpanded(link, true);
         }
       });
@@ -436,11 +430,9 @@ function addEventListeners(wrapper) {
 
       links.forEach((link) => {
         const { textContent } = link;
-
         link.textContent = textContent;
         link.textContent = link.innerHTML.replaceAll('&nbsp;', ' ');
         link.closest('li[data-key]').hidden = false;
-
         toggleExpanded(link, 'false');
       });
 
