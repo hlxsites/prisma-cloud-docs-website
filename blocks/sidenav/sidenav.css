@@ -347,6 +347,22 @@
   outline: 0;
 }
 
+.pan-sidenav .form-input input::placeholder {
+  padding-left: 30px;
+}
+
+.pan-sidenav .form-input input:placeholder-shown {
+  background-image: url(/icons/filter.svg);
+  /* background-color: var(--color-neutral-white); */
+  background-position: 10px 50%;
+  background-repeat: no-repeat;
+  background-size: 20px;
+}
+
+.pan-sidenav .form-input input:not(:placeholder-shown) {
+  background-image: none;
+}
+
 .pan-sidenav .form-input button {
   width: 25px;
   height: 25px;
