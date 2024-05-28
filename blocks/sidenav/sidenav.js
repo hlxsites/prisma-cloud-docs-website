@@ -15,102 +15,100 @@ import {
 
 const TEMPLATE = /* html */ `
 <div class="toc-resizer"></div>
-  <aside class="pan-sidenav">
-      <!-- Mobile -->
-      <!-- End Mobile -->
-      <div class="toggle-aside">
-          <i class="icon">${getIcon('chevron-right')}</i>
+<aside class="pan-sidenav">
+  <!-- Mobile -->
+  <!-- End Mobile -->
+  <div class="toggle-aside">
+    <i class="icon">${getIcon('chevron-right')}</i>
+  </div>
+  <div class="banner">
+    <div class="banner-inner">
+      <span class="banner-inner-mobile">
+        <h2>
+          <span class="locale-article-document">Document:</span>
+          <slot name="document"></slot>
+        </h2>
+        <hr>
+        <span class="title">
+          <h1><slot name="title"></slot></h1>
+        </span>
+      </span>
+
+      <div class="book-detail-banner-info">
+        <div class="banner-info-label locale-book-last-updated"></div>
+        <slot name="date">-</slot>
       </div>
-      <div class="banner">
-        <div class="banner-inner">
-          <span class="banner-inner-mobile">
-            <h2>
-                <span class="locale-article-document">Document:</span>
-                <slot name="document"></slot>
-            </h2>
-            <hr>
-            <span class="title">
-              <h1><slot name="title"></slot></h1>
-            </span>
-          </span>
 
-          <div class="book-detail-banner-info">
-              <div class="banner-info-label locale-book-last-updated"></div>
-              <slot name="date">-</slot>
-          </div>
-
-          <div class="products">
-            <div class="book-detail-banner-info">
-              <div class="banner-info-label locale-book-current-product"></div>
-              <div class="banner-dropdown product-dropdown">
-                <div class="banner-dropdown-menu product-dropdown-menu drawer">
-                    <ul>
-                    </ul>
-                </div>
-                <button class="product-button">
-                  <div class="product-button__left">  
-                    <svg width="20" height="22" class="icon icon-logo" focusable="false" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path fill-rule="evenodd" clip-rule="evenodd" d="M9.55536 0.125406C9.85815 -0.0424573 10.2262 -0.0417582 10.5284 0.127254L19.4882 5.13896C19.8042 5.31575 20 5.64958 20 6.01171V15.9883C20 16.3504 19.8042 16.6843 19.4882 16.861L10.5284 21.8727C10.2262 22.0418 9.85815 22.0425 9.55536 21.8746L0.515143 16.8629C0.197238 16.6866 0 16.3518 0 15.9883V6.01171C0 5.64822 0.197238 5.31336 0.515143 5.13712L9.55536 0.125406ZM2.25757 15.5421C2.09862 15.454 2 15.2865 2 15.1048V12.6996L4.5 14.0885V16.7852L2.25757 15.5421ZM5.98564 12.626L2 10.4117V7.41374L8.86421 11.2269C9.10232 11.3591 9.25 11.6101 9.25 11.8825V19.4185L6.5 17.894V13.5001C6.5 13.137 6.30311 12.8023 5.98564 12.626ZM15.5 16.8002L17.7441 15.545C17.9021 15.4566 18 15.2897 18 15.1086V12.6996L15.5 14.0885V16.8002ZM13.5 17.9189L10.75 19.4572V11.8822C10.75 11.6098 10.8977 11.3589 11.1358 11.2266L18 7.41294V10.4117L14.0144 12.626C13.6969 12.8023 13.5 13.137 13.5 13.5001V17.9189ZM9.63554 9.93943C9.86206 10.0653 10.1375 10.0653 10.364 9.93941L17.1917 6.14605L14.5034 4.64234L10.4859 6.87429C10.1839 7.04208 9.81667 7.04208 9.51465 6.87429L5.51483 4.65217L2.81349 6.14973L9.63554 9.93943ZM7.57614 3.50942L10.0003 4.85617L12.4513 3.49448L10.281 2.28052C10.13 2.19601 9.94592 2.19566 9.79453 2.27959L7.57614 3.50942Z" />
-                    </svg>
-                    <span slot="product"></span>
-                  </div>  
-                  <div class="icon-container">
-                    <svg class="icon icon-arrow-down" focusable="false" aria-label="Expand" version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-                      <title>down-arrow</title>
-                      <path d="M7.79 9.671c-0.867-0.894-2.276-0.894-3.144 0-0.862 0.889-0.862 2.327 0 3.217l8.717 8.988c1.455 1.5 3.817 1.5 5.272 0l8.717-8.988c0.862-0.889 0.862-2.327 0-3.217-0.867-0.894-2.276-0.894-3.144 0l-7.492 7.724c-0.393 0.405-1.043 0.405-1.436 0l-7.492-7.724z"></path>
-                    </svg>
-                  </div>
-                </button>
-              </div>
+      <div class="products">
+        <div class="book-detail-banner-info">
+          <div class="banner-info-label locale-book-current-product"></div>
+          <div class="banner-dropdown product-dropdown">
+            <div class="banner-dropdown-menu product-dropdown-menu drawer">
+              <ul>
+              </ul>
             </div>
+            <button class="product-button">
+              <div class="product-button__left">  
+                <svg width="20" height="22" class="icon icon-logo" focusable="false" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M9.55536 0.125406C9.85815 -0.0424573 10.2262 -0.0417582 10.5284 0.127254L19.4882 5.13896C19.8042 5.31575 20 5.64958 20 6.01171V15.9883C20 16.3504 19.8042 16.6843 19.4882 16.861L10.5284 21.8727C10.2262 22.0418 9.85815 22.0425 9.55536 21.8746L0.515143 16.8629C0.197238 16.6866 0 16.3518 0 15.9883V6.01171C0 5.64822 0.197238 5.31336 0.515143 5.13712L9.55536 0.125406ZM2.25757 15.5421C2.09862 15.454 2 15.2865 2 15.1048V12.6996L4.5 14.0885V16.7852L2.25757 15.5421ZM5.98564 12.626L2 10.4117V7.41374L8.86421 11.2269C9.10232 11.3591 9.25 11.6101 9.25 11.8825V19.4185L6.5 17.894V13.5001C6.5 13.137 6.30311 12.8023 5.98564 12.626ZM15.5 16.8002L17.7441 15.545C17.9021 15.4566 18 15.2897 18 15.1086V12.6996L15.5 14.0885V16.8002ZM13.5 17.9189L10.75 19.4572V11.8822C10.75 11.6098 10.8977 11.3589 11.1358 11.2266L18 7.41294V10.4117L14.0144 12.626C13.6969 12.8023 13.5 13.137 13.5 13.5001V17.9189ZM9.63554 9.93943C9.86206 10.0653 10.1375 10.0653 10.364 9.93941L17.1917 6.14605L14.5034 4.64234L10.4859 6.87429C10.1839 7.04208 9.81667 7.04208 9.51465 6.87429L5.51483 4.65217L2.81349 6.14973L9.63554 9.93943ZM7.57614 3.50942L10.0003 4.85617L12.4513 3.49448L10.281 2.28052C10.13 2.19601 9.94592 2.19566 9.79453 2.27959L7.57614 3.50942Z" />
+                </svg>
+                <span slot="product"></span>
+              </div>  
+              <div class="icon-container">
+                <svg class="icon icon-arrow-down" focusable="false" aria-label="Expand" version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+                  <title>down-arrow</title>
+                  <path d="M7.79 9.671c-0.867-0.894-2.276-0.894-3.144 0-0.862 0.889-0.862 2.327 0 3.217l8.717 8.988c1.455 1.5 3.817 1.5 5.272 0l8.717-8.988c0.862-0.889 0.862-2.327 0-3.217-0.867-0.894-2.276-0.894-3.144 0l-7.492 7.724c-0.393 0.405-1.043 0.405-1.436 0l-7.492-7.724z"></path>
+                </svg>
+              </div>
+            </button>
           </div>
+        </div>
+      </div>
 
-          <div class="languages">
-            <div class="book-detail-banner-info">
-              <div class="banner-info-label locale-book-current-language"></div>
-                <div class="banner-dropdown language-dropdown">
-                  <a>
-                      <span slot="language"></span>
-                      <i class="icon">${getIcon('chevron-down')}</i>
-                  </a>
-                  <div class="banner-dropdown-menu language-dropdown-menu">
-                    <ul>
-                      <li class="active">
-                        <a href="#" slot="language"></a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
+      <div class="languages">
+        <div class="book-detail-banner-info">
+          <div class="banner-info-label locale-book-current-language"></div>
+            <div class="banner-dropdown language-dropdown">
+              <a>
+                <span slot="language"></span>
+                <i class="icon">${getIcon('chevron-down')}</i>
+              </a>
+              <div class="banner-dropdown-menu language-dropdown-menu">
+                <ul>
+                  <li class="active">
+                    <a href="#" slot="language"></a>
+                  </li>
+                </ul>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="content">
-          <div class="toggle-aside">
-            <svg class="icon icon-collapse" focusable="false" aria-label="Collapse" version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-              <title>collapse</title>
-              <path d="M24.521 9.843c0.639-0.65 0.639-1.707 0-2.358-0.635-0.647-1.662-0.647-2.298 0l-6.42 6.538c-1.071 1.091-1.071 2.863 0 3.954l6.42 6.538c0.635 0.647 1.663 0.647 2.298 0 0.639-0.65 0.639-1.707 0-2.358l-5.517-5.619c-0.289-0.295-0.289-0.782 0-1.077l5.517-5.619z"></path>
-              <path d="M16.521 9.843c0.639-0.65 0.639-1.707 0-2.358-0.635-0.647-1.662-0.647-2.298 0l-6.42 6.538c-1.071 1.091-1.071 2.863 0 3.954l6.42 6.538c0.635 0.647 1.662 0.647 2.298 0 0.639-0.65 0.639-1.707 0-2.358l-5.517-5.619c-0.289-0.295-0.289-0.782 0-1.077l5.517-5.619z"></path>
-            </svg>
-          </div>
-          <h2 class="locale-toc-title"></h2>
-          <hr>
-          <div class="content-inner">             
-            <div class="search-toc">
-              <div class="search-toc-container">
-                <div class="form">
-                  <form class="form-input">
-                    <input class="locale-toc-form-input">
-                    <button type="reset" hidden><span class="ion-close"></span></button>
-                  </form>
-                </div>
-              </div>
-            </div>
-            <div class="toc-books"></div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="toggle-aside">
+      <svg class="icon icon-collapse" focusable="false" aria-label="Collapse" version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+        <title>collapse</title>
+        <path d="M24.521 9.843c0.639-0.65 0.639-1.707 0-2.358-0.635-0.647-1.662-0.647-2.298 0l-6.42 6.538c-1.071 1.091-1.071 2.863 0 3.954l6.42 6.538c0.635 0.647 1.663 0.647 2.298 0 0.639-0.65 0.639-1.707 0-2.358l-5.517-5.619c-0.289-0.295-0.289-0.782 0-1.077l5.517-5.619z"></path>
+        <path d="M16.521 9.843c0.639-0.65 0.639-1.707 0-2.358-0.635-0.647-1.662-0.647-2.298 0l-6.42 6.538c-1.071 1.091-1.071 2.863 0 3.954l6.42 6.538c0.635 0.647 1.662 0.647 2.298 0 0.639-0.65 0.639-1.707 0-2.358l-5.517-5.619c-0.289-0.295-0.289-0.782 0-1.077l5.517-5.619z"></path>
+      </svg>
+    </div>
+    <h2 class="locale-toc-title"></h2>
+    <hr>
+    <div class="content-inner">             
+      <div class="search-toc">
+          <div class="form">
+            <form class="form-input">
+              <input class="locale-toc-form-input">
+              <button type="reset" hidden><span class="ion-close"></span></button>
+            </form>
           </div>
       </div>
-  </aside>`;
+      <div class="toc-books"></div>
+    </div>
+  </div>
+</aside>`;
 
 function formatDate(date) {
   const [month, day, year] = date.toString().split(' ').slice(1);
