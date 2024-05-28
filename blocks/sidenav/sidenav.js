@@ -98,12 +98,9 @@ const TEMPLATE = /* html */ `
     <hr>
     <div class="content-inner">             
       <div class="search-toc">
-          <div class="form">
-            <form class="form-input">
-              <input class="locale-toc-form-input">
-              <button type="reset" hidden><span class="ion-close"></span></button>
-            </form>
-          </div>
+        <form class="form-input">
+          <input type="search" class="locale-toc-form-input">
+        </form>
       </div>
       <div class="toc-books"></div>
     </div>
@@ -378,7 +375,6 @@ function addEventListeners(wrapper) {
 
   const form = wrapper.querySelector('.form-input');
   const input = form.querySelector('input');
-  const reset = form.querySelector('button');
   const toc = wrapper.querySelector('.toc-books');
 
   const toggleExpanded = (el, toggle) => {
@@ -396,8 +392,6 @@ function addEventListeners(wrapper) {
     const links = toc.querySelectorAll('a');
 
     if (value) {
-      reset.hidden = false;
-
       const query = value.toLowerCase();
       const find = (link) => link.textContent.toLowerCase().includes(query);
 
@@ -417,8 +411,6 @@ function addEventListeners(wrapper) {
         }
       });
     } else {
-      reset.hidden = true;
-
       links.forEach((link) => {
         const { textContent } = link;
         link.textContent = textContent;
@@ -429,13 +421,6 @@ function addEventListeners(wrapper) {
 
       toggleExpanded(toc.querySelector('li.current'), 'true');
     }
-  });
-
-  reset.addEventListener('click', () => {
-    reset.hidden = true;
-    requestAnimationFrame(() => {
-      input.dispatchEvent(new Event('input'));
-    });
   });
 
   form.addEventListener('submit', (event) => {
