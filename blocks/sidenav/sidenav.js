@@ -117,6 +117,7 @@ function handleSPANavigation(state) {
   const sidenav = document.querySelector('.block.sidenav .pan-sidenav');
   const banner = sidenav.querySelector('div.banner');
   const toc = sidenav.querySelector('div.toc-books');
+  const filter = sidenav.querySelector('.locale-toc-form-input');
 
   // change current sidenav item
   const prev = toc.querySelector('li.current');
@@ -158,6 +159,10 @@ function handleSPANavigation(state) {
       a.href = `${prefix}/${nextLang}/${suffix}`;
     });
   }
+
+  // When navigating to a new article, clear the filter
+  filter.value = '';
+  filter.dispatchEvent(new Event('input', { bubbles: true }));
 }
 
 async function navigateArticleSPA(ev) {
