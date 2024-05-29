@@ -99,6 +99,7 @@ const TEMPLATE = /* html */ `
     <div class="content-inner">             
       <div class="search-toc">
         <form class="form-input">
+          ${getIcon('filter')}
           <input type="search" class="locale-toc-form-input">
         </form>
       </div>
