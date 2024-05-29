@@ -501,8 +501,9 @@
 
 @media (min-width: 901px) {
   .pan-sidenav .content .content-inner .toc-books {
-    /* 117px is the height of the edition banner */
-    max-height: calc(100vh - var(--nav-height) - 117px);
+    /* 200px is the height, measured from the bottom of header to */
+    /* the top of first entry in ToC (y2-y1 = 400-200 = 200px) */
+    max-height: calc(100vh - var(--nav-height) - 200px);
     padding-right: var(--spacing--2);
     overflow-y: scroll;
     /* Scrollbar styles */
