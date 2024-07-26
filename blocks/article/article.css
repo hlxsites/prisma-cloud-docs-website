@@ -270,6 +270,23 @@ article [data-docs-heading] span {
   align-items: center;
 }
 
+.announcement {
+  padding-bottom: var(--spacing--10);
+}
+
+.announcement p {
+  color: white;
+  background-color: #aa0006;
+  margin: 0;
+  padding: 15px 10px;
+}
+
+.announcement a {
+  color: white;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
 .article-actions {
   align-items: center;
   display: flex;
