@@ -48,7 +48,8 @@ const TEMPLATE = /* html */ `
               <i class="icon-share-alt"></i>
           </a>
       </div>
-      </div>
+    </div>
+    <slot name="announcement"></slot>     
       <div class="banner contain">
           <div class="banner-inner">
             <span class="banner-inner-desktop">
@@ -401,6 +402,16 @@ async function renderContent(block, res, rerender = false) {
 
   block.classList.remove(`source-${isGdoc ? 'adoc' : 'gdoc'}`);
   block.classList.add(`source-${isGdoc ? 'gdoc' : 'adoc'}`);
+
+  // Set announcement
+  const announceStr = getMetadata('announcement');
+  if (announceStr) {
+    const announce = document.createElement('div');
+    announce.classList.add('announcement');
+    announce.innerHTML = announceStr;
+    announce.setAttribute('slot', 'announcement');
+    fragment.append(announce);
+  }
 
   if (articleFound) {
     const { html, info } = res;
