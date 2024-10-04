@@ -443,6 +443,18 @@ article [data-docs-heading] span {
   word-break: break-word;
 }
 
+.pan-article .book-content ol {
+  list-style-type: decimal;
+}
+
+.pan-article .book-content ol ol {
+  list-style-type: lower-alpha;
+}
+
+.pan-article .book-content ol ol ol {
+  list-style-type: lower-roman;
+}
+
 .pan-article .book-content pre {
   display: block;
   margin: var(--spacing--6) 0;
