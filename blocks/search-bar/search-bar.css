@@ -340,6 +340,14 @@ search-bar {
   margin-bottom: var(--spacing--1);
 }
 
+.search-bar .magic-box .magic-box-suggestions .magic-box-suggestion .coveo-omnibox-hightlight {
+  color: var(--search-text-color);
+}
+
+.search-bar .magic-box .magic-box-suggestions .magic-box-suggestion .coveo-omnibox-hightlight2 {
+  color: var(--search-text-color);
+}
+
 .search-bar .dropdown-content .coveo-dropdown-hero-search {
   display: none;
 }
