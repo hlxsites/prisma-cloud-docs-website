@@ -18,10 +18,8 @@ async function loadAdobeLaunch() {
 async function loadGA() {
   const gaId = 'G-9SEQK7FPPQ';
   loadGAScript(`https://www.googletagmanager.com/gtag/js?id=${gaId}`, () => {
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
-    gtag('config', gaId);
+    // eslint-disable-next-line
+    window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', gaId);
   });
 }
 
