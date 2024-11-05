@@ -15,8 +15,20 @@ async function loadAdobeLaunch() {
   });
 }
 
+async function loadGA() {
+  const gaId = 'G-9SEQK7FPPQ';
+  const gaSrc = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
+  await loadScript(gaSrc, {
+    type: 'text/javascript',
+    async: true,
+  });
+  // eslint-disable-next-line
+  window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', gaId);
+}
+
 store.emit('delayed:loaded');
 
 loadCSS(`${window.hlx.codeBasePath}/styles/icons.css`);
 
 loadAdobeLaunch();
+loadGA();
