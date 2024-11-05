@@ -17,7 +17,7 @@ async function loadAdobeLaunch() {
 
 async function loadGA() {
   const gaId = 'G-9SEQK7FPPQ';
-  const gaSrc = `https://www.googletagmanager.com/gtag/js?id=${gaId}`
+  const gaSrc = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
   await loadScript(gaSrc, {
     type: 'text/javascript',
     async: true,
