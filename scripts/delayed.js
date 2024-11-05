@@ -30,5 +30,5 @@ store.emit('delayed:loaded');
 
 loadCSS(`${window.hlx.codeBasePath}/styles/icons.css`);
 
-// loadAdobeLaunch();
+loadAdobeLaunch();
 loadGA();
