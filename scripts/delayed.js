@@ -6,6 +6,28 @@ sampleRUM('cwv');
 
 // add more delayed functionality here
 
+async function loadBodyScript(src, attrs) {
+  return new Promise((resolve, reject) => {
+    if (!document.querySelector(`body > script[src="${src}"]`)) {
+      const script = document.createElement('script');
+      script.text = src;
+      if (attrs) {
+        // eslint-disable-next-line no-restricted-syntax, guard-for-in
+        for (const attr in attrs) {
+          script.setAttribute(attr, attrs[attr]);
+        }
+      }
+      script.onload = resolve;
+      script.onerror = reject;
+      document.body.append(script);
+    } else {
+      resolve();
+    }
+  });
+}
+
+
+
 async function loadAdobeLaunch() {
   const adobedtmSrc = 'https://assets.adobedtm.com/9273d4aedcd2/6eb97addd328/launch-1dd947b3f935.min.js';
 
@@ -26,9 +48,17 @@ async function loadGA() {
   window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', gaId);
 }
 
+async function loadGetFeedback() {
+  const src = 'console.log("Load GetFeedback");';
+  await loadBodyScript(src, {
+    type: 'text/javascript',
+  });
+}
+
 store.emit('delayed:loaded');
 
 loadCSS(`${window.hlx.codeBasePath}/styles/icons.css`);
 
 loadAdobeLaunch();
 loadGA();
+loadGetFeedback();
