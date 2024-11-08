@@ -8,21 +8,17 @@ sampleRUM('cwv');
 
 async function loadBodyScript(src, attrs) {
   return new Promise((resolve, reject) => {
-    if (!document.querySelector(`body > script[src="${src}"]`)) {
-      const script = document.createElement('script');
-      script.text = src;
-      if (attrs) {
-        // eslint-disable-next-line no-restricted-syntax, guard-for-in
-        for (const attr in attrs) {
-          script.setAttribute(attr, attrs[attr]);
-        }
+    const script = document.createElement('script');
+    script.text = src;
+    if (attrs) {
+      // eslint-disable-next-line no-restricted-syntax, guard-for-in
+      for (const attr in attrs) {
+        script.setAttribute(attr, attrs[attr]);
       }
-      script.onload = resolve;
-      script.onerror = reject;
-      document.body.append(script);
-    } else {
-      resolve();
     }
+    script.onload = resolve;
+    script.onerror = reject;
+    document.body.append(script);
   });
 }
 
