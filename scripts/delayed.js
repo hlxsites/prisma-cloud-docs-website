@@ -26,8 +26,6 @@ async function loadBodyScript(src, attrs) {
   });
 }
 
-
-
 async function loadAdobeLaunch() {
   const adobedtmSrc = 'https://assets.adobedtm.com/9273d4aedcd2/6eb97addd328/launch-1dd947b3f935.min.js';
 
