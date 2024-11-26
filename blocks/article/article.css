@@ -463,6 +463,11 @@ article [data-docs-heading] span {
   width: 100%;
 }
 
+.pan-article .book-content img {
+  width: unset;
+  height: unset;
+}
+
 .pan-article .banner-meta {
   align-items: center;
   display: flex;
