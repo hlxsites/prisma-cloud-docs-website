@@ -926,6 +926,16 @@ function decorateSectionIds(main) {
 }
 
 /**
+ * decorate tables inside procedure sections
+ * @param {HTMLElement} main
+ */
+function decorateProcedureSections(main) {
+  main.querySelectorAll(':scope li > div.table').forEach((block) => {
+    decorateBlock(block);
+  });
+}
+
+/**
  * Decorates the main element.
  * @param {Element} main The main element
  */
@@ -941,6 +951,7 @@ export async function decorateMain(main) {
   decorateSectionIds(main);
   decorateLandingSections(main);
   decorateBlocks(main);
+  decorateProcedureSections(main);
 
   window.history.scrollRestoration = 'manual';
 }
