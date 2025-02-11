@@ -47,18 +47,18 @@ document.documentElement.lang = lang;
 
 export const WEB_ORIGINS = {
   dev: 'http://localhost:3000',
-  // dev: `https://main--${SITE_REPO_NAME}--${SITE_REPO_OWNER}.hlx.page`,
-  preview: `https://main--${SITE_REPO_NAME}--${SITE_REPO_OWNER}.hlx.page`,
-  publish: `https://main--${SITE_REPO_NAME}--${SITE_REPO_OWNER}.hlx.live`,
+  // dev: `https://main--${SITE_REPO_NAME}--${SITE_REPO_OWNER}.aem.page`,
+  preview: `https://main--${SITE_REPO_NAME}--${SITE_REPO_OWNER}.aem.page`,
+  publish: `https://main--${SITE_REPO_NAME}--${SITE_REPO_OWNER}.aem.live`,
   stage: STAGE_DOMAIN,
   prod: PROD_DOMAIN,
 };
 
 export const DOCS_ORIGINS = {
   dev: 'http://127.0.0.1:3001',
-  // dev: `https://main--${DOCS_REPO_NAME}--${DOCS_REPO_OWNER}.hlx.page`,
-  preview: `https://main--${DOCS_REPO_NAME}--${DOCS_REPO_OWNER}.hlx.page`,
-  publish: `https://main--${DOCS_REPO_NAME}--${DOCS_REPO_OWNER}.hlx.live`,
+  // dev: `https://main--${DOCS_REPO_NAME}--${DOCS_REPO_OWNER}.aem.page`,
+  preview: `https://main--${DOCS_REPO_NAME}--${DOCS_REPO_OWNER}.aem.page`,
+  publish: `https://main--${DOCS_REPO_NAME}--${DOCS_REPO_OWNER}.aem.live`,
   stage: STAGE_DOMAIN,
   prod: PROD_DOMAIN,
 };
@@ -75,8 +75,8 @@ function getEnv() {
   const { hostname } = window.location;
   if (PROD_DOMAIN.endsWith(hostname)) return 'prod';
   if (STAGE_DOMAIN.endsWith(hostname)) return 'stage';
-  if (hostname.endsWith('hlx.page')) return 'preview';
-  if (hostname.endsWith('hlx.live')) return 'publish';
+  if (hostname.endsWith('hlx.page') || hostname.endsWith('aem.page')) return 'preview';
+  if (hostname.endsWith('hlx.live') || hostname.endsWith('aem.live')) return 'publish';
   return 'dev';
 }
 
